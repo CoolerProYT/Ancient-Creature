@@ -1,0 +1,172 @@
+package com.coolerpromc.ancientcreature.platform;
+
+import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.platform.services.IRegistryHelper;
+import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
+import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
+import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
+import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.registries.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+
+public class NeoForgeRegistryHelper implements IRegistryHelper {
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Constants.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Constants.MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Constants.MODID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Constants.MODID);
+    public static final DeferredRegister.Entities ENTITIES = DeferredRegister.createEntities(Constants.MODID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Constants.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Constants.MODID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, Constants.MODID);
+    public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Constants.MODID);
+    public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, Constants.MODID);
+    public static final DeferredRegister<Identifier> STATS = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT, Constants.MODID);
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, Constants.MODID);
+
+    private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
+
+    @Override
+    public <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func, BlockBehaviour.Properties p) {
+        DeferredBlock<T> deferredBlock = BLOCKS.registerBlock(name, func, () -> p);
+        return () -> deferredBlock;
+    }
+
+    @Override
+    public <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func, Item.Properties p) {
+        DeferredItem<T> deferredItem = ITEMS.registerItem(name, func, () -> p);
+        return () -> deferredItem;
+    }
+
+    @SafeVarargs
+    @Override
+    public final <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> registerBlockEntityType(String name, BlockEntityTypeFactory<T> factory, Supplier<? extends Block>... blocks) {
+        DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> deferredHolder = BLOCK_ENTITIES.register(name, () -> new BlockEntityType<>(factory::create, Arrays.stream(blocks).map(Supplier::get).collect(Collectors.toSet())));
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T extends Entity> RegistryHandler.Entities<T> registerEntity(String name, EntityType.EntityFactory<T> factory, MobCategory category, UnaryOperator<EntityType.Builder<T>> builder) {
+        DeferredHolder<EntityType<?>, EntityType<T>> deferredHolder = ENTITIES.registerEntityType(name, factory, category, builder);
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public RegistryHandler<CreativeModeTab, CreativeModeTab> registerCreativeTab(String name, Supplier<ItemStack> icon, Component title, BiConsumer<CreativeTabOutput, CreativeModeTab.ItemDisplayParameters> entries) {
+        DeferredHolder<CreativeModeTab, CreativeModeTab> deferredHolder = CREATIVE_TABS.register(name, () -> CreativeModeTab.builder().icon(icon).title(title).displayItems((p, o) -> entries.accept(o::accept, p)).build());
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T extends Recipe<?>> RegistryHandler<RecipeType<?>, RecipeType<T>> registerRecipeType(String name) {
+        DeferredHolder<RecipeType<?>, RecipeType<T>> deferredHolder = RECIPE_TYPES.register(name, () -> RecipeType.simple(Constants.id(name)));
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T extends Recipe<?>> RegistryHandler<RecipeSerializer<?>, RecipeSerializer<T>> registerRecipeSerializer(String name, RecipeSerializer<T> serializer) {
+        DeferredHolder<RecipeSerializer<?>, RecipeSerializer<T>> deferredHolder = RECIPE_SERIALIZERS.register(name, () -> serializer);
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T extends AbstractContainerMenu, D> RegistryHandler<MenuType<?>, MenuType<T>> registerMenuType(String name, MenuFactory<T, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> data) {
+        DeferredHolder<MenuType<?>, MenuType<T>> deferredHolder = MENUS.register(name, () -> IMenuTypeExtension.create((id, inv, buf) -> factory.create(id, inv, data.decode(buf))));
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T> RegistryHandler.Components<T> registerDataComponent(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
+        DeferredHolder<DataComponentType<?>, DataComponentType<T>> deferredHolder = DATA_COMPONENTS.registerComponentType(name, builder);
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public <T> RegistryHandler<EntityDataSerializer<?>, EntityDataSerializer<T>> registerEntityDataSerializer(String name, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<T>> deferredHolder = ENTITY_DATA_SERIALIZERS.register(name, () -> EntityDataSerializer.forValueType(streamCodec));
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public RegistryHandler<Identifier, Identifier> registerStat(String name) {
+        DeferredHolder<Identifier, Identifier> deferredHolder = STATS.register(name, () -> Constants.id(name));
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public RegistryHandler<Attribute, Attribute> registerAttribute(String name, Attribute attribute) {
+        DeferredHolder<Attribute, Attribute> deferredHolder = ATTRIBUTES.register(name, () -> attribute);
+        return () -> deferredHolder;
+    }
+
+    @Override
+    public void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
+        this.entityAttributes.add(new EntityAttributeEntry(entityType, supplier));
+    }
+
+    @Override
+    public void applyEntityAttributeRegistrations(EntityAttributeRegistrar registrar) {
+        for (EntityAttributeEntry entry : this.entityAttributes) {
+            entry.register(registrar);
+        }
+    }
+
+    private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
+        private void register(EntityAttributeRegistrar registrar) {
+            registrar.register(this.entityType, this.supplier);
+        }
+    }
+
+    public static void register(IEventBus eventBus){
+        BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
+        BLOCK_ENTITIES.register(eventBus);
+        CREATIVE_TABS.register(eventBus);
+        DATA_COMPONENTS.register(eventBus);
+        ENTITIES.register(eventBus);
+        RECIPE_TYPES.register(eventBus);
+        RECIPE_SERIALIZERS.register(eventBus);
+        MENUS.register(eventBus);
+        ATTACHMENTS.register(eventBus);
+        ENTITY_DATA_SERIALIZERS.register(eventBus);
+        STATS.register(eventBus);
+        ATTRIBUTES.register(eventBus);
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.coolerpromc.ancientcreature.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+  
