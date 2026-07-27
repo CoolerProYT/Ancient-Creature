@@ -1,0 +1,8 @@
+// 26.1	2026-07-27T13:49:11.4116476	Model Definitions - ancientcreature
+7040d76520222ae5cce4587101469e44424ab059 assets/ancientcreature/blockstates/fossil_ore.json
+62963953b8d2c2048a889e374671c76bd31aba48 assets/ancientcreature/items/chisel.json
+532209a5e0a626eecb3b304867aacee5be54771c assets/ancientcreature/items/fossil_ore.json
+66bb3d0231ba9f2d1c805607d02bf6f50eedf60a assets/ancientcreature/items/rib_fossil_fragment.json
+94e2cd97d4e6de752ca70825b3523ee464f95e8a assets/ancientcreature/models/block/fossil_ore.json
+6aad1fb617209b294b8fbaee20a0b9e0c88d5ac9 assets/ancientcreature/models/item/chisel.json
+ed32afbe1ff825304be66cbc6a05ad46228ac460 assets/ancientcreature/models/item/rib_fossil_fragment.json

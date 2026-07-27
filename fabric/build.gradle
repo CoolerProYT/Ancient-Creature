@@ -8,6 +8,12 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 }
 
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
 loom {
     def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
     if (aw.exists()) {
@@ -47,3 +53,5 @@ sourceSets.configureEach {
         }
     }
 }
+
+sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }

@@ -20,6 +20,9 @@
         ],
         "client": [
             "com.coolerpromc.ancientcreature.FabricAncientCreatureClient"
+        ],
+        "fabric-datagen": [
+            "com.coolerpromc.ancientcreature.datagen.ModDataGenerator"
         ]
     },
     "mixins": [
