@@ -1,3 +1,11 @@
-// 26.1	2026-07-27T16:25:16.2767337	Loot Tables
+// 26.1	2026-07-27T20:31:13.94235	Loot Tables
 3cb2775734956cc22afd9a882fdc41b66e020012 data/ancientcreature/loot_table/blocks/fossil_ore.json
+d5a467690cc38705bda926cbc4b4fb41c9c5e287 data/ancientcreature/loot_table/chests/arid_dig_site.json
+03f32891ef0ea76d5babd0c333d0226243ed536e data/ancientcreature/loot_table/chests/badlands_dig_site.json
+83b1b97cd4b7e66f6517f4a97050eb4d736260e8 data/ancientcreature/loot_table/chests/coastal_dig_site.json
+a921a957214463613a7dcd47e960ac8db8483fcc data/ancientcreature/loot_table/chests/cold_dig_site.json
+bb28c3e2d36c71b7198dbfa68363382e122a0e63 data/ancientcreature/loot_table/chests/highland_dig_site.json
+766e3c5839d069dd60f52626778680cf310a377b data/ancientcreature/loot_table/chests/jungle_dig_site.json
 e2cb70a4a6e5163a1afe2bbf926bc2002bfa114f data/ancientcreature/loot_table/chests/plains_dig_site.json
+fbb6251a123910aa45f4e0ce2ba45bf2abbd4b07 data/ancientcreature/loot_table/chests/savanna_dig_site.json
+0f8bce7054ce2d9a9beb00abecb7967cbf337f2a data/ancientcreature/loot_table/chests/swamp_dig_site.json

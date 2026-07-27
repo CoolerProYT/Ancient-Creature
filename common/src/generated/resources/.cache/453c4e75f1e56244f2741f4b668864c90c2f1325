@@ -1,2 +1,10 @@
-// 26.1	2026-07-27T16:25:16.2777334	Tags for minecraft:worldgen/biome mod id ancientcreature
-030e9d43b3861d3a3c7a554fe5c40290873af40c data/ancientcreature/tags/worldgen/biome/has_structure/plains_dig_site.json
+// 26.1	2026-07-27T20:31:13.9446413	Tags for minecraft:worldgen/biome mod id ancientcreature
+f3ef2895c49e29111297e950661e5bc71a79989e data/ancientcreature/tags/worldgen/biome/has_structure/arid_dig_site.json
+9969cac31cf25c85f5211798e3596888907790f9 data/ancientcreature/tags/worldgen/biome/has_structure/badlands_dig_site.json
+208ad58db65540373e309e41d4444b16f2e8a713 data/ancientcreature/tags/worldgen/biome/has_structure/coastal_dig_site.json
+5c4fda132e1584074b51712dd10f0e1aa2454090 data/ancientcreature/tags/worldgen/biome/has_structure/cold_dig_site.json
+942433c69e2b75f89c0e98e9b12c539d41f2f193 data/ancientcreature/tags/worldgen/biome/has_structure/highland_dig_site.json
+7a6207cbf7b61e7823ff557ca7e8e46deca64eab data/ancientcreature/tags/worldgen/biome/has_structure/jungle_dig_site.json
+f1fea9170ff7a230320ab49fcc3f3600e18fda58 data/ancientcreature/tags/worldgen/biome/has_structure/plains_dig_site.json
+562853abe345ceeddc3931331c8cdb3aa0fbe085 data/ancientcreature/tags/worldgen/biome/has_structure/savanna_dig_site.json
+6525dda69924a36f16797ed873bffc083e1f4de5 data/ancientcreature/tags/worldgen/biome/has_structure/swamp_dig_site.json
