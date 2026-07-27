@@ -11,6 +11,8 @@ public class ModDataGenerator {
     public static void onGatherData(GatherDataEvent.Client event) {
         event.createProvider(ModModelProvider::new);
         event.createProvider(ModBlockTagsProvider::new);
+        event.createProvider(ModBiomeTagsProvider::new);
         event.createProvider(ModLootTableProvider::new);
+        event.createProvider(ModDataPackProvider::new);
     }
 }

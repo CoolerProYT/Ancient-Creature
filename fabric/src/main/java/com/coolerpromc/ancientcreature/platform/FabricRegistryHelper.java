@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -38,6 +39,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,6 +151,14 @@ public class FabricRegistryHelper implements IRegistryHelper {
     public RegistryHandler<Attribute, Attribute> registerAttribute(String name, Attribute attribute) {
         Identifier id = Constants.id(name);
         Holder<Attribute> holder = Registry.registerForHolder(BuiltInRegistries.ATTRIBUTE, id, attribute);
+        return () -> holder;
+    }
+
+    @Override
+    public <T extends Structure> RegistryHandler<StructureType<?>, StructureType<T>> registerStructureType(String name, MapCodec<T> mapCodec) {
+        Identifier id = Constants.id(name);
+        StructureType<T> structureType = () -> mapCodec;
+        Holder<StructureType<?>> holder = Registry.registerForHolder(BuiltInRegistries.STRUCTURE_TYPE, id, structureType);
         return () -> holder;
     }
 

@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 42170427,
+    "separation": 20,
+    "spacing": 40,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "ancientcreature:plains_dig_site",
+      "weight": 1
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -32,6 +33,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -60,6 +63,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, Constants.MODID);
     public static final DeferredRegister<Identifier> STATS = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT, Constants.MODID);
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, Constants.MODID);
+    public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Constants.MODID);
 
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
 
@@ -137,6 +141,12 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
+    public <T extends Structure> RegistryHandler<StructureType<?>, StructureType<T>> registerStructureType(String name, MapCodec<T> mapCodec) {
+        DeferredHolder<StructureType<?>, StructureType<T>> deferredHolder = STRUCTURE_TYPES.register(name, () -> () -> mapCodec);
+        return () -> deferredHolder;
+    }
+
+    @Override
     public void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         this.entityAttributes.add(new EntityAttributeEntry(entityType, supplier));
     }
@@ -168,5 +178,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         ENTITY_DATA_SERIALIZERS.register(eventBus);
         STATS.register(eventBus);
         ATTRIBUTES.register(eventBus);
+        STRUCTURE_TYPES.register(eventBus);
     }
 }
