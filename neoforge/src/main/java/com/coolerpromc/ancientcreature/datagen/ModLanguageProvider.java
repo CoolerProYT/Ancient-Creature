@@ -16,6 +16,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip.ancientcreature.fossil_damage_rate", "-%s%% Completeness");
 
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
+        add("tab.ancientcreature.fossil_fragments", "Fossil Fragments");
+        add("tab.ancientcreature.chisels", "Chisels");
+        add("tab.ancientcreature.misc", "Misc");
 
         add("name.ancientcreature.dirty", "Dirty");
         add("name.ancientcreature.unidentified", "Unidentified");

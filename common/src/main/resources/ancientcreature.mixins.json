@@ -4,10 +4,16 @@
   "package": "com.coolerpromc.ancientcreature.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
-  "mixins": [],
+  "mixins": [
+    "CreativeModeTabMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "CreativeModeInventoryScreenMixin",
+    "ItemPickerMenuMixin"
+  ]
 }
 

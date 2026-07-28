@@ -9,6 +9,9 @@
   "name.ancientcreature.dirty": "Dirty",
   "name.ancientcreature.unidentified": "Unidentified",
   "tab.ancientcreature.ancient_creature": "Ancient Creature",
+  "tab.ancientcreature.chisels": "Chisels",
+  "tab.ancientcreature.fossil_fragments": "Fossil Fragments",
+  "tab.ancientcreature.misc": "Misc",
   "tooltip.ancientcreature.fossil_completeness": "§7Completeness: %s",
   "tooltip.ancientcreature.fossil_damage_rate": "-%s%% Completeness"
 }

@@ -3,7 +3,7 @@ package com.coolerpromc.ancientcreature;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
-import com.coolerpromc.ancientcreature.item.ModCreativeTabs;
+import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.platform.Services;
