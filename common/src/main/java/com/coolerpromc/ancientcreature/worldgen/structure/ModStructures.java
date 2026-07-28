@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.worldgen.structure;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.tag.ModBiomeTags;
+import com.coolerpromc.ancientcreature.worldgen.structure.custom.FlatJigsawStructure;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;

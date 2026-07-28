@@ -1,5 +1,6 @@
-package com.coolerpromc.ancientcreature.worldgen.structure;
+package com.coolerpromc.ancientcreature.worldgen.structure.custom;
 
+import com.coolerpromc.ancientcreature.worldgen.structure.ModStructureTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

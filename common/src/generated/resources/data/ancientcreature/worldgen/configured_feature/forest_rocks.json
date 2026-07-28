@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "ancientcreature:rock_pile",
+            "Properties": {
+              "facing": "north",
+              "has_egg": "false"
+            }
+          },
+          "weight": 100
+        },
+        {
+          "data": {
+            "Name": "ancientcreature:rock_pile",
+            "Properties": {
+              "facing": "north",
+              "has_egg": "true"
+            }
+          },
+          "weight": 3
+        }
+      ]
+    }
+  }
+}

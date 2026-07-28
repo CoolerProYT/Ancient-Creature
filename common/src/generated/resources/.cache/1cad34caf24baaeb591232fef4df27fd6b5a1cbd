@@ -1,3 +1,4 @@
-// 26.1	2026-07-27T01:04:44.2097658	Tags for minecraft:block mod id ancientcreature
+// 26.1	2026-07-28T15:29:49.741993	Tags for minecraft:block mod id ancientcreature
 cecbb46e3c78899bb6f143be58c01dbd2c9954b4 data/ancientcreature/tags/block/mineable_with_chisel.json
+d67125542f5f1a7f8d9195b60abc5ebc9348376e data/minecraft/tags/block/mineable/pickaxe.json
 cecbb46e3c78899bb6f143be58c01dbd2c9954b4 data/minecraft/tags/block/needs_iron_tool.json

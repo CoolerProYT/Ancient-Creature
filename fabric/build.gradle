@@ -55,3 +55,7 @@ sourceSets.configureEach {
 }
 
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
+
+processResources {
+    exclude 'data/ancientcreature/neoforge/**'
+}

@@ -1,0 +1,216 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "ancientcreature:block/rock_pile_stone",
+		"particle": "ancientcreature:block/rock_pile_stone"
+	},
+	"elements": [
+		{
+			"name": "rock_west_back",
+			"from": [0.5, 0, 3.5],
+			"to": [5.5, 2.5, 8],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [3, 1.25, 5.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 5, 2.5], "texture": "#0"},
+				"east": {"uv": [0, 0, 4.5, 2.5], "texture": "#0"},
+				"south": {"uv": [0, 0, 5, 2.5], "texture": "#0"},
+				"west": {"uv": [0, 0, 4.5, 2.5], "texture": "#0"},
+				"up": {"uv": [0, 0, 5, 4.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_southwest",
+			"from": [1, 0, 9],
+			"to": [6, 3, 14],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.5, 1.5, 11.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 5, 3], "texture": "#0"},
+				"east": {"uv": [0, 0, 5, 3], "texture": "#0"},
+				"south": {"uv": [0, 0, 5, 3], "texture": "#0"},
+				"west": {"uv": [0, 0, 5, 3], "texture": "#0"},
+				"up": {"uv": [0, 0, 5, 5], "texture": "#0"},
+				"down": {"uv": [0, 0, 5, 5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_center_low",
+			"from": [4.5, 0, 5],
+			"to": [10.5, 3, 10.5],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [7.5, 1.5, 7.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 3], "texture": "#0"},
+				"east": {"uv": [0, 0, 5.5, 3], "texture": "#0"},
+				"south": {"uv": [0, 0, 6, 3], "texture": "#0"},
+				"west": {"uv": [0, 0, 5.5, 3], "texture": "#0"},
+				"up": {"uv": [0, 0, 6, 5.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 6, 5.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_north_flat",
+			"from": [5, 0, 0.5],
+			"to": [10.5, 2.25, 5],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [7.75, 1.125, 2.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 5.5, 2.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 4.5, 2.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 5.5, 2.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 4.5, 2.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 5.5, 4.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 5.5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_south_flat",
+			"from": [6, 0, 11.5],
+			"to": [11.5, 2.25, 15.5],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [8.75, 1.125, 13.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 5.5, 2.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 2.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 5.5, 2.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 2.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 5.5, 4], "texture": "#0"},
+				"down": {"uv": [0, 0, 5.5, 4], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_east_back",
+			"from": [11, 0, 2.5],
+			"to": [15.5, 2.75, 7],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [13.25, 1.375, 4.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 4.5, 2.75], "texture": "#0"},
+				"east": {"uv": [0, 0, 4.5, 2.75], "texture": "#0"},
+				"south": {"uv": [0, 0, 4.5, 2.75], "texture": "#0"},
+				"west": {"uv": [0, 0, 4.5, 2.75], "texture": "#0"},
+				"up": {"uv": [0, 0, 4.5, 4.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 4.5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_east",
+			"from": [12, 0, 8],
+			"to": [15.75, 3.25, 13],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [13.875, 1.625, 10.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 3.75, 3.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 5, 3.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 3.75, 3.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 5, 3.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 3.75, 5], "texture": "#0"},
+				"down": {"uv": [0, 0, 3.75, 5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_top_west",
+			"from": [3.25, 2, 5.5],
+			"to": [7.5, 4.25, 9],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [5.375, 3.125, 7.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 4.25, 2.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 3.5, 2.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 4.25, 2.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 3.5, 2.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 4.25, 3.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 4.25, 3.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_front_chip",
+			"from": [2, 0.25, 13],
+			"to": [4.5, 1.5, 15.5],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.25, 0.875, 14.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 2.5, 1.25], "texture": "#0"},
+				"east": {"uv": [0, 0, 2.5, 1.25], "texture": "#0"},
+				"south": {"uv": [0, 0, 2.5, 1.25], "texture": "#0"},
+				"west": {"uv": [0, 0, 2.5, 1.25], "texture": "#0"},
+				"up": {"uv": [0, 0, 2.5, 2.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 2.5, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_north_chip",
+			"from": [2, 0.25, 1.5],
+			"to": [4.5, 1.75, 4],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.25, 1, 2.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 2.5, 1.5], "texture": "#0"},
+				"east": {"uv": [0, 0, 2.5, 1.5], "texture": "#0"},
+				"south": {"uv": [0, 0, 2.5, 1.5], "texture": "#0"},
+				"west": {"uv": [0, 0, 2.5, 1.5], "texture": "#0"},
+				"up": {"uv": [0, 0, 2.5, 2.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 2.5, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_east_chip",
+			"from": [13.5, 2.5, 5.5],
+			"to": [15.5, 4.25, 8],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [14.5, 3.375, 6.75]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 1.75], "texture": "#0"},
+				"east": {"uv": [0, 0, 2.5, 1.75], "texture": "#0"},
+				"south": {"uv": [0, 0, 2, 1.75], "texture": "#0"},
+				"west": {"uv": [0, 0, 2.5, 1.75], "texture": "#0"},
+				"up": {"uv": [0, 0, 2, 2.5], "texture": "#0"},
+				"down": {"uv": [0, 0, 2, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_center_cap",
+			"from": [6.25, 2.4, 5.75],
+			"to": [11.75, 5.2, 11],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [9, 3.8, 8.375]},
+			"faces": {
+				"north": {"uv": [0, 0, 5.5, 2.8], "texture": "#0"},
+				"east": {"uv": [0, 0, 5.25, 2.8], "texture": "#0"},
+				"south": {"uv": [0, 0, 5.5, 2.8], "texture": "#0"},
+				"west": {"uv": [0, 0, 5.25, 2.8], "texture": "#0"},
+				"up": {"uv": [0, 0, 5.5, 5.25], "texture": "#0"},
+				"down": {"uv": [0, 0, 5.5, 5.25], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_crown",
+			"from": [7.4, 4.7, 6.5],
+			"to": [10.75, 6.5, 9.75],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [9.075, 5.6, 8.125]},
+			"faces": {
+				"north": {"uv": [0, 0, 3.35, 1.8], "texture": "#0"},
+				"east": {"uv": [0, 0, 3.25, 1.8], "texture": "#0"},
+				"south": {"uv": [0, 0, 3.35, 1.8], "texture": "#0"},
+				"west": {"uv": [0, 0, 3.25, 1.8], "texture": "#0"},
+				"up": {"uv": [0, 0, 3.35, 3.25], "texture": "#0"},
+				"down": {"uv": [0, 0, 3.35, 3.25], "texture": "#0"}
+			}
+		},
+		{
+			"name": "rock_crown_chip",
+			"from": [5.3, 3.4, 9.5],
+			"to": [7.5, 5, 11.6],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [6.4, 4.2, 10.55]},
+			"faces": {
+				"north": {"uv": [0, 0, 2.2, 1.6], "texture": "#0"},
+				"east": {"uv": [0, 0, 2.1, 1.6], "texture": "#0"},
+				"south": {"uv": [0, 0, 2.2, 1.6], "texture": "#0"},
+				"west": {"uv": [0, 0, 2.1, 1.6], "texture": "#0"},
+				"up": {"uv": [0, 0, 2.2, 2.1], "texture": "#0"},
+				"down": {"uv": [0, 0, 2.2, 2.1], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "rocks",
+			"origin": [8, 0, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+		}
+	]
+}

@@ -10,7 +10,9 @@ import net.minecraft.world.item.CreativeModeTab;
 public class ModCreativeTabs {
     public static final RegistryHandler<CreativeModeTab, CreativeModeTab> TAB = Services.REGISTRY.registerCreativeTab("ancient_creature", ModItems.CHISEL::toStack, Component.translatable("tab.ancientcreature.ancient_creature"), (output, parameters) -> {
         output.accept(ModItems.CHISEL);
+        output.accept(ModItems.EGG_FOSSIL);
         output.accept(ModBlocks.FOSSIL_ORE);
+        output.accept(ModBlocks.ROCK_PILE);
     });
 
     public static void init(){

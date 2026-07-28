@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_forest",
+  "features": "ancientcreature:forest_rocks",
+  "step": "vegetal_decoration"
+}

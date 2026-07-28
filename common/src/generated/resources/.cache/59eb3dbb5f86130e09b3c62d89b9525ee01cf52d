@@ -1,5 +1,6 @@
-// 26.1	2026-07-27T20:31:13.94235	Loot Tables
+// 26.1	2026-07-28T15:43:54.7719672	Loot Tables
 3cb2775734956cc22afd9a882fdc41b66e020012 data/ancientcreature/loot_table/blocks/fossil_ore.json
+d1a83d254bb63e73eb45ec091c4708a641131461 data/ancientcreature/loot_table/blocks/rock_pile.json
 d5a467690cc38705bda926cbc4b4fb41c9c5e287 data/ancientcreature/loot_table/chests/arid_dig_site.json
 03f32891ef0ea76d5babd0c333d0226243ed536e data/ancientcreature/loot_table/chests/badlands_dig_site.json
 83b1b97cd4b7e66f6517f4a97050eb4d736260e8 data/ancientcreature/loot_table/chests/coastal_dig_site.json

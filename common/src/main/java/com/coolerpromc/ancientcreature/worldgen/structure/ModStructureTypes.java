@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.worldgen.structure;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.coolerpromc.ancientcreature.worldgen.structure.custom.FlatJigsawStructure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class ModStructureTypes {

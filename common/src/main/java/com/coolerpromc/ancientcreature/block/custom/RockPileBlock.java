@@ -1,0 +1,103 @@
+package com.coolerpromc.ancientcreature.block.custom;
+
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.Nullable;
+
+import java.util.stream.Stream;
+
+public class RockPileBlock extends HorizontalDirectionalBlock {
+    public static final BooleanProperty HAS_EGG = BooleanProperty.create("has_egg");
+
+    public static final VoxelShape WITH_EGG = Stream.of(
+        Stream.of(
+            Block.box(0.5, 0, 3.5, 5.5, 2.5, 8),
+            Block.box(1, 0, 9, 6, 3, 14),
+            Block.box(4.5, 0, 5, 10.5, 3, 10.5),
+            Block.box(5, 0, 0.5, 10.5, 2.25, 5),
+            Block.box(6, 0, 11.5, 11.5, 2.25, 15.5),
+            Block.box(11, 0, 2.5, 15.5, 2.75, 7),
+            Block.box(12, 0, 8, 15.75, 3.25, 13),
+            Block.box(3.25, 2, 5.5, 7.5, 4.25, 9),
+            Block.box(2, 0.25, 13, 4.5, 1.5, 15.5),
+            Block.box(2, 0.25, 1.5, 4.5, 1.75, 4),
+            Block.box(13.5, 2.5, 5.5, 15.5, 4.25, 8)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+        Stream.of(
+            Block.box(8.25, 2, 6.25, 12.25, 3.5, 10.75),
+            Block.box(7.25, 3, 5.25, 13.25, 5.5, 11.75),
+            Block.box(6.75, 5, 4.75, 13.75, 7.5, 12.25),
+            Block.box(7.25, 7, 5.25, 13.25, 9, 11.75),
+            Block.box(8, 8.5, 6, 12.5, 10.25, 11),
+            Block.box(9, 9.75, 7, 11.5, 11, 10),
+            Block.box(10.05, 4.35, 12.15, 10.45, 6.8, 12.4),
+            Block.box(9.8, 6.25, 11.7, 10.2, 8.5, 11.95),
+            Block.box(10.45, 6.35, 11.9, 10.8, 8, 12.15),
+            Block.box(9.15, 7.75, 11.55, 10, 8.1, 11.8)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
+        Stream.of(
+            Block.box(8.25, 0.4, 13.2, 10.25, 0.9, 14.75),
+            Block.box(5.6, 0.45, 10.9, 7.35, 1.05, 12.4),
+            Block.box(13.1, 0.5, 6.9, 14.7, 1.1, 8.25),
+            Block.box(11.3, 1.7, 11.75, 12.5, 2.25, 13.25)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+    public static final VoxelShape WITHOUT_EGG = Stream.of(
+        Block.box(0.5, 0, 3.5, 5.5, 2.5, 8),
+        Block.box(1, 0, 9, 6, 3, 14),
+        Block.box(4.5, 0, 5, 10.5, 3, 10.5),
+        Block.box(5, 0, 0.5, 10.5, 2.25, 5),
+        Block.box(6, 0, 11.5, 11.5, 2.25, 15.5),
+        Block.box(11, 0, 2.5, 15.5, 2.75, 7),
+        Block.box(12, 0, 8, 15.75, 3.25, 13),
+        Block.box(3.25, 2, 5.5, 7.5, 4.25, 9),
+        Block.box(2, 0.25, 13, 4.5, 1.5, 15.5),
+        Block.box(2, 0.25, 1.5, 4.5, 1.75, 4),
+        Block.box(13.5, 2.5, 5.5, 15.5, 4.25, 8),
+        Block.box(6.25, 2.4, 5.75, 11.75, 5.2, 11),
+        Block.box(7.4, 4.7, 6.5, 10.75, 6.5, 9.75),
+        Block.box(5.3, 3.4, 9.5, 7.5, 5, 11.6)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+    public RockPileBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(stateDefinition.any().setValue(HAS_EGG, false).setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return simpleCodec(RockPileBlock::new);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(HAS_EGG, FACING);
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        Direction facing = state.getValue(FACING);
+        if (state.getValue(HAS_EGG)){
+            return Shapes.rotateAll(WITH_EGG).get(facing);
+        }
+        return Shapes.rotateAll(WITHOUT_EGG).get(facing);
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+    }
+}

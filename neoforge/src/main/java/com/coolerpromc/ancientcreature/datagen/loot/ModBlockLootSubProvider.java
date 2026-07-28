@@ -2,7 +2,9 @@ package com.coolerpromc.ancientcreature.datagen.loot;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
+import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
 import com.coolerpromc.ancientcreature.item.ModItems;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Set;
@@ -33,6 +36,17 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         this.add(ModBlocks.FOSSIL_ORE.get(), b -> createFossilDrop(b, FossilDropEntry.of(ModItems.RIB_FOSSIL_FRAGMENT.asItem()), FossilDropEntry.of(Items.DIRT)));
+        this.add(ModBlocks.ROCK_PILE.get(), block -> LootTable.lootTable()
+            .withPool(
+                LootPool.lootPool()
+                    .add(LootItem.lootTableItem(Items.COBBLESTONE))
+            )
+            .withPool(
+                LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_EGG, true)))
+                    .add(LootItem.lootTableItem(ModItems.EGG_FOSSIL.get()))
+            )
+        );
     }
 
     private LootTable.Builder createFossilDrop(Block block, FossilDropEntry... drops) {
@@ -62,16 +76,16 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
         return BuiltInRegistries.BLOCK.stream().filter(b -> b.builtInRegistryHolder().key().identifier().getNamespace().equals(Constants.MODID)).toList();
     }
 
-    private record FossilDropEntry(Item drop, int weight, boolean affectedByFortune){
-        public static FossilDropEntry of(Item drop){
+    private record FossilDropEntry(Item drop, int weight, boolean affectedByFortune) {
+        public static FossilDropEntry of(Item drop) {
             return of(drop, 30);
         }
 
-        public static FossilDropEntry of(Item drop, int weight){
+        public static FossilDropEntry of(Item drop, int weight) {
             return of(drop, weight, true);
         }
 
-        public static FossilDropEntry of(Item drop, int weight, boolean affectedByFortune){
+        public static FossilDropEntry of(Item drop, int weight, boolean affectedByFortune) {
             return new FossilDropEntry(drop, weight, affectedByFortune);
         }
     }
