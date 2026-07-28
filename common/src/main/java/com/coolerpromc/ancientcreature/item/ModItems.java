@@ -1,8 +1,12 @@
 package com.coolerpromc.ancientcreature.item;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.item.custom.ChiselItem;
+import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
+import com.coolerpromc.ancientcreature.item.custom.FossilFragmentItem;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.coolerpromc.ancientcreature.tag.ModBlockTags;
@@ -13,16 +17,24 @@ import net.minecraft.world.item.ToolMaterial;
 import java.util.function.Function;
 
 public class ModItems {
-    public static final RegistryHandler.Items<ChiselItem> CHISEL = registerItem("chisel", p -> new ChiselItem(chisel(p, ToolMaterial.IRON, -2, -1).repairable(ItemTags.IRON_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> RIB_FOSSIL_FRAGMENT = registerItem("rib_fossil_fragment", Item::new);
+    public static final RegistryHandler.Items<Item> STONE_CHISEL = registerItem("stone_chisel", p -> new Item(chisel(p, ToolMaterial.STONE, -1, -2, 0.4f).repairable(ItemTags.STONE_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> COPPER_CHISEL = registerItem("copper_chisel", p -> new Item(chisel(p, ToolMaterial.COPPER, -1, -2, 0.35f).repairable(ItemTags.COPPER_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> IRON_CHISEL = registerItem("iron_chisel", p -> new Item(chisel(p, ToolMaterial.IRON, -2, -1, 0.25f).repairable(ItemTags.IRON_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> GOLDEN_CHISEL = registerItem("golden_chisel", p -> new Item(chisel(p, ToolMaterial.GOLD, 0, -3, 0.5f).repairable(ItemTags.GOLD_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
+
+    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.component(ModDataComponents.FOSSIL_PART.get(), FossilPart.RIB).component(ModDataComponents.IDENTIFIED.get(), false).component(ModDataComponents.IS_DIRTY.get(), true).component(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f))));
     public static final RegistryHandler.Items<EggFossilItem> EGG_FOSSIL = registerItem("egg_fossil", EggFossilItem::new);
+
+    public static final RegistryHandler.Items<Item> ROCK_FRAGMENT = registerItem("rock_fragment", Item::new);
 
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);
     }
 
-    public static Item.Properties chisel(Item.Properties properties, ToolMaterial material, float attackDamageBaseline, float attackSpeedBaseline){
-        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0);
+    public static Item.Properties chisel(Item.Properties properties, ToolMaterial material, float attackDamageBaseline, float attackSpeedBaseline, float damageToFossil){
+        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0).component(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(damageToFossil));
     }
 
     public static void init(){

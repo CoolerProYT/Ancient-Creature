@@ -1,33 +1,63 @@
 {
   "variants": {
-    "facing=east,has_egg=false": {
+    "facing=east,has_egg=false,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile",
       "y": 90
     },
-    "facing=east,has_egg=true": {
+    "facing=east,has_egg=false,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments",
+      "y": 90
+    },
+    "facing=east,has_egg=true,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile_with_egg_fossil",
       "y": 90
     },
-    "facing=north,has_egg=false": {
+    "facing=east,has_egg=true,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments_and_egg",
+      "y": 90
+    },
+    "facing=north,has_egg=false,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile"
     },
-    "facing=north,has_egg=true": {
+    "facing=north,has_egg=false,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments"
+    },
+    "facing=north,has_egg=true,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile_with_egg_fossil"
     },
-    "facing=south,has_egg=false": {
+    "facing=north,has_egg=true,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments_and_egg"
+    },
+    "facing=south,has_egg=false,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile",
       "y": 180
     },
-    "facing=south,has_egg=true": {
+    "facing=south,has_egg=false,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments",
+      "y": 180
+    },
+    "facing=south,has_egg=true,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile_with_egg_fossil",
       "y": 180
     },
-    "facing=west,has_egg=false": {
+    "facing=south,has_egg=true,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments_and_egg",
+      "y": 180
+    },
+    "facing=west,has_egg=false,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile",
       "y": 270
     },
-    "facing=west,has_egg=true": {
+    "facing=west,has_egg=false,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments",
+      "y": 270
+    },
+    "facing=west,has_egg=true,has_fossil=false": {
       "model": "ancientcreature:block/rock_pile_with_egg_fossil",
+      "y": 270
+    },
+    "facing=west,has_egg=true,has_fossil=true": {
+      "model": "ancientcreature:block/rock_pile_with_fossil_fragments_and_egg",
       "y": 270
     }
   }

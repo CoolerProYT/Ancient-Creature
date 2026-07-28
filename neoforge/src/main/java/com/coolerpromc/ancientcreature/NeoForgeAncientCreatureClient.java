@@ -6,9 +6,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.*;
 
 @Mod(dist = Dist.CLIENT, value = Constants.MODID)
 @EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT)
@@ -33,5 +31,17 @@ public class NeoForgeAncientCreatureClient {
     public static void onRegisterColorHandlersItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
         AncientCreatureClient.initItemTintSource();
         ServicesClient.REGISTRY.applyItemTintSourceRegistrations(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterConditionalItemModelProperty(RegisterConditionalItemModelPropertyEvent event) {
+        AncientCreatureClient.initItemCondition();
+        ServicesClient.REGISTRY.applyItemConditionRegistrations(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterSelectItemModelProperty(RegisterSelectItemModelPropertyEvent event) {
+        AncientCreatureClient.initItemSelect();
+        ServicesClient.REGISTRY.applyItemSelectRegistrations(event::register);
     }
 }

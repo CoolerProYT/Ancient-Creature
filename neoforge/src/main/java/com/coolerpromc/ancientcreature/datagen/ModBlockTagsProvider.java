@@ -22,8 +22,5 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(ModBlocks.ROCK_PILE.get());
-
-        tag(BlockTags.NEEDS_IRON_TOOL)
-            .add(ModBlocks.FOSSIL_ORE.get());
     }
 }

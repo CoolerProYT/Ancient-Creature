@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,6 +160,13 @@ public class FabricRegistryHelper implements IRegistryHelper {
         Identifier id = Constants.id(name);
         StructureType<T> structureType = () -> mapCodec;
         Holder<StructureType<?>> holder = Registry.registerForHolder(BuiltInRegistries.STRUCTURE_TYPE, id, structureType);
+        return () -> holder;
+    }
+
+    @Override
+    public <T extends LootItemFunction> RegistryHandler<MapCodec<? extends LootItemFunction>, MapCodec<T>> registerLootItemFunction(String name, MapCodec<T> mapCodec) {
+        Identifier id = Constants.id(name);
+        Holder<MapCodec<? extends LootItemFunction>> holder = Registry.registerForHolder(BuiltInRegistries.LOOT_FUNCTION_TYPE, id, mapCodec);
         return () -> holder;
     }
 

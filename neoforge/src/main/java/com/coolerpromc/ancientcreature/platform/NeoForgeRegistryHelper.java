@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -64,6 +65,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     public static final DeferredRegister<Identifier> STATS = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT, Constants.MODID);
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, Constants.MODID);
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Constants.MODID);
+    public static final DeferredRegister<MapCodec<? extends LootItemFunction>> LOOT_FUNCTIONS = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, Constants.MODID);
 
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
 
@@ -147,6 +149,12 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
+    public <T extends LootItemFunction> RegistryHandler<MapCodec<? extends LootItemFunction>, MapCodec<T>> registerLootItemFunction(String name, MapCodec<T> mapCodec) {
+        DeferredHolder<MapCodec<? extends LootItemFunction>, MapCodec<T>> deferredHolder = LOOT_FUNCTIONS.register(name, () -> mapCodec);
+        return () -> deferredHolder;
+    }
+
+    @Override
     public void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         this.entityAttributes.add(new EntityAttributeEntry(entityType, supplier));
     }
@@ -179,5 +187,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         STATS.register(eventBus);
         ATTRIBUTES.register(eventBus);
         STRUCTURE_TYPES.register(eventBus);
+        LOOT_FUNCTIONS.register(eventBus);
     }
 }

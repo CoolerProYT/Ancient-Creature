@@ -1,0 +1,14 @@
+{
+  "fossilPart.ancientcreature.claw": "Claw",
+  "fossilPart.ancientcreature.limb": "Limb",
+  "fossilPart.ancientcreature.rib": "Rib",
+  "fossilPart.ancientcreature.skull": "Skull",
+  "fossilPart.ancientcreature.tooth": "Tooth",
+  "fossilPart.ancientcreature.vertebra": "Vertebra",
+  "item.ancientcreature.fossil_fragment": "Fossil Fragment",
+  "name.ancientcreature.dirty": "Dirty",
+  "name.ancientcreature.unidentified": "Unidentified",
+  "tab.ancientcreature.ancient_creature": "Ancient Creature",
+  "tooltip.ancientcreature.fossil_completeness": "§7Completeness: %s",
+  "tooltip.ancientcreature.fossil_damage_rate": "-%s%% Completeness"
+}

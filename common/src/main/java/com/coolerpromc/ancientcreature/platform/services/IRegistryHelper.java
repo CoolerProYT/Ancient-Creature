@@ -6,7 +6,6 @@ import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -61,6 +61,7 @@ public interface IRegistryHelper {
     RegistryHandler<Identifier, Identifier> registerStat(String name);
     RegistryHandler<Attribute, Attribute> registerAttribute(String name, Attribute attribute);
     <T extends Structure> RegistryHandler<StructureType<?>, StructureType<T>> registerStructureType(String name, MapCodec<T> mapCodec);
+    <T extends LootItemFunction> RegistryHandler<MapCodec<? extends LootItemFunction>, MapCodec<T>> registerLootItemFunction(String name, MapCodec<T> mapCodec);
 
     void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     void applyEntityAttributeRegistrations(EntityAttributeRegistrar registrar);

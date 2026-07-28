@@ -25,7 +25,9 @@ public final class ModConfiguredFeatures {
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         WeightedList.Builder<BlockState> rocks = WeightedList.<BlockState>builder()
             .add(ModBlocks.ROCK_PILE.get().defaultBlockState(), 100)
-            .add(ModBlocks.ROCK_PILE.get().defaultBlockState().setValue(RockPileBlock.HAS_EGG, true), 3);
+            .add(ModBlocks.ROCK_PILE.get().defaultBlockState().setValue(RockPileBlock.HAS_FOSSIL, true), 30)
+            .add(ModBlocks.ROCK_PILE.get().defaultBlockState().setValue(RockPileBlock.HAS_EGG, true), 4)
+            .add(ModBlocks.ROCK_PILE.get().defaultBlockState().setValue(RockPileBlock.HAS_EGG, true).setValue(RockPileBlock.HAS_FOSSIL, true), 1);
 
         FeatureUtils.register(
             context,

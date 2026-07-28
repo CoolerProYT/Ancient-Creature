@@ -38,7 +38,7 @@ public record ModChestLootSubProvider(HolderLookup.Provider registries) implemen
     }
 
     private static void addDigSiteLoot(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output, ResourceKey<LootTable> lootTable) {
-        output.accept(lootTable, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.RIB_FOSSIL_FRAGMENT))));
+        output.accept(lootTable, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT))));
     }
 
     private static ResourceKey<LootTable> register(String location) {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ancientcreature:item/rib_fossil_fragment"
+    "layer0": "ancientcreature:item/fossil_fragment/dirty_rib"
   }
 }

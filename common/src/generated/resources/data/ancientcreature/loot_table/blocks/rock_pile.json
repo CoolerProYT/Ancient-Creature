@@ -6,7 +6,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:cobblestone"
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "ancientcreature:rock_fragment"
         }
       ],
       "rolls": 1.0
@@ -26,6 +37,38 @@
         {
           "type": "minecraft:item",
           "name": "ancientcreature:egg_fossil"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "ancientcreature:rock_pile",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "has_fossil": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "completeness": {
+                "type": "minecraft:uniform",
+                "max": 0.2,
+                "min": 0.0
+              },
+              "function": "ancientcreature:set_fossil_completeness"
+            },
+            {
+              "function": "ancientcreature:set_fossil_part"
+            }
+          ],
+          "name": "ancientcreature:fossil_fragment"
         }
       ],
       "rolls": 1.0

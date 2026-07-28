@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "ancientcreature:item/chisel"
+    "model": "ancientcreature:item/diamond_chisel"
   }
 }

@@ -1,6 +1,6 @@
-// 26.1	2026-07-28T15:50:06.7898569	Registries
+// 26.1	2026-07-28T23:28:21.3554308	Registries
 98a6085cef191a255165fcc5b14a00ba1ffeaf33 data/ancientcreature/neoforge/biome_modifier/forest_rocks.json
-46ec958b4732f860678aaff0e07293d59e60f55b data/ancientcreature/worldgen/configured_feature/forest_rocks.json
+fb4b73c077a32030ed13e877abfed7d181ed6213 data/ancientcreature/worldgen/configured_feature/forest_rocks.json
 d3fdbde7d3ea1d6621053298e3a437bdf24d21cb data/ancientcreature/worldgen/placed_feature/forest_rocks.json
 b0a959ea194aa80f1f027bc30c99b37e56da84c1 data/ancientcreature/worldgen/structure/arid_dig_site.json
 750dec42af5542eee6bb0d0131107d553255772a data/ancientcreature/worldgen/structure/badlands_dig_site.json

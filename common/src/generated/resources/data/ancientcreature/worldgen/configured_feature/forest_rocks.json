@@ -9,7 +9,8 @@
             "Name": "ancientcreature:rock_pile",
             "Properties": {
               "facing": "north",
-              "has_egg": "false"
+              "has_egg": "false",
+              "has_fossil": "false"
             }
           },
           "weight": 100
@@ -19,10 +20,33 @@
             "Name": "ancientcreature:rock_pile",
             "Properties": {
               "facing": "north",
-              "has_egg": "true"
+              "has_egg": "false",
+              "has_fossil": "true"
             }
           },
-          "weight": 3
+          "weight": 30
+        },
+        {
+          "data": {
+            "Name": "ancientcreature:rock_pile",
+            "Properties": {
+              "facing": "north",
+              "has_egg": "true",
+              "has_fossil": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "ancientcreature:rock_pile",
+            "Properties": {
+              "facing": "north",
+              "has_egg": "true",
+              "has_fossil": "true"
+            }
+          },
+          "weight": 1
         }
       ]
     }
