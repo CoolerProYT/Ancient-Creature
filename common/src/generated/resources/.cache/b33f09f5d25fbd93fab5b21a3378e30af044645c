@@ -1,9 +1,10 @@
-// 26.1	2026-07-28T23:28:21.3519187	Model Definitions - ancientcreature
+// 26.1	2026-07-29T14:51:08.3207641	Model Definitions - ancientcreature
 7040d76520222ae5cce4587101469e44424ab059 assets/ancientcreature/blockstates/fossil_ore.json
 4babd84b68d3180786135cab8808073f022c82ba assets/ancientcreature/blockstates/rock_pile.json
 fa4359034b4dd0bc395699434e7cf6f80e77b048 assets/ancientcreature/items/copper_chisel.json
 530dba9ce995c0830f60f962e22a678b8fea8ad9 assets/ancientcreature/items/diamond_chisel.json
 bedbc9d2ceac755cee42d7c10592be07315c53c2 assets/ancientcreature/items/egg_fossil.json
+e169c976dee9f6d6b5de2a89cbe1afbb0d5fa86f assets/ancientcreature/items/egg_shell_fragment.json
 2309678441bb1322e832dce906b2c9a6bbd26cc9 assets/ancientcreature/items/fossil_fragment.json
 532209a5e0a626eecb3b304867aacee5be54771c assets/ancientcreature/items/fossil_ore.json
 9d04a5aca451943491f2a2d72fcc5ee2ea2ad3ed assets/ancientcreature/items/golden_chisel.json
@@ -16,6 +17,7 @@ f8bf399905d51376aa39c0f79c715fe5933d1e9c assets/ancientcreature/items/stone_chis
 f7f727edd871dc0066e840454818abd5fddf9259 assets/ancientcreature/models/item/copper_chisel.json
 8205356fbf9067dd98d9f22a0e7ac90ea7720e67 assets/ancientcreature/models/item/diamond_chisel.json
 a8458b978f39fc686ac3577b38c7225383044ba7 assets/ancientcreature/models/item/egg_fossil.json
+59e03a2afaaf0ce28cd231892710978cf9135a3d assets/ancientcreature/models/item/egg_shell_fragment.json
 9ae3d666763e3f7af92e4b75e590b78460cebd38 assets/ancientcreature/models/item/fossil_fragment/claw.json
 2cfdc9da6a78471ed12f1ed8c78e3174744f6757 assets/ancientcreature/models/item/fossil_fragment/dirty_claw.json
 520105ddf26f85c7da55af518494a56bc69ff342 assets/ancientcreature/models/item/fossil_fragment/dirty_limb.json

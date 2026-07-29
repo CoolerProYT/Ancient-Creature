@@ -42,12 +42,15 @@
                             "completeness": {
                               "type": "minecraft:uniform",
                               "max": 0.3,
-                              "min": 0.0
+                              "min": 0.01
                             },
                             "function": "ancientcreature:set_fossil_completeness"
                           },
                           {
                             "function": "ancientcreature:set_fossil_part"
+                          },
+                          {
+                            "function": "ancientcreature:set_fossil_species"
                           }
                         ],
                         "name": "ancientcreature:fossil_fragment"

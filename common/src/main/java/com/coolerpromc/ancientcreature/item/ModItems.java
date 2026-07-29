@@ -5,6 +5,7 @@ import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
 import com.coolerpromc.ancientcreature.item.custom.FossilFragmentItem;
 import com.coolerpromc.ancientcreature.platform.Services;
@@ -24,7 +25,8 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
     public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
 
-    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.component(ModDataComponents.FOSSIL_PART.get(), FossilPart.RIB).component(ModDataComponents.IDENTIFIED.get(), false).component(ModDataComponents.IS_DIRTY.get(), true).component(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f))));
+    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.FOSSIL_PART.get(), FossilPart.RIB).component(ModDataComponents.IDENTIFIED.get(), false).component(ModDataComponents.IS_DIRTY.get(), true).component(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f))));
+    public static final RegistryHandler.Items<Item> EGG_SHELL_FRAGMENT = registerItem("egg_shell_fragment", Item::new);
     public static final RegistryHandler.Items<EggFossilItem> EGG_FOSSIL = registerItem("egg_fossil", EggFossilItem::new);
 
     public static final RegistryHandler.Items<Item> ROCK_FRAGMENT = registerItem("rock_fragment", Item::new);

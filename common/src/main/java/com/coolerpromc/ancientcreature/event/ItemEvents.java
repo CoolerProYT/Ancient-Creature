@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.event;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
+import com.coolerpromc.ancientcreature.entity.Species;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,10 @@ public class ItemEvents {
         FossilDamageRate damageRate = stack.get(ModDataComponents.FOSSIL_DAMAGE_RATE.get());
         if (damageRate != null){
             damageRate.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
+        }
+        Species species = stack.get(ModDataComponents.SPECIES.get());
+        if (species != null){
+            species.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
         }
     }
 }

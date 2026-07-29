@@ -1,0 +1,56 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "completeness": {
+                "type": "minecraft:uniform",
+                "max": 0.25,
+                "min": 0.01
+              },
+              "function": "ancientcreature:set_fossil_completeness"
+            },
+            {
+              "function": "ancientcreature:set_fossil_part"
+            },
+            {
+              "function": "ancientcreature:set_fossil_species"
+            }
+          ],
+          "name": "ancientcreature:fossil_fragment",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:egg_shell_fragment",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:coal",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:empty"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ancientcreature:archaeology/dig_site_gravel"
+}

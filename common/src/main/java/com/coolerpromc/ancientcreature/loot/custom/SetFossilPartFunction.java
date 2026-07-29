@@ -11,13 +11,22 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SetFossilPartFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetFossilPartFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance).apply(instance, SetFossilPartFunction::new));
 
+    private final List<FossilPart> validParts = new ArrayList<>();
+
     protected SetFossilPartFunction(List<LootItemCondition> predicates) {
+        this(predicates, FossilPart.values());
+    }
+
+    protected SetFossilPartFunction(List<LootItemCondition> predicates, FossilPart... validParts) {
         super(predicates);
+        this.validParts.addAll(Arrays.stream(validParts).toList());
     }
 
     @Override
@@ -28,12 +37,15 @@ public class SetFossilPartFunction extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack itemStack, LootContext context) {
         RandomSource random = context.getParameter(LootContextParams.THIS_ENTITY).level().getRandom();
-        FossilPart[] parts = FossilPart.values();
-        itemStack.set(ModDataComponents.FOSSIL_PART.get(), parts[random.nextIntBetweenInclusive(0, parts.length - 1)]);
+        itemStack.set(ModDataComponents.FOSSIL_PART.get(), validParts.get(random.nextInt(validParts.size())));
         return itemStack;
     }
 
     public static LootItemConditionalFunction.Builder<?> setPart() {
         return simpleBuilder(SetFossilPartFunction::new);
+    }
+
+    public static LootItemConditionalFunction.Builder<?> setPart(FossilPart... validParts) {
+        return simpleBuilder(l -> new SetFossilPartFunction(l, validParts));
     }
 }

@@ -15,6 +15,7 @@ public class ModBiomeTags {
     public static final TagKey<Biome> HAS_SWAMP_DIG_SITE = create("has_structure/swamp_dig_site");
     public static final TagKey<Biome> HAS_HIGHLAND_DIG_SITE = create("has_structure/highland_dig_site");
     public static final TagKey<Biome> HAS_COASTAL_DIG_SITE = create("has_structure/coastal_dig_site");
+    public static final TagKey<Biome> SPAWNS_TRICERATOPS = create("spawns_triceratops");
 
     private static TagKey<Biome> create(String name){
         return TagKey.create(Registries.BIOME, Constants.id(name));

@@ -4,6 +4,7 @@ import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.Codec;
@@ -18,6 +19,7 @@ public class ModDataComponents {
     public static final RegistryHandler.Components<FossilCompleteness> FOSSIL_COMPLETENESS = register("fossil_completeness", b -> b.persistent(FossilCompleteness.CODEC).networkSynchronized(FossilCompleteness.STREAM_CODEC).cacheEncoding());
     public static final RegistryHandler.Components<Boolean> IDENTIFIED = register("identified", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
     public static final RegistryHandler.Components<FossilPart> FOSSIL_PART = register("fossil_part", b -> b.persistent(FossilPart.CODEC).networkSynchronized(FossilPart.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<Species> SPECIES = register("species", b -> b.persistent(Species.CODEC).networkSynchronized(Species.STREAM_CODEC).cacheEncoding());
 
     public static <T> RegistryHandler.Components<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator){
         return Services.REGISTRY.registerDataComponent(name, unaryOperator);

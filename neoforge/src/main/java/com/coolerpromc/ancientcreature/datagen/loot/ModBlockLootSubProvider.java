@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.custom.SetFossilCompletenessFunction;
 import com.coolerpromc.ancientcreature.loot.custom.SetFossilPartFunction;
+import com.coolerpromc.ancientcreature.loot.custom.SetFossilSpeciesFunction;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,14 +31,14 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.add(ModBlocks.FOSSIL_ORE.get(), this::createFossilDrop);
-        this.add(ModBlocks.ROCK_PILE.get(), this::createRockPileDrop);
+        this.add(ModBlocks.FOSSIL_ORE.getBlock(), this::createFossilDrop);
+        this.add(ModBlocks.ROCK_PILE.getBlock(), this::createRockPileDrop);
     }
 
     private LootTable.Builder createFossilDrop(Block block) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
             LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.0f, 0.3f))).apply(SetFossilPartFunction.setPart()))
+                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.3f))).apply(SetFossilPartFunction.setPart()).apply(SetFossilSpeciesFunction.setSpecies()))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
@@ -57,7 +58,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.0f, 0.2f))).apply(SetFossilPartFunction.setPart()))
+                    .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.2f))).apply(SetFossilPartFunction.setPart()).apply(SetFossilSpeciesFunction.setSpecies()))
             );
     }
 

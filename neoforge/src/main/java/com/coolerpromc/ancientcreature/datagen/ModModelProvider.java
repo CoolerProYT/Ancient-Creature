@@ -35,7 +35,7 @@ public class ModModelProvider extends ModelProvider {
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-        blockModels.createTrivialCube(ModBlocks.FOSSIL_ORE.get());
+        blockModels.createTrivialCube(ModBlocks.FOSSIL_ORE.getBlock());
         this.generateRockPileBlockState(blockModels);
 
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -47,6 +47,7 @@ public class ModModelProvider extends ModelProvider {
         this.generateRibFossilFragmentItem(itemModels);
         itemModels.generateFlatItem(ModItems.EGG_FOSSIL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.ROCK_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.EGG_SHELL_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
     }
 
     private void generateRockPileBlockState(BlockModelGenerators blockModels){
@@ -55,7 +56,7 @@ public class ModModelProvider extends ModelProvider {
         Identifier egg = Constants.id("block/rock_pile_with_egg_fossil");
         Identifier eggFossil = Constants.id("block/rock_pile_with_fossil_fragments_and_egg");
 
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.ROCK_PILE.get())
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.ROCK_PILE.getBlock())
             .with(PropertyDispatch.initial(RockPileBlock.HAS_EGG, RockPileBlock.HAS_FOSSIL)
                 .select(false, false, new MultiVariant(WeightedList.of(new Variant(base))))
                 .select(false, true, new MultiVariant(WeightedList.of(new Variant(fossil))))

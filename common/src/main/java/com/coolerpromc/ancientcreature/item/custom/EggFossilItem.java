@@ -19,7 +19,7 @@ public class EggFossilItem extends Item {
         Level level = context.getLevel();
         BlockState state = level.getBlockState(context.getClickedPos());
         Player player = context.getPlayer();
-        if (state.is(ModBlocks.ROCK_PILE.get()) && !state.getValue(RockPileBlock.HAS_EGG) && player != null){
+        if (state.is(ModBlocks.ROCK_PILE.blockHolder()) && !state.getValue(RockPileBlock.HAS_EGG) && player != null){
             level.setBlockAndUpdate(context.getClickedPos(), state.setValue(RockPileBlock.HAS_EGG, true));
             if (!player.isCreative()){
                 player.getMainHandItem().shrink(1);

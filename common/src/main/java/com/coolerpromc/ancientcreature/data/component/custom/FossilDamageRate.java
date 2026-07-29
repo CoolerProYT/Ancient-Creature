@@ -23,6 +23,6 @@ public record FossilDamageRate(float value) implements TooltipProvider {
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         float damageRate = components.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(0f)).value();
-        consumer.accept(Component.translatable("tooltip.ancientcreature.fossil_damage_rate",  String.format("%.0f", damageRate * 100)).withStyle(ChatFormatting.DARK_BLUE));
+        consumer.accept(Component.translatable("tooltip.ancientcreature.fossil_damage_rate",  String.format("%.0f", damageRate * 100)).withStyle(ChatFormatting.BLUE));
     }
 }
