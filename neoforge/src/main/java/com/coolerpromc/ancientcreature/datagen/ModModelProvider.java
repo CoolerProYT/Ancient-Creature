@@ -2,7 +2,9 @@ package com.coolerpromc.ancientcreature.datagen;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
+import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
 import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
+import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
@@ -19,6 +21,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
@@ -37,6 +40,14 @@ public class ModModelProvider extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.FOSSIL_ORE.getBlock());
         this.generateRockPileBlockState(blockModels);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/fossil_cleaning_table")))))
+            .with(PropertyDispatch.modify(FossilCleaningTableBlock.FACING)
+                .select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
+                .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+                .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+                .select(Direction.NORTH, BlockModelGenerators.NOP)
+            )
+        );
 
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.COPPER_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -47,7 +58,9 @@ public class ModModelProvider extends ModelProvider {
         this.generateRibFossilFragmentItem(itemModels);
         itemModels.generateFlatItem(ModItems.EGG_FOSSIL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.ROCK_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.DIRT_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.EGG_SHELL_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.itemModelOutput.accept(ModBlocks.FOSSIL_CLEANING_TABLE.getItem(), ItemModelUtils.specialModel(Constants.id("block/fossil_cleaning_table"), new FossilCleaningTableSpecialRenderer.Unbaked()));
     }
 
     private void generateRockPileBlockState(BlockModelGenerators blockModels){

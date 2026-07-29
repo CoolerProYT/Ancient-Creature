@@ -4,3 +4,4 @@ accessible field net/minecraft/world/item/CreativeModeTab displayItems Ljava/uti
 accessible field net/minecraft/world/item/CreativeModeTab displayItemsSearchTab Ljava/util/Set;
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen leftPos I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen topPos I
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor

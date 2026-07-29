@@ -30,6 +30,7 @@ public class ModItems {
     public static final RegistryHandler.Items<EggFossilItem> EGG_FOSSIL = registerItem("egg_fossil", EggFossilItem::new);
 
     public static final RegistryHandler.Items<Item> ROCK_FRAGMENT = registerItem("rock_fragment", Item::new);
+    public static final RegistryHandler.Items<Item> DIRT_FRAGMENT = registerItem("dirt_fragment", Item::new);
 
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);

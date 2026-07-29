@@ -1,6 +1,6 @@
 package com.coolerpromc.ancientcreature.mixin;
 
-import com.coolerpromc.ancientcreature.client.screen.BannerRenderer;
+import com.coolerpromc.ancientcreature.client.gui.renderer.BannerRenderer;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;

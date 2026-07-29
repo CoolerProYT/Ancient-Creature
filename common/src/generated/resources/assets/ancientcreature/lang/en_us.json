@@ -1,4 +1,5 @@
 {
+  "block.ancientcreature.fossil_cleaning_table": "Fossil Cleaning Table",
   "block.ancientcreature.fossil_ore": "Fossil Ore",
   "block.ancientcreature.rock_pile": "Rock Pile",
   "fossilPart.ancientcreature.claw": "Claw",
@@ -9,6 +10,7 @@
   "fossilPart.ancientcreature.vertebra": "Vertebra",
   "item.ancientcreature.copper_chisel": "Copper Chisel",
   "item.ancientcreature.diamond_chisel": "Diamond Chisel",
+  "item.ancientcreature.dirt_fragment": "Dirt Fragment",
   "item.ancientcreature.egg_fossil": "Egg Fossil",
   "item.ancientcreature.egg_shell_fragment": "Egg Shell Fragment",
   "item.ancientcreature.fossil_fragment": "Fossil Fragment",

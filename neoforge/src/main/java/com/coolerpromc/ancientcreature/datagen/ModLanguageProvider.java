@@ -46,8 +46,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.EGG_SHELL_FRAGMENT.get(), "Egg Shell Fragment");
         add(ModItems.EGG_FOSSIL.get(), "Egg Fossil");
         add(ModItems.ROCK_FRAGMENT.get(), "Rock Fragment");
+        add(ModItems.DIRT_FRAGMENT.get(), "Dirt Fragment");
 
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
+        add(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), "Fossil Cleaning Table");
     }
 }

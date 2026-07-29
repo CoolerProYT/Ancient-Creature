@@ -7,6 +7,7 @@ import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -42,7 +43,6 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -81,10 +81,9 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         return () -> deferredItem;
     }
 
-    @SafeVarargs
     @Override
-    public final <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> registerBlockEntityType(String name, BlockEntityTypeFactory<T> factory, Supplier<? extends Block>... blocks) {
-        DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> deferredHolder = BLOCK_ENTITIES.register(name, () -> new BlockEntityType<>(factory::create, Arrays.stream(blocks).map(Supplier::get).collect(Collectors.toSet())));
+    public final <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> registerBlockEntityType(String name, BlockEntityTypeFactory<T> factory, List<Supplier<? extends Block>> blocks) {
+        DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> deferredHolder = BLOCK_ENTITIES.register(name, () -> new BlockEntityType<>(factory::create, blocks.stream().map(Supplier::get).collect(Collectors.toSet())));
         return () -> deferredHolder;
     }
 
@@ -113,8 +112,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends AbstractContainerMenu, D> RegistryHandler<MenuType<?>, MenuType<T>> registerMenuType(String name, MenuFactory<T, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> data) {
-        DeferredHolder<MenuType<?>, MenuType<T>> deferredHolder = MENUS.register(name, () -> IMenuTypeExtension.create((id, inv, buf) -> factory.create(id, inv, data.decode(buf))));
+    public <T extends AbstractContainerMenu> RegistryHandler<MenuType<?>, MenuType<T>> registerMenuType(String name, MenuFactory<T> factory) {
+        DeferredHolder<MenuType<?>, MenuType<T>> deferredHolder = MENUS.register(name, () -> IMenuTypeExtension.create((id, inv, buf) -> factory.create(id, inv, BlockPos.STREAM_CODEC.decode(buf))));
         return () -> deferredHolder;
     }
 

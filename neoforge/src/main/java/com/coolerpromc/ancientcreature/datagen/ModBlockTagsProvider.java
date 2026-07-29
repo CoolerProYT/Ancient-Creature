@@ -18,9 +18,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModBlockTags.MINEABLE_WITH_CHISEL)
+            .add(ModBlocks.ROCK_PILE.getBlock())
             .add(ModBlocks.FOSSIL_ORE.getBlock());
-
-        tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(ModBlocks.ROCK_PILE.getBlock());
     }
 }

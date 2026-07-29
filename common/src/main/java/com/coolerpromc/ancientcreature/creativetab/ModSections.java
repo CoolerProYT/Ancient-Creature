@@ -31,7 +31,9 @@ public class ModSections {
             ModItems.EGG_FOSSIL.toStack(),
             ModBlocks.FOSSIL_ORE.toStack(),
             ModBlocks.ROCK_PILE.toStack(),
-            ModItems.ROCK_FRAGMENT.toStack()
+            ModItems.ROCK_FRAGMENT.toStack(),
+            ModItems.DIRT_FRAGMENT.toStack(),
+            ModBlocks.FOSSIL_CLEANING_TABLE.toStack()
         );
 
         for (FossilPart value : FossilPart.values()) {

@@ -1,6 +1,6 @@
 package com.coolerpromc.ancientcreature.mixin;
 
-import com.coolerpromc.ancientcreature.client.screen.BannerRenderer;
+import com.coolerpromc.ancientcreature.client.gui.renderer.BannerRenderer;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

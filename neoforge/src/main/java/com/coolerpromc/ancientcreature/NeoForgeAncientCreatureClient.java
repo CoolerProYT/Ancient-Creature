@@ -19,6 +19,13 @@ public class NeoForgeAncientCreatureClient {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         AncientCreatureClient.initRenderer();
         ServicesClient.REGISTRY.applyEntityRendererRegistrations(event::registerEntityRenderer);
+        ServicesClient.REGISTRY.applyBlockEntityRendererRegistrations(event::registerBlockEntityRenderer);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        AncientCreatureClient.initModelLayer();
+        ServicesClient.REGISTRY.applyEntityModelLayerRegistrations(event::registerLayerDefinition);
     }
 
     @SubscribeEvent
@@ -43,5 +50,17 @@ public class NeoForgeAncientCreatureClient {
     public static void onRegisterSelectItemModelProperty(RegisterSelectItemModelPropertyEvent event) {
         AncientCreatureClient.initItemSelect();
         ServicesClient.REGISTRY.applyItemSelectRegistrations(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        AncientCreatureClient.initMenuScreen();
+        ServicesClient.REGISTRY.applyMenuScreenRegistrations(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
+        AncientCreatureClient.initSpecialModelRenderer();
+        ServicesClient.REGISTRY.applySpecialModelRendererRegistrations(event::register);
     }
 }

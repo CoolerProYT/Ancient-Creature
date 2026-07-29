@@ -33,6 +33,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
     protected void generate() {
         this.add(ModBlocks.FOSSIL_ORE.getBlock(), this::createFossilDrop);
         this.add(ModBlocks.ROCK_PILE.getBlock(), this::createRockPileDrop);
+        this.dropSelf(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock());
     }
 
     private LootTable.Builder createFossilDrop(Block block) {

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ancientcreature:block/fossil_cleaning_table",
+    "model": {
+      "type": "ancientcreature:fossil_cleaning_table"
+    }
+  }
+}

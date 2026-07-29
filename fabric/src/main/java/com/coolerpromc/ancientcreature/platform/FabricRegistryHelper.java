@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityDataRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -44,7 +45,6 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -70,10 +70,9 @@ public class FabricRegistryHelper implements IRegistryHelper {
         return () -> holder;
     }
 
-    @SafeVarargs
     @Override
-    public final <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> registerBlockEntityType(String name, BlockEntityTypeFactory<T> factory, Supplier<? extends Block>... blocks) {
-        Holder<BlockEntityType<?>> holder = Registry.registerForHolder(BuiltInRegistries.BLOCK_ENTITY_TYPE, Constants.id(name), FabricBlockEntityTypeBuilder.create(factory::create, Arrays.stream(blocks).map(Supplier::get).toArray(Block[]::new)).build());
+    public final <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> registerBlockEntityType(String name, BlockEntityTypeFactory<T> factory, List<Supplier<? extends Block>> blocks) {
+        Holder<BlockEntityType<?>> holder = Registry.registerForHolder(BuiltInRegistries.BLOCK_ENTITY_TYPE, Constants.id(name), FabricBlockEntityTypeBuilder.create(factory::create, blocks.stream().map(Supplier::get).toArray(Block[]::new)).build());
         return () -> holder;
     }
 
@@ -111,8 +110,8 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends AbstractContainerMenu, D> RegistryHandler<MenuType<?>, MenuType<T>> registerMenuType(String name, MenuFactory<T, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> data) {
-        Holder<MenuType<?>> holder = Registry.registerForHolder(BuiltInRegistries.MENU, Constants.id(name), new ExtendedMenuType<>(factory::create, data));
+    public <T extends AbstractContainerMenu> RegistryHandler<MenuType<?>, MenuType<T>> registerMenuType(String name, MenuFactory<T> factory) {
+        Holder<MenuType<?>> holder = Registry.registerForHolder(BuiltInRegistries.MENU, Constants.id(name), new ExtendedMenuType<>(factory::create, BlockPos.STREAM_CODEC));
         return () -> holder;
     }
 

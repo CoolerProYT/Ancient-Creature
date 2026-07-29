@@ -1,4 +1,4 @@
-package com.coolerpromc.ancientcreature.client.screen;
+package com.coolerpromc.ancientcreature.client.gui.renderer;
 
 import com.coolerpromc.ancientcreature.creativetab.ModSections;
 import com.coolerpromc.ancientcreature.creativetab.TabLayout;
