@@ -9,6 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -36,5 +37,11 @@ public class NeoForgeAncientCreature {
         if (event.getTab() == ModCreativeTabs.TAB.get()){
             CreativeTabEvents.onModifyOutput(event.getParameters());
         }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        AncientCreature.initCapability();
+        Services.CAPABILITIES.applyRegistrations(event);
     }
 }

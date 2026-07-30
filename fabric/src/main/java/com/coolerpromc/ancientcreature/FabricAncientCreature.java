@@ -18,6 +18,7 @@ public class FabricAncientCreature implements ModInitializer {
     @Override
     public void onInitialize() {
         AncientCreature.init();
+        AncientCreature.initCapability();
 
         Services.REGISTRY.applyEntityAttributeRegistrations(FabricDefaultAttributeRegistry::register);
         BiomeModifications.addFeature(
@@ -28,5 +29,6 @@ public class FabricAncientCreature implements ModInitializer {
 
         ItemTooltipCallback.EVENT.register(ItemEvents::onItemTooltip);
         CreativeModeTabEvents.modifyOutputEvent(ModCreativeTabs.TAB.key()).register(output -> CreativeTabEvents.onModifyOutput(output.getContext()));
+        Services.CAPABILITIES.applyRegistrations(null);
     }
 }

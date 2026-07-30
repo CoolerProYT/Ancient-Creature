@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.FossilCleaningTableMenu;
 import com.coolerpromc.ancientcreature.platform.Services;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -15,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -246,5 +248,15 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
 
     public AnimationState getCleaningAnimationState() {
         return cleaningAnimationState;
+    }
+
+    public Container getContainerBySide(@Nullable Direction direction) {
+        if (direction == Direction.DOWN){
+            return getOutputContainer();
+        }
+        if (direction == Direction.UP){
+            return getBrushContainer();
+        }
+        return getFossilContainer();
     }
 }
