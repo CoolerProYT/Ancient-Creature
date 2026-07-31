@@ -3,7 +3,7 @@ package com.coolerpromc.ancientcreature.client.block.renderer;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
 import com.coolerpromc.ancientcreature.block.entity.custom.FossilCleaningTableBlockEntity;
-import com.coolerpromc.ancientcreature.client.block.state.FossilCleaningBlockEntityRenderState;
+import com.coolerpromc.ancientcreature.client.block.state.FossilCleaningTableBlockEntityRenderState;
 import com.coolerpromc.ancientcreature.client.entity.model.FossilCleaningTableModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.state.FossilCleaningTableRenderState;
@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRenderer<FossilCleaningTableBlockEntity, FossilCleaningBlockEntityRenderState> {
+public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRenderer<FossilCleaningTableBlockEntity, FossilCleaningTableBlockEntityRenderState> {
     private final FossilCleaningTableModel model;
 
     public FossilCleaningTableBlockEntityRenderer(BlockEntityRendererProvider.Context context){
@@ -27,14 +27,14 @@ public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRender
     }
 
     @Override
-    public FossilCleaningBlockEntityRenderState createRenderState() {
-        FossilCleaningBlockEntityRenderState state = new FossilCleaningBlockEntityRenderState();
+    public FossilCleaningTableBlockEntityRenderState createRenderState() {
+        FossilCleaningTableBlockEntityRenderState state = new FossilCleaningTableBlockEntityRenderState();
         state.entityRenderState = new FossilCleaningTableRenderState();
         return state;
     }
 
     @Override
-    public void extractRenderState(FossilCleaningTableBlockEntity blockEntity, FossilCleaningBlockEntityRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+    public void extractRenderState(FossilCleaningTableBlockEntity blockEntity, FossilCleaningTableBlockEntityRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
         state.isBrushing = blockEntity.isCleaning();
         state.facing = blockEntity.getBlockState().getValue(FossilCleaningTableBlock.FACING);
@@ -46,7 +46,7 @@ public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRender
     }
 
     @Override
-    public void submit(FossilCleaningBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+    public void submit(FossilCleaningTableBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.facing.toYRot()));

@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.loot.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -44,7 +45,9 @@ public class SetFossilCompletenessFunction extends LootItemConditionalFunction {
     protected ItemStack run(ItemStack stack, LootContext context) {
         ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
         int fortuneLevel = 0;
+        float damageRate = 1f;
         if (tool != null) {
+            damageRate = tool.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(1f)).value();
             Holder<Enchantment> fortune = context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
             ItemEnchantments enchantments = tool.get(DataComponents.ENCHANTMENTS);
             if (enchantments != null) {
@@ -54,7 +57,7 @@ public class SetFossilCompletenessFunction extends LootItemConditionalFunction {
 
         float base = this.completeness.getFloat(context);
         float bonus = fortuneLevel * 0.1F;
-        float value = Math.min(1.0F, base + bonus);
+        float value = Math.min(1.0F, base + bonus) * (1f - damageRate);
         stack.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(value));
         return stack;
     }

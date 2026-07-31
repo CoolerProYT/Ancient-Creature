@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ancientcreature:block/fossil_identification_chamber",
+    "model": {
+      "type": "ancientcreature:fossil_identification_chamber"
+    }
+  }
+}

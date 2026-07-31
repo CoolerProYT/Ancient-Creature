@@ -25,7 +25,7 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
     public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
 
-    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.FOSSIL_PART.get(), FossilPart.RIB).component(ModDataComponents.IDENTIFIED.get(), false).component(ModDataComponents.IS_DIRTY.get(), true).component(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f))));
+    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.stacksTo(1).component(ModDataComponents.IDENTIFICATION_FAILED.get(), false).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.FOSSIL_PART.get(), FossilPart.RIB).component(ModDataComponents.IDENTIFIED.get(), false).component(ModDataComponents.IS_DIRTY.get(), true).component(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f))));
     public static final RegistryHandler.Items<Item> EGG_SHELL_FRAGMENT = registerItem("egg_shell_fragment", Item::new);
     public static final RegistryHandler.Items<EggFossilItem> EGG_FOSSIL = registerItem("egg_fossil", EggFossilItem::new);
 
@@ -37,7 +37,7 @@ public class ModItems {
     }
 
     public static Item.Properties chisel(Item.Properties properties, ToolMaterial material, float attackDamageBaseline, float attackSpeedBaseline, float damageToFossil){
-        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0).component(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(damageToFossil));
+        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0).component(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(damageToFossil)).stacksTo(1);
     }
 
     public static void init(){

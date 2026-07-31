@@ -33,7 +33,8 @@ public class ModSections {
             ModBlocks.ROCK_PILE.toStack(),
             ModItems.ROCK_FRAGMENT.toStack(),
             ModItems.DIRT_FRAGMENT.toStack(),
-            ModBlocks.FOSSIL_CLEANING_TABLE.toStack()
+            ModBlocks.FOSSIL_CLEANING_TABLE.toStack(),
+            ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.toStack()
         );
 
         for (FossilPart value : FossilPart.values()) {

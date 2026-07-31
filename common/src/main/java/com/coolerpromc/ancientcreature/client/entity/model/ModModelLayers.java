@@ -5,4 +5,5 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 
 public class ModModelLayers {
     public static final ModelLayerLocation FOSSIL_CLEANING_TABLE = new ModelLayerLocation(Constants.id("fossil_cleaning_table"), "main");
+    public static final ModelLayerLocation FOSSIL_IDENTIFYING_CHAMBER = new ModelLayerLocation(Constants.id("fossil_identification_chamber"), "main");
 }

@@ -5,6 +5,7 @@ import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.FossilCleaningTableMenu;
 import com.coolerpromc.ancientcreature.platform.Services;
+import com.coolerpromc.ancientcreature.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -14,7 +15,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -33,6 +33,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+
+import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopIdentificationSound;
 
 public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuProvider {
     public static final int DATA_PROGRESS = 0;
@@ -141,6 +143,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         if (canClean()){
             if (progress == 0){
                 this.isCleaning = true;
+                level.playSound(null, blockPos, ModSounds.CLEANING_TABLE_BRUSH.get(), SoundSource.BLOCKS, 1f, 1f);
                 level.sendBlockUpdated(blockPos, state, state, 3);
             }
             progress++;
@@ -148,7 +151,6 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
 
             if (progress >= maxProgress){
                 cleanAndOutput(serverLevel);
-                level.playSound(null, blockPos, SoundEvents.BRUSH_SAND, SoundSource.BLOCKS, 1f, 1f);
                 progress = 0;
                 setChanged();
                 this.isCleaning = false;
@@ -156,10 +158,14 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
             }
         }
         else {
+            boolean wasWorking = progress != 0;
             progress = 0;
             setChanged();
             this.isCleaning = false;
-            level.sendBlockUpdated(blockPos, state, state, 3);
+            if (wasWorking){
+                stopIdentificationSound(serverLevel, blockPos, ModSounds.CLEANING_TABLE_BRUSH);
+                level.sendBlockUpdated(blockPos, state, state, 3);
+            }
         }
     }
 

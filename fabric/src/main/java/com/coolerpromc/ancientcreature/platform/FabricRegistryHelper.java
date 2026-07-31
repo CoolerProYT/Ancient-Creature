@@ -22,6 +22,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,10 +38,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
@@ -53,6 +58,7 @@ import java.util.function.UnaryOperator;
 
 public class FabricRegistryHelper implements IRegistryHelper {
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
+    private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
 
     @Override
     public <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func, BlockBehaviour.Properties p) {
@@ -170,6 +176,13 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
+    public RegistryHandler<SoundEvent, SoundEvent> registerSoundEvent(String name) {
+        Identifier id = Constants.id(name);
+        Holder<SoundEvent> holder = Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
+        return () -> holder;
+    }
+
+    @Override
     public void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         this.entityAttributes.add(new EntityAttributeEntry(entityType, supplier));
     }
@@ -181,9 +194,27 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
+    @Override
+    public void registerFeatureBiomeModifier(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey) {
+        this.featureBiomeModifiers.add(new FeatureBiomeModifierEntry(biomeTagKey, step, placedFeatureKey));
+    }
+
+    @Override
+    public void applyBiomeModifierRegistrations(FeatureBiomeModifierRegistrar registrar) {
+        for (FeatureBiomeModifierEntry entry : featureBiomeModifiers) {
+            entry.register(registrar);
+        }
+    }
+
     private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         private void register(EntityAttributeRegistrar registrar) {
             registrar.register(this.entityType, this.supplier);
+        }
+    }
+
+    private record FeatureBiomeModifierEntry(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey){
+        private void register(FeatureBiomeModifierRegistrar registrar){
+            registrar.register(this.biomeTagKey, this.step, this.placedFeatureKey);
         }
     }
 }

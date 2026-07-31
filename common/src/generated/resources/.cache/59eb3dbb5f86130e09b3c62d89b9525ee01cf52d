@@ -1,7 +1,8 @@
-// 26.1	2026-07-29T17:11:26.9209515	Loot Tables
+// 26.1	2026-07-31T12:56:09.7901235	Loot Tables
 7aa6692e61b8e25d1c4bd689cf49789e512196c7 data/ancientcreature/loot_table/archaeology/dig_site_gravel.json
 9e9e83ec55435eaa6a64cb8169155a3958ccf9a1 data/ancientcreature/loot_table/archaeology/dig_site_sand.json
 11bd8e3cb34beccfa149bb7c26b10cb2b3c4b4f1 data/ancientcreature/loot_table/blocks/fossil_cleaning_table.json
+c53dcf2676142bb425092bc4a4fcc2f89593588e data/ancientcreature/loot_table/blocks/fossil_identification_chamber.json
 7a39505bf0ce4bd14282712b201e5da73946f24f data/ancientcreature/loot_table/blocks/fossil_ore.json
 4f521d8239cd5963f7dc3d2f245099d92621ef06 data/ancientcreature/loot_table/blocks/rock_pile.json
 82958b859a58b5633bdeb2fec43c7c6464c98301 data/ancientcreature/loot_table/chests/arid_dig_site.json

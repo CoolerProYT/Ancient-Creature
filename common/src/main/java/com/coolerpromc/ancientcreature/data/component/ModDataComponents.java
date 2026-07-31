@@ -20,6 +20,7 @@ public class ModDataComponents {
     public static final RegistryHandler.Components<Boolean> IDENTIFIED = register("identified", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
     public static final RegistryHandler.Components<FossilPart> FOSSIL_PART = register("fossil_part", b -> b.persistent(FossilPart.CODEC).networkSynchronized(FossilPart.STREAM_CODEC).cacheEncoding());
     public static final RegistryHandler.Components<Species> SPECIES = register("species", b -> b.persistent(Species.CODEC).networkSynchronized(Species.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<Boolean> IDENTIFICATION_FAILED = register("identification_failed", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
 
     public static <T> RegistryHandler.Components<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator){
         return Services.REGISTRY.registerDataComponent(name, unaryOperator);

@@ -4,7 +4,7 @@ import com.coolerpromc.ancientcreature.client.entity.state.FossilCleaningTableRe
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
 
-public class FossilCleaningBlockEntityRenderState extends BlockEntityRenderState {
+public class FossilCleaningTableBlockEntityRenderState extends BlockEntityRenderState {
     public boolean isBrushing;
     public Direction facing;
     public FossilCleaningTableRenderState entityRenderState;

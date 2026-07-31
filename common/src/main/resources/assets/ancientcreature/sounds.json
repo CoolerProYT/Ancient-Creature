@@ -1,0 +1,29 @@
+{
+  "block.fossil_identification_chamber.scan": {
+    "subtitle": "subtitles.ancientcreature.block.fossil_identification_chamber.scan",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/fossil_identification_chamber_scan",
+        "stream": false
+      }
+    ]
+  },
+  "block.fossil_identification_chamber.failed": {
+    "subtitle": "subtitles.ancientcreature.block.fossil_identification_chamber.failed",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/fossil_identification_chamber_failed",
+        "stream": false
+      }
+    ]
+  },
+  "block.fossil_cleaning_table.brush": {
+    "subtitle": "subtitles.ancientcreature.block.fossil_cleaning_table.brush",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/fossil_cleaning_table_brush",
+        "stream": false
+      }
+    ]
+  }
+}

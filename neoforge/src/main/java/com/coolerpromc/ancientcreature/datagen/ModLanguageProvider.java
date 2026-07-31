@@ -35,6 +35,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.unidentified", "???");
 
+        add("subtitles.ancientcreature.block.fossil_identification_chamber.scan", "Fossil chamber scans");
+        add("subtitles.ancientcreature.block.fossil_identification_chamber.failed", "Fossil identification fails");
+        add("subtitles.ancientcreature.block.fossil_cleaning_table.brush", "Brush scrapes fossil");
+
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");
         add(ModItems.IRON_CHISEL.get(), "Iron Chisel");
@@ -51,5 +55,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
         add(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), "Fossil Cleaning Table");
+        add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), "Fossil Identification Chamber");
     }
 }

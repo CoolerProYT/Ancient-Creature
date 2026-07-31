@@ -3,8 +3,10 @@ package com.coolerpromc.ancientcreature.datagen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
+import com.coolerpromc.ancientcreature.block.custom.FossilIdentificationChamberBlock;
 import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
@@ -19,12 +21,14 @@ import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +44,9 @@ public class ModModelProvider extends ModelProvider {
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         blockModels.createTrivialCube(ModBlocks.FOSSIL_ORE.getBlock());
         this.generateRockPileBlockState(blockModels);
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/fossil_cleaning_table")))))
-            .with(PropertyDispatch.modify(FossilCleaningTableBlock.FACING)
-                .select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
-                .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
-                .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
-                .select(Direction.NORTH, BlockModelGenerators.NOP)
-            )
-        );
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/fossil_cleaning_table"))))).with(horizontalFacing(FossilCleaningTableBlock.FACING)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/fossil_identification_chamber"))))).with(horizontalFacing(FossilIdentificationChamberBlock.FACING)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.PLACEHOLDER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/placeholder"))))));
 
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.COPPER_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -61,6 +60,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.DIRT_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.EGG_SHELL_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.itemModelOutput.accept(ModBlocks.FOSSIL_CLEANING_TABLE.getItem(), ItemModelUtils.specialModel(Constants.id("block/fossil_cleaning_table"), new FossilCleaningTableSpecialRenderer.Unbaked()));
+        itemModels.itemModelOutput.accept(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getItem(), ItemModelUtils.specialModel(Constants.id("block/fossil_identification_chamber"), new FossilIdentificationChamberSpecialRenderer.Unbaked()));
     }
 
     private void generateRockPileBlockState(BlockModelGenerators blockModels){
@@ -99,5 +99,13 @@ public class ModModelProvider extends ModelProvider {
             ItemModelUtils.select(new FossilPartSelect(), dirties),
             ItemModelUtils.select(new FossilPartSelect(), normals))
         );
+    }
+
+    private PropertyDispatch<VariantMutator> horizontalFacing(EnumProperty<Direction> property){
+        return PropertyDispatch.modify(property)
+            .select(Direction.EAST, BlockModelGenerators.Y_ROT_90)
+            .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+            .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+            .select(Direction.NORTH, BlockModelGenerators.NOP);
     }
 }

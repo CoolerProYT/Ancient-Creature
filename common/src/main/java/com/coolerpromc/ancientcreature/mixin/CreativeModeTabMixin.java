@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class CreativeModeTabMixin {
             return;
         }
 
-        List<ItemStack> display = TabLayout.CACHED_ITEMS;
+        List<ItemStack> display = new ArrayList<>(TabLayout.CACHED_ITEMS);
         self.displayItems = display;
         self.displayItemsSearchTab = display.stream().filter(s -> !s.isEmpty()).collect(java.util.stream.Collectors.toCollection(LinkedHashSet::new));
     }

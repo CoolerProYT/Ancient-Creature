@@ -2,10 +2,14 @@ package com.coolerpromc.ancientcreature;
 
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilCleaningTableBlockEntityRenderer;
+import com.coolerpromc.ancientcreature.client.block.renderer.FossilIdentificationChamberBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.entity.model.FossilCleaningTableModel;
+import com.coolerpromc.ancientcreature.client.entity.model.FossilIdentificationChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.gui.screen.FossilCleaningTableScreen;
+import com.coolerpromc.ancientcreature.client.gui.screen.FossilIdentificationChamberScreen;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
@@ -54,14 +58,17 @@ public class AncientCreatureClient {
 
     public static void initMenuScreen(){
         registerMenuScreen(ModMenus.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableScreen::new);
+        registerMenuScreen(ModMenus.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberScreen::new);
     }
 
     public static void initRenderer(){
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableBlockEntityRenderer::new);
+        registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
     }
 
     public static void initModelLayer(){
         registerEntityModelLayer(ModModelLayers.FOSSIL_CLEANING_TABLE, FossilCleaningTableModel::createBodyLayer);
+        registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
     }
 
     public static void initGuiLayer(){
@@ -82,6 +89,7 @@ public class AncientCreatureClient {
 
     public static void initSpecialModelRenderer(){
         registerSpecialModelRenderer(Constants.id("fossil_cleaning_table"), FossilCleaningTableSpecialRenderer.Unbaked.CODEC);
+        registerSpecialModelRenderer(Constants.id("fossil_identification_chamber"), FossilIdentificationChamberSpecialRenderer.Unbaked.CODEC);
     }
 
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){

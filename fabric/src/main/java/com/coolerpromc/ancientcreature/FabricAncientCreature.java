@@ -19,13 +19,10 @@ public class FabricAncientCreature implements ModInitializer {
     public void onInitialize() {
         AncientCreature.init();
         AncientCreature.initCapability();
+        AncientCreature.initBiomeModifier();
 
         Services.REGISTRY.applyEntityAttributeRegistrations(FabricDefaultAttributeRegistry::register);
-        BiomeModifications.addFeature(
-            BiomeSelectors.tag(BiomeTags.IS_FOREST),
-            GenerationStep.Decoration.VEGETAL_DECORATION,
-            ModPlacedFeatures.FOREST_ROCKS
-        );
+        Services.REGISTRY.applyBiomeModifierRegistrations((biomeTagKey, step, placedFeatureKey) -> BiomeModifications.addFeature(BiomeSelectors.tag(biomeTagKey), step, placedFeatureKey));
 
         ItemTooltipCallback.EVENT.register(ItemEvents::onItemTooltip);
         CreativeModeTabEvents.modifyOutputEvent(ModCreativeTabs.TAB.key()).register(output -> CreativeTabEvents.onModifyOutput(output.getContext()));

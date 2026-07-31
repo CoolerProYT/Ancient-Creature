@@ -9,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
@@ -19,17 +20,21 @@ import net.minecraft.world.level.biome.Biome;
 import java.util.function.Consumer;
 
 public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", ModBiomeTags.SPAWNS_TRICERATOPS);
+    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f);
 
     public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
     public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     final String name;
     final TagKey<Biome> biomeTag;
+    final float identifyFailChance;
+    final float fossilDamageRate;
 
-    Species(String name, TagKey<Biome> biomeTag){
+    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate){
         this.name = name;
         this.biomeTag = biomeTag;
+        this.identifyFailChance = identifyFailChance;
+        this.fossilDamageRate = fossilDamageRate;
     }
 
     @Override
@@ -39,6 +44,14 @@ public enum Species implements StringRepresentable, TooltipProvider {
 
     public boolean isValidBiome(Holder<Biome> holder){
         return holder.is(this.biomeTag);
+    }
+
+    public float getIdentifyFailChance() {
+        return identifyFailChance;
+    }
+
+    public float getFossilDamageRate() {
+        return fossilDamageRate;
     }
 
     @Override

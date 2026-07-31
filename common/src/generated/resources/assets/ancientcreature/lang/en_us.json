@@ -1,5 +1,6 @@
 {
   "block.ancientcreature.fossil_cleaning_table": "Fossil Cleaning Table",
+  "block.ancientcreature.fossil_identification_chamber": "Fossil Identification Chamber",
   "block.ancientcreature.fossil_ore": "Fossil Ore",
   "block.ancientcreature.rock_pile": "Rock Pile",
   "fossilPart.ancientcreature.claw": "Claw",
@@ -23,6 +24,9 @@
   "name.ancientcreature.unidentified": "Unidentified",
   "species.ancientcreature.triceratops": "Triceratops",
   "species.ancientcreature.unidentified": "???",
+  "subtitles.ancientcreature.block.fossil_cleaning_table.brush": "Brush scrapes fossil",
+  "subtitles.ancientcreature.block.fossil_identification_chamber.failed": "Fossil identification fails",
+  "subtitles.ancientcreature.block.fossil_identification_chamber.scan": "Fossil chamber scans",
   "tab.ancientcreature.ancient_creature": "Ancient Creature",
   "tab.ancientcreature.chisels": "Chisels",
   "tab.ancientcreature.fossil_fragments": "Fossil Fragments",
