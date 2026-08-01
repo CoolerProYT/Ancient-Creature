@@ -4,16 +4,20 @@ import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.client.block.renderer.DNAExtractorBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilCleaningTableBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilIdentificationChamberBlockEntityRenderer;
+import com.coolerpromc.ancientcreature.client.block.renderer.GenomeSequencerBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.entity.model.block.DNAExtractorModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilCleaningTableModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilIdentificationChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
+import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
 import com.coolerpromc.ancientcreature.client.gui.screen.DNAExtractorScreen;
 import com.coolerpromc.ancientcreature.client.gui.screen.FossilCleaningTableScreen;
 import com.coolerpromc.ancientcreature.client.gui.screen.FossilIdentificationChamberScreen;
+import com.coolerpromc.ancientcreature.client.gui.screen.GenomeSequenceScreen;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
@@ -65,18 +69,21 @@ public class AncientCreatureClient {
         registerMenuScreen(ModMenus.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableScreen::new);
         registerMenuScreen(ModMenus.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberScreen::new);
         registerMenuScreen(ModMenus.DNA_EXTRACTOR.get(), DNAExtractorScreen::new);
+        registerMenuScreen(ModMenus.GENOME_SEQUENCER.get(), GenomeSequenceScreen::new);
     }
 
     public static void initRenderer(){
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
+        registerBlockEntityRenderer(ModBlockEntities.GENOME_SEQUENCER.get(), GenomeSequencerBlockEntityRenderer::new);
     }
 
     public static void initModelLayer(){
         registerEntityModelLayer(ModModelLayers.FOSSIL_CLEANING_TABLE, FossilCleaningTableModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);
+        registerEntityModelLayer(ModModelLayers.GENOME_SEQUENCER, GenomeSequencerModel::createBodyLayer);
     }
 
     public static void initGuiLayer(){
@@ -100,6 +107,7 @@ public class AncientCreatureClient {
         registerSpecialModelRenderer(Constants.id("fossil_cleaning_table"), FossilCleaningTableSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("fossil_identification_chamber"), FossilIdentificationChamberSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("dna_extractor"), DNAExtractorSpecialRenderer.Unbaked.CODEC);
+        registerSpecialModelRenderer(Constants.id("genome_sequencer"), GenomeSequencerSpecialRenderer.Unbaked.CODEC);
     }
 
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){

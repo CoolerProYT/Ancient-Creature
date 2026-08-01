@@ -2,10 +2,7 @@ package com.coolerpromc.ancientcreature.item;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.data.component.custom.*;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.custom.DNASampleItem;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
@@ -37,6 +34,10 @@ public class ModItems {
     public static final RegistryHandler.Items<DNASampleItem> DNA_SAMPLE = registerItem("dna_sample", p -> new DNASampleItem(p.component(ModDataComponents.IDENTIFIED.get(), true).component(ModDataComponents.DNA_INTEGRITY_LEVEL.get(), DNAIntegrityLevel.PRESERVED_EMBRYO).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS)));
     public static final RegistryHandler.Items<Item> EXTRACTION_FLUID = registerItem("extraction_fluid", p -> new Item(p.durability(4)));
     public static final RegistryHandler.Items<Item> SAMPLE_VIAL = registerItem("sample_vial", Item::new);
+
+    public static final RegistryHandler.Items<Item> GENOME_CARTRIDGE_BLANK = registerItem("genome_cartridge_blank", p -> new Item(p.stacksTo(1)));
+    public static final RegistryHandler.Items<Item> GENOME_CARTRIDGE_FILLED = registerItem("genome_cartridge_filled", p -> new Item(p.stacksTo(1).component(ModDataComponents.IDENTIFIED.get(), true).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(0f))));
+    public static final RegistryHandler.Items<Item> GENOME_CARTRIDGE_COMPLETED = registerItem("genome_cartridge_completed", p -> new Item(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.IDENTIFIED.get(), true)));
 
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);

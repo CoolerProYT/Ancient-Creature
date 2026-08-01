@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ancientcreature:block/genome_sequencer",
+    "model": {
+      "type": "ancientcreature:genome_sequencer"
+    }
+  }
+}

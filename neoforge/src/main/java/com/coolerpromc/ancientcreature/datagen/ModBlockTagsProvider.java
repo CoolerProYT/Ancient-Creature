@@ -24,6 +24,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock())
             .add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock())
-            .add(ModBlocks.DNA_EXTRACTOR.getBlock());
+            .add(ModBlocks.DNA_EXTRACTOR.getBlock())
+            .add(ModBlocks.GENOME_SEQUENCER.getBlock());
     }
 }

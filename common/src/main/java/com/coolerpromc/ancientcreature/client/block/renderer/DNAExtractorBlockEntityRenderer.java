@@ -36,11 +36,11 @@ public class DNAExtractorBlockEntityRenderer implements BlockEntityRenderer<DNAE
     @Override
     public void extractRenderState(DNAExtractorBlockEntity blockEntity, DNAExtractorBlockEntityRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
-        state.isIdentifying = blockEntity.isExtracting();
+        state.isExtracting = blockEntity.isExtracting();
         state.facing = blockEntity.getBlockState().getValue(FossilIdentificationChamberBlock.FACING);
 
         int animationTick = blockEntity.getLevel() == null ? 0 : (int)blockEntity.getLevel().getGameTime();
-        blockEntity.getExtractingAnimationState().animateWhen(state.isIdentifying, animationTick);
+        blockEntity.getExtractingAnimationState().animateWhen(state.isExtracting, animationTick);
         state.entityRenderState.ageInTicks = animationTick + partialTicks;
         state.entityRenderState.extractingState.copyFrom(blockEntity.getExtractingAnimationState());
     }

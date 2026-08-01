@@ -22,6 +22,7 @@ public class ModBlocks {
     public static final BlockItemRegistryHandler<FossilCleaningTableBlock> FOSSIL_CLEANING_TABLE = registerBlock("fossil_cleaning_table", FossilCleaningTableBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<FossilIdentificationChamberBlock> FOSSIL_IDENTIFICATION_CHAMBER = registerBlock("fossil_identification_chamber", FossilIdentificationChamberBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<DNAExtractorBlock> DNA_EXTRACTOR = registerBlock("dna_extractor", DNAExtractorBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
+    public static final BlockItemRegistryHandler<GenomeSequencerBlock> GENOME_SEQUENCER = registerBlock("genome_sequencer", GenomeSequencerBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
 
     public static <B extends Block> BlockItemRegistryHandler<B> registerBlock(String name, Function<BlockBehaviour.Properties, B> func, BlockBehaviour.Properties properties){
         RegistryHandler.Blocks<B> block = Services.REGISTRY.registerBlock(name, func, properties);

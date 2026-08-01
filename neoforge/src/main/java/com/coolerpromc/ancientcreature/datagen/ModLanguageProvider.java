@@ -14,6 +14,7 @@ public class ModLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("tooltip.ancientcreature.fossil_completeness", "§7Completeness: %s");
+        add("tooltip.ancientcreature.genome_completeness", "§7Completeness: %s");
         add("tooltip.ancientcreature.fossil_damage_rate", "-%s%% Completeness");
         add("tooltip.ancientcreature.species", "§7Species: %s");
         add("tooltip.ancientcreature.dna_integrity_level", "§7Integrity Level: %s");
@@ -62,11 +63,15 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.DNA_SAMPLE.get(), "DNA Sample");
         add(ModItems.EXTRACTION_FLUID.get(), "Extraction Fluid");
         add(ModItems.SAMPLE_VIAL.get(), "Sample Vial");
+        add(ModItems.GENOME_CARTRIDGE_BLANK.get(), "Genome Cartridge (Blank)");
+        add(ModItems.GENOME_CARTRIDGE_FILLED.get(), "Genome Cartridge (Filled)");
+        add(ModItems.GENOME_CARTRIDGE_COMPLETED.get(), "Genome Cartridge (Completed)");
 
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
         add(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), "Fossil Cleaning Table");
         add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), "Fossil Identification Chamber");
         add(ModBlocks.DNA_EXTRACTOR.getBlock(), "DNA Extractor");
+        add(ModBlocks.GENOME_SEQUENCER.getBlock(), "Genome Sequencer");
     }
 }

@@ -1,0 +1,261 @@
+package com.coolerpromc.ancientcreature.block.entity.custom;
+
+import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.block.ModBlocks;
+import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeCompleteness;
+import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.ModItems;
+import com.coolerpromc.ancientcreature.menu.custom.GenomeSequencerMenu;
+import com.coolerpromc.ancientcreature.sound.ModSounds;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
+
+import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopSound;
+
+public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvider, ICapabilityExposure {
+    public static final int DATA_PROGRESS = 0;
+    public static final int DATA_MAX_PROGRESS = 1;
+
+    private final AnimationState processingAnimationState = new AnimationState();
+    private final ContainerData data;
+    private boolean isProcessing = false;
+    private int progress = 0;
+    private int maxProgress = 100;
+
+    private final SimpleContainer dnaSampleContainer = new SimpleContainer(1){
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack itemStack) {
+            return itemStack.is(ModItems.DNA_SAMPLE.get());
+        }
+    };
+
+    private final SimpleContainer cartridgeContainer = new SimpleContainer(1){
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack itemStack) {
+            return itemStack.is(ModItems.GENOME_CARTRIDGE_BLANK.get()) || itemStack.is(ModItems.GENOME_CARTRIDGE_FILLED.get());
+        }
+    };
+
+    public GenomeSequencerBlockEntity(BlockPos worldPosition, BlockState blockState) {
+        super(ModBlockEntities.GENOME_SEQUENCER.get(), worldPosition, blockState);
+        this.data = new ContainerData() {
+            @Override
+            public int get(int dataId) {
+                return switch (dataId){
+                    case DATA_PROGRESS -> progress;
+                    case DATA_MAX_PROGRESS -> maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int dataId, int value) {
+                switch (dataId){
+                    case DATA_PROGRESS -> progress = value;
+                    case DATA_MAX_PROGRESS -> maxProgress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.ancientcreature.genome_sequencer");
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new GenomeSequencerMenu(containerId, inventory, player, this, this.data);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        BlockPos placeholderPos = pos.above();
+        if (level != null){
+            if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
+                level.removeBlock(placeholderPos, false);
+            }
+            Containers.dropContents(this.level, pos, dnaSampleContainer);
+            Containers.dropContents(this.level, pos, cartridgeContainer);
+            if (progress > 0 && level instanceof ServerLevel serverLevel){
+                stopSound(serverLevel, pos, ModSounds.GENOME_SEQUENCER_PROCESSING);
+            }
+        }
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        dnaSampleContainer.storeAsItemList(output.list("dnaSample", ItemStack.CODEC));
+        cartridgeContainer.storeAsItemList(output.list("cartridge", ItemStack.CODEC));
+        output.putInt("progress", progress);
+        output.putInt("maxProgress", maxProgress);
+        output.putBoolean("isExtracting", isProcessing);
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        dnaSampleContainer.fromItemList(input.listOrEmpty("dnaSample", ItemStack.CODEC));
+        cartridgeContainer.fromItemList(input.listOrEmpty("cartridge", ItemStack.CODEC));
+        progress = input.getIntOr("progress", 0);
+        maxProgress = input.getIntOr("maxProgress", 100);
+        isProcessing = input.getBooleanOr("isExtracting", false);
+    }
+
+    public void tick(Level level, BlockPos pos, BlockState state) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        if (canProcess()){
+            if (progress == 0){
+                this.isProcessing = true;
+                level.playSound(null, pos, ModSounds.GENOME_SEQUENCER_PROCESSING.get(), SoundSource.BLOCKS, 2f, 1f);
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+            else if (progress % 100 == 0 && progress < maxProgress){
+                level.playSound(null, pos, ModSounds.GENOME_SEQUENCER_PROCESSING.get(), SoundSource.BLOCKS, 2f, 1f);
+            }
+            progress++;
+            setChanged();
+
+            if (progress >= maxProgress){
+                finishProcessing(serverLevel, pos);
+                progress = 0;
+                this.isProcessing = false;
+                setChanged();
+                stopSound(serverLevel, pos, ModSounds.GENOME_SEQUENCER_PROCESSING);
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+        }
+        else {
+            boolean wasWorking = progress != 0;
+            progress = 0;
+            this.isProcessing = false;
+            setChanged();
+            if (wasWorking){
+                stopSound(serverLevel, pos, ModSounds.GENOME_SEQUENCER_PROCESSING);
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+        }
+    }
+
+    private void finishProcessing(ServerLevel serverLevel, BlockPos pos) {
+        ItemStack dnaSample = dnaSampleContainer.removeItem(0, 1);
+        Species species = dnaSample.get(ModDataComponents.SPECIES.get());
+        DNAIntegrityLevel integrityLevel = dnaSample.get(ModDataComponents.DNA_INTEGRITY_LEVEL.get());
+        if (species == null || integrityLevel == null) return;
+        float completeness = integrityLevel.getGenomeCompleteness(serverLevel.getRandom());
+        ItemStack cartridge = cartridgeContainer.removeItem(0, 1);
+        if (cartridge.is(ModItems.GENOME_CARTRIDGE_BLANK.get())){
+            ItemStack newCartridge = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
+            newCartridge.set(ModDataComponents.SPECIES.get(), species);
+            newCartridge.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(completeness));
+            cartridgeContainer.setItem(0, newCartridge);
+        }
+        else {
+            float currentCompleteness = cartridge.getOrDefault(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(0f)).value();
+            float newCompleteness = Math.min(currentCompleteness + completeness, 1f);
+            if (newCompleteness < 1f){
+                cartridge.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(newCompleteness));
+                cartridgeContainer.setItem(0, cartridge);
+            }else {
+                ItemStack completed = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
+                completed.set(ModDataComponents.SPECIES.get(), species);
+                cartridgeContainer.setItem(0, completed);
+            }
+        }
+    }
+
+    private boolean canProcess() {
+        return hasValidDnaSample() && hasEnoughOutputSlot();
+    }
+
+    private boolean hasValidDnaSample() {
+        return !dnaSampleContainer.getItem(0).isEmpty();
+    }
+
+    private boolean hasEnoughOutputSlot() {
+        ItemStack dna = dnaSampleContainer.getItem(0).copy();
+        Species species = dna.get(ModDataComponents.SPECIES.get());
+        if (species == null) return false;
+        ItemStack cartridge = cartridgeContainer.getItem(0);
+        if (cartridge.isEmpty()) return false;
+        Species cartridgeSpecies = cartridge.get(ModDataComponents.SPECIES.get());
+        if (cartridgeSpecies == null) return true;
+        float completeness = cartridge.getOrDefault(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(1f)).value();
+        if (completeness >= 1f) return false;
+        return species.equals(cartridgeSpecies);
+    }
+
+    public boolean isProcessing() {
+        return isProcessing;
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        try(ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), Constants.LOG)){
+            TagValueOutput output = TagValueOutput.createWithContext(reporter, registries);
+            saveAdditional(output);
+            return output.buildResult();
+        }
+    }
+
+    public SimpleContainer getDnaSampleContainer() {
+        return dnaSampleContainer;
+    }
+
+    public SimpleContainer getCartridgeContainer() {
+        return cartridgeContainer;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public AnimationState getProcessingAnimationState() {
+        return processingAnimationState;
+    }
+
+    public Container getContainerBySide(@Nullable Direction direction) {
+        if (direction == Direction.DOWN || direction == Direction.UP){
+            return getCartridgeContainer();
+        }
+        return getDnaSampleContainer();
+    }
+}

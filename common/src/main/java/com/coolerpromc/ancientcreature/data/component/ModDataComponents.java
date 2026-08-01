@@ -1,10 +1,7 @@
 package com.coolerpromc.ancientcreature.data.component;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.data.component.custom.*;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
@@ -23,6 +20,7 @@ public class ModDataComponents {
     public static final RegistryHandler.Components<Species> SPECIES = register("species", b -> b.persistent(Species.CODEC).networkSynchronized(Species.STREAM_CODEC).cacheEncoding());
     public static final RegistryHandler.Components<Boolean> IDENTIFICATION_FAILED = register("identification_failed", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
     public static final RegistryHandler.Components<DNAIntegrityLevel> DNA_INTEGRITY_LEVEL = register("dna_integrity_level", b -> b.persistent(DNAIntegrityLevel.CODEC).networkSynchronized(DNAIntegrityLevel.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<GenomeCompleteness> GENOME_COMPLETENESS = register("genome_completeness", b -> b.persistent(GenomeCompleteness.CODEC).networkSynchronized(GenomeCompleteness.STREAM_CODEC).cacheEncoding());
 
     public static <T> RegistryHandler.Components<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator){
         return Services.REGISTRY.registerDataComponent(name, unaryOperator);

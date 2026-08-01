@@ -7,8 +7,7 @@ import com.coolerpromc.ancientcreature.worldgen.structure.custom.FlatJigsawStruc
 import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class ModStructureTypes {
-    public static final RegistryHandler<StructureType<?>, StructureType<FlatJigsawStructure>> FLAT_JIGSAW =
-        Services.REGISTRY.registerStructureType("flat_jigsaw", FlatJigsawStructure.CODEC);
+    public static final RegistryHandler<StructureType<?>, StructureType<FlatJigsawStructure>> FLAT_JIGSAW = Services.REGISTRY.registerStructureType("flat_jigsaw", FlatJigsawStructure.CODEC);
 
     public static void init(){
         Constants.LOG.info("Registering structure type.");

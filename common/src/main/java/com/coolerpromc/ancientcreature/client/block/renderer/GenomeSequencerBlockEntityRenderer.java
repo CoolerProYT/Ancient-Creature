@@ -1,0 +1,57 @@
+package com.coolerpromc.ancientcreature.client.block.renderer;
+
+import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.block.custom.GenomeSequencerBlock;
+import com.coolerpromc.ancientcreature.block.entity.custom.GenomeSequencerBlockEntity;
+import com.coolerpromc.ancientcreature.client.block.state.GenomeSequencerBlockEntityRenderState;
+import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
+import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
+import com.coolerpromc.ancientcreature.client.entity.state.block.GenomeSequencerRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+
+public class GenomeSequencerBlockEntityRenderer implements BlockEntityRenderer<GenomeSequencerBlockEntity, GenomeSequencerBlockEntityRenderState> {
+    private final GenomeSequencerModel model;
+
+    public GenomeSequencerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
+        this.model = new GenomeSequencerModel(context.bakeLayer(ModModelLayers.GENOME_SEQUENCER));
+    }
+
+    @Override
+    public GenomeSequencerBlockEntityRenderState createRenderState() {
+        GenomeSequencerBlockEntityRenderState state = new GenomeSequencerBlockEntityRenderState();
+        state.entityRenderState = new GenomeSequencerRenderState();
+        return state;
+    }
+
+    @Override
+    public void extractRenderState(GenomeSequencerBlockEntity blockEntity, GenomeSequencerBlockEntityRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+        state.isProcessing = blockEntity.isProcessing();
+        state.facing = blockEntity.getBlockState().getValue(GenomeSequencerBlock.FACING);
+
+        int animationTick = blockEntity.getLevel() == null ? 0 : (int)blockEntity.getLevel().getGameTime();
+        blockEntity.getProcessingAnimationState().animateWhen(state.isProcessing, animationTick);
+        state.entityRenderState.ageInTicks = animationTick + partialTicks;
+        state.entityRenderState.processingState.copyFrom(blockEntity.getProcessingAnimationState());
+    }
+
+    @Override
+    public void submit(GenomeSequencerBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+        poseStack.pushPose();
+        poseStack.translate(0.5, 1.5, 0.5);
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.facing.toYRot()));
+        poseStack.scale(-1.0F, -1.0F, 1.0F);
+        submitNodeCollector.submitModel(model, state.entityRenderState, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/genome_sequencer.png")), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+        poseStack.popPose();
+    }
+}

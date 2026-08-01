@@ -36,9 +36,13 @@ public class ModSections {
             ModBlocks.FOSSIL_CLEANING_TABLE.toStack(),
             ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.toStack(),
             ModBlocks.DNA_EXTRACTOR.toStack(),
+            ModBlocks.GENOME_SEQUENCER.toStack(),
             ModItems.DNA_SAMPLE.toStack(),
             ModItems.SAMPLE_VIAL.toStack(),
-            ModItems.EXTRACTION_FLUID.toStack()
+            ModItems.EXTRACTION_FLUID.toStack(),
+            ModItems.GENOME_CARTRIDGE_BLANK.toStack(),
+            ModItems.GENOME_CARTRIDGE_FILLED.toStack(),
+            ModItems.GENOME_CARTRIDGE_COMPLETED.toStack()
         );
 
         for (FossilPart value : FossilPart.values()) {
