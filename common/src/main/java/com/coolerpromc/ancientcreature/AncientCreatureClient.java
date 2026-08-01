@@ -5,19 +5,19 @@ import com.coolerpromc.ancientcreature.client.block.renderer.DNAExtractorBlockEn
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilCleaningTableBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilIdentificationChamberBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.GenomeSequencerBlockEntityRenderer;
+import com.coolerpromc.ancientcreature.client.block.renderer.EmbryogenesisChamberBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.entity.model.block.DNAExtractorModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilCleaningTableModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilIdentificationChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
-import com.coolerpromc.ancientcreature.client.gui.screen.DNAExtractorScreen;
-import com.coolerpromc.ancientcreature.client.gui.screen.FossilCleaningTableScreen;
-import com.coolerpromc.ancientcreature.client.gui.screen.FossilIdentificationChamberScreen;
-import com.coolerpromc.ancientcreature.client.gui.screen.GenomeSequenceScreen;
+import com.coolerpromc.ancientcreature.client.entity.model.block.EmbryogenesisChamberModel;
+import com.coolerpromc.ancientcreature.client.gui.screen.*;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
@@ -70,6 +70,7 @@ public class AncientCreatureClient {
         registerMenuScreen(ModMenus.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberScreen::new);
         registerMenuScreen(ModMenus.DNA_EXTRACTOR.get(), DNAExtractorScreen::new);
         registerMenuScreen(ModMenus.GENOME_SEQUENCER.get(), GenomeSequenceScreen::new);
+        registerMenuScreen(ModMenus.EMBRYOGENESIS_CHAMBER.get(), EmbryogenesisChamberScreen::new);
     }
 
     public static void initRenderer(){
@@ -77,6 +78,7 @@ public class AncientCreatureClient {
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.GENOME_SEQUENCER.get(), GenomeSequencerBlockEntityRenderer::new);
+        registerBlockEntityRenderer(ModBlockEntities.EMBRYOGENESIS_CHAMBER.get(), EmbryogenesisChamberBlockEntityRenderer::new);
     }
 
     public static void initModelLayer(){
@@ -84,6 +86,7 @@ public class AncientCreatureClient {
         registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.GENOME_SEQUENCER, GenomeSequencerModel::createBodyLayer);
+        registerEntityModelLayer(ModModelLayers.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberModel::createBodyLayer);
     }
 
     public static void initGuiLayer(){
@@ -108,6 +111,7 @@ public class AncientCreatureClient {
         registerSpecialModelRenderer(Constants.id("fossil_identification_chamber"), FossilIdentificationChamberSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("dna_extractor"), DNAExtractorSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("genome_sequencer"), GenomeSequencerSpecialRenderer.Unbaked.CODEC);
+        registerSpecialModelRenderer(Constants.id("embryogenesis_chamber"), EmbryogenesisChamberSpecialRenderer.Unbaked.CODEC);
     }
 
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){

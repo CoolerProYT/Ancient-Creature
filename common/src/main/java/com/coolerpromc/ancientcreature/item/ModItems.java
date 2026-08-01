@@ -39,6 +39,10 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> GENOME_CARTRIDGE_FILLED = registerItem("genome_cartridge_filled", p -> new Item(p.stacksTo(1).component(ModDataComponents.IDENTIFIED.get(), true).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(0f))));
     public static final RegistryHandler.Items<Item> GENOME_CARTRIDGE_COMPLETED = registerItem("genome_cartridge_completed", p -> new Item(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.IDENTIFIED.get(), true)));
 
+    public static final RegistryHandler.Items<Item> ARTIFICIAL_EGG = registerItem("artificial_egg", p -> new Item(p.stacksTo(16)));
+    public static final RegistryHandler.Items<Item> NUTRIENT_SOLUTION = registerItem("nutrient_solution", p -> new Item(p.stacksTo(16)));
+    public static final RegistryHandler.Items<Item> FERTILIZED_ANCIENT_EGG = registerItem("fertilized_ancient_egg", p -> new Item(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.IDENTIFIED.get(), true)));
+
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);
     }

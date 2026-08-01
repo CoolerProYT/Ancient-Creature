@@ -37,6 +37,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock());
         this.dropSelf(ModBlocks.DNA_EXTRACTOR.getBlock());
         this.dropSelf(ModBlocks.GENOME_SEQUENCER.getBlock());
+        this.dropSelf(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock());
     }
 
     private LootTable.Builder createFossilDrop(Block block) {

@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
+    id "me.modmuss50.mod-publish-plugin"
 }
 
 neoForge {
@@ -57,5 +58,21 @@ sourceSets.configureEach {
                 attribute(loaderAttribute, 'neoforge')
             }
         }
+    }
+}
+
+publishMods {
+    file.set(jar.archiveFile)
+    changelog = rootProject.file("changelog.md").text
+    type = BETA
+    modLoaders.add("neoforge")
+    displayName = mod_id + "-" + project.version + "+" + minecraft_version + "-neoforge"
+
+    curseforge {
+        projectId = "1630188"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        client = true
+        server = true
     }
 }

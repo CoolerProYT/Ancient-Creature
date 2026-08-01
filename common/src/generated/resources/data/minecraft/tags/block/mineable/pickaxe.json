@@ -3,6 +3,7 @@
     "ancientcreature:fossil_cleaning_table",
     "ancientcreature:fossil_identification_chamber",
     "ancientcreature:dna_extractor",
-    "ancientcreature:genome_sequencer"
+    "ancientcreature:genome_sequencer",
+    "ancientcreature:embryogenesis_chamber"
   ]
 }

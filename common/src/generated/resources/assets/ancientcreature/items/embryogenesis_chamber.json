@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ancientcreature:block/embryogenesis_chamber",
+    "model": {
+      "type": "ancientcreature:embryogenesis_chamber"
+    }
+  }
+}

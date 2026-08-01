@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'net.fabricmc.fabric-loom'
+    id "me.modmuss50.mod-publish-plugin"
 }
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -58,4 +59,20 @@ sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.proje
 
 processResources {
     exclude 'data/ancientcreature/neoforge/**'
+}
+
+publishMods {
+    file.set(jar.archiveFile)
+    changelog = rootProject.file("changelog.md").text
+    type = BETA
+    modLoaders.add("fabric")
+    displayName = mod_id + "-" + project.version + "+" + minecraft_version + "-fabric"
+
+    curseforge {
+        projectId = "1630188"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        client = true
+        server = true
+    }
 }

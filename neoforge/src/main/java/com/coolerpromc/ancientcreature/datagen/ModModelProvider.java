@@ -5,11 +5,13 @@ import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.custom.DNAExtractorBlock;
 import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
 import com.coolerpromc.ancientcreature.block.custom.FossilIdentificationChamberBlock;
+import com.coolerpromc.ancientcreature.block.custom.EmbryogenesisChamberBlock;
 import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
@@ -53,6 +55,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/fossil_identification_chamber"))))).with(horizontalFacing(FossilIdentificationChamberBlock.FACING)));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.DNA_EXTRACTOR.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/dna_extractor"))))).with(horizontalFacing(DNAExtractorBlock.FACING)));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.GENOME_SEQUENCER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/genome_sequencer"))))).with(horizontalFacing(DNAExtractorBlock.FACING)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/embryogenesis_chamber"))))).with(horizontalFacing(EmbryogenesisChamberBlock.FACING)));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.PLACEHOLDER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/placeholder"))))));
 
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -70,12 +73,16 @@ public class ModModelProvider extends ModelProvider {
         itemModels.itemModelOutput.accept(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getItem(), ItemModelUtils.specialModel(Constants.id("block/fossil_identification_chamber"), new FossilIdentificationChamberSpecialRenderer.Unbaked()));
         itemModels.itemModelOutput.accept(ModBlocks.DNA_EXTRACTOR.getItem(), ItemModelUtils.specialModel(Constants.id("block/dna_extractor"), new DNAExtractorSpecialRenderer.Unbaked()));
         itemModels.itemModelOutput.accept(ModBlocks.GENOME_SEQUENCER.getItem(), ItemModelUtils.specialModel(Constants.id("block/genome_sequencer"), new GenomeSequencerSpecialRenderer.Unbaked()));
+        itemModels.itemModelOutput.accept(ModBlocks.EMBRYOGENESIS_CHAMBER.getItem(), ItemModelUtils.specialModel(Constants.id("block/embryogenesis_chamber"), new EmbryogenesisChamberSpecialRenderer.Unbaked()));
         this.generateDNASampleItem(itemModels);
         itemModels.generateFlatItem(ModItems.EXTRACTION_FLUID.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.SAMPLE_VIAL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.GENOME_CARTRIDGE_BLANK.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.GENOME_CARTRIDGE_FILLED.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.GENOME_CARTRIDGE_COMPLETED.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.ARTIFICIAL_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.NUTRIENT_SOLUTION.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.FERTILIZED_ANCIENT_EGG.get(), ModelTemplates.FLAT_ITEM);
     }
 
     private void generateRockPileBlockState(BlockModelGenerators blockModels){

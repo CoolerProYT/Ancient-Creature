@@ -47,6 +47,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.block.fossil_cleaning_table.brush", "Brush scrapes fossil");
         add("subtitles.ancientcreature.block.dna_extractor.processing", "DNA extractor processes sample");
         add("subtitles.ancientcreature.block.genome_sequencer.processing", "Genome sequencer analyzes sample");
+        add("subtitles.ancientcreature.block.embryogenesis_chamber.processing", "Embryogenesis chamber cultivates embryo");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");
@@ -66,6 +67,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.GENOME_CARTRIDGE_BLANK.get(), "Genome Cartridge (Blank)");
         add(ModItems.GENOME_CARTRIDGE_FILLED.get(), "Genome Cartridge (Filled)");
         add(ModItems.GENOME_CARTRIDGE_COMPLETED.get(), "Genome Cartridge (Completed)");
+        add(ModItems.ARTIFICIAL_EGG.get(), "Artificial Egg");
+        add(ModItems.NUTRIENT_SOLUTION.get(), "Nutrient Solution");
+        add(ModItems.FERTILIZED_ANCIENT_EGG.get(), "Fertilized Ancient Egg");
 
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
@@ -73,5 +77,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), "Fossil Identification Chamber");
         add(ModBlocks.DNA_EXTRACTOR.getBlock(), "DNA Extractor");
         add(ModBlocks.GENOME_SEQUENCER.getBlock(), "Genome Sequencer");
+        add(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock(), "Embryogenesis Chamber");
     }
 }

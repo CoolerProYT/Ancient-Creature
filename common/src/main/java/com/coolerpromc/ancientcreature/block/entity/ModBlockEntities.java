@@ -18,6 +18,7 @@ public class ModBlockEntities {
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<FossilIdentificationChamberBlockEntity>> FOSSIL_IDENTIFICATION_CHAMBER = register("fossil_identification_chamber", FossilIdentificationChamberBlockEntity::new, List.of(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.block()));
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<DNAExtractorBlockEntity>> DNA_EXTRACTOR = register("dna_extractor", DNAExtractorBlockEntity::new, List.of(ModBlocks.DNA_EXTRACTOR.block()));
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<GenomeSequencerBlockEntity>> GENOME_SEQUENCER = register("genome_sequencer", GenomeSequencerBlockEntity::new, List.of(ModBlocks.GENOME_SEQUENCER.block()));
+    public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<EmbryogenesisChamberBlockEntity>> EMBRYOGENESIS_CHAMBER = register("embryogenesis_chamber", EmbryogenesisChamberBlockEntity::new, List.of(ModBlocks.EMBRYOGENESIS_CHAMBER.block()));
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<PlaceholderBlockEntity>> PLACEHOLDER = register("placeholder", PlaceholderBlockEntity::new, List.of(ModBlocks.PLACEHOLDER.block()));
 
     public static <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityTypeFactory<T> factory, List<Supplier<? extends Block>> blocks){

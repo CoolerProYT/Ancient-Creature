@@ -43,5 +43,14 @@
         "stream": false
       }
     ]
+  },
+  "block.embryogenesis_chamber.processing": {
+    "subtitle": "subtitles.ancientcreature.block.embryogenesis_chamber.processing",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/embryogenesis_chamber_processing",
+        "stream": false
+      }
+    ]
   }
 }
