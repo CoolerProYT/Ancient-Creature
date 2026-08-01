@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 
 public class SoundUtils {
-    public static void stopIdentificationSound(ServerLevel level, BlockPos pos, RegistryHandler<SoundEvent, SoundEvent> event) {
+    public static void stopSound(ServerLevel level, BlockPos pos, RegistryHandler<SoundEvent, SoundEvent> event) {
         ClientboundStopSoundPacket packet = new ClientboundStopSoundPacket(event.id(), SoundSource.BLOCKS);
 
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {

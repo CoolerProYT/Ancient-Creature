@@ -2,7 +2,10 @@ package com.coolerpromc.ancientcreature;
 
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.custom.DNAExtractorBlockEntity;
 import com.coolerpromc.ancientcreature.block.entity.custom.FossilCleaningTableBlockEntity;
+import com.coolerpromc.ancientcreature.block.entity.custom.FossilIdentificationChamberBlockEntity;
+import com.coolerpromc.ancientcreature.block.entity.custom.PlaceholderBlockEntity;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
@@ -47,6 +50,13 @@ public class AncientCreature {
 
     public static void initCapability(){
         registerCapability(ModBlockEntities.FOSSIL_CLEANING_TABLE, FossilCleaningTableBlockEntity::getContainerBySide);
+        registerCapability(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER, FossilIdentificationChamberBlockEntity::getContainerBySide);
+        registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getContainerBySide);
+        registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getContainerBySide);
+    }
+
+    public static void initEntityAttribute(){
+
     }
 
     public static void initBiomeModifier(){

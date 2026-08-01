@@ -1,9 +1,9 @@
 package com.coolerpromc.ancientcreature.client.item;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.client.entity.model.FossilCleaningTableModel;
+import com.coolerpromc.ancientcreature.client.entity.model.block.FossilCleaningTableModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
-import com.coolerpromc.ancientcreature.client.entity.state.FossilCleaningTableRenderState;
+import com.coolerpromc.ancientcreature.client.entity.state.block.FossilCleaningTableRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;

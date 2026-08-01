@@ -24,5 +24,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             ModItems.DIAMOND_CHISEL.get(),
             ModItems.NETHERITE_CHISEL.get()
         );
+
+        tag(ModItemTags.EXTRACTION_FLUIDS).add(
+            ModItems.EXTRACTION_FLUID.get()
+        );
     }
 }

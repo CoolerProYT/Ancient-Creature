@@ -1,6 +1,7 @@
 {
   "values": [
     "ancientcreature:fossil_cleaning_table",
-    "ancientcreature:fossil_identification_chamber"
+    "ancientcreature:fossil_identification_chamber",
+    "ancientcreature:dna_extractor"
   ]
 }

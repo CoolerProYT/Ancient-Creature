@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "ancientcreature:block/dna_extractor",
+    "model": {
+      "type": "ancientcreature:dna_extractor"
+    }
+  }
+}

@@ -10,6 +10,7 @@ import com.coolerpromc.ancientcreature.menu.custom.FossilIdentificationChamberMe
 import com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,8 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.AnimationState;
@@ -35,9 +38,9 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopIdentificationSound;
+import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopSound;
 
-public class FossilIdentificationChamberBlockEntity extends BlockEntity implements MenuProvider {
+public class FossilIdentificationChamberBlockEntity extends BlockEntity implements MenuProvider, ICapabilityExposure {
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_MAX_PROGRESS = 1;
 
@@ -108,8 +111,15 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         BlockPos placeholderPos = pos.above();
-        if (level != null && level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
-            level.removeBlock(placeholderPos, false);
+        if (level != null){
+            if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
+                level.removeBlock(placeholderPos, false);
+            }
+            Containers.dropContents(this.level, pos, inputContainer);
+            Containers.dropContents(this.level, pos, outputContainer);
+            if (progress > 0 && level instanceof ServerLevel serverLevel){
+                stopSound(serverLevel, pos, ModSounds.IDENTIFICATION_CHAMBER_SCAN);
+            }
         }
     }
 
@@ -165,6 +175,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
                 progress = 0;
                 this.isIdentifying = false;
                 setChanged();
+                stopSound(serverLevel, pos, ModSounds.IDENTIFICATION_CHAMBER_SCAN);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
         }
@@ -174,7 +185,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
             this.isIdentifying = false;
             setChanged();
             if (wasWorking){
-                stopIdentificationSound(serverLevel, pos, ModSounds.IDENTIFICATION_CHAMBER_SCAN);
+                stopSound(serverLevel, pos, ModSounds.IDENTIFICATION_CHAMBER_SCAN);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
         }
@@ -246,5 +257,12 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     public SimpleContainer getOutputContainer() {
         return outputContainer;
+    }
+
+    public Container getContainerBySide(@Nullable Direction direction) {
+        if (direction == Direction.DOWN){
+            return getOutputContainer();
+        }
+        return getInputContainer();
     }
 }

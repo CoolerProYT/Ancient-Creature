@@ -1,4 +1,4 @@
-package com.coolerpromc.ancientcreature.client.entity.animation;
+package com.coolerpromc.ancientcreature.client.entity.animation.block;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;

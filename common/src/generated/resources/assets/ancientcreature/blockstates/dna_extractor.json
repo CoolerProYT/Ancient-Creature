@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ancientcreature:block/dna_extractor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ancientcreature:block/dna_extractor"
+    },
+    "facing=south": {
+      "model": "ancientcreature:block/dna_extractor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ancientcreature:block/dna_extractor",
+      "y": 270
+    }
+  }
+}

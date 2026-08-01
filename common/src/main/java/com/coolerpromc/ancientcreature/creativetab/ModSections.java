@@ -34,7 +34,11 @@ public class ModSections {
             ModItems.ROCK_FRAGMENT.toStack(),
             ModItems.DIRT_FRAGMENT.toStack(),
             ModBlocks.FOSSIL_CLEANING_TABLE.toStack(),
-            ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.toStack()
+            ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.toStack(),
+            ModBlocks.DNA_EXTRACTOR.toStack(),
+            ModItems.DNA_SAMPLE.toStack(),
+            ModItems.SAMPLE_VIAL.toStack(),
+            ModItems.EXTRACTION_FLUID.toStack()
         );
 
         for (FossilPart value : FossilPart.values()) {
@@ -47,6 +51,7 @@ public class ModSections {
             clean.set(ModDataComponents.IS_DIRTY.get(), false);
             fragments.add(clean);
         }
+
         ALL = List.of(
             SectionTextured.of(
                 "fossil_fragments",

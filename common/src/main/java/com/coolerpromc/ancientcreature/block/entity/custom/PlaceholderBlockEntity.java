@@ -1,7 +1,6 @@
 package com.coolerpromc.ancientcreature.block.entity.custom;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.block.custom.PlaceholderBlock;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +10,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.Container;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public class PlaceholderBlockEntity extends BlockEntity {
+public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityExposure{
     private double minX = 0.0;
     private double minY = 0.0;
     private double minZ = 0.0;
@@ -130,5 +130,13 @@ public class PlaceholderBlockEntity extends BlockEntity {
         if (!actualState.isAir()) {
             level.destroyBlock(actualPos, shouldDrop);
         }
+    }
+
+    public Container getContainerBySide(@Nullable Direction direction) {
+        BlockEntity actual = level.getBlockEntity(this.getActualPos());
+        if (actual instanceof ICapabilityExposure exposure){
+            return exposure.getContainerBySide(direction);
+        }
+        return null;
     }
 }

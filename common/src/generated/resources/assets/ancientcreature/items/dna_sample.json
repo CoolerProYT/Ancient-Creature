@@ -1,0 +1,36 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "ancientcreature:item/dna_sample_degraded"
+        },
+        "when": "degraded"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "ancientcreature:item/dna_sample_partial"
+        },
+        "when": "partial"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "ancientcreature:item/dna_sample_stable"
+        },
+        "when": "stable"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "ancientcreature:item/dna_sample_preserved_embryo"
+        },
+        "when": "preserved_embryo"
+      }
+    ],
+    "property": "ancientcreature:dna_integrity"
+  }
+}

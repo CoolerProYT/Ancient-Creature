@@ -2,10 +2,12 @@ package com.coolerpromc.ancientcreature.item;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.custom.DNASampleItem;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
 import com.coolerpromc.ancientcreature.item.custom.FossilFragmentItem;
 import com.coolerpromc.ancientcreature.platform.Services;
@@ -31,6 +33,10 @@ public class ModItems {
 
     public static final RegistryHandler.Items<Item> ROCK_FRAGMENT = registerItem("rock_fragment", Item::new);
     public static final RegistryHandler.Items<Item> DIRT_FRAGMENT = registerItem("dirt_fragment", Item::new);
+
+    public static final RegistryHandler.Items<DNASampleItem> DNA_SAMPLE = registerItem("dna_sample", p -> new DNASampleItem(p.component(ModDataComponents.IDENTIFIED.get(), true).component(ModDataComponents.DNA_INTEGRITY_LEVEL.get(), DNAIntegrityLevel.PRESERVED_EMBRYO).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS)));
+    public static final RegistryHandler.Items<Item> EXTRACTION_FLUID = registerItem("extraction_fluid", p -> new Item(p.durability(4)));
+    public static final RegistryHandler.Items<Item> SAMPLE_VIAL = registerItem("sample_vial", Item::new);
 
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);

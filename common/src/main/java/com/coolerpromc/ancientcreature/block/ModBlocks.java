@@ -1,10 +1,7 @@
 package com.coolerpromc.ancientcreature.block;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
-import com.coolerpromc.ancientcreature.block.custom.FossilIdentificationChamberBlock;
-import com.coolerpromc.ancientcreature.block.custom.PlaceholderBlock;
-import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
+import com.coolerpromc.ancientcreature.block.custom.*;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
@@ -24,6 +21,7 @@ public class ModBlocks {
     public static final BlockItemRegistryHandler<RockPileBlock> ROCK_PILE = registerBlock("rock_pile", RockPileBlock::new, BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<FossilCleaningTableBlock> FOSSIL_CLEANING_TABLE = registerBlock("fossil_cleaning_table", FossilCleaningTableBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<FossilIdentificationChamberBlock> FOSSIL_IDENTIFICATION_CHAMBER = registerBlock("fossil_identification_chamber", FossilIdentificationChamberBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
+    public static final BlockItemRegistryHandler<DNAExtractorBlock> DNA_EXTRACTOR = registerBlock("dna_extractor", DNAExtractorBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
 
     public static <B extends Block> BlockItemRegistryHandler<B> registerBlock(String name, Function<BlockBehaviour.Properties, B> func, BlockBehaviour.Properties properties){
         RegistryHandler.Blocks<B> block = Services.REGISTRY.registerBlock(name, func, properties);

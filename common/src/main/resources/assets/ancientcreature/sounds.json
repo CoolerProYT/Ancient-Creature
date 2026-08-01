@@ -25,5 +25,23 @@
         "stream": false
       }
     ]
+  },
+  "block.dna_extractor.processing": {
+    "subtitle": "subtitles.ancientcreature.block.dna_extractor.processing",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/dna_extractor_processing",
+        "stream": false
+      }
+    ]
+  },
+  "block.genome_sequencer.processing": {
+    "subtitle": "subtitles.ancientcreature.block.genome_sequencer.processing",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/genome_sequencer_processing",
+        "stream": false
+      }
+    ]
   }
 }

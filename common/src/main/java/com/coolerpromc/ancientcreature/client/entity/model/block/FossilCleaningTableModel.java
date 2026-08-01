@@ -1,7 +1,7 @@
-package com.coolerpromc.ancientcreature.client.entity.model;
+package com.coolerpromc.ancientcreature.client.entity.model.block;
 
-import com.coolerpromc.ancientcreature.client.entity.animation.FossilCleaningTableAnimation;
-import com.coolerpromc.ancientcreature.client.entity.state.FossilCleaningTableRenderState;
+import com.coolerpromc.ancientcreature.client.entity.animation.block.FossilCleaningTableAnimation;
+import com.coolerpromc.ancientcreature.client.entity.state.block.FossilCleaningTableRenderState;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;

@@ -1,7 +1,7 @@
-package com.coolerpromc.ancientcreature.client.entity.model;
+package com.coolerpromc.ancientcreature.client.entity.model.block;
 
-import com.coolerpromc.ancientcreature.client.entity.animation.FossilIdentificationChamberAnimation;
-import com.coolerpromc.ancientcreature.client.entity.state.FossilIdentificationChamberRenderState;
+import com.coolerpromc.ancientcreature.client.entity.animation.block.FossilIdentificationChamberAnimation;
+import com.coolerpromc.ancientcreature.client.entity.state.block.FossilIdentificationChamberRenderState;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;

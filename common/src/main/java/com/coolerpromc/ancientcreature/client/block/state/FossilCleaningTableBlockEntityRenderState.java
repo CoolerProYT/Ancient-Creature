@@ -1,6 +1,6 @@
 package com.coolerpromc.ancientcreature.client.block.state;
 
-import com.coolerpromc.ancientcreature.client.entity.state.FossilCleaningTableRenderState;
+import com.coolerpromc.ancientcreature.client.entity.state.block.FossilCleaningTableRenderState;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
 

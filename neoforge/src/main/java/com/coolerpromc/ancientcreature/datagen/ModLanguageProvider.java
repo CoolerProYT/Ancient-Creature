@@ -16,6 +16,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip.ancientcreature.fossil_completeness", "§7Completeness: %s");
         add("tooltip.ancientcreature.fossil_damage_rate", "-%s%% Completeness");
         add("tooltip.ancientcreature.species", "§7Species: %s");
+        add("tooltip.ancientcreature.dna_integrity_level", "§7Integrity Level: %s");
 
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
         add("tab.ancientcreature.fossil_fragments", "Fossil Fragments");
@@ -35,9 +36,16 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.unidentified", "???");
 
+        add("dna.ancientcreature.degraded", "Degraded");
+        add("dna.ancientcreature.partial", "Partial");
+        add("dna.ancientcreature.stable", "Stable");
+        add("dna.ancientcreature.preserved_embryo", "Preserved Embryo");
+
         add("subtitles.ancientcreature.block.fossil_identification_chamber.scan", "Fossil chamber scans");
         add("subtitles.ancientcreature.block.fossil_identification_chamber.failed", "Fossil identification fails");
         add("subtitles.ancientcreature.block.fossil_cleaning_table.brush", "Brush scrapes fossil");
+        add("subtitles.ancientcreature.block.dna_extractor.processing", "DNA extractor processes sample");
+        add("subtitles.ancientcreature.block.genome_sequencer.processing", "Genome sequencer analyzes sample");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");
@@ -51,10 +59,14 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.EGG_FOSSIL.get(), "Egg Fossil");
         add(ModItems.ROCK_FRAGMENT.get(), "Rock Fragment");
         add(ModItems.DIRT_FRAGMENT.get(), "Dirt Fragment");
+        add(ModItems.DNA_SAMPLE.get(), "DNA Sample");
+        add(ModItems.EXTRACTION_FLUID.get(), "Extraction Fluid");
+        add(ModItems.SAMPLE_VIAL.get(), "Sample Vial");
 
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
         add(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock(), "Fossil Cleaning Table");
         add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock(), "Fossil Identification Chamber");
+        add(ModBlocks.DNA_EXTRACTOR.getBlock(), "DNA Extractor");
     }
 }
