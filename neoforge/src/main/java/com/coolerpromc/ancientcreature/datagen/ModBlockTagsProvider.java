@@ -26,6 +26,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             .add(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock())
             .add(ModBlocks.DNA_EXTRACTOR.getBlock())
             .add(ModBlocks.GENOME_SEQUENCER.getBlock())
-            .add(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock());
+            .add(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock())
+            .add(ModBlocks.INCUBATOR.getBlock());
     }
 }

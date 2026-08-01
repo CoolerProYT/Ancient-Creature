@@ -4,6 +4,7 @@ import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.*;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.custom.BabyCreatureCapsule;
 import com.coolerpromc.ancientcreature.item.custom.DNASampleItem;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
 import com.coolerpromc.ancientcreature.item.custom.FossilFragmentItem;
@@ -42,6 +43,8 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> ARTIFICIAL_EGG = registerItem("artificial_egg", p -> new Item(p.stacksTo(16)));
     public static final RegistryHandler.Items<Item> NUTRIENT_SOLUTION = registerItem("nutrient_solution", p -> new Item(p.stacksTo(16)));
     public static final RegistryHandler.Items<Item> FERTILIZED_ANCIENT_EGG = registerItem("fertilized_ancient_egg", p -> new Item(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.IDENTIFIED.get(), true)));
+
+    public static final RegistryHandler.Items<BabyCreatureCapsule> BABY_CREATURE_CAPSULE = registerItem("baby_creature_capsule", p -> new BabyCreatureCapsule(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS).component(ModDataComponents.IDENTIFIED.get(), true)));
 
     public static <T extends Item> RegistryHandler.Items<T> registerItem(String name, Function<Item.Properties, T> func){
         return Services.REGISTRY.registerItem(name, func);

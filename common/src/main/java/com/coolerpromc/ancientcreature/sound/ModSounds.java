@@ -12,6 +12,7 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> DNA_EXTRACTOR_PROCESSING = register("block.dna_extractor.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> GENOME_SEQUENCER_PROCESSING = register("block.genome_sequencer.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> EMBRYOGENESIS_CHAMBER_PROCESSING = register("block.embryogenesis_chamber.processing");
+    public static final RegistryHandler<SoundEvent, SoundEvent> INCUBATOR_PROCESSING = register("block.incubator.processing");
 
     public static RegistryHandler<SoundEvent, SoundEvent> register(String name){
         return Services.REGISTRY.registerSoundEvent(name);

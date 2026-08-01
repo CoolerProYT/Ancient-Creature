@@ -47,14 +47,10 @@ public class EmbryogenesisChamberBlockEntityRenderer implements BlockEntityRende
     @Override
     public void submit(EmbryogenesisChamberBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
         poseStack.pushPose();
-        applyTransform(poseStack, state.facing);
+        poseStack.translate(0.5, 1.5, 0.5);
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.facing.toYRot()));
+        poseStack.scale(-1, -1, 1);
         collector.submitModel(model, state.entityRenderState, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/embryogenesis_chamber.png")), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
         poseStack.popPose();
-    }
-
-    public static void applyTransform(PoseStack poseStack, net.minecraft.core.Direction facing) {
-        poseStack.translate(0.5, 1.5, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - facing.toYRot()));
-        poseStack.scale(-1, -1, 1);
     }
 }

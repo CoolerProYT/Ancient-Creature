@@ -51,6 +51,7 @@ public class AncientCreature {
         registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getContainerBySide);
         registerCapability(ModBlockEntities.GENOME_SEQUENCER, GenomeSequencerBlockEntity::getContainerBySide);
         registerCapability(ModBlockEntities.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberBlockEntity::getContainerBySide);
+        registerCapability(ModBlockEntities.INCUBATOR, IncubatorBlockEntity::getContainerBySide);
         registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getContainerBySide);
     }
 

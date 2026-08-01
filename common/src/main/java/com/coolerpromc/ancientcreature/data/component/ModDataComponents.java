@@ -8,6 +8,7 @@ import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.world.entity.EntityType;
 
 import java.util.function.UnaryOperator;
 
@@ -21,6 +22,7 @@ public class ModDataComponents {
     public static final RegistryHandler.Components<Boolean> IDENTIFICATION_FAILED = register("identification_failed", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
     public static final RegistryHandler.Components<DNAIntegrityLevel> DNA_INTEGRITY_LEVEL = register("dna_integrity_level", b -> b.persistent(DNAIntegrityLevel.CODEC).networkSynchronized(DNAIntegrityLevel.STREAM_CODEC).cacheEncoding());
     public static final RegistryHandler.Components<GenomeCompleteness> GENOME_COMPLETENESS = register("genome_completeness", b -> b.persistent(GenomeCompleteness.CODEC).networkSynchronized(GenomeCompleteness.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<EntityType<?>> ENTITY_TYPE = register("entity_type", b -> b.persistent(EntityType.CODEC).networkSynchronized(EntityType.STREAM_CODEC).cacheEncoding());
 
     public static <T> RegistryHandler.Components<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator){
         return Services.REGISTRY.registerDataComponent(name, unaryOperator);

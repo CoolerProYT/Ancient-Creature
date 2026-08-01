@@ -2,9 +2,7 @@ package com.coolerpromc.ancientcreature.client.item;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
-import com.coolerpromc.ancientcreature.client.entity.model.block.DNAExtractorModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
-import com.coolerpromc.ancientcreature.client.entity.state.block.DNAExtractorRenderState;
 import com.coolerpromc.ancientcreature.client.entity.state.block.GenomeSequencerRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -42,6 +40,8 @@ public record GenomeSequencerSpecialRenderer(GenomeSequencerModel model) impleme
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - Direction.NORTH.toYRot()));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
+        poseStack.scale(0.75f, 0.75f, 0.75f);
+        poseStack.translate(0, 0.575, 0);
     }
 
     public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked{

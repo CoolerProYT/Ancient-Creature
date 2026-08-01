@@ -4,6 +4,7 @@
     "ancientcreature:fossil_identification_chamber",
     "ancientcreature:dna_extractor",
     "ancientcreature:genome_sequencer",
-    "ancientcreature:embryogenesis_chamber"
+    "ancientcreature:embryogenesis_chamber",
+    "ancientcreature:incubator"
   ]
 }

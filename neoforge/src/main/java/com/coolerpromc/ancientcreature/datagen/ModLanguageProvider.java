@@ -48,6 +48,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.block.dna_extractor.processing", "DNA extractor processes sample");
         add("subtitles.ancientcreature.block.genome_sequencer.processing", "Genome sequencer analyzes sample");
         add("subtitles.ancientcreature.block.embryogenesis_chamber.processing", "Embryogenesis chamber cultivates embryo");
+        add("subtitles.ancientcreature.block.incubator.processing", "Incubator regulates temperature");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");
@@ -70,6 +71,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.ARTIFICIAL_EGG.get(), "Artificial Egg");
         add(ModItems.NUTRIENT_SOLUTION.get(), "Nutrient Solution");
         add(ModItems.FERTILIZED_ANCIENT_EGG.get(), "Fertilized Ancient Egg");
+        add(ModItems.BABY_CREATURE_CAPSULE.get(), "Baby Creature Capsule");
 
         add(ModBlocks.FOSSIL_ORE.getBlock(), "Fossil Ore");
         add(ModBlocks.ROCK_PILE.getBlock(), "Rock Pile");
@@ -78,5 +80,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModBlocks.DNA_EXTRACTOR.getBlock(), "DNA Extractor");
         add(ModBlocks.GENOME_SEQUENCER.getBlock(), "Genome Sequencer");
         add(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock(), "Embryogenesis Chamber");
+        add(ModBlocks.INCUBATOR.getBlock(), "Incubator");
     }
 }

@@ -52,5 +52,14 @@
         "stream": false
       }
     ]
+  },
+  "block.incubator.processing": {
+    "subtitle": "subtitles.ancientcreature.block.incubator.processing",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/incubator_processing",
+        "stream": false
+      }
+    ]
   }
 }

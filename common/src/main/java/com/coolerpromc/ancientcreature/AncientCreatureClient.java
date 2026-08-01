@@ -6,18 +6,21 @@ import com.coolerpromc.ancientcreature.client.block.renderer.FossilCleaningTable
 import com.coolerpromc.ancientcreature.client.block.renderer.FossilIdentificationChamberBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.GenomeSequencerBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.block.renderer.EmbryogenesisChamberBlockEntityRenderer;
+import com.coolerpromc.ancientcreature.client.block.renderer.IncubatorBlockEntityRenderer;
 import com.coolerpromc.ancientcreature.client.entity.model.block.DNAExtractorModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilCleaningTableModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilIdentificationChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.EmbryogenesisChamberModel;
+import com.coolerpromc.ancientcreature.client.entity.model.block.IncubatorModel;
 import com.coolerpromc.ancientcreature.client.gui.screen.*;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
+import com.coolerpromc.ancientcreature.client.item.IncubatorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.model.condition.DirtyCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
@@ -71,6 +74,7 @@ public class AncientCreatureClient {
         registerMenuScreen(ModMenus.DNA_EXTRACTOR.get(), DNAExtractorScreen::new);
         registerMenuScreen(ModMenus.GENOME_SEQUENCER.get(), GenomeSequenceScreen::new);
         registerMenuScreen(ModMenus.EMBRYOGENESIS_CHAMBER.get(), EmbryogenesisChamberScreen::new);
+        registerMenuScreen(ModMenus.INCUBATOR.get(), IncubatorScreen::new);
     }
 
     public static void initRenderer(){
@@ -79,6 +83,7 @@ public class AncientCreatureClient {
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.GENOME_SEQUENCER.get(), GenomeSequencerBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.EMBRYOGENESIS_CHAMBER.get(), EmbryogenesisChamberBlockEntityRenderer::new);
+        registerBlockEntityRenderer(ModBlockEntities.INCUBATOR.get(), IncubatorBlockEntityRenderer::new);
     }
 
     public static void initModelLayer(){
@@ -87,6 +92,7 @@ public class AncientCreatureClient {
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.GENOME_SEQUENCER, GenomeSequencerModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberModel::createBodyLayer);
+        registerEntityModelLayer(ModModelLayers.INCUBATOR, IncubatorModel::createBodyLayer);
     }
 
     public static void initGuiLayer(){
@@ -112,6 +118,7 @@ public class AncientCreatureClient {
         registerSpecialModelRenderer(Constants.id("dna_extractor"), DNAExtractorSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("genome_sequencer"), GenomeSequencerSpecialRenderer.Unbaked.CODEC);
         registerSpecialModelRenderer(Constants.id("embryogenesis_chamber"), EmbryogenesisChamberSpecialRenderer.Unbaked.CODEC);
+        registerSpecialModelRenderer(Constants.id("incubator"), IncubatorSpecialRenderer.Unbaked.CODEC);
     }
 
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){

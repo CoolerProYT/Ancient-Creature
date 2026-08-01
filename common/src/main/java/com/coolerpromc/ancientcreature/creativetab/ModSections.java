@@ -38,6 +38,7 @@ public class ModSections {
             ModBlocks.DNA_EXTRACTOR.toStack(),
             ModBlocks.GENOME_SEQUENCER.toStack(),
             ModBlocks.EMBRYOGENESIS_CHAMBER.toStack(),
+            ModBlocks.INCUBATOR.toStack(),
             ModItems.DNA_SAMPLE.toStack(),
             ModItems.SAMPLE_VIAL.toStack(),
             ModItems.EXTRACTION_FLUID.toStack(),

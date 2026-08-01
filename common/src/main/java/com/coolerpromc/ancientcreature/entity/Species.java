@@ -12,15 +12,17 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f);
+    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, null);
 
     public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
     public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
@@ -29,12 +31,16 @@ public enum Species implements StringRepresentable, TooltipProvider {
     final TagKey<Biome> biomeTag;
     final float identifyFailChance;
     final float fossilDamageRate;
+    final int incubationTime;
+    final Supplier<EntityType<?>> entityType;
 
-    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate){
+    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate, int incubationTime, Supplier<EntityType<?>> entityType){
         this.name = name;
         this.biomeTag = biomeTag;
         this.identifyFailChance = identifyFailChance;
         this.fossilDamageRate = fossilDamageRate;
+        this.incubationTime = incubationTime;
+        this.entityType = entityType;
     }
 
     @Override
@@ -52,6 +58,14 @@ public enum Species implements StringRepresentable, TooltipProvider {
 
     public float getFossilDamageRate() {
         return fossilDamageRate;
+    }
+
+    public int getIncubationTime() {
+        return incubationTime;
+    }
+
+    public EntityType<?> getEntityType() {
+        return entityType.get();
     }
 
     @Override

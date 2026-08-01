@@ -40,6 +40,8 @@ public record FossilIdentificationChamberSpecialRenderer(FossilIdentificationCha
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - Direction.NORTH.toYRot()));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
+        poseStack.scale(0.75f, 0.75f, 0.75f);
+        poseStack.translate(0, 0.5, 0);
     }
 
     public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked{
