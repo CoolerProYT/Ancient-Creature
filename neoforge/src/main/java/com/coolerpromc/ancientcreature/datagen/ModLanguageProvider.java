@@ -49,6 +49,12 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.block.genome_sequencer.processing", "Genome sequencer analyzes sample");
         add("subtitles.ancientcreature.block.embryogenesis_chamber.processing", "Embryogenesis chamber cultivates embryo");
         add("subtitles.ancientcreature.block.incubator.processing", "Incubator regulates temperature");
+        add("subtitles.ancientcreature.entity.triceratops.ambient", "Triceratops rumbles");
+        add("subtitles.ancientcreature.entity.triceratops.bellow", "Triceratops bellows");
+        add("subtitles.ancientcreature.entity.triceratops.hurt", "Triceratops hurts");
+        add("subtitles.ancientcreature.entity.triceratops.death", "Triceratops dies");
+        add("subtitles.ancientcreature.entity.triceratops.attack", "Triceratops attacks");
+        add("subtitles.ancientcreature.entity.triceratops.step", "Triceratops steps");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");

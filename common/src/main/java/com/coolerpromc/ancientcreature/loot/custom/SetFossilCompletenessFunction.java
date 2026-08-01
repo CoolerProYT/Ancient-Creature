@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.loot.custom;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
+import com.coolerpromc.ancientcreature.tag.ModItemTags;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -45,9 +46,9 @@ public class SetFossilCompletenessFunction extends LootItemConditionalFunction {
     protected ItemStack run(ItemStack stack, LootContext context) {
         ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
         int fortuneLevel = 0;
-        float damageRate = 1f;
-        if (tool != null) {
-            damageRate = tool.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(1f)).value();
+        float damageRate = 0f;
+        if (tool != null && tool.is(ModItemTags.CHISELS)) {
+            damageRate = tool.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(0f)).value();
             Holder<Enchantment> fortune = context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
             ItemEnchantments enchantments = tool.get(DataComponents.ENCHANTMENTS);
             if (enchantments != null) {

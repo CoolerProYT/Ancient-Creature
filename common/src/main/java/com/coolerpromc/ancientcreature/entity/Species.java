@@ -1,7 +1,7 @@
 package com.coolerpromc.ancientcreature.entity;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.tag.ModBiomeTags;
+import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
@@ -19,10 +19,9 @@ import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, null);
+    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, ModEntities.TRICERATOPS);
 
     public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
     public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
@@ -32,9 +31,9 @@ public enum Species implements StringRepresentable, TooltipProvider {
     final float identifyFailChance;
     final float fossilDamageRate;
     final int incubationTime;
-    final Supplier<EntityType<?>> entityType;
+    final RegistryHandler.Entities<?> entityType;
 
-    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate, int incubationTime, Supplier<EntityType<?>> entityType){
+    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate, int incubationTime, RegistryHandler.Entities<?> entityType){
         this.name = name;
         this.biomeTag = biomeTag;
         this.identifyFailChance = identifyFailChance;

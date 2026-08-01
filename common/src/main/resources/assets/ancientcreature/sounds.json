@@ -61,5 +61,29 @@
         "stream": false
       }
     ]
+  },
+  "entity.triceratops.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.ambient",
+    "sounds": ["ancientcreature:entity/triceratops/ambient"]
+  },
+  "entity.triceratops.bellow": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.bellow",
+    "sounds": ["ancientcreature:entity/triceratops/bellow"]
+  },
+  "entity.triceratops.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.hurt",
+    "sounds": ["ancientcreature:entity/triceratops/hurt"]
+  },
+  "entity.triceratops.death": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.death",
+    "sounds": ["ancientcreature:entity/triceratops/death"]
+  },
+  "entity.triceratops.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.attack",
+    "sounds": ["ancientcreature:entity/triceratops/attack"]
+  },
+  "entity.triceratops.step": {
+    "subtitle": "subtitles.ancientcreature.entity.triceratops.step",
+    "sounds": ["ancientcreature:entity/triceratops/step"]
   }
 }

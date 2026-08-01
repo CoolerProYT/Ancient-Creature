@@ -35,7 +35,7 @@ public record ModArchaeologyLootSubProvider(HolderLookup.Provider registries) im
         output.accept(lootTable, LootTable.lootTable().withPool(
             LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).setWeight(5).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.25f))).apply(SetFossilPartFunction.setPart(CLAW, TOOTH, RIB, LIMB)).apply(SetFossilSpeciesFunction.setSpecies()))
+                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).setWeight(5).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.1f, 0.25f))).apply(SetFossilPartFunction.setPart(CLAW, TOOTH, RIB, LIMB)).apply(SetFossilSpeciesFunction.setSpecies()))
                 .add(LootItem.lootTableItem(ModItems.EGG_SHELL_FRAGMENT).setWeight(10))
                 .add(LootItem.lootTableItem(Items.COAL).setWeight(20))
                 .add(LootItem.lootTableItem(Items.STICK).setWeight(20))

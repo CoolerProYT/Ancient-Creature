@@ -19,6 +19,7 @@ public class FabricAncientCreature implements ModInitializer {
     public void onInitialize() {
         AncientCreature.init();
         AncientCreature.initCapability();
+        AncientCreature.initEntityAttribute();
         AncientCreature.initBiomeModifier();
 
         Services.REGISTRY.applyEntityAttributeRegistrations(FabricDefaultAttributeRegistry::register);

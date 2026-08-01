@@ -13,6 +13,12 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> GENOME_SEQUENCER_PROCESSING = register("block.genome_sequencer.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> EMBRYOGENESIS_CHAMBER_PROCESSING = register("block.embryogenesis_chamber.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> INCUBATOR_PROCESSING = register("block.incubator.processing");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_AMBIENT = register("entity.triceratops.ambient");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_BELLOW = register("entity.triceratops.bellow");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_HURT = register("entity.triceratops.hurt");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_DEATH = register("entity.triceratops.death");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_ATTACK = register("entity.triceratops.attack");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_STEP = register("entity.triceratops.step");
 
     public static RegistryHandler<SoundEvent, SoundEvent> register(String name){
         return Services.REGISTRY.registerSoundEvent(name);

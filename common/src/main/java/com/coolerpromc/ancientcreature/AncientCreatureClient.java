@@ -14,6 +14,8 @@ import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencerModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.EmbryogenesisChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.IncubatorModel;
+import com.coolerpromc.ancientcreature.client.entity.model.TriceratopsModel;
+import com.coolerpromc.ancientcreature.client.entity.renderer.TriceratopsRenderer;
 import com.coolerpromc.ancientcreature.client.gui.screen.*;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
@@ -25,6 +27,7 @@ import com.coolerpromc.ancientcreature.client.model.condition.DirtyCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
+import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
 import com.mojang.serialization.MapCodec;
@@ -78,6 +81,7 @@ public class AncientCreatureClient {
     }
 
     public static void initRenderer(){
+        registerEntityRenderer(ModEntities.TRICERATOPS.get(), TriceratopsRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
@@ -87,6 +91,7 @@ public class AncientCreatureClient {
     }
 
     public static void initModelLayer(){
+        registerEntityModelLayer(ModModelLayers.TRICERATOPS, TriceratopsModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_CLEANING_TABLE, FossilCleaningTableModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);

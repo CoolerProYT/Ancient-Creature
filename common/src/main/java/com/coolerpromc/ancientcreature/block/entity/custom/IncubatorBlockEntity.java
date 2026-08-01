@@ -152,7 +152,6 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         if (species == null) return;
         ItemStack output = ModItems.BABY_CREATURE_CAPSULE.toStack();
         output.set(ModDataComponents.SPECIES.get(), species);
-        output.set(ModDataComponents.ENTITY_TYPE.get(), species.getEntityType());
         outputContainer.addItem(output);
     }
 

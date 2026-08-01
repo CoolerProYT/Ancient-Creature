@@ -10,4 +10,5 @@ public class ModModelLayers {
     public static final ModelLayerLocation GENOME_SEQUENCER = new ModelLayerLocation(Constants.id("genome_sequencer"), "main");
     public static final ModelLayerLocation EMBRYOGENESIS_CHAMBER = new ModelLayerLocation(Constants.id("embryogenesis_chamber"), "main");
     public static final ModelLayerLocation INCUBATOR = new ModelLayerLocation(Constants.id("incubator"), "main");
+    public static final ModelLayerLocation TRICERATOPS = new ModelLayerLocation(Constants.id("triceratops"), "main");
 }

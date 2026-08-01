@@ -24,6 +24,7 @@ public class NeoForgeAncientCreature {
 
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        AncientCreature.initEntityAttribute();
         Services.REGISTRY.applyEntityAttributeRegistrations(event::put);
     }
 
