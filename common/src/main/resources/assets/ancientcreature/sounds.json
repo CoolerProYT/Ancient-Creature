@@ -85,5 +85,29 @@
   "entity.triceratops.step": {
     "subtitle": "subtitles.ancientcreature.entity.triceratops.step",
     "sounds": ["ancientcreature:entity/triceratops/step"]
+  },
+  "entity.tyrannosaurus_rex.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.ambient",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/ambient"]
+  },
+  "entity.tyrannosaurus_rex.roar": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.roar",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/roar"]
+  },
+  "entity.tyrannosaurus_rex.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.hurt",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/hurt"]
+  },
+  "entity.tyrannosaurus_rex.death": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.death",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/death"]
+  },
+  "entity.tyrannosaurus_rex.bite": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.bite",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/bite"]
+  },
+  "entity.tyrannosaurus_rex.step": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.step",
+    "sounds": ["ancientcreature:entity/tyrannosaurus_rex/step"]
   }
 }

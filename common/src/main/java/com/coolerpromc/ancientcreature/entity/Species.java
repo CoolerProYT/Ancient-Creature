@@ -21,7 +21,8 @@ import net.minecraft.world.level.biome.Biome;
 import java.util.function.Consumer;
 
 public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, ModEntities.TRICERATOPS);
+    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, ModEntities.TRICERATOPS),
+    TYRANNOSAURUS_REX("tyrannosaurus_rex", BiomeTags.IS_OVERWORLD, 0.35f, 0.08f, 1600, ModEntities.TYRANNOSAURUS_REX);
 
     public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
     public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);

@@ -1,13 +1,12 @@
 package com.coolerpromc.ancientcreature.entity.custom;
 
 import com.coolerpromc.ancientcreature.entity.ModEntities;
+import com.coolerpromc.ancientcreature.entity.util.CreatureBlockBreaker;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
-import com.coolerpromc.ancientcreature.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
@@ -32,12 +31,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gamerules.GameRules;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class Triceratops extends Animal {
+public class Triceratops extends OwnedAncientCreature {
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState chargeAnimationState = new AnimationState();
     public final AnimationState grazeAnimationState = new AnimationState();
@@ -81,44 +77,12 @@ public class Triceratops extends Animal {
             this.chargeAnimationState.animateWhen(this.isAggressive() && moving, this.tickCount);
             this.idleAnimationState.animateWhen(!moving && !this.chargeAnimationState.isStarted() && !this.grazeAnimationState.isStarted() && !this.bellowAnimationState.isStarted(), this.tickCount);
         } else if (this.level() instanceof ServerLevel serverLevel && this.isAggressive() && this.isSprinting() && this.getTarget() != null && this.tickCount % 2 == 0) {
-            this.destroyChargeObstacles(serverLevel);
-        }
-    }
-
-    private void destroyChargeObstacles(ServerLevel level) {
-        if (!level.getGameRules().get(GameRules.MOB_GRIEFING)) {
-            return;
-        }
-
-        Vec3 horizontalMotion = this.getDeltaMovement().multiply(1.0, 0.0, 1.0);
-        Vec3 direction;
-        if (horizontalMotion.lengthSqr() > 1.0E-4) {
-            direction = horizontalMotion.normalize();
-        } else {
-            Vec3 look = this.getLookAngle();
-            direction = new Vec3(look.x, 0.0, look.z).normalize();
-        }
-
-        double forwardDistance = this.getBbWidth() * 0.5 + 0.6;
-        AABB movedBox = this.getBoundingBox().move(direction.scale(forwardDistance));
-        AABB breakingBox = new AABB(
-                movedBox.minX - 0.25,
-                this.getBoundingBox().minY + 0.05,
-                movedBox.minZ - 0.25,
-                movedBox.maxX + 0.25,
-                movedBox.maxY + 0.1,
-                movedBox.maxZ + 0.25
-        );
-
-        for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(breakingBox.minX), Mth.floor(breakingBox.minY), Mth.floor(breakingBox.minZ), Mth.floor(breakingBox.maxX), Mth.floor(breakingBox.maxY), Mth.floor(breakingBox.maxZ))) {
-            BlockState state = level.getBlockState(pos);
-            if (state.is(ModBlockTags.CREATURE_DESTROYABLE) && state.getDestroySpeed(level, pos) >= 0.0F && level.getBlockEntity(pos) == null) {level.destroyBlock(pos, true, this);
-            }
+            CreatureBlockBreaker.destroyChargeObstacles(serverLevel, this, 0.6);
         }
     }
 
     private boolean isArmedPlayerThreat(net.minecraft.world.entity.LivingEntity target, ServerLevel level) {
-        if (!(target instanceof Player player) || player.isCreative() || player.isSpectator()) {
+        if (!(target instanceof Player player) || player.isCreative() || player.isSpectator() || this.isOwnedBy(player)) {
             return false;
         }
 

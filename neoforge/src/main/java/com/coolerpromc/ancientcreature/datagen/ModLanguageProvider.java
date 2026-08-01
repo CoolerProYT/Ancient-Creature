@@ -35,6 +35,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("fossilPart.ancientcreature.claw", "Claw");
 
         add("species.ancientcreature.triceratops", "Triceratops");
+        add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
+        add("entity.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");
@@ -55,6 +57,12 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.triceratops.death", "Triceratops dies");
         add("subtitles.ancientcreature.entity.triceratops.attack", "Triceratops attacks");
         add("subtitles.ancientcreature.entity.triceratops.step", "Triceratops steps");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.ambient", "Tyrannosaurus rex rumbles");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.roar", "Tyrannosaurus rex roars");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.hurt", "Tyrannosaurus rex hurts");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.death", "Tyrannosaurus rex dies");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.bite", "Tyrannosaurus rex bites");
+        add("subtitles.ancientcreature.entity.tyrannosaurus_rex.step", "Tyrannosaurus rex steps");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");

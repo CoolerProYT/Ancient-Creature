@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.block.entity.custom.*;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.entity.custom.Triceratops;
+import com.coolerpromc.ancientcreature.entity.custom.TyrannosaurusRex;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
@@ -58,6 +59,7 @@ public class AncientCreature {
 
     public static void initEntityAttribute(){
         registerEntityAttribute(ModEntities.TRICERATOPS.get(), Triceratops.createAttributes().build());
+        registerEntityAttribute(ModEntities.TYRANNOSAURUS_REX.get(), TyrannosaurusRex.createAttributes().build());
     }
 
     public static void initBiomeModifier(){

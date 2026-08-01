@@ -15,7 +15,9 @@ import com.coolerpromc.ancientcreature.client.entity.model.block.GenomeSequencer
 import com.coolerpromc.ancientcreature.client.entity.model.block.EmbryogenesisChamberModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.IncubatorModel;
 import com.coolerpromc.ancientcreature.client.entity.model.TriceratopsModel;
+import com.coolerpromc.ancientcreature.client.entity.model.TyrannosaurusRexModel;
 import com.coolerpromc.ancientcreature.client.entity.renderer.TriceratopsRenderer;
+import com.coolerpromc.ancientcreature.client.entity.renderer.TyrannosaurusRexRenderer;
 import com.coolerpromc.ancientcreature.client.gui.screen.*;
 import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
@@ -82,6 +84,7 @@ public class AncientCreatureClient {
 
     public static void initRenderer(){
         registerEntityRenderer(ModEntities.TRICERATOPS.get(), TriceratopsRenderer::new);
+        registerEntityRenderer(ModEntities.TYRANNOSAURUS_REX.get(), TyrannosaurusRexRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
@@ -92,6 +95,7 @@ public class AncientCreatureClient {
 
     public static void initModelLayer(){
         registerEntityModelLayer(ModModelLayers.TRICERATOPS, TriceratopsModel::createBodyLayer);
+        registerEntityModelLayer(ModModelLayers.TYRANNOSAURUS_REX, TyrannosaurusRexModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_CLEANING_TABLE, FossilCleaningTableModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);

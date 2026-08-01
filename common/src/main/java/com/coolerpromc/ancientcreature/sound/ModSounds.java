@@ -19,6 +19,12 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_DEATH = register("entity.triceratops.death");
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_ATTACK = register("entity.triceratops.attack");
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_STEP = register("entity.triceratops.step");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_AMBIENT = register("entity.tyrannosaurus_rex.ambient");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_ROAR = register("entity.tyrannosaurus_rex.roar");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_HURT = register("entity.tyrannosaurus_rex.hurt");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_DEATH = register("entity.tyrannosaurus_rex.death");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_BITE = register("entity.tyrannosaurus_rex.bite");
+    public static final RegistryHandler<SoundEvent, SoundEvent> TYRANNOSAURUS_REX_STEP = register("entity.tyrannosaurus_rex.step");
 
     public static RegistryHandler<SoundEvent, SoundEvent> register(String name){
         return Services.REGISTRY.registerSoundEvent(name);

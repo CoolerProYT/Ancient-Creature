@@ -11,4 +11,5 @@ public class ModModelLayers {
     public static final ModelLayerLocation EMBRYOGENESIS_CHAMBER = new ModelLayerLocation(Constants.id("embryogenesis_chamber"), "main");
     public static final ModelLayerLocation INCUBATOR = new ModelLayerLocation(Constants.id("incubator"), "main");
     public static final ModelLayerLocation TRICERATOPS = new ModelLayerLocation(Constants.id("triceratops"), "main");
+    public static final ModelLayerLocation TYRANNOSAURUS_REX = new ModelLayerLocation(Constants.id("tyrannosaurus_rex"), "main");
 }
