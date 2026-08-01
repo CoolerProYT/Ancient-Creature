@@ -1,4 +1,4 @@
-// 26.1	2026-08-01T19:02:31.6201235	Loot Tables
+// 26.1	2026-08-01T20:09:00.822774	Loot Tables
 7aa6692e61b8e25d1c4bd689cf49789e512196c7 data/ancientcreature/loot_table/archaeology/dig_site_gravel.json
 9e9e83ec55435eaa6a64cb8169155a3958ccf9a1 data/ancientcreature/loot_table/archaeology/dig_site_sand.json
 423e90d7fc73636c5d7244bddb547e2a4b049bd6 data/ancientcreature/loot_table/blocks/dna_extractor.json
@@ -7,7 +7,7 @@ ed6d05506ce20833c40dcad850ce74820a48e7f6 data/ancientcreature/loot_table/blocks/
 c53dcf2676142bb425092bc4a4fcc2f89593588e data/ancientcreature/loot_table/blocks/fossil_identification_chamber.json
 7a39505bf0ce4bd14282712b201e5da73946f24f data/ancientcreature/loot_table/blocks/fossil_ore.json
 fe4cf9fa2a4954147783cb196d6ea6b671906daa data/ancientcreature/loot_table/blocks/genome_sequencer.json
-4f521d8239cd5963f7dc3d2f245099d92621ef06 data/ancientcreature/loot_table/blocks/rock_pile.json
+ef4758f57eeff2eecfbde0c1ea270ece2709e371 data/ancientcreature/loot_table/blocks/rock_pile.json
 82958b859a58b5633bdeb2fec43c7c6464c98301 data/ancientcreature/loot_table/chests/arid_dig_site.json
 538cc7e025eeaca653e321af20f13e3536ae6d22 data/ancientcreature/loot_table/chests/badlands_dig_site.json
 6489323e1727cf57955415730b798892061e9508 data/ancientcreature/loot_table/chests/coastal_dig_site.json

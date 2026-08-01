@@ -58,7 +58,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_EGG, true)))
-                    .add(LootItem.lootTableItem(ModItems.EGG_FOSSIL.get()))
+                    .add(LootItem.lootTableItem(ModItems.EGG_FOSSIL.get()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.7f, 0.9f))).apply(SetFossilSpeciesFunction.setSpecies()))
             )
             .withPool(
                 LootPool.lootPool()

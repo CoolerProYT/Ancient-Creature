@@ -12,7 +12,7 @@ import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRen
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
+import com.coolerpromc.ancientcreature.client.model.condition.DirtyCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
@@ -65,7 +65,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.DIAMOND_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.NETHERITE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         this.generateFossilFragmentItem(itemModels);
-        itemModels.generateFlatItem(ModItems.EGG_FOSSIL.get(), ModelTemplates.FLAT_ITEM);
+        this.generateEggFossilItem(itemModels);
         itemModels.generateFlatItem(ModItems.ROCK_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.DIRT_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.EGG_SHELL_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
@@ -117,10 +117,20 @@ public class ModModelProvider extends ModelProvider {
         }
 
         itemModels.itemModelOutput.accept(ModItems.FOSSIL_FRAGMENT.get(), ItemModelUtils.conditional(
-            new DirtyFossilFragmentCondition(),
+            new DirtyCondition(),
             ItemModelUtils.select(new FossilPartSelect(), dirties),
             ItemModelUtils.select(new FossilPartSelect(), normals))
         );
+    }
+
+    private void generateEggFossilItem(ItemModelGenerators itemModels){
+        Identifier dirtyLoc = Constants.id("item/dirty_egg_fossil");
+        Identifier normalLoc = Constants.id("item/egg_fossil");
+
+        Identifier dirty = ModelTemplates.FLAT_ITEM.create(dirtyLoc, TextureMapping.layer0(new Material(dirtyLoc)), itemModels.modelOutput);
+        Identifier normal = ModelTemplates.FLAT_ITEM.create(normalLoc, TextureMapping.layer0(new Material(normalLoc)), itemModels.modelOutput);
+
+        itemModels.itemModelOutput.accept(ModItems.EGG_FOSSIL.get(), ItemModelUtils.conditional(new DirtyCondition(), ItemModelUtils.plainModel(dirty), ItemModelUtils.plainModel(normal)));
     }
 
     private void generateDNASampleItem(ItemModelGenerators itemModels){

@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
-public class DirtyFossilFragmentCondition implements ConditionalItemModelProperty {
-    public static final MapCodec<DirtyFossilFragmentCondition> MAP_CODEC = MapCodec.unit(DirtyFossilFragmentCondition::new);
+public class DirtyCondition implements ConditionalItemModelProperty {
+    public static final MapCodec<DirtyCondition> MAP_CODEC = MapCodec.unit(DirtyCondition::new);
 
     @Override
     public MapCodec<? extends ConditionalItemModelProperty> type() {

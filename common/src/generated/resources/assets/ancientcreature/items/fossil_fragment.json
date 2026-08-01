@@ -97,6 +97,6 @@
       ],
       "property": "ancientcreature:fossil_part"
     },
-    "property": "ancientcreature:dirty_fossil_fragment"
+    "property": "ancientcreature:dirty"
   }
 }

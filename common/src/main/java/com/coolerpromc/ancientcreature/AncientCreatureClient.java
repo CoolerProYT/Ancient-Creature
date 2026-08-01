@@ -18,7 +18,7 @@ import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRen
 import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
 import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.model.condition.DirtyFossilFragmentCondition;
+import com.coolerpromc.ancientcreature.client.model.condition.DirtyCondition;
 import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
@@ -98,7 +98,7 @@ public class AncientCreatureClient {
     }
 
     public static void initItemCondition(){
-        registerItemCondition(Constants.id("dirty_fossil_fragment"), DirtyFossilFragmentCondition.MAP_CODEC);
+        registerItemCondition(Constants.id("dirty"), DirtyCondition.MAP_CODEC);
     }
 
     public static void initItemSelect(){

@@ -36,6 +36,19 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "completeness": {
+                "type": "minecraft:uniform",
+                "max": 0.9,
+                "min": 0.7
+              },
+              "function": "ancientcreature:set_fossil_completeness"
+            },
+            {
+              "function": "ancientcreature:set_fossil_species"
+            }
+          ],
           "name": "ancientcreature:egg_fossil"
         }
       ],
