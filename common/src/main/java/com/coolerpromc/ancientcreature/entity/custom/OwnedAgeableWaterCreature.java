@@ -3,20 +3,21 @@ package com.coolerpromc.ancientcreature.entity.custom;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.AgeableWaterCreature;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-public abstract class OwnedAncientCreature extends Animal implements OwnableAncientCreature {
+public abstract class OwnedAgeableWaterCreature extends AgeableWaterCreature implements OwnableAncientCreature {
     private static final String OWNER_TAG = "AncientCreatureOwner";
     private @Nullable EntityReference<LivingEntity> ownerReference;
 
-    protected OwnedAncientCreature(EntityType<? extends Animal> type, Level level) {
+    protected OwnedAgeableWaterCreature(EntityType<? extends AgeableWaterCreature> type, Level level) {
         super(type, level);
     }
 
+    @Override
     public void setOwner(@Nullable LivingEntity owner) {
         this.ownerReference = EntityReference.of(owner);
         if (this.isOwnedBy(this.getTarget())) {
@@ -29,6 +30,7 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
         return this.ownerReference;
     }
 
+    @Override
     public boolean isOwnedBy(@Nullable LivingEntity entity) {
         return entity != null && this.ownerReference != null && this.ownerReference.matches(entity);
     }

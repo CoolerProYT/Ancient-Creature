@@ -2,7 +2,7 @@ package com.coolerpromc.ancientcreature.item.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.Species;
-import com.coolerpromc.ancientcreature.entity.custom.OwnedAncientCreature;
+import com.coolerpromc.ancientcreature.entity.custom.OwnableAncientCreature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -59,7 +59,7 @@ public class BabyCreatureCapsule extends Item {
                 }
             }, spawnPos, EntitySpawnReason.SPAWN_ITEM_USE, tryMoveDown, movedUp);
             if (spawned != null) {
-                if (spawned instanceof OwnedAncientCreature creature && user != null) {
+                if (spawned instanceof OwnableAncientCreature creature && user != null) {
                     creature.setOwner(user);
                 }
                 level.addFreshEntity(spawned);

@@ -1,32 +1,87 @@
-# MultiLoader Template
+# Ancient Creature
 
-This project provides a Gradle project template that can compile Minecraft mods for multiple modloaders using a common project for the sources. This project does not require any third party libraries or dependencies. If you have any questions or want to discuss the project, please join our [Discord](https://discord.myceliummod.network).
+Ancient Creature is a Minecraft mod about paleontology, fossil processing, genetic reconstruction, and bringing extinct animals back to life. Explore dig sites, recover fossils, rebuild ancient DNA, incubate embryos, and release living prehistoric creatures into the world.
 
-## Getting Started
+> [!WARNING]
+> **Ancient Creature is in early beta.** Features are incomplete and bugs are expected. Creature behavior, balance, recipes, models, animations, world generation, registry names, save data, and other systems may change between releases. Back up important worlds before updating the mod, and do not assume beta worlds will remain fully compatible with future versions.
 
-### IntelliJ IDEA
-This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up the modloaders independently and should be very familiar to anyone who has worked with their MDKs.
+## Current Features
 
-1. Clone or download this repository to your computer.
-2. Configure the project by setting the properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`, this should match the folder name of your project, or else IDEA may complain.
-3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README.md file and the gradlew executable.
-4. If your default JVM/JDK is not Java 25 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM` and changing the value to a valid Java 25 JVM. You will also need to set the Project SDK to Java 25. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
-5. Open your Run/Debug Configurations. Under the `Application` category there should now be options to run Fabric and NeoForge projects. Select one of the client options and try to run it.
-6. Assuming you were able to run the game in step 5 your workspace should now be set up.
+- Fossil ore, rock piles, suspicious blocks, and biome-specific archaeological dig sites.
+- Multiple chisels and fossil fragment types.
+- A multi-stage laboratory workflow using dedicated machines:
+  1. Clean recovered fossil fragments.
+  2. Identify their species.
+  3. Extract ancient DNA.
+  4. Sequence and complete the genome.
+  5. Create an embryo and fertilized ancient egg.
+  6. Incubate the egg to receive a baby creature capsule.
+- Fossil completeness, fossil damage, DNA integrity, and species identification systems.
+- Animated machinery with custom interfaces and processing sounds.
+- Baby creature capsules that remember the player who released the creature.
+- Capsule-released creatures will not target or retaliate against their owner.
 
-### Eclipse
-While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
+## Creatures
 
-## Development Guide
-When using this template the majority of your mod should be developed in the `common` project. The `common` project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The `common` project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the `fabric` or `neoforge` projects.
+### Triceratops
 
-Loader specific projects such as the `fabric` and `neoforge` project are used to load the `common` project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all the code in the `common` project. It is important to remember that the `common` project can not access code from loader specific projects.
+A defensive herbivore that normally wanders and grazes. It becomes aggressive toward nearby hostile mobs and players carrying weapons, then bellows and charges. While charging, it can break blocks included in the `#ancientcreature:creature_destroyable` block tag when mob griefing is enabled.
 
-## Removing Platforms and Loaders
-While this template has support for many modloaders, new loaders may appear in the future, and existing loaders may become less relevant.
+### Tyrannosaurus Rex
 
-Removing loader specific projects is as easy as deleting the folder, and removing the `include("projectname")` line from the `settings.gradle` file.
-For example if you wanted to remove support for `forge` you would follow the following steps:
+A territorial apex predator with idle, walking, roaring, and biting animations. Adults hunt animals, hostile mobs, and survival players. A T-Rex roars when beginning an engagement, then sprints after its target and can smash tagged obstacles in its path. Babies do not hunt.
 
-1. Delete the subproject folder. For example, delete `MultiLoader-Template/forge`.
-2. Remove the project from `settings.gradle`. For example, remove `include("forge")`. 
+### Megalodon
+
+A giant aquatic predator with smooth three-dimensional swimming, an articulated tail, and a bite animation. Adults hunt aquatic creatures and survival players in the water, while babies remain non-aggressive. Its model uses a more elongated reconstruction rather than simply scaling up a modern great white shark.
+
+## Creature Ownership
+
+Creatures released from baby creature capsules store the releasing player's UUID as their owner. Ownership persists after saving and reloading the world. Owned creatures cannot select, attack, or retaliate against their owner; this safety system does not otherwise tame them or replace their normal behavior.
+
+Creatures created with commands or through other non-capsule methods are unowned.
+
+## Compatibility
+
+| Requirement | Version |
+| --- | --- |
+| Minecraft | 26.1 |
+| Java | 25 |
+| Mod loaders | Fabric and NeoForge |
+
+The mod is developed as a multi-loader project with shared gameplay code in `common` and loader-specific entry points in `fabric` and `neoforge`.
+
+## Installation
+
+1. Install a compatible Fabric or NeoForge loader for Minecraft 26.1.
+2. Download the Ancient Creature build made for that loader.
+3. Place the mod JAR in the Minecraft `mods` directory.
+4. Back up existing worlds before installing or updating early-beta builds.
+
+Fabric and NeoForge builds are separate and cannot be used with the other loader.
+
+## Development
+
+Clone the repository and import the root Gradle project using Java 25. Most shared development belongs in the `common` project.
+
+Compile both loader targets:
+
+```shell
+./gradlew :fabric:compileJava :neoforge:compileJava
+```
+
+Build distributable JARs:
+
+```shell
+./gradlew :fabric:build :neoforge:build
+```
+
+On Windows, use `gradlew.bat` instead of `./gradlew`.
+
+## Reporting Beta Issues
+
+When reporting a problem, include the Ancient Creature version, Minecraft version, loader and loader version, relevant logs or crash reports, and steps that reproduce the issue. Clearly state whether the world was created on the current version or upgraded from an earlier beta.
+
+## License
+
+Ancient Creature is licensed under [CC0 1.0 Universal](LICENSE).

@@ -3,14 +3,21 @@ package com.coolerpromc.ancientcreature.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -19,9 +26,10 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public class RockPileBlock extends HorizontalDirectionalBlock {
+public class RockPileBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty HAS_EGG = BooleanProperty.create("has_egg");
     public static final BooleanProperty HAS_FOSSIL = BooleanProperty.create("has_fossil");
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final VoxelShape WITH_EGG = Stream.of(
         Stream.of(
@@ -134,7 +142,7 @@ public class RockPileBlock extends HorizontalDirectionalBlock {
 
     public RockPileBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(HAS_EGG, false).setValue(HAS_FOSSIL, false).setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(HAS_EGG, false).setValue(HAS_FOSSIL, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -144,7 +152,7 @@ public class RockPileBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(HAS_EGG, HAS_FOSSIL, FACING);
+        builder.add(HAS_EGG, HAS_FOSSIL, FACING, WATERLOGGED);
     }
 
     @Override
@@ -165,8 +173,23 @@ public class RockPileBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbour, BlockPos neighbourPos, BlockState neighbourState, RandomSource random) {
+        if (state.getValue(WATERLOGGED)) {
+            ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+        LevelAccessor level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        return this.defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).is(Fluids.WATER)).setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override

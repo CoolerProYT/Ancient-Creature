@@ -36,7 +36,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
+        add("species.ancientcreature.megalodon", "Megalodon");
         add("entity.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
+        add("entity.ancientcreature.megalodon", "Megalodon");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");
