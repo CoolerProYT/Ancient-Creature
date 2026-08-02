@@ -2,9 +2,6 @@ package com.coolerpromc.ancientcreature.compat.jade;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.entity.custom.PlaceholderBlockEntity;
-import com.coolerpromc.ancientcreature.compat.jade.component.ModCreatureOwnerComponentProvider;
-import com.coolerpromc.ancientcreature.compat.jade.data.ModCreatureOwnerDataProvider;
-import com.coolerpromc.ancientcreature.entity.custom.OwnedAncientCreature;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,11 +21,10 @@ public class ModJadePlugin implements IWailaPlugin {
             }
             return accessor;
         });
-        registration.registerEntityComponent(ModCreatureOwnerComponentProvider.INSTANCE, OwnedAncientCreature.class);
     }
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerEntityDataProvider(ModCreatureOwnerDataProvider.INSTANCE, OwnedAncientCreature.class);
+
     }
 }
