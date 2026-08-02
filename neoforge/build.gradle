@@ -40,6 +40,14 @@ neoForge {
     }
 }
 
+dependencies {
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+
+    compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
+    runtimeOnly "maven.modrinth:jade:${jade_version}+neoforge"
+}
+
 sourceSets.main.resources { srcDirs 'src/generated/resources', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath() }
 
 // Implement mcgradleconventions loader attribute

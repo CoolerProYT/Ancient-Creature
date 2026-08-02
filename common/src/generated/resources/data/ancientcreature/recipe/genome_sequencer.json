@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "L": "minecraft:lapis_lazuli",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "CRC",
+    "RLR",
+    "CCC"
+  ],
+  "result": {
+    "id": "ancientcreature:genome_sequencer"
+  }
+}

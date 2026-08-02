@@ -11,6 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -44,5 +45,11 @@ public class NeoForgeAncientCreature {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         AncientCreature.initCapability();
         Services.CAPABILITIES.applyRegistrations(event);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        AncientCreature.initBrewingRecipe();
+        Services.REGISTRY.applyBrewingRecipeRegistrations(event.getBuilder()::addContainerRecipe);
     }
 }

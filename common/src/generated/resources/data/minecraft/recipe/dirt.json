@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "ancientcreature:dirt_fragment",
+    "ancientcreature:dirt_fragment",
+    "ancientcreature:dirt_fragment",
+    "ancientcreature:dirt_fragment"
+  ],
+  "result": {
+    "id": "minecraft:dirt"
+  }
+}

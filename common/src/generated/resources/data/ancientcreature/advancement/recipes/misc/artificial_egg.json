@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_egg_shell_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:egg_shell_fragment"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nutrient_solution": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:nutrient_solution"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ancientcreature:artificial_egg"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_egg_shell_fragment",
+      "has_nutrient_solution"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ancientcreature:artificial_egg"
+    ]
+  }
+}

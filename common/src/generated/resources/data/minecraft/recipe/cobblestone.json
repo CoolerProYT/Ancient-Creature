@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "ancientcreature:rock_fragment",
+    "ancientcreature:rock_fragment",
+    "ancientcreature:rock_fragment",
+    "ancientcreature:rock_fragment"
+  ],
+  "result": {
+    "id": "minecraft:cobblestone"
+  }
+}

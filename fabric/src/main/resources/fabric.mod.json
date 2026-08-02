@@ -23,6 +23,12 @@
         ],
         "fabric-datagen": [
             "com.coolerpromc.ancientcreature.datagen.ModDataGenerator"
+        ],
+        "jei_mod_plugin": [
+            "com.coolerpromc.ancientcreature.compat.jei.ModJEIPlugin"
+        ],
+        "jade": [
+            "com.coolerpromc.ancientcreature.compat.jade.ModJadePlugin"
         ]
     },
     "mixins": [

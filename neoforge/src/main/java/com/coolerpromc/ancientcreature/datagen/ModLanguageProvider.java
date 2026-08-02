@@ -20,8 +20,13 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip.ancientcreature.dna_integrity_level", "§7Integrity Level: %s");
 
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
-        add("tab.ancientcreature.fossil_fragments", "Fossil Fragments");
+        add("tab.ancientcreature.fossils", "Fossils");
         add("tab.ancientcreature.chisels", "Chisels");
+        add("tab.ancientcreature.machines", "Machines");
+        add("tab.ancientcreature.dna_samples", "DNA Samples");
+        add("tab.ancientcreature.genomes", "Genomes");
+        add("tab.ancientcreature.processed_items", "Processed Items");
+        add("tab.ancientcreature.fertilized_ancient_eggs", "Fertilized Eggs");
         add("tab.ancientcreature.misc", "Misc");
 
         add("name.ancientcreature.dirty", "Dirty");

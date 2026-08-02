@@ -29,6 +29,10 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+    }
 }
 
 sourcesJar {
@@ -71,7 +75,9 @@ processResources {
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range,
             'credits'                      : credits,
-            'java_version'                 : java_version
+            'java_version'                 : java_version,
+            'jei_version'                  : jei_version,
+            'jade_version'                 : jade_version
     ]
 
     var jsonExpandProps = expandProps.collectEntries {
@@ -98,7 +104,11 @@ publishing {
     }
     repositories {
         maven {
-            url System.getenv('local_maven_url')
+            url = findProperty("maven_url")
+            credentials {
+                username = findProperty("maven_username")
+                password = findProperty("maven_password")
+            }
         }
     }
 }

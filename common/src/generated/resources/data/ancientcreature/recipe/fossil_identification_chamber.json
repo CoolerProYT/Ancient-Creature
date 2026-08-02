@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:book",
+    "G": "minecraft:lapis_lazuli",
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:glass_pane"
+  },
+  "pattern": [
+    "PGP",
+    "IBI",
+    "III"
+  ],
+  "result": {
+    "id": "ancientcreature:fossil_identification_chamber"
+  }
+}

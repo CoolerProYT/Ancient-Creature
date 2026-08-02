@@ -3,12 +3,12 @@ package com.coolerpromc.ancientcreature;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.block.entity.custom.*;
+import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
+import com.coolerpromc.ancientcreature.entity.custom.Megalodon;
 import com.coolerpromc.ancientcreature.entity.custom.Triceratops;
 import com.coolerpromc.ancientcreature.entity.custom.TyrannosaurusRex;
-import com.coolerpromc.ancientcreature.entity.custom.Megalodon;
-import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
@@ -24,6 +24,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -69,6 +70,10 @@ public class AncientCreature {
         registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.FOSSIL_ORE);
     }
 
+    public static void initBrewingRecipe(){
+
+    }
+
     private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider){
         Services.CAPABILITIES.registerBlockEntityItemStorage(type, provider);
     }
@@ -79,5 +84,9 @@ public class AncientCreature {
 
     private static void registerBiomeModifier(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey){
         Services.REGISTRY.registerFeatureBiomeModifier(biomeTagKey, step, placedFeatureKey);
+    }
+
+    private static void registerBrewingRecipe(Item from, Item ingredient, Item to){
+        Services.REGISTRY.registerBrewingRecipe(from, ingredient, to);
     }
 }

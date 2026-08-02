@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "C": "minecraft:copper_ingot"
+  },
+  "pattern": [
+    "CAC",
+    "C C",
+    "CCC"
+  ],
+  "result": {
+    "id": "ancientcreature:genome_cartridge_blank"
+  }
+}

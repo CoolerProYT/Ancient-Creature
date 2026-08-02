@@ -10,7 +10,8 @@
             "Properties": {
               "facing": "north",
               "has_egg": "false",
-              "has_fossil": "false"
+              "has_fossil": "false",
+              "waterlogged": "false"
             }
           },
           "weight": 100
@@ -21,7 +22,8 @@
             "Properties": {
               "facing": "north",
               "has_egg": "false",
-              "has_fossil": "true"
+              "has_fossil": "true",
+              "waterlogged": "false"
             }
           },
           "weight": 30
@@ -32,7 +34,8 @@
             "Properties": {
               "facing": "north",
               "has_egg": "true",
-              "has_fossil": "false"
+              "has_fossil": "false",
+              "waterlogged": "false"
             }
           },
           "weight": 4
@@ -43,7 +46,8 @@
             "Properties": {
               "facing": "north",
               "has_egg": "true",
-              "has_fossil": "true"
+              "has_fossil": "true",
+              "waterlogged": "false"
             }
           },
           "weight": 1

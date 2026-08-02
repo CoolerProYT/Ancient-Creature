@@ -16,5 +16,6 @@ public class ModDataGenerator {
         event.createProvider(ModBiomeTagsProvider::new);
         event.createProvider(ModLootTableProvider::new);
         event.createProvider(ModDataPackProvider::new);
+        event.createProvider(ModRecipeProvider.Runner::new);
     }
 }

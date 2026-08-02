@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:brush",
+    "S": "#minecraft:slabs",
+    "W": "#minecraft:planks"
+  },
+  "pattern": [
+    "W W",
+    "WBW",
+    "SSS"
+  ],
+  "result": {
+    "id": "ancientcreature:fossil_cleaning_table"
+  }
+}

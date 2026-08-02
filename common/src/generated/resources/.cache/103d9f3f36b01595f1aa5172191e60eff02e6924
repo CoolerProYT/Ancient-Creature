@@ -1,7 +1,7 @@
-// 26.1	2026-08-01T18:09:58.9073197	Registries
+// 26.1.2	2026-08-02T15:18:42.9810198	Registries
 98a6085cef191a255165fcc5b14a00ba1ffeaf33 data/ancientcreature/neoforge/biome_modifier/forest_rocks.json
 9902cf778e914ebaaa007a85faeb745abba6ad9e data/ancientcreature/neoforge/biome_modifier/fossil_ore.json
-fb4b73c077a32030ed13e877abfed7d181ed6213 data/ancientcreature/worldgen/configured_feature/forest_rocks.json
+b6a420e630817a28d024da3ce3019114ea467a8a data/ancientcreature/worldgen/configured_feature/forest_rocks.json
 6552f390f8f6876c55404405e98bc97920b115ab data/ancientcreature/worldgen/configured_feature/fossil_ore.json
 d3fdbde7d3ea1d6621053298e3a437bdf24d21cb data/ancientcreature/worldgen/placed_feature/forest_rocks.json
 153f087910a0db1f374e0180330f80c0ed721acc data/ancientcreature/worldgen/placed_feature/fossil_ore.json

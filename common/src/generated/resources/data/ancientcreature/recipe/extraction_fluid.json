@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "minecraft:potion",
+    "P": "minecraft:fermented_spider_eye"
+  },
+  "pattern": [
+    " F ",
+    "FPF",
+    " F "
+  ],
+  "result": {
+    "id": "ancientcreature:extraction_fluid"
+  }
+}

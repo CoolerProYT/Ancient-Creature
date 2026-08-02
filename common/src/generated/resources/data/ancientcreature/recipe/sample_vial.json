@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:glass_bottle",
+    "G": "minecraft:glass"
+  },
+  "pattern": [
+    "G G",
+    " B "
+  ],
+  "result": {
+    "id": "ancientcreature:sample_vial"
+  }
+}

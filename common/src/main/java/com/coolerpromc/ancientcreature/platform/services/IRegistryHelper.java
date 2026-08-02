@@ -42,7 +42,10 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 
 import java.util.List;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public interface IRegistryHelper {
     default <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func){
@@ -73,11 +76,17 @@ public interface IRegistryHelper {
     void registerFeatureBiomeModifier(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey);
     void applyBiomeModifierRegistrations(FeatureBiomeModifierRegistrar registrar);
 
+    void registerBrewingRecipe(Item from, Item ingredient, Item to);
+    void applyBrewingRecipeRegistrations(BrewingRecipeRegistrar registrar);
+
     interface EntityAttributeRegistrar {
         void register(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     }
     interface FeatureBiomeModifierRegistrar {
         void register(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey);
+    }
+    interface BrewingRecipeRegistrar {
+        void register(Item from, Item ingredient, Item to);
     }
 
     static ResourceKey<Block> blockKey(String name) {

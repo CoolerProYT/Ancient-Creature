@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "ancientcreature:egg_shell_fragment",
+    "ancientcreature:egg_shell_fragment",
+    "ancientcreature:nutrient_solution"
+  ],
+  "result": {
+    "id": "ancientcreature:artificial_egg"
+  }
+}

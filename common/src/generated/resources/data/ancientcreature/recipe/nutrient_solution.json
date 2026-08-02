@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "minecraft:potion",
+    "P": "minecraft:bone_meal"
+  },
+  "pattern": [
+    " F ",
+    "FPF",
+    " F "
+  ],
+  "result": {
+    "count": 4,
+    "id": "ancientcreature:nutrient_solution"
+  }
+}

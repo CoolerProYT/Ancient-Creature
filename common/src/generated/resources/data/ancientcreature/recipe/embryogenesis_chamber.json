@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_block",
+    "C": "minecraft:glass",
+    "G": "minecraft:gold_ingot",
+    "S": "minecraft:slime_ball"
+  },
+  "pattern": [
+    "GAG",
+    "SCS",
+    "GGG"
+  ],
+  "result": {
+    "id": "ancientcreature:embryogenesis_chamber"
+  }
+}

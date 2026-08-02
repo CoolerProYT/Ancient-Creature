@@ -59,6 +59,7 @@ import java.util.function.UnaryOperator;
 public class FabricRegistryHelper implements IRegistryHelper {
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
+    private final List<BrewingRecipeEntry> brewingRecipes = new ArrayList<>();
 
     @Override
     public <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func, BlockBehaviour.Properties p) {
@@ -206,6 +207,18 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
+    @Override
+    public void registerBrewingRecipe(Item from, Item ingredient, Item to) {
+        this.brewingRecipes.add(new BrewingRecipeEntry(from, ingredient, to));
+    }
+
+    @Override
+    public void applyBrewingRecipeRegistrations(BrewingRecipeRegistrar registrar) {
+        for (BrewingRecipeEntry entry : brewingRecipes) {
+            entry.register(registrar);
+        }
+    }
+
     private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         private void register(EntityAttributeRegistrar registrar) {
             registrar.register(this.entityType, this.supplier);
@@ -215,6 +228,12 @@ public class FabricRegistryHelper implements IRegistryHelper {
     private record FeatureBiomeModifierEntry(TagKey<Biome> biomeTagKey, GenerationStep.Decoration step, ResourceKey<PlacedFeature> placedFeatureKey){
         private void register(FeatureBiomeModifierRegistrar registrar){
             registrar.register(this.biomeTagKey, this.step, this.placedFeatureKey);
+        }
+    }
+
+    private record BrewingRecipeEntry(Item from, Item ingredient, Item to){
+        private void register(BrewingRecipeRegistrar registrar){
+            registrar.register(this.from, this.ingredient, this.to);
         }
     }
 }

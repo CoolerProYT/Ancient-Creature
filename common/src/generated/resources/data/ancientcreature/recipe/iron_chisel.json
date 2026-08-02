@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": "#minecraft:iron_tool_materials",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "  M",
+    " M ",
+    "S  "
+  ],
+  "result": {
+    "id": "ancientcreature:iron_chisel"
+  }
+}

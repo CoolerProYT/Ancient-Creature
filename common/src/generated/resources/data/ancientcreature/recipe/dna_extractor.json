@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:fermented_spider_eye",
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "IGI",
+    "RER",
+    "III"
+  ],
+  "result": {
+    "id": "ancientcreature:dna_extractor"
+  }
+}
