@@ -57,7 +57,7 @@
   "jei.ancientcreature.identification_chance": "First identification failure chance: %s%%",
   "jei.ancientcreature.identification_damage": "On failure, completeness is reduced by %s%%",
   "jei.ancientcreature.identification_time": "400 ticks for a new species; 100 known species",
-  "jei.ancientcreature.incubation_time": "Incubation time: %s seconds",
+  "jei.ancientcreature.incubation_time": "Incubation time: %ss",
   "jei.ancientcreature.integrity_result": "Resulting integrity: %s",
   "jei.ancientcreature.method.brushing": "Method: Brush suspicious blocks at dig sites",
   "jei.ancientcreature.method.chiseling": "Method: Chisel fossil ore",
