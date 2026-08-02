@@ -21,6 +21,7 @@ public class ModBlockEntities {
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<EmbryogenesisChamberBlockEntity>> EMBRYOGENESIS_CHAMBER = register("embryogenesis_chamber", EmbryogenesisChamberBlockEntity::new, List.of(ModBlocks.EMBRYOGENESIS_CHAMBER.block()));
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<IncubatorBlockEntity>> INCUBATOR = register("incubator", IncubatorBlockEntity::new, List.of(ModBlocks.INCUBATOR.block()));
     public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<PlaceholderBlockEntity>> PLACEHOLDER = register("placeholder", PlaceholderBlockEntity::new, List.of(ModBlocks.PLACEHOLDER.block()));
+    public static final RegistryHandler<BlockEntityType<?>, BlockEntityType<EggBlockEntity>> EGG = register("egg", EggBlockEntity::new, List.of(ModBlocks.EGG.block()));
 
     public static <T extends BlockEntity> RegistryHandler<BlockEntityType<?>, BlockEntityType<T>> register(String name, BlockEntityTypeFactory<T> factory, List<Supplier<? extends Block>> blocks){
         return Services.REGISTRY.registerBlockEntityType(name, factory, blocks);

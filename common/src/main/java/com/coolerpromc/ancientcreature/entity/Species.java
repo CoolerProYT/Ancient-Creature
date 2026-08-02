@@ -17,7 +17,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.biome.Biome;
+import org.jspecify.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public enum Species implements StringRepresentable, TooltipProvider {
@@ -77,5 +79,9 @@ public enum Species implements StringRepresentable, TooltipProvider {
             name = Component.translatable("species.ancientcreature.unidentified").getString();
         }
         consumer.accept(Component.translatable("tooltip.ancientcreature.species", name));
+    }
+
+    public static @Nullable Species byEntityType(EntityType<?> type){
+        return Arrays.stream(values()).filter(e -> e.entityType.get().equals(type)).findFirst().orElse(null);
     }
 }

@@ -1,7 +1,11 @@
 package com.coolerpromc.ancientcreature.compat.jade;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.block.custom.EggBlock;
+import com.coolerpromc.ancientcreature.block.entity.custom.EggBlockEntity;
 import com.coolerpromc.ancientcreature.block.entity.custom.PlaceholderBlockEntity;
+import com.coolerpromc.ancientcreature.compat.jade.component.EggDataComponentProvider;
+import com.coolerpromc.ancientcreature.compat.jade.data.EggDataProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,7 +13,7 @@ import snownee.jade.api.*;
 
 @WailaPlugin
 public class ModJadePlugin implements IWailaPlugin {
-    public static final Identifier OWNER_DATA = Constants.id("owner_data");
+    public static final Identifier EGG_DATA = Constants.id("egg_data");
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
@@ -21,10 +25,11 @@ public class ModJadePlugin implements IWailaPlugin {
             }
             return accessor;
         });
+        registration.registerBlockComponent(EggDataComponentProvider.INSTANCE, EggBlock.class);
     }
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-
+        registration.registerBlockDataProvider(EggDataProvider.INSTANCE, EggBlockEntity.class);
     }
 }

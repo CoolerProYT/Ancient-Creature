@@ -9,11 +9,11 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-public abstract class OwnedAgeableWaterCreature extends AgeableWaterCreature implements OwnableAncientCreature {
+public abstract class OwnedWaterAncientCreature extends AgeableWaterCreature implements OwnableAncientCreature {
     private static final String OWNER_TAG = "AncientCreatureOwner";
     private @Nullable EntityReference<LivingEntity> ownerReference;
 
-    protected OwnedAgeableWaterCreature(EntityType<? extends AgeableWaterCreature> type, Level level) {
+    protected OwnedWaterAncientCreature(EntityType<? extends AgeableWaterCreature> type, Level level) {
         super(type, level);
     }
 

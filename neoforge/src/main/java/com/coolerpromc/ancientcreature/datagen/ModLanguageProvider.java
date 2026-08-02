@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.datagen;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
+import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -48,6 +49,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add("jei.ancientcreature.same_species", "DNA Sample must have same species as filled cartridge");
         add("jei.ancientcreature.incubation_time", "Incubation time: %ss");
 
+        add("jade.ancientcreature.remaining_time", "Remaining Time: %ss");
+        add("config.jade.plugin_ancientcreature.egg_data", "Egg Data");
+
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
         add("tab.ancientcreature.fossils", "Fossils");
         add("tab.ancientcreature.chisels", "Chisels");
@@ -71,8 +75,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
         add("species.ancientcreature.megalodon", "Megalodon");
-        add("entity.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
-        add("entity.ancientcreature.megalodon", "Megalodon");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");
@@ -99,6 +101,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.death", "Tyrannosaurus rex dies");
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.bite", "Tyrannosaurus rex bites");
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.step", "Tyrannosaurus rex steps");
+
+        add(ModEntities.TRICERATOPS.get(), "Triceratops");
+        add(ModEntities.TYRANNOSAURUS_REX.get(), "Tyrannosaurus Rex");
+        add(ModEntities.MEGALODON.get(), "Megalodon");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");
@@ -131,5 +137,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModBlocks.GENOME_SEQUENCER.getBlock(), "Genome Sequencer");
         add(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock(), "Embryogenesis Chamber");
         add(ModBlocks.INCUBATOR.getBlock(), "Incubator");
+        add(ModBlocks.EGG.getBlock(), "Egg");
     }
 }

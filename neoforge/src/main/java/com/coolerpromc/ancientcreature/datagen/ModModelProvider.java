@@ -60,6 +60,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/embryogenesis_chamber"))))).with(horizontalFacing(EmbryogenesisChamberBlock.FACING)));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.INCUBATOR.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/incubator"))))).with(horizontalFacing(IncubatorBlock.FACING)));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.PLACEHOLDER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/placeholder"))))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.EGG.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/egg"))))));
 
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.COPPER_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -88,6 +89,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.NUTRIENT_SOLUTION.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.FERTILIZED_ANCIENT_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.BABY_CREATURE_CAPSULE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.itemModelOutput.accept(ModBlocks.EGG.getItem(), ItemModelUtils.plainModel(Constants.id("block/egg")));
     }
 
     private void generateRockPileBlockState(BlockModelGenerators blockModels){

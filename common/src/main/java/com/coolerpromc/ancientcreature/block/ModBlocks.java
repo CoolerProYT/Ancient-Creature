@@ -25,6 +25,7 @@ public class ModBlocks {
     public static final BlockItemRegistryHandler<GenomeSequencerBlock> GENOME_SEQUENCER = registerBlock("genome_sequencer", GenomeSequencerBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<EmbryogenesisChamberBlock> EMBRYOGENESIS_CHAMBER = registerBlock("embryogenesis_chamber", EmbryogenesisChamberBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<IncubatorBlock> INCUBATOR = registerBlock("incubator", IncubatorBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
+    public static final BlockItemRegistryHandler<EggBlock> EGG = registerBlock("egg", EggBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion().noLootTable());
 
     public static <B extends Block> BlockItemRegistryHandler<B> registerBlock(String name, Function<BlockBehaviour.Properties, B> func, BlockBehaviour.Properties properties){
         RegistryHandler.Blocks<B> block = Services.REGISTRY.registerBlock(name, func, properties);
