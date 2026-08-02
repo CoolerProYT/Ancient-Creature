@@ -73,6 +73,10 @@ public class ModSections {
             fertilizedAncientEgg.set(ModDataComponents.SPECIES.get(), species);
             fertilizedAncientEggs.add(fertilizedAncientEgg);
 
+            ItemStack capsule = ModItems.BABY_CREATURE_CAPSULE.toStack();
+            capsule.set(ModDataComponents.SPECIES.get(), species);
+            fertilizedAncientEggs.add(capsule);
+
             ItemStack eggFossil = ModItems.EGG_FOSSIL.toStack();
             eggFossil.set(ModDataComponents.SPECIES.get(), species);
             eggFossil.set(ModDataComponents.IDENTIFIED.get(), false);

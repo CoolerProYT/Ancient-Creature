@@ -19,6 +19,35 @@ public class ModLanguageProvider extends LanguageProvider {
         add("tooltip.ancientcreature.species", "§7Species: %s");
         add("tooltip.ancientcreature.dna_integrity_level", "§7Integrity Level: %s");
 
+        add("jei.ancientcreature.category.fossil_hunting", "Fossil Part Hunting");
+        add("jei.ancientcreature.method.chiseling", "Method: Chisel fossil ore");
+        add("jei.ancientcreature.method.rock_pile", "Method: Break a rock pile that has egg");
+        add("jei.ancientcreature.method.brushing", "Method: Brush suspicious blocks at dig sites");
+        add("jei.ancientcreature.biomes", "Biomes: %s");
+        add("jei.ancientcreature.biome.overworld", "All Overworld biomes");
+        add("jei.ancientcreature.biome.ocean", "Ocean biomes only");
+        add("jei.ancientcreature.species_result", "Possible species: %s");
+        add("jei.ancientcreature.parts", "Possible parts: %s");
+        add("jei.ancientcreature.parts_egg_only", "Result: Egg fossil");
+        add("jei.ancientcreature.completeness_range", "Completeness: %s%%-%s%%");
+        add("jei.ancientcreature.fortune_bonus", "Fortune adds 10% completeness before chisel damage");
+        add("jei.ancientcreature.rock_pile_fossil_condition", "Only rock piles visibly containing a fossil yield this");
+        add("jei.ancientcreature.rock_pile_egg_condition", "Only rock piles visibly containing an egg yield this");
+        add("jei.ancientcreature.archaeology_chance", "Fossil chance: 5/76 (6.58%%); skulls/vertebrae unavailable");
+        add("jei.ancientcreature.cleaning_preserves", "Preserves species, part, and completeness");
+        add("jei.ancientcreature.dirt_output", "Also yields 0-2 dirt fragments; costs 1 brush durability");
+        add("jei.ancientcreature.identification_chance", "First identification failure chance: %s%%");
+        add("jei.ancientcreature.identification_damage", "On failure, completeness is reduced by %s%%");
+        add("jei.ancientcreature.identification_time", "400 ticks for a new species; 100 known species");
+        add("jei.ancientcreature.dna_formula", "Integrity score = completeness + fossil-part bonus");
+        add("jei.ancientcreature.egg_limb_bonus", "Egg fossils use the limb bonus (0 points)");
+        add("jei.ancientcreature.integrity_result", "Resulting integrity: %s");
+        add("jei.ancientcreature.extraction_consumption", "Consumes fossil + vial; costs 1 fluid durability");
+        add("jei.ancientcreature.genome_added", "Genome completeness added: %s%%-%s%%");
+        add("jei.ancientcreature.genome_caps", "At 100%%, the cartridge becomes completed");
+        add("jei.ancientcreature.same_species", "DNA Sample must have same species as filled cartridge");
+        add("jei.ancientcreature.incubation_time", "Incubation time: %ss");
+
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
         add("tab.ancientcreature.fossils", "Fossils");
         add("tab.ancientcreature.chisels", "Chisels");
