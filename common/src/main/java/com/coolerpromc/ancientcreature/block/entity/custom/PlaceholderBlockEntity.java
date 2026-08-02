@@ -139,4 +139,13 @@ public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityEx
         }
         return null;
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        BlockEntity actual = level.getBlockEntity(this.getActualPos());
+        if (actual instanceof ICapabilityExposure exposure){
+            return exposure.getAllContainers();
+        }
+        return new Container[0];
+    }
 }

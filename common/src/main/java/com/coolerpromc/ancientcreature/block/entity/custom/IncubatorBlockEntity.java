@@ -233,4 +233,9 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     public Container getContainerBySide(@Nullable Direction direction) {
         return direction == Direction.DOWN ? outputContainer : inputContainer;
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getInputContainer(), getOutputContainer()};
+    }
 }

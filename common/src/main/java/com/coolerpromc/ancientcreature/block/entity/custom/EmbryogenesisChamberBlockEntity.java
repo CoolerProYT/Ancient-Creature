@@ -263,4 +263,9 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         if (direction == Direction.EAST || direction == Direction.WEST) return genomeContainer;
         return nutrientContainer;
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getGenomeContainer(), getEggContainer(), getNutrientContainer(), getOutputContainer()};
+    }
 }

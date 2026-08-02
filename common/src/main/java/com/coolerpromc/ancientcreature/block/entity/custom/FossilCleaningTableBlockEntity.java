@@ -269,4 +269,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         }
         return getFossilContainer();
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getBrushContainer(), getFossilContainer(), getOutputContainer()};
+    }
 }

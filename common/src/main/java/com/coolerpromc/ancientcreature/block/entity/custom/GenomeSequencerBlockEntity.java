@@ -258,4 +258,9 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
         }
         return getDnaSampleContainer();
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getDnaSampleContainer(), getCartridgeContainer()};
+    }
 }

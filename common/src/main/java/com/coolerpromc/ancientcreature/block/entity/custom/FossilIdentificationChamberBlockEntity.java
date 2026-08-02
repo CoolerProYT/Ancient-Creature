@@ -265,4 +265,9 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         }
         return getInputContainer();
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getInputContainer(), getOutputContainer()};
+    }
 }

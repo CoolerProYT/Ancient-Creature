@@ -299,4 +299,9 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
         return getExtractionFluidContainer();
     }
+
+    @Override
+    public Container[] getAllContainers() {
+        return new SimpleContainer[]{getExtractionFluidContainer(), getSampleVialContainer(), getFossilContainer(), getOutputContainer()};
+    }
 }

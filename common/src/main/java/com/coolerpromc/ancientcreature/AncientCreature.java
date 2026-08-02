@@ -33,6 +33,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jspecify.annotations.Nullable;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AncientCreature {
@@ -50,13 +51,13 @@ public class AncientCreature {
     }
 
     public static void initCapability(){
-        registerCapability(ModBlockEntities.FOSSIL_CLEANING_TABLE, FossilCleaningTableBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER, FossilIdentificationChamberBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.GENOME_SEQUENCER, GenomeSequencerBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.INCUBATOR, IncubatorBlockEntity::getContainerBySide);
-        registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getContainerBySide);
+        registerCapability(ModBlockEntities.FOSSIL_CLEANING_TABLE, FossilCleaningTableBlockEntity::getContainerBySide, FossilCleaningTableBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER, FossilIdentificationChamberBlockEntity::getContainerBySide, FossilIdentificationChamberBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getContainerBySide, DNAExtractorBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.GENOME_SEQUENCER, GenomeSequencerBlockEntity::getContainerBySide, GenomeSequencerBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberBlockEntity::getContainerBySide, EmbryogenesisChamberBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.INCUBATOR, IncubatorBlockEntity::getContainerBySide, IncubatorBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getContainerBySide, PlaceholderBlockEntity::getAllContainers);
     }
 
     public static void initEntityAttribute(){
@@ -74,8 +75,8 @@ public class AncientCreature {
 
     }
 
-    private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider){
-        Services.CAPABILITIES.registerBlockEntityItemStorage(type, provider);
+    private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider, Function<T, Container[]> containers){
+        Services.CAPABILITIES.registerBlockEntityItemStorage(type, provider, containers);
     }
 
     private static void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier){

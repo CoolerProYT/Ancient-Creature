@@ -6,4 +6,5 @@ import org.jspecify.annotations.Nullable;
 
 public interface ICapabilityExposure {
     Container getContainerBySide(@Nullable Direction direction);
+    Container[] getAllContainers();
 }
