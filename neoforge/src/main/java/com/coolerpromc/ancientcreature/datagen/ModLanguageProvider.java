@@ -48,6 +48,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("jei.ancientcreature.same_species", "DNA Sample must have same species as filled cartridge");
         add("jei.ancientcreature.incubation_time", "Incubation time: %ss");
 
+        add("jade.ancientcreature.owner_name", "Owner: %s");
+
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
         add("tab.ancientcreature.fossils", "Fossils");
         add("tab.ancientcreature.chisels", "Chisels");
