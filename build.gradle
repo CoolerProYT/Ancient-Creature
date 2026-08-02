@@ -5,3 +5,7 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.141' apply false
     id "me.modmuss50.mod-publish-plugin" version "2.2.0" apply false
 }
+
+tasks.register('publishMods') {
+    dependsOn ':neoforge:publishMods', ':fabric:publishMods'
+}
