@@ -9,11 +9,14 @@ import com.coolerpromc.ancientcreature.client.gui.screen.FossilIdentificationCha
 import com.coolerpromc.ancientcreature.client.gui.screen.GenomeSequenceScreen;
 import com.coolerpromc.ancientcreature.client.gui.screen.IncubatorScreen;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -22,6 +25,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 
 @JeiPlugin
 public class ModJEIPlugin implements IModPlugin {
@@ -40,10 +44,10 @@ public class ModJEIPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerFromDataComponentTypes(ModItems.FOSSIL_FRAGMENT.get(), ModDataComponents.SPECIES.get(), ModDataComponents.FOSSIL_PART.get(), ModDataComponents.IS_DIRTY.get(), ModDataComponents.IDENTIFIED.get(), ModDataComponents.IDENTIFICATION_FAILED.get());
-        registration.registerFromDataComponentTypes(ModItems.EGG_FOSSIL.get(), ModDataComponents.SPECIES.get(), ModDataComponents.IS_DIRTY.get(), ModDataComponents.IDENTIFIED.get(), ModDataComponents.IDENTIFICATION_FAILED.get());
-        registration.registerFromDataComponentTypes(ModItems.DNA_SAMPLE.get(), ModDataComponents.SPECIES.get(), ModDataComponents.DNA_INTEGRITY_LEVEL.get());
-        registration.registerFromDataComponentTypes(ModItems.GENOME_CARTRIDGE_FILLED.get(), ModDataComponents.SPECIES.get());
+        registration.registerSubtypeInterpreter(ModItems.FOSSIL_FRAGMENT.get(), ModJEIPlugin::getFossilSubtype);
+        registration.registerSubtypeInterpreter(ModItems.EGG_FOSSIL.get(), ModJEIPlugin::getFossilSubtype);
+        registration.registerFromDataComponentTypes(ModItems.DNA_SAMPLE.get(), ModDataComponents.DNA_DATA.get());
+        registration.registerSubtypeInterpreter(ModItems.GENOME_CARTRIDGE_FILLED.get(), ModJEIPlugin::getGenomeSubtype);
         registration.registerFromDataComponentTypes(ModItems.GENOME_CARTRIDGE_COMPLETED.get(), ModDataComponents.SPECIES.get());
         registration.registerFromDataComponentTypes(ModItems.FERTILIZED_ANCIENT_EGG.get(), ModDataComponents.SPECIES.get());
         registration.registerFromDataComponentTypes(ModItems.BABY_CREATURE_CAPSULE.get(), ModDataComponents.SPECIES.get());
@@ -99,7 +103,27 @@ public class ModJEIPlugin implements IModPlugin {
         return IRecipeType.create(Constants.id(path), AncientCreatureJeiRecipe.class);
     }
 
+    private static Object getFossilSubtype(ItemStack stack, UidContext context) {
+        // Recipe lookups must be broad: the generic JEI-list stack has FossilData.EMPTY,
+        // and completeness is continuous, while recipe pages use representative values.
+        if (context == UidContext.Recipe) return null;
+
+        FossilData data = stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+        String part = data.fossilPart().map(value -> value.getSerializedName()).orElse("");
+        String species = data.species().map(value -> value.getSerializedName()).orElse("");
+        return new FossilSubtype(part, species, data.isDirty(), data.identified(), data.identificationFailed());
+    }
+
+    private static Object getGenomeSubtype(ItemStack stack, UidContext context) {
+        GenomeData data = stack.getOrDefault(ModDataComponents.GENOME_DATA.get(), GenomeData.EMPTY);
+        // Completeness is intentionally excluded so every percentage can find sequencing recipes.
+        return data.species();
+    }
+
     private static AncientCreatureRecipeCategory category(IRecipeType<AncientCreatureJeiRecipe> type, String titleKey, IDrawable icon) {
         return new AncientCreatureRecipeCategory(type, Component.translatable(titleKey), icon);
+    }
+
+    private record FossilSubtype(String part, String species, boolean dirty, boolean identified, boolean identificationFailed) {
     }
 }

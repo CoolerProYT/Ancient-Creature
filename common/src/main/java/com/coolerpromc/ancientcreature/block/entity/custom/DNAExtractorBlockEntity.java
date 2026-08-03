@@ -4,10 +4,11 @@ import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.DNAExtractorMenu;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
@@ -67,9 +68,10 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
 
         private boolean isValidFossil(ItemStack itemStack) {
-            boolean isIdentified = itemStack.getOrDefault(ModDataComponents.IDENTIFIED.get(), false);
-            boolean isDirty = itemStack.getOrDefault(ModDataComponents.IS_DIRTY.get(), true);
-            return isIdentified && !isDirty && itemStack.has(ModDataComponents.SPECIES.get());
+            FossilData fossilData = itemStack.get(ModDataComponents.FOSSIL_DATA.get());
+            boolean isIdentified = fossilData.identified();
+            boolean isDirty = fossilData.isDirty();
+            return isIdentified && !isDirty && fossilData.getSpecies() != null;
         }
     };
 
@@ -222,17 +224,17 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private ItemStack calculateOutputStack(){
         ItemStack input = fossilContainer.getItem(0);
-        FossilPart part = input.getOrDefault(ModDataComponents.FOSSIL_PART.get(), FossilPart.LIMB);
-        Species species = input.getOrDefault(ModDataComponents.SPECIES.get(), Species.TRICERATOPS);
-        FossilCompleteness completeness = input.getOrDefault(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0f));
+        FossilData fossilData = input.get(ModDataComponents.FOSSIL_DATA.get());
+        FossilPart part = fossilData.getFossilPart();
+        Species species = fossilData.getSpecies();
+        float completeness = fossilData.completeness();
         ItemStack output = ModItems.DNA_SAMPLE.toStack();
-        float integrityScore = Math.max(0.01f, completeness.value() + part.getDnaExtractingBonus());
+        float integrityScore = Math.max(0.01f, completeness + (part == null ? 0 : part.getDnaExtractingBonus()));
         DNAIntegrityLevel integrityLevel = DNAIntegrityLevel.byScore(integrityScore);
         if (integrityLevel == null){
             return ItemStack.EMPTY;
         }
-        output.set(ModDataComponents.DNA_INTEGRITY_LEVEL.get(), integrityLevel);
-        output.set(ModDataComponents.SPECIES.get(), species);
+        output.set(ModDataComponents.DNA_DATA.get(), new DNAData(integrityLevel, species));
         return output;
     }
 

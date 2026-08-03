@@ -3,11 +3,12 @@ package com.coolerpromc.ancientcreature.compat.jei;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
-import com.coolerpromc.ancientcreature.data.component.custom.GenomeCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -127,18 +128,20 @@ public final class AncientCreatureJeiRecipes {
             for (FossilPart part : FossilPart.values()) {
                 ItemStack input = fossil(species, part, 0.50f, false, false);
                 ItemStack success = input.copy();
-                success.set(ModDataComponents.IDENTIFIED.get(), true);
+                success.set(ModDataComponents.FOSSIL_DATA.get(), success.get(ModDataComponents.FOSSIL_DATA.get()).identify());
                 ItemStack failure = input.copy();
-                failure.set(ModDataComponents.IDENTIFICATION_FAILED.get(), true);
-                failure.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0.50f * (1.0f - species.getFossilDamageRate())));
+                FossilData fossilData = failure.get(ModDataComponents.FOSSIL_DATA.get());
+                fossilData = fossilData.identifyFailed().setCompleteness(0.50f * (1.0f - species.getFossilDamageRate()));
+                failure.set(ModDataComponents.FOSSIL_DATA.get(), fossilData);
                 recipes.add(identificationRecipe(species, part.getSerializedName(), input, success, failure));
             }
             ItemStack input = eggFossil(species, 0.80f, false, false);
             ItemStack success = input.copy();
-            success.set(ModDataComponents.IDENTIFIED.get(), true);
+            success.set(ModDataComponents.FOSSIL_DATA.get(), success.get(ModDataComponents.FOSSIL_DATA.get()).identify());
             ItemStack failure = input.copy();
-            failure.set(ModDataComponents.IDENTIFICATION_FAILED.get(), true);
-            failure.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0.80f * (1.0f - species.getFossilDamageRate())));
+            FossilData fossilData = failure.get(ModDataComponents.FOSSIL_DATA.get());
+            fossilData = fossilData.identifyFailed().setCompleteness(0.80f * (1.0f - species.getFossilDamageRate()));
+            failure.set(ModDataComponents.FOSSIL_DATA.get(), fossilData);
             recipes.add(identificationRecipe(species, "egg", input, success, failure));
         }
         return recipes;
@@ -256,34 +259,25 @@ public final class AncientCreatureJeiRecipes {
 
     private static ItemStack fossil(Species species, FossilPart part, float completeness, boolean dirty, boolean identified) {
         ItemStack stack = ModItems.FOSSIL_FRAGMENT.toStack();
-        stack.set(ModDataComponents.SPECIES.get(), species);
-        stack.set(ModDataComponents.FOSSIL_PART.get(), part);
-        stack.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(Math.clamp(completeness, 0f, 1f)));
-        stack.set(ModDataComponents.IS_DIRTY.get(), dirty);
-        stack.set(ModDataComponents.IDENTIFIED.get(), identified);
+        stack.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(part, species, Math.clamp(completeness, 0f, 1f), dirty, identified));
         return stack;
     }
 
     private static ItemStack eggFossil(Species species, float completeness, boolean dirty, boolean identified) {
         ItemStack stack = ModItems.EGG_FOSSIL.toStack();
-        stack.set(ModDataComponents.SPECIES.get(), species);
-        stack.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(Math.clamp(completeness, 0f, 1f)));
-        stack.set(ModDataComponents.IS_DIRTY.get(), dirty);
-        stack.set(ModDataComponents.IDENTIFIED.get(), identified);
+        stack.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, Math.clamp(completeness, 0f, 1f), dirty, identified));
         return stack;
     }
 
     private static ItemStack dnaSample(Species species, DNAIntegrityLevel integrity) {
         ItemStack stack = ModItems.DNA_SAMPLE.toStack();
-        stack.set(ModDataComponents.SPECIES.get(), species);
-        stack.set(ModDataComponents.DNA_INTEGRITY_LEVEL.get(), integrity);
+        stack.set(ModDataComponents.DNA_DATA.get(), new DNAData(integrity, species));
         return stack;
     }
 
     private static ItemStack filledGenome(Species species, float completeness) {
         ItemStack stack = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
-        stack.set(ModDataComponents.SPECIES.get(), species);
-        stack.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(Math.clamp(completeness, 0f, 1f)));
+        stack.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(Math.clamp(completeness, 0f, 1f), species));
         return stack;
     }
 

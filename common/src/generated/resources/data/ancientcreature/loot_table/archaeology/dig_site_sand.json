@@ -8,15 +8,15 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "function": "ancientcreature:set_fossil_part"
+            },
+            {
               "completeness": {
                 "type": "minecraft:uniform",
                 "max": 0.25,
                 "min": 0.1
               },
               "function": "ancientcreature:set_fossil_completeness"
-            },
-            {
-              "function": "ancientcreature:set_fossil_part"
             },
             {
               "function": "ancientcreature:set_fossil_species"

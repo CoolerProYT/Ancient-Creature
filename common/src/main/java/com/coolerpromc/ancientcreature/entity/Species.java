@@ -73,11 +73,7 @@ public enum Species implements StringRepresentable, TooltipProvider {
 
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
-        boolean identified = components.getOrDefault(ModDataComponents.IDENTIFIED.get(), false);
         String name = "§9" + Component.translatable("species.ancientcreature." + this.name).getString();
-        if (!identified){
-            name = Component.translatable("species.ancientcreature.unidentified").getString();
-        }
         consumer.accept(Component.translatable("tooltip.ancientcreature.species", name));
     }
 

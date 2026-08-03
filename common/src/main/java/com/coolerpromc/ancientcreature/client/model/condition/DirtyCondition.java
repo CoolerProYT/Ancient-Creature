@@ -19,6 +19,6 @@ public class DirtyCondition implements ConditionalItemModelProperty {
 
     @Override
     public boolean get(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity owner, int seed, ItemDisplayContext displayContext) {
-        return itemStack.getOrDefault(ModDataComponents.IS_DIRTY.get(), true);
+        return itemStack.get(ModDataComponents.FOSSIL_DATA.get()).isDirty();
     }
 }

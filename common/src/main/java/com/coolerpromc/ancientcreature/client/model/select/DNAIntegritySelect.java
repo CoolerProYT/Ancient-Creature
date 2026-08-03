@@ -1,7 +1,7 @@
 package com.coolerpromc.ancientcreature.client.model.select;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
+import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -17,7 +17,7 @@ public record DNAIntegritySelect() implements SelectItemModelProperty<DNAIntegri
 
     @Override
     public @Nullable DNAIntegrityLevel get(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity owner, int seed, ItemDisplayContext displayContext) {
-        return itemStack.get(ModDataComponents.DNA_INTEGRITY_LEVEL.get());
+        return itemStack.get(ModDataComponents.DNA_DATA.get()).integrityLevel();
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.coolerpromc.ancientcreature.item.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
@@ -14,9 +15,10 @@ public class FossilFragmentItem extends Item {
 
     @Override
     public Component getName(ItemStack itemStack) {
-        boolean isDirty = itemStack.getOrDefault(ModDataComponents.IS_DIRTY.get(), false);
-        boolean identified = itemStack.getOrDefault(ModDataComponents.IDENTIFIED.get(), false);
-        FossilPart part = itemStack.get(ModDataComponents.FOSSIL_PART.get());
+        FossilData fossilData = itemStack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+        boolean isDirty = fossilData.isDirty();
+        boolean identified = fossilData.identified();
+        FossilPart part = fossilData.getFossilPart();
 
         MutableComponent component = Component.empty();
 

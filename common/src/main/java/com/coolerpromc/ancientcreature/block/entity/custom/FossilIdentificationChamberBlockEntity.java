@@ -4,7 +4,7 @@ import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.menu.custom.FossilIdentificationChamberMenu;
 import com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData;
@@ -144,7 +144,8 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     }
 
     public boolean isValidInput(ItemStack stack){
-        return !stack.getOrDefault(ModDataComponents.IS_DIRTY.get(), true) && !stack.getOrDefault(ModDataComponents.IDENTIFIED.get(), true) && stack.has(ModDataComponents.SPECIES.get());
+        FossilData fossilData = stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+        return !fossilData.isDirty() && !fossilData.identified() && fossilData.getSpecies() != null;
     }
 
     public boolean isIdentifying(){
@@ -193,20 +194,20 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     private void finishIdentifying(ServerLevel level, BlockPos pos) {
         ItemStack fossil = inputContainer.removeItem(0, 1);
-        Species species = fossil.get(ModDataComponents.SPECIES.get());
+        FossilData fossilData = fossil.get(ModDataComponents.FOSSIL_DATA.get());
+        Species species = fossilData.getSpecies();
         IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
 
         if (species != null){
             if (level.getRandom().nextFloat() <= species.getIdentifyFailChance() && !data.getIdentifiedSpecies().contains(species)){
                 level.playSound(null, pos, ModSounds.IDENTIFICATION_CHAMBER_FAILED.get(), SoundSource.BLOCKS, 0.5f, 0.5f);
-                fossil.set(ModDataComponents.IDENTIFICATION_FAILED.get(), true);
-                float completeness = fossil.getOrDefault(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(0.01f)).value() * (1f - species.getFossilDamageRate());
-                fossil.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(completeness));
+                FossilData newData = fossilData.identifyFailed();
+                newData = newData.setCompleteness(newData.completeness() * (1f - species.getFossilDamageRate()));
+                fossil.set(ModDataComponents.FOSSIL_DATA.get(), newData);
                 outputContainer.addItem(fossil);
             }
             else{
-                fossil.set(ModDataComponents.IDENTIFIED.get(), true);
-                fossil.set(ModDataComponents.IDENTIFICATION_FAILED.get(), false);
+                fossil.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.identify());
                 outputContainer.addItem(fossil);
 
                 if (!data.getIdentifiedSpecies().contains(species)){
@@ -218,7 +219,8 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     private void setMaxProgress(ServerLevel level) {
         IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
-        Species species = inputContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        FossilData fossilData = inputContainer.getItem(0).get(ModDataComponents.FOSSIL_DATA.get());
+        Species species = fossilData.getSpecies();
         this.maxProgress = data.getIdentifiedSpecies().contains(species) ? knownSpeciesProcessingTime : unknownSpeciesProcessingTime;
     }
 
@@ -228,7 +230,8 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     private boolean hasOutputSlot(){
         ItemStack stack = inputContainer.getItem(0).copy();
-        stack.set(ModDataComponents.IDENTIFIED.get(), true);
+        FossilData fossilData = stack.get(ModDataComponents.FOSSIL_DATA.get());
+        stack.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.identify());
         return outputContainer.canAddItem(stack);
     }
 

@@ -1,8 +1,8 @@
 package com.coolerpromc.ancientcreature.loot.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.tag.ModItemTags;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -59,7 +59,11 @@ public class SetFossilCompletenessFunction extends LootItemConditionalFunction {
         float base = this.completeness.getFloat(context);
         float bonus = fortuneLevel * 0.1F;
         float value = Math.min(1.0F, base + bonus) * (1f - damageRate);
-        stack.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(value));
+        FossilData fossilData = stack.get(ModDataComponents.FOSSIL_DATA.get());
+        if (fossilData == null){
+            return ItemStack.EMPTY;
+        }
+        stack.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.setCompleteness(value));
         return stack;
     }
 

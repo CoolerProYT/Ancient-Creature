@@ -44,7 +44,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
     private LootTable.Builder createFossilDrop(Block block) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
             LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.3f))).apply(SetFossilPartFunction.setPart()).apply(SetFossilSpeciesFunction.setSpecies()))
+                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilPartFunction.setPart()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.3f))).apply(SetFossilSpeciesFunction.setSpecies()))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
@@ -64,7 +64,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.2f))).apply(SetFossilPartFunction.setPart()).apply(SetFossilSpeciesFunction.setSpecies()))
+                    .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilPartFunction.setPart()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.2f))).apply(SetFossilSpeciesFunction.setSpecies()))
             );
     }
 

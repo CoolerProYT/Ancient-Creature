@@ -1,6 +1,7 @@
 package com.coolerpromc.ancientcreature.loot.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -40,7 +41,11 @@ public class SetFossilSpeciesFunction extends LootItemConditionalFunction {
         if (parts.isEmpty()){
             return ItemStack.EMPTY;
         }
-        itemStack.set(ModDataComponents.SPECIES.get(), parts.get(random.nextInt(parts.size())));
+        FossilData fossilData = itemStack.get(ModDataComponents.FOSSIL_DATA.get());
+        if (fossilData == null){
+            return ItemStack.EMPTY;
+        }
+        itemStack.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.setSpecies(parts.get(random.nextInt(parts.size()))));
         return itemStack;
     }
 

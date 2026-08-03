@@ -4,9 +4,10 @@ import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.GenomeCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.GenomeSequencerMenu;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
@@ -175,22 +176,24 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
 
     private void finishProcessing(ServerLevel serverLevel, BlockPos pos) {
         ItemStack dnaSample = dnaSampleContainer.removeItem(0, 1);
-        Species species = dnaSample.get(ModDataComponents.SPECIES.get());
-        DNAIntegrityLevel integrityLevel = dnaSample.get(ModDataComponents.DNA_INTEGRITY_LEVEL.get());
+        DNAData dnaData = dnaSample.get(ModDataComponents.DNA_DATA.get());
+        Species species = dnaData.species();
+        DNAIntegrityLevel integrityLevel = dnaData.integrityLevel();
         if (species == null || integrityLevel == null) return;
         float completeness = integrityLevel.getGenomeCompleteness(serverLevel.getRandom());
         ItemStack cartridge = cartridgeContainer.removeItem(0, 1);
         if (cartridge.is(ModItems.GENOME_CARTRIDGE_BLANK.get())){
             ItemStack newCartridge = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
-            newCartridge.set(ModDataComponents.SPECIES.get(), species);
-            newCartridge.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(completeness));
+            newCartridge.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(completeness, species));
             cartridgeContainer.setItem(0, newCartridge);
         }
         else {
-            float currentCompleteness = cartridge.getOrDefault(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(0f)).value();
+            GenomeData genomeData = cartridge.get(ModDataComponents.GENOME_DATA.get());
+            if (genomeData == null) return;
+            float currentCompleteness = genomeData.completeness();
             float newCompleteness = Math.min(currentCompleteness + completeness, 1f);
             if (newCompleteness < 1f){
-                cartridge.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(newCompleteness));
+                cartridge.set(ModDataComponents.GENOME_DATA.get(), genomeData.setCompleteness(newCompleteness));
                 cartridgeContainer.setItem(0, cartridge);
             }else {
                 ItemStack completed = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
@@ -210,15 +213,18 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
 
     private boolean hasEnoughOutputSlot() {
         ItemStack dna = dnaSampleContainer.getItem(0).copy();
-        Species species = dna.get(ModDataComponents.SPECIES.get());
+        DNAData dnaData = dna.get(ModDataComponents.DNA_DATA.get());
+        Species species = dnaData.species();
         if (species == null) return false;
         ItemStack cartridge = cartridgeContainer.getItem(0);
         if (cartridge.isEmpty()) return false;
-        Species cartridgeSpecies = cartridge.get(ModDataComponents.SPECIES.get());
-        if (cartridgeSpecies == null) return true;
-        float completeness = cartridge.getOrDefault(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(1f)).value();
+        if (cartridge.is(ModItems.GENOME_CARTRIDGE_BLANK.get())) return true;
+        if (cartridge.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get())) return false;
+        GenomeData genomeData = cartridge.get(ModDataComponents.GENOME_DATA.get());
+        if (genomeData == null) return true;
+        float completeness = genomeData.completeness();
         if (completeness >= 1f) return false;
-        return species.equals(cartridgeSpecies);
+        return species.equals(genomeData.species());
     }
 
     public boolean isProcessing() {

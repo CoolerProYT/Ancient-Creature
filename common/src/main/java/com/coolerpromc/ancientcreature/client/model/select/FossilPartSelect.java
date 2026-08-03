@@ -1,7 +1,7 @@
 package com.coolerpromc.ancientcreature.client.model.select;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -17,7 +17,7 @@ public record FossilPartSelect() implements SelectItemModelProperty<FossilPart> 
 
     @Override
     public @Nullable FossilPart get(ItemStack itemStack, @Nullable ClientLevel level, @Nullable LivingEntity owner, int seed, ItemDisplayContext displayContext) {
-        return itemStack.get(ModDataComponents.FOSSIL_PART.get());
+        return itemStack.get(ModDataComponents.FOSSIL_DATA.get()).getFossilPart();
     }
 
     @Override

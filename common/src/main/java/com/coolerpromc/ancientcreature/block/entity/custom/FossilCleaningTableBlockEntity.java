@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.FossilCleaningTableMenu;
 import com.coolerpromc.ancientcreature.platform.Services;
@@ -134,7 +135,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     }
 
     private boolean isValidFossil(ItemStack stack){
-        return stack.getOrDefault(ModDataComponents.IS_DIRTY.get(), false);
+        return stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY).isDirty();
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState state) {
@@ -175,7 +176,8 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
 
     private void cleanAndOutput(ServerLevel serverLevel) {
         ItemStack fossil = fossilContainer.removeItem(0, 1);
-        fossil.set(ModDataComponents.IS_DIRTY.get(), false);
+        FossilData fossilData = fossil.get(ModDataComponents.FOSSIL_DATA.get());
+        fossil.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.clean());
         brushContainer.getItem(0).hurtAndBreak(1, serverLevel, null, _ -> {});
         outputContainer.addItem(fossil);
         ItemStack dirtFragment = new ItemStack(ModItems.DIRT_FRAGMENT, serverLevel.getRandom().nextIntBetweenInclusive(0, 2));
@@ -188,7 +190,8 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
 
     private boolean hasEnoughOutputSlot() {
         ItemStack cleanFossil = fossilContainer.getItem(0).copy();
-        cleanFossil.set(ModDataComponents.IS_DIRTY.get(), false);
+        FossilData fossilData = cleanFossil.get(ModDataComponents.FOSSIL_DATA.get());
+        cleanFossil.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.clean());
         ItemStack maxDirtFragment = new ItemStack(ModItems.DIRT_FRAGMENT, 2);
 
         ItemStack[] simulatedSlots = new ItemStack[outputContainer.getContainerSize()];

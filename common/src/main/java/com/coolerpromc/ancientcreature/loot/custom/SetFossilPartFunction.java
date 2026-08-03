@@ -1,7 +1,8 @@
 package com.coolerpromc.ancientcreature.loot.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
@@ -37,7 +38,7 @@ public class SetFossilPartFunction extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack itemStack, LootContext context) {
         RandomSource random = context.getParameter(LootContextParams.THIS_ENTITY).level().getRandom();
-        itemStack.set(ModDataComponents.FOSSIL_PART.get(), validParts.get(random.nextInt(validParts.size())));
+        itemStack.set(ModDataComponents.FOSSIL_DATA.get(), FossilData.ofDefault(validParts.get(random.nextInt(validParts.size())), null, 0f));
         return itemStack;
     }
 

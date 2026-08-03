@@ -1,4 +1,4 @@
-package com.coolerpromc.ancientcreature.data.component.custom;
+package com.coolerpromc.ancientcreature.item;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;

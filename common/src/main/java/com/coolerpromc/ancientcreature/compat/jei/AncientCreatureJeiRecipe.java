@@ -6,10 +6,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-/**
- * A client-only description of one of Ancient Creature's component-aware processes.
- * Each inner list is one JEI slot; entries inside that list are alternatives that cycle.
- */
 public record AncientCreatureJeiRecipe(
     Identifier id,
     List<List<ItemStack>> inputs,

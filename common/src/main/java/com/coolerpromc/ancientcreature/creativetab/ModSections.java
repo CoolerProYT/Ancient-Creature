@@ -4,10 +4,9 @@ import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.creativetab.section.Section;
 import com.coolerpromc.ancientcreature.creativetab.section.SectionTextured;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
-import com.coolerpromc.ancientcreature.data.component.custom.DNAIntegrityLevel;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilCompleteness;
-import com.coolerpromc.ancientcreature.data.component.custom.FossilPart;
-import com.coolerpromc.ancientcreature.data.component.custom.GenomeCompleteness;
+import com.coolerpromc.ancientcreature.data.component.custom.*;
+import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import net.minecraft.network.chat.Component;
@@ -55,14 +54,12 @@ public class ModSections {
         for (Species species : Species.values()) {
             for (DNAIntegrityLevel value : DNAIntegrityLevel.values()) {
                 ItemStack dnaSample = ModItems.DNA_SAMPLE.toStack();
-                dnaSample.set(ModDataComponents.SPECIES.get(), species);
-                dnaSample.set(ModDataComponents.DNA_INTEGRITY_LEVEL.get(), value);
+                dnaSample.set(ModDataComponents.DNA_DATA.get(), new DNAData(value, species));
                 dnaSamples.add(dnaSample);
             }
 
             ItemStack filledGenome = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
-            filledGenome.set(ModDataComponents.GENOME_COMPLETENESS.get(), new GenomeCompleteness(0.5f));
-            filledGenome.set(ModDataComponents.SPECIES.get(), species);
+            filledGenome.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(0.5f, species));
             genomes.add(filledGenome);
 
             ItemStack completedGenome = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
@@ -78,26 +75,20 @@ public class ModSections {
             fertilizedAncientEggs.add(capsule);
 
             ItemStack eggFossil = ModItems.EGG_FOSSIL.toStack();
-            eggFossil.set(ModDataComponents.SPECIES.get(), species);
-            eggFossil.set(ModDataComponents.IDENTIFIED.get(), false);
+            eggFossil.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, 1f, true, false));
             fossils.add(eggFossil);
 
             ItemStack cleanEggFossil = eggFossil.copy();
-            cleanEggFossil.set(ModDataComponents.IS_DIRTY.get(), false);
-            cleanEggFossil.set(ModDataComponents.IDENTIFIED.get(), true);
+            cleanEggFossil.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, 1f, false, true));
             fossils.add(cleanEggFossil);
 
             for (FossilPart value : FossilPart.values()) {
                 ItemStack fossilFragment = ModItems.FOSSIL_FRAGMENT.toStack();
-                fossilFragment.set(ModDataComponents.SPECIES.get(), species);
-                fossilFragment.set(ModDataComponents.IDENTIFIED.get(), false);
-                fossilFragment.set(ModDataComponents.FOSSIL_PART.get(), value);
-                fossilFragment.set(ModDataComponents.FOSSIL_COMPLETENESS.get(), new FossilCompleteness(1f));
+                fossilFragment.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(value, species, 1f, true, false));
                 fossils.add(fossilFragment);
 
                 ItemStack clean = fossilFragment.copy();
-                clean.set(ModDataComponents.IS_DIRTY.get(), false);
-                clean.set(ModDataComponents.IDENTIFIED.get(), true);
+                fossilFragment.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(value, species, 1f, false, true));
                 fossils.add(clean);
             }
         }

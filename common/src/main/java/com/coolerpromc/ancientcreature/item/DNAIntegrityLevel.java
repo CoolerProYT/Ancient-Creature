@@ -1,4 +1,4 @@
-package com.coolerpromc.ancientcreature.data.component.custom;
+package com.coolerpromc.ancientcreature.item;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -7,7 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.storage.loot.IntRange;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;

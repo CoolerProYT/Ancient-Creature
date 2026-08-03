@@ -1,27 +1,23 @@
 package com.coolerpromc.ancientcreature.data.component;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.coolerpromc.ancientcreature.data.component.custom.*;
+import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.world.entity.EntityType;
 
 import java.util.function.UnaryOperator;
 
 public class ModDataComponents {
-    public static final RegistryHandler.Components<Boolean> IS_DIRTY = register("is_dirty", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
-    public static final RegistryHandler.Components<FossilDamageRate> FOSSIL_DAMAGE_RATE = register("fossil_damage_rate", b -> b.persistent(FossilDamageRate.CODEC).networkSynchronized(FossilDamageRate.STREAM_CODEC).cacheEncoding());
-    public static final RegistryHandler.Components<FossilCompleteness> FOSSIL_COMPLETENESS = register("fossil_completeness", b -> b.persistent(FossilCompleteness.CODEC).networkSynchronized(FossilCompleteness.STREAM_CODEC).cacheEncoding());
-    public static final RegistryHandler.Components<Boolean> IDENTIFIED = register("identified", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
-    public static final RegistryHandler.Components<FossilPart> FOSSIL_PART = register("fossil_part", b -> b.persistent(FossilPart.CODEC).networkSynchronized(FossilPart.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<FossilData> FOSSIL_DATA = register("fossil_data", b -> b.persistent(FossilData.CODEC).networkSynchronized(FossilData.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<DNAData> DNA_DATA = register("dna_data", b -> b.persistent(DNAData.CODEC).networkSynchronized(DNAData.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<GenomeData> GENOME_DATA = register("genome_data", b -> b.persistent(GenomeData.CODEC).networkSynchronized(GenomeData.STREAM_CODEC).cacheEncoding());
     public static final RegistryHandler.Components<Species> SPECIES = register("species", b -> b.persistent(Species.CODEC).networkSynchronized(Species.STREAM_CODEC).cacheEncoding());
-    public static final RegistryHandler.Components<Boolean> IDENTIFICATION_FAILED = register("identification_failed", b -> b.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).cacheEncoding());
-    public static final RegistryHandler.Components<DNAIntegrityLevel> DNA_INTEGRITY_LEVEL = register("dna_integrity_level", b -> b.persistent(DNAIntegrityLevel.CODEC).networkSynchronized(DNAIntegrityLevel.STREAM_CODEC).cacheEncoding());
-    public static final RegistryHandler.Components<GenomeCompleteness> GENOME_COMPLETENESS = register("genome_completeness", b -> b.persistent(GenomeCompleteness.CODEC).networkSynchronized(GenomeCompleteness.STREAM_CODEC).cacheEncoding());
+    public static final RegistryHandler.Components<FossilDamageRate> FOSSIL_DAMAGE_RATE = register("fossil_damage_rate", b -> b.persistent(FossilDamageRate.CODEC).networkSynchronized(FossilDamageRate.STREAM_CODEC).cacheEncoding());
 
     public static <T> RegistryHandler.Components<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator){
         return Services.REGISTRY.registerDataComponent(name, unaryOperator);

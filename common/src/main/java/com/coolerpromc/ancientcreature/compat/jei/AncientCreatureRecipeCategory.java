@@ -76,7 +76,6 @@ public class AncientCreatureRecipeCategory extends AbstractRecipeCategory<Ancien
         int rowWidth = slotCount * SLOT_SIZE + ARROW_WIDTH + slotCount * ELEMENT_GAP;
         int rowStart = (WIDTH - rowWidth) / 2;
 
-        // JEI positions slots by their 16x16 ingredient; the standard background begins one pixel earlier.
         int inputStart = rowStart + 1;
         int arrowX = rowStart + inputCount * (SLOT_SIZE + ELEMENT_GAP);
         int outputStart = arrowX + ARROW_WIDTH + ELEMENT_GAP + 1;
