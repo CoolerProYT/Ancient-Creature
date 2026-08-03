@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/craft_identification_chamber",
+  "criteria": {
+    "obtain_dna_extractor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:dna_extractor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_dna_extractor.description"
+    },
+    "icon": {
+      "id": "ancientcreature:dna_extractor"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_dna_extractor.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_dna_extractor"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

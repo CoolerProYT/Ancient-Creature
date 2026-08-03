@@ -1,0 +1,53 @@
+{
+  "parent": "ancientcreature:progression/craft_chisel",
+  "criteria": {
+    "egg_fossil": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:egg_fossil"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fossil_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:fossil_fragment"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.obtain_fossil.description"
+    },
+    "icon": {
+      "components": {
+        "ancientcreature:fossil_data": {
+          "completeness": 1.0,
+          "fossilPart": "skull",
+          "identificationFailed": false,
+          "identified": false,
+          "isDirty": true,
+          "species": "triceratops"
+        }
+      },
+      "id": "ancientcreature:fossil_fragment"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.obtain_fossil.title"
+    }
+  },
+  "requirements": [
+    [
+      "fossil_fragment",
+      "egg_fossil"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/root",
+  "criteria": {
+    "obtain_chisel": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#ancientcreature:chisels"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_chisel.description"
+    },
+    "icon": {
+      "id": "ancientcreature:stone_chisel"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_chisel.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_chisel"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

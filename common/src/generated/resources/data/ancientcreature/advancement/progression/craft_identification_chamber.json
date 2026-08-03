@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/craft_cleaning_table",
+  "criteria": {
+    "obtain_identification_chamber": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:fossil_identification_chamber"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_identification_chamber.description"
+    },
+    "icon": {
+      "id": "ancientcreature:fossil_identification_chamber"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_identification_chamber.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_identification_chamber"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

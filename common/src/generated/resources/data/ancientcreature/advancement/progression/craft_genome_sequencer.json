@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/extract_dna",
+  "criteria": {
+    "obtain_genome_sequencer": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:genome_sequencer"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_genome_sequencer.description"
+    },
+    "icon": {
+      "id": "ancientcreature:genome_sequencer"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_genome_sequencer.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_genome_sequencer"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

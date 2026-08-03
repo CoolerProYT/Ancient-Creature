@@ -1,0 +1,34 @@
+{
+  "criteria": {
+    "crafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:crafting_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "ancientcreature:gui/advancements/backgrounds/fossil",
+    "description": {
+      "translate": "advancements.ancientcreature.progression.root.description"
+    },
+    "icon": {
+      "id": "ancientcreature:netherite_chisel"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.ancientcreature.progression.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "crafting_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

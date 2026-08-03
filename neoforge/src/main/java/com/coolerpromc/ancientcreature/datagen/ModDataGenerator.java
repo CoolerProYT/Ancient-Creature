@@ -17,5 +17,6 @@ public class ModDataGenerator {
         event.createProvider(ModLootTableProvider::new);
         event.createProvider(ModDataPackProvider::new);
         event.createProvider(ModRecipeProvider.Runner::new);
+        event.createProvider(ModAdvancementProvider::new);
     }
 }

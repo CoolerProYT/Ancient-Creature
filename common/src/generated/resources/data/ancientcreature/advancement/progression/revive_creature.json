@@ -1,0 +1,33 @@
+{
+  "parent": "ancientcreature:progression/craft_incubator",
+  "criteria": {
+    "obtain_baby_creature": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:baby_creature_capsule"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.revive_creature.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "ancientcreature:baby_creature_capsule"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.revive_creature.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_baby_creature"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

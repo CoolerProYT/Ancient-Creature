@@ -1,0 +1,33 @@
+{
+  "parent": "ancientcreature:progression/craft_dna_extractor",
+  "criteria": {
+    "obtain_dna_sample": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:dna_sample"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.extract_dna.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "id": "ancientcreature:dna_sample"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.extract_dna.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_dna_sample"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

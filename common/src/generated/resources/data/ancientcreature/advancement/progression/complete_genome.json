@@ -1,0 +1,33 @@
+{
+  "parent": "ancientcreature:progression/craft_genome_sequencer",
+  "criteria": {
+    "obtain_completed_genome": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:genome_cartridge_completed"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.complete_genome.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "id": "ancientcreature:genome_cartridge_completed"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.complete_genome.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_completed_genome"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

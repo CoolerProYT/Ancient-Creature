@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/obtain_fossil",
+  "criteria": {
+    "obtain_cleaning_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:fossil_cleaning_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_cleaning_table.description"
+    },
+    "icon": {
+      "id": "ancientcreature:fossil_cleaning_table"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_cleaning_table.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_cleaning_table"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

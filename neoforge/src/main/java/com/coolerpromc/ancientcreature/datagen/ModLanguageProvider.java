@@ -102,6 +102,33 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.bite", "Tyrannosaurus rex bites");
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.step", "Tyrannosaurus rex steps");
 
+        add("advancements.ancientcreature.progression.root.title", "Ancient Creature");
+        add("advancements.ancientcreature.progression.root.description", "Unearth the past and bring ancient creatures back to life");
+        add("advancements.ancientcreature.progression.craft_chisel.title", "The Paleontologist");
+        add("advancements.ancientcreature.progression.craft_chisel.description", "Obtain a chisel for extracting delicate fossils");
+        add("advancements.ancientcreature.progression.obtain_fossil.title", "A Piece of the Past");
+        add("advancements.ancientcreature.progression.obtain_fossil.description", "Obtain a fossil fragment or an egg fossil");
+        add("advancements.ancientcreature.progression.craft_cleaning_table.title", "Dusting Off History");
+        add("advancements.ancientcreature.progression.craft_cleaning_table.description", "Craft a Fossil Cleaning Table");
+        add("advancements.ancientcreature.progression.craft_identification_chamber.title", "Know Your Fossil");
+        add("advancements.ancientcreature.progression.craft_identification_chamber.description", "Craft a Fossil Identification Chamber");
+        add("advancements.ancientcreature.progression.craft_dna_extractor.title", "Molecular Archaeology");
+        add("advancements.ancientcreature.progression.craft_dna_extractor.description", "Craft a DNA Extractor");
+        add("advancements.ancientcreature.progression.extract_dna.title", "Ancient Code");
+        add("advancements.ancientcreature.progression.extract_dna.description", "Extract a DNA sample from an identified fossil");
+        add("advancements.ancientcreature.progression.craft_genome_sequencer.title", "Reading the Blueprint");
+        add("advancements.ancientcreature.progression.craft_genome_sequencer.description", "Craft a Genome Sequencer");
+        add("advancements.ancientcreature.progression.complete_genome.title", "Genome Complete");
+        add("advancements.ancientcreature.progression.complete_genome.description", "Complete an ancient creature's genome cartridge");
+        add("advancements.ancientcreature.progression.craft_embryogenesis_chamber.title", "Building Life");
+        add("advancements.ancientcreature.progression.craft_embryogenesis_chamber.description", "Craft an Embryogenesis Chamber");
+        add("advancements.ancientcreature.progression.create_fertilized_egg.title", "A Spark of Life");
+        add("advancements.ancientcreature.progression.create_fertilized_egg.description", "Create a fertilized ancient egg");
+        add("advancements.ancientcreature.progression.craft_incubator.title", "Handle With Care");
+        add("advancements.ancientcreature.progression.craft_incubator.description", "Craft an Incubator for your ancient egg");
+        add("advancements.ancientcreature.progression.revive_creature.title", "Life Finds a Way");
+        add("advancements.ancientcreature.progression.revive_creature.description", "Incubate a baby ancient creature and bring it back from extinction");
+
         add(ModEntities.TRICERATOPS.get(), "Triceratops");
         add(ModEntities.TYRANNOSAURUS_REX.get(), "Tyrannosaurus Rex");
         add(ModEntities.MEGALODON.get(), "Megalodon");

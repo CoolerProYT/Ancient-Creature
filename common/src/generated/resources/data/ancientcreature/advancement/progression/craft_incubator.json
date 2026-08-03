@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/create_fertilized_egg",
+  "criteria": {
+    "obtain_incubator": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:incubator"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_incubator.description"
+    },
+    "icon": {
+      "id": "ancientcreature:incubator"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_incubator.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_incubator"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

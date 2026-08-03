@@ -1,0 +1,32 @@
+{
+  "parent": "ancientcreature:progression/complete_genome",
+  "criteria": {
+    "obtain_embryogenesis_chamber": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:embryogenesis_chamber"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.craft_embryogenesis_chamber.description"
+    },
+    "icon": {
+      "id": "ancientcreature:embryogenesis_chamber"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.craft_embryogenesis_chamber.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_embryogenesis_chamber"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

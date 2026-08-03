@@ -1,0 +1,33 @@
+{
+  "parent": "ancientcreature:progression/craft_embryogenesis_chamber",
+  "criteria": {
+    "obtain_fertilized_egg": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:fertilized_ancient_egg"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.ancientcreature.progression.create_fertilized_egg.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "id": "ancientcreature:fertilized_ancient_egg"
+    },
+    "title": {
+      "translate": "advancements.ancientcreature.progression.create_fertilized_egg.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_fertilized_egg"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
