@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
 import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
@@ -22,10 +23,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +48,7 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     private final ContainerData data;
     private boolean isProcessing = false;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = ModCommonConfig.CONFIG.sequencingTick.get();
 
     private final SimpleContainer dnaSampleContainer = new SimpleContainer(1){
         @Override
@@ -91,6 +89,9 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
                 return 2;
             }
         };
+        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
+            maxProgress = ModCommonConfig.CONFIG.sequencingTick.get();
+        });
     }
 
     @Override
@@ -121,8 +122,8 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        dnaSampleContainer.storeAsItemList(output.list("dnaSample", ItemStack.CODEC));
-        cartridgeContainer.storeAsItemList(output.list("cartridge", ItemStack.CODEC));
+        ContainerHelper.saveAllItems(output.child("dnaSample"), dnaSampleContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("cartridge"), cartridgeContainer.getItems());
         output.putInt("progress", progress);
         output.putInt("maxProgress", maxProgress);
         output.putBoolean("isExtracting", isProcessing);
@@ -131,10 +132,10 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        dnaSampleContainer.fromItemList(input.listOrEmpty("dnaSample", ItemStack.CODEC));
-        cartridgeContainer.fromItemList(input.listOrEmpty("cartridge", ItemStack.CODEC));
+        ContainerHelper.loadAllItems(input.childOrEmpty("dnaSample"), dnaSampleContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("cartridge"), cartridgeContainer.getItems());
         progress = input.getIntOr("progress", 0);
-        maxProgress = input.getIntOr("maxProgress", 100);
+        maxProgress = input.getIntOr("maxProgress", ModCommonConfig.CONFIG.sequencingTick.get());
         isProcessing = input.getBooleanOr("isExtracting", false);
     }
 

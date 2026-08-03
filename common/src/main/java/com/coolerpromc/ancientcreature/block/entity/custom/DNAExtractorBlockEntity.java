@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
@@ -24,10 +25,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +50,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     private final ContainerData data;
     private boolean isExtracting = false;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = ModCommonConfig.CONFIG.extractingTick.get();
 
     private final SimpleContainer extractionFluidContainer = new SimpleContainer(1){
         @Override
@@ -114,6 +112,9 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
                 return 2;
             }
         };
+        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
+            maxProgress = ModCommonConfig.CONFIG.extractingTick.get();
+        });
     }
 
     @Override
@@ -146,10 +147,10 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        extractionFluidContainer.storeAsItemList(output.list("extractionFluid", ItemStack.CODEC));
-        fossilContainer.storeAsItemList(output.list("fossil", ItemStack.CODEC));
-        sampleVialContainer.storeAsItemList(output.list("sampleVial", ItemStack.CODEC));
-        outputContainer.storeAsItemList(output.list("output", ItemStack.CODEC));
+        ContainerHelper.saveAllItems(output.child("extractionFluid"), extractionFluidContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("fossil"), fossilContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("sampleVial"), sampleVialContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
         output.putInt("maxProgress", maxProgress);
         output.putBoolean("isExtracting", isExtracting);
@@ -158,12 +159,12 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        extractionFluidContainer.fromItemList(input.listOrEmpty("extractionFluid", ItemStack.CODEC));
-        fossilContainer.fromItemList(input.listOrEmpty("fossil", ItemStack.CODEC));
-        sampleVialContainer.fromItemList(input.listOrEmpty("sampleVial", ItemStack.CODEC));
-        outputContainer.fromItemList(input.listOrEmpty("output", ItemStack.CODEC));
+        ContainerHelper.loadAllItems(input.childOrEmpty("extractionFluid"), extractionFluidContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("fossil"), fossilContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("sampleVial"), sampleVialContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);
-        maxProgress = input.getIntOr("maxProgress", 100);
+        maxProgress = input.getIntOr("maxProgress", ModCommonConfig.CONFIG.extractingTick.get());
         isExtracting = input.getBooleanOr("isExtracting", false);
     }
 

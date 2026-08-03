@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
@@ -19,10 +20,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -57,12 +55,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
 
         @Override
         public void setChanged() {
-            Species species = this.getItem(0).get(ModDataComponents.SPECIES.get());
-            if (species == null) {
-                maxProgress = 0;
-                return;
-            }
-            maxProgress = species.getIncubationTime();
+            setMaxProgress();
         }
     };
 
@@ -98,6 +91,16 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
                 return 2;
             }
         };
+        ModCommonConfig.CONFIG_SPEC.addReloadListener(this::setMaxProgress);
+    }
+
+    private void setMaxProgress(){
+        Species species = inputContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        if (species == null) {
+            maxProgress = 0;
+            return;
+        }
+        maxProgress = (int) (species.getIncubationTime() * ModCommonConfig.CONFIG.incubationTimeMultiplier.get());
     }
 
     @Override
@@ -174,8 +177,8 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        inputContainer.storeAsItemList(output.list("input", ItemStack.CODEC));
-        outputContainer.storeAsItemList(output.list("output", ItemStack.CODEC));
+        ContainerHelper.saveAllItems(output.child("input"), inputContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
         output.putInt("maxProgress", maxProgress);
         output.putBoolean("processing", isProcessing);
@@ -184,8 +187,8 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        inputContainer.fromItemList(input.listOrEmpty("input", ItemStack.CODEC));
-        outputContainer.fromItemList(input.listOrEmpty("output", ItemStack.CODEC));
+        ContainerHelper.loadAllItems(input.childOrEmpty("input"), inputContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);
         maxProgress = Math.max(1, input.getIntOr("maxProgress", 100));
         isProcessing = input.getBooleanOr("processing", false);

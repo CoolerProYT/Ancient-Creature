@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.block.entity.custom.*;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
@@ -38,6 +39,7 @@ import java.util.function.Supplier;
 
 public class AncientCreature {
     public static void init() {
+        ModCommonConfig.init();
         ModItems.init();
         ModBlocks.init();
         ModBlockEntities.init();

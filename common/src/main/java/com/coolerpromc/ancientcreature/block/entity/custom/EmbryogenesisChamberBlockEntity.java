@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
@@ -19,10 +20,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ProblemReporter;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -47,7 +45,7 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     private final ContainerData data;
     private boolean isProcessing = false;
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = ModCommonConfig.CONFIG.embryogenesisTick.get();
 
     private final SimpleContainer genomeContainer = new SimpleContainer(1){
         @Override
@@ -99,6 +97,9 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
                 return 2;
             }
         };
+        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
+            maxProgress = ModCommonConfig.CONFIG.embryogenesisTick.get();
+        });
     }
 
     @Override
@@ -130,10 +131,10 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        genomeContainer.storeAsItemList(output.list("genome", ItemStack.CODEC));
-        eggContainer.storeAsItemList(output.list("egg", ItemStack.CODEC));
-        nutrientContainer.storeAsItemList(output.list("nutrient", ItemStack.CODEC));
-        outputContainer.storeAsItemList(output.list("output", ItemStack.CODEC));
+        ContainerHelper.saveAllItems(output.child("genome"), genomeContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("egg"), eggContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("nutrient"), nutrientContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
         output.putInt("maxProgress", maxProgress);
         output.putBoolean("isProcessing", isProcessing);
@@ -142,12 +143,12 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        genomeContainer.fromItemList(input.listOrEmpty("genome", ItemStack.CODEC));
-        eggContainer.fromItemList(input.listOrEmpty("egg", ItemStack.CODEC));
-        nutrientContainer.fromItemList(input.listOrEmpty("nutrient", ItemStack.CODEC));
-        outputContainer.fromItemList(input.listOrEmpty("output", ItemStack.CODEC));
+        ContainerHelper.loadAllItems(input.childOrEmpty("genome"), genomeContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("egg"), eggContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("nutrient"), nutrientContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);
-        maxProgress = input.getIntOr("maxProgress", 100);
+        maxProgress = input.getIntOr("maxProgress", ModCommonConfig.CONFIG.embryogenesisTick.get());
         isProcessing = input.getBooleanOr("isProcessing", false);
     }
 

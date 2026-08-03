@@ -1,6 +1,8 @@
 package com.coolerpromc.ancientcreature.block.entity.custom;
 
+import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.item.ModItems;
@@ -17,10 +19,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
@@ -61,7 +62,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         }
     };
     private int progress = 0;
-    private int maxProgress = 100;
+    private int maxProgress = ModCommonConfig.CONFIG.cleaningTick.get();
     private boolean isCleaning = false;
     private final AnimationState cleaningAnimationState = new AnimationState();
 
@@ -90,6 +91,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
                 return 2;
             }
         };
+        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
+            this.maxProgress = ModCommonConfig.CONFIG.cleaningTick.get();
+        });
     }
 
     @Override
@@ -105,9 +109,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
-        brushContainer.storeAsItemList(output.list("brush", ItemStack.CODEC));
-        fossilContainer.storeAsItemList(output.list("fossil", ItemStack.CODEC));
-        outputContainer.storeAsItemList(output.list("output", ItemStack.CODEC));
+        ContainerHelper.saveAllItems(output.child("brush"), brushContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("fossil"), fossilContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
         output.putInt("maxProgress", maxProgress);
         output.putBoolean("isCleaning", isCleaning);
@@ -116,19 +120,22 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     protected void loadAdditional(@NonNull ValueInput input) {
         super.loadAdditional(input);
-        brushContainer.fromItemList(input.listOrEmpty("brush", ItemStack.CODEC));
-        fossilContainer.fromItemList(input.listOrEmpty("fossil", ItemStack.CODEC));
-        outputContainer.fromItemList(input.listOrEmpty("output", ItemStack.CODEC));
+        ContainerHelper.loadAllItems(input.childOrEmpty("brush"), brushContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("fossil"), fossilContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);
-        maxProgress = input.getIntOr("maxProgress", 100);
+        maxProgress = input.getIntOr("maxProgress", ModCommonConfig.CONFIG.cleaningTick.get());
         isCleaning = input.getBooleanOr("isCleaning", false);
     }
 
     @Override
-    public @NonNull CompoundTag getUpdateTag(HolderLookup.@NonNull Provider registries) {
-        return saveWithoutMetadata(registries);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        try(ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), Constants.LOG)){
+            TagValueOutput output = TagValueOutput.createWithContext(reporter, registries);
+            saveAdditional(output);
+            return output.buildResult();
+        }
     }
-
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
@@ -253,6 +260,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         Containers.dropContents(this.level, pos, brushContainer);
         Containers.dropContents(this.level, pos, fossilContainer);
         Containers.dropContents(this.level, pos, outputContainer);
+        if (progress > 0 && level instanceof ServerLevel serverLevel){
+            stopSound(serverLevel, pos, ModSounds.CLEANING_TABLE_BRUSH);
+        }
     }
 
     public boolean isCleaning() {
