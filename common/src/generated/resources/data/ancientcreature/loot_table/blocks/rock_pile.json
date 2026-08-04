@@ -70,6 +70,14 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "fossilParts": [
+                "rib",
+                "tooth",
+                "skull",
+                "vertebra",
+                "limb",
+                "claw"
+              ],
               "function": "ancientcreature:set_fossil_part"
             },
             {

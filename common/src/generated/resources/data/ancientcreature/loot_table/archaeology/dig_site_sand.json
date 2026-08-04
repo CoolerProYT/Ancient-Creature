@@ -8,6 +8,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "fossilParts": [
+                "claw",
+                "tooth",
+                "rib",
+                "limb"
+              ],
               "function": "ancientcreature:set_fossil_part"
             },
             {

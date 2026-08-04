@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.loot.custom;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.item.FossilPart;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
@@ -17,17 +18,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SetFossilPartFunction extends LootItemConditionalFunction {
-    public static final MapCodec<SetFossilPartFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance).apply(instance, SetFossilPartFunction::new));
+    public static final MapCodec<SetFossilPartFunction> CODEC = RecordCodecBuilder.mapCodec(instance ->
+        commonFields(instance).and(
+                Codec.list(FossilPart.CODEC).fieldOf("fossilParts").forGetter(s -> s.validParts)
+            )
+        .apply(instance, SetFossilPartFunction::new));
 
-    private final List<FossilPart> validParts = new ArrayList<>();
+    private final List<FossilPart> validParts;
 
     protected SetFossilPartFunction(List<LootItemCondition> predicates) {
         this(predicates, FossilPart.values());
     }
 
     protected SetFossilPartFunction(List<LootItemCondition> predicates, FossilPart... validParts) {
-        super(predicates);
-        this.validParts.addAll(Arrays.stream(validParts).toList());
+        this(predicates, Arrays.stream(validParts).toList());
+    }
+
+    public SetFossilPartFunction(List<LootItemCondition> lootItemConditions, List<FossilPart> fossilParts) {
+        super(lootItemConditions);
+        this.validParts = fossilParts;
     }
 
     @Override
