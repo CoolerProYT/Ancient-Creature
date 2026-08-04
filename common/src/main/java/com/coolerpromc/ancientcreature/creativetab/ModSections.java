@@ -9,7 +9,10 @@ import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 public class ModSections {
     public static List<Section> ALL = List.of();
 
-    public static List<Section> build() {
+    public static List<Section> build(CreativeModeTab.ItemDisplayParameters params) {
         List<ItemStack> fossils = new ArrayList<>();
         List<ItemStack> fertilizedAncientEggs = new ArrayList<>();
         List<ItemStack> dnaSamples = new ArrayList<>();
@@ -74,16 +77,8 @@ public class ModSections {
             capsule.set(ModDataComponents.SPECIES.get(), species);
             fertilizedAncientEggs.add(capsule);
 
-            ItemStack eggFossil = ModItems.EGG_FOSSIL.toStack();
-            eggFossil.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, 1f, true, false));
-            fossils.add(eggFossil);
-
-            ItemStack cleanEggFossil = eggFossil.copy();
-            cleanEggFossil.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, 1f, false, true));
-            fossils.add(cleanEggFossil);
-
-            for (FossilPart value : FossilPart.values()) {
-                ItemStack fossilFragment = ModItems.FOSSIL_FRAGMENT.toStack();
+            for (Holder<FossilPart> value : params.holders().lookupOrThrow(ModRegistries.FOSSIL_PART).listElements().toList()) {
+                ItemStack fossilFragment = ModItems.FOSSIL_PART.toStack();
                 fossilFragment.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(value, species, 1f, true, false));
                 fossils.add(fossilFragment);
 

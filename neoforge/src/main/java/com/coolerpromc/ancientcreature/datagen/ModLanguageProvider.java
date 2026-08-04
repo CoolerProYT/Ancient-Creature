@@ -65,12 +65,14 @@ public class ModLanguageProvider extends LanguageProvider {
         add("name.ancientcreature.dirty", "Dirty");
         add("name.ancientcreature.unidentified", "Unidentified");
 
-        add("fossilPart.ancientcreature.rib", "Rib");
-        add("fossilPart.ancientcreature.tooth", "Tooth");
-        add("fossilPart.ancientcreature.skull", "Skull");
-        add("fossilPart.ancientcreature.vertebra", "Vertebra");
-        add("fossilPart.ancientcreature.limb", "Limb");
-        add("fossilPart.ancientcreature.claw", "Claw");
+        add("fossilPart.ancientcreature.empty", "Illegal Item");
+        add("fossilPart.ancientcreature.rib", "Rib Fossil Fragment");
+        add("fossilPart.ancientcreature.tooth", "Tooth Fossil Fragment");
+        add("fossilPart.ancientcreature.skull", "Skull Fossil Fragment");
+        add("fossilPart.ancientcreature.vertebra", "Vertebra Fossil Fragment");
+        add("fossilPart.ancientcreature.limb", "Limb Fossil Fragment");
+        add("fossilPart.ancientcreature.claw", "Claw Fossil Fragment");
+        add("fossilPart.ancientcreature.egg", "Egg Fossil");
 
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
@@ -140,9 +142,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.DIAMOND_CHISEL.get(), "Diamond Chisel");
         add(ModItems.NETHERITE_CHISEL.get(), "Netherite Chisel");
 
-        add(ModItems.FOSSIL_FRAGMENT.get(), "Fossil Fragment");
+        add(ModItems.FOSSIL_PART.get(), "Fossil Fragment");
         add(ModItems.EGG_SHELL_FRAGMENT.get(), "Egg Shell Fragment");
-        add(ModItems.EGG_FOSSIL.get(), "Egg Fossil");
         add(ModItems.ROCK_FRAGMENT.get(), "Rock Fragment");
         add(ModItems.DIRT_FRAGMENT.get(), "Dirt Fragment");
         add(ModItems.DNA_SAMPLE.get(), "DNA Sample");

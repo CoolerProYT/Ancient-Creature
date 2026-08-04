@@ -9,26 +9,15 @@
           "functions": [
             {
               "fossilParts": [
-                "claw",
-                "tooth",
-                "rib",
-                "limb"
+                "ancientcreature:claw",
+                "ancientcreature:tooth",
+                "ancientcreature:rib",
+                "ancientcreature:limb"
               ],
-              "function": "ancientcreature:set_fossil_part"
-            },
-            {
-              "completeness": {
-                "type": "minecraft:uniform",
-                "max": 0.25,
-                "min": 0.1
-              },
-              "function": "ancientcreature:set_fossil_completeness"
-            },
-            {
-              "function": "ancientcreature:set_fossil_species"
+              "function": "ancientcreature:set_fossil_data"
             }
           ],
-          "name": "ancientcreature:fossil_fragment",
+          "name": "ancientcreature:fossil_part",
           "weight": 5
         },
         {

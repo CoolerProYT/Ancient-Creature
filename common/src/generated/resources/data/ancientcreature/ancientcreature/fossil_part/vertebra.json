@@ -1,0 +1,9 @@
+{
+  "completeness": {
+    "max": 0.3,
+    "min": 0.1
+  },
+  "dnaExtractingBonus": 0.08,
+  "fossilDamageRate": 0.1,
+  "identifyFailChance": 0.2
+}

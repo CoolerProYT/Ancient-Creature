@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CreativeTabEvents {
     public static void onModifyOutput(CreativeModeTab.ItemDisplayParameters context) {
-        List<Section> sections = ModSections.build();
+        List<Section> sections = ModSections.build(context);
         TabLayout.build(sections);
     }
 }

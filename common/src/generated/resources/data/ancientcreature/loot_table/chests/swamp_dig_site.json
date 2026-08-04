@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "ancientcreature:fossil_fragment"
+          "name": "ancientcreature:fossil_part"
         }
       ],
       "rolls": 1.0

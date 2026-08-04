@@ -38,18 +38,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "completeness": {
-                "type": "minecraft:uniform",
-                "max": 0.9,
-                "min": 0.7
-              },
-              "function": "ancientcreature:set_fossil_completeness"
-            },
-            {
-              "function": "ancientcreature:set_fossil_species"
+              "fossilParts": [
+                "ancientcreature:egg"
+              ],
+              "function": "ancientcreature:set_fossil_data"
             }
           ],
-          "name": "ancientcreature:egg_fossil"
+          "name": "ancientcreature:fossil_part"
         }
       ],
       "rolls": 1.0
@@ -71,28 +66,18 @@
           "functions": [
             {
               "fossilParts": [
-                "rib",
-                "tooth",
-                "skull",
-                "vertebra",
-                "limb",
-                "claw"
+                "ancientcreature:skull",
+                "ancientcreature:tooth",
+                "ancientcreature:rib",
+                "ancientcreature:claw",
+                "ancientcreature:vertebra",
+                "ancientcreature:limb",
+                "ancientcreature:egg"
               ],
-              "function": "ancientcreature:set_fossil_part"
-            },
-            {
-              "completeness": {
-                "type": "minecraft:uniform",
-                "max": 0.2,
-                "min": 0.01
-              },
-              "function": "ancientcreature:set_fossil_completeness"
-            },
-            {
-              "function": "ancientcreature:set_fossil_species"
+              "function": "ancientcreature:set_fossil_data"
             }
           ],
-          "name": "ancientcreature:fossil_fragment"
+          "name": "ancientcreature:fossil_part"
         }
       ],
       "rolls": 1.0

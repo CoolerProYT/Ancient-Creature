@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:directory",
+      "source": "item/fossil_part",
+      "prefix": "item/fossil_part/"
+    }
+  ]
+}

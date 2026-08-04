@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.tags.BiomeTags;
@@ -23,6 +24,7 @@ public class FabricAncientCreature implements ModInitializer {
         AncientCreature.initEntityAttribute();
         AncientCreature.initBiomeModifier();
         AncientCreature.initBrewingRecipe();
+        AncientCreature.initDatapackRegistry();
 
         Services.REGISTRY.applyEntityAttributeRegistrations(FabricDefaultAttributeRegistry::register);
         Services.REGISTRY.applyBiomeModifierRegistrations((biomeTagKey, step, placedFeatureKey) -> BiomeModifications.addFeature(BiomeSelectors.tag(biomeTagKey), step, placedFeatureKey));
@@ -32,5 +34,6 @@ public class FabricAncientCreature implements ModInitializer {
         Services.CAPABILITIES.applyRegistrations(null);
 
         FabricPotionBrewingBuilder.BUILD.register(builder -> Services.REGISTRY.applyBrewingRecipeRegistrations(builder::addContainerRecipe));
+        Services.REGISTRY.applyDatapackRegistryRegistrations(DynamicRegistries::registerSynced);
     }
 }

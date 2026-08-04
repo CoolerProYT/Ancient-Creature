@@ -23,9 +23,11 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 
 @JeiPlugin
 public class ModJEIPlugin implements IModPlugin {
@@ -44,8 +46,7 @@ public class ModJEIPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerSubtypeInterpreter(ModItems.FOSSIL_FRAGMENT.get(), ModJEIPlugin::getFossilSubtype);
-        registration.registerSubtypeInterpreter(ModItems.EGG_FOSSIL.get(), ModJEIPlugin::getFossilSubtype);
+        registration.registerSubtypeInterpreter(ModItems.FOSSIL_PART.get(), ModJEIPlugin::getFossilSubtype);
         registration.registerFromDataComponentTypes(ModItems.DNA_SAMPLE.get(), ModDataComponents.DNA_DATA.get());
         registration.registerSubtypeInterpreter(ModItems.GENOME_CARTRIDGE_FILLED.get(), ModJEIPlugin::getGenomeSubtype);
         registration.registerFromDataComponentTypes(ModItems.GENOME_CARTRIDGE_COMPLETED.get(), ModDataComponents.SPECIES.get());
@@ -69,10 +70,11 @@ public class ModJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(FOSSIL_HUNTING, AncientCreatureJeiRecipes.fossilHunting());
-        registration.addRecipes(FOSSIL_CLEANING, AncientCreatureJeiRecipes.fossilCleaning());
-        registration.addRecipes(FOSSIL_IDENTIFICATION, AncientCreatureJeiRecipes.fossilIdentification());
-        registration.addRecipes(DNA_EXTRACTION, AncientCreatureJeiRecipes.dnaExtraction());
+        HolderLookup.Provider registries = registration.getContextMap().getOrThrow(SlotDisplayContext.REGISTRIES);
+        registration.addRecipes(FOSSIL_HUNTING, AncientCreatureJeiRecipes.fossilHunting(registries));
+        registration.addRecipes(FOSSIL_CLEANING, AncientCreatureJeiRecipes.fossilCleaning(registries));
+        registration.addRecipes(FOSSIL_IDENTIFICATION, AncientCreatureJeiRecipes.fossilIdentification(registries));
+        registration.addRecipes(DNA_EXTRACTION, AncientCreatureJeiRecipes.dnaExtraction(registries));
         registration.addRecipes(GENOME_SEQUENCING, AncientCreatureJeiRecipes.genomeSequencing());
         registration.addRecipes(EMBRYOGENESIS, AncientCreatureJeiRecipes.embryogenesis());
         registration.addRecipes(INCUBATION, AncientCreatureJeiRecipes.incubation());
@@ -109,8 +111,10 @@ public class ModJEIPlugin implements IModPlugin {
         if (context == UidContext.Recipe) return null;
 
         FossilData data = stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
-        String part = data.fossilPart().map(value -> value.getSerializedName()).orElse("");
-        String species = data.species().map(value -> value.getSerializedName()).orElse("");
+        String part = data.fossilPart().unwrapKey()
+            .map(key -> key.identifier().toString())
+            .orElse("direct");
+        String species = data.species().getSerializedName();
         return new FossilSubtype(part, species, data.isDirty(), data.identified(), data.identificationFailed());
     }
 

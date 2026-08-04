@@ -2,21 +2,9 @@ package com.coolerpromc.ancientcreature.datagen;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
-import com.coolerpromc.ancientcreature.block.custom.DNAExtractorBlock;
-import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
-import com.coolerpromc.ancientcreature.block.custom.FossilIdentificationChamberBlock;
-import com.coolerpromc.ancientcreature.block.custom.EmbryogenesisChamberBlock;
-import com.coolerpromc.ancientcreature.block.custom.IncubatorBlock;
-import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
-import com.coolerpromc.ancientcreature.client.item.DNAExtractorSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.item.FossilCleaningTableSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.item.FossilIdentificationChamberSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.item.GenomeSequencerSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.item.EmbryogenesisChamberSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.item.IncubatorSpecialRenderer;
-import com.coolerpromc.ancientcreature.client.model.condition.DirtyCondition;
-import com.coolerpromc.ancientcreature.client.model.select.DNAIntegritySelect;
-import com.coolerpromc.ancientcreature.client.model.select.FossilPartSelect;
+import com.coolerpromc.ancientcreature.block.custom.*;
+import com.coolerpromc.ancientcreature.client.item.select.DNAIntegritySelect;
+import com.coolerpromc.ancientcreature.client.item.special.*;
 import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
@@ -34,13 +22,17 @@ import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING;
 
@@ -68,8 +60,7 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.GOLDEN_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.DIAMOND_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.NETHERITE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-        this.generateFossilFragmentItem(itemModels);
-        this.generateEggFossilItem(itemModels);
+        this.generateFossilPartItem(itemModels);
         itemModels.generateFlatItem(ModItems.ROCK_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.DIRT_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.EGG_SHELL_FRAGMENT.get(), ModelTemplates.FLAT_ITEM);
@@ -109,35 +100,14 @@ public class ModModelProvider extends ModelProvider {
         );
     }
 
-    private void generateFossilFragmentItem(ItemModelGenerators itemModels){
-        List<SelectItemModel.SwitchCase<FossilPart>> dirties = new ArrayList<>();
-        List<SelectItemModel.SwitchCase<FossilPart>> normals = new ArrayList<>();
-
-        for (FossilPart value : FossilPart.values()) {
-            String name = value.getSerializedName();
-            Identifier dirtyLoc = Constants.id("item/fossil_fragment/dirty_" + name);
-            Identifier normalLoc = Constants.id("item/fossil_fragment/" + name);
-            Identifier dirty = ModelTemplates.FLAT_ITEM.create(dirtyLoc, TextureMapping.layer0(new Material(dirtyLoc)), itemModels.modelOutput);
-            Identifier normal = ModelTemplates.FLAT_ITEM.create(normalLoc, TextureMapping.layer0(new Material(normalLoc)), itemModels.modelOutput);
-            dirties.add(ItemModelUtils.when(value, ItemModelUtils.plainModel(dirty)));
-            normals.add(ItemModelUtils.when(value, ItemModelUtils.plainModel(normal)));
+    private void generateFossilPartItem(ItemModelGenerators itemModels){
+        for (ResourceKey<FossilPart> value : FossilPart.builtinKeys) {
+            String name = value.identifier().getPath();
+            Identifier dirtyLoc = Constants.id("item/fossil_part/dirty_" + name);
+            Identifier normalLoc = Constants.id("item/fossil_part/" + name);
+            ModelTemplates.FLAT_ITEM.create(dirtyLoc, TextureMapping.layer0(new Material(dirtyLoc)), itemModels.modelOutput);
+            ModelTemplates.FLAT_ITEM.create(normalLoc, TextureMapping.layer0(new Material(normalLoc)), itemModels.modelOutput);
         }
-
-        itemModels.itemModelOutput.accept(ModItems.FOSSIL_FRAGMENT.get(), ItemModelUtils.conditional(
-            new DirtyCondition(),
-            ItemModelUtils.select(new FossilPartSelect(), dirties),
-            ItemModelUtils.select(new FossilPartSelect(), normals))
-        );
-    }
-
-    private void generateEggFossilItem(ItemModelGenerators itemModels){
-        Identifier dirtyLoc = Constants.id("item/dirty_egg_fossil");
-        Identifier normalLoc = Constants.id("item/egg_fossil");
-
-        Identifier dirty = ModelTemplates.FLAT_ITEM.create(dirtyLoc, TextureMapping.layer0(new Material(dirtyLoc)), itemModels.modelOutput);
-        Identifier normal = ModelTemplates.FLAT_ITEM.create(normalLoc, TextureMapping.layer0(new Material(normalLoc)), itemModels.modelOutput);
-
-        itemModels.itemModelOutput.accept(ModItems.EGG_FOSSIL.get(), ItemModelUtils.conditional(new DirtyCondition(), ItemModelUtils.plainModel(dirty), ItemModelUtils.plainModel(normal)));
     }
 
     private void generateDNASampleItem(ItemModelGenerators itemModels){
@@ -159,5 +129,10 @@ public class ModModelProvider extends ModelProvider {
             .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
             .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
             .select(Direction.NORTH, BlockModelGenerators.NOP);
+    }
+
+    @Override
+    protected Stream<? extends Holder<Item>> getKnownItems() {
+        return super.getKnownItems().filter(h -> !h.is(ModItems.FOSSIL_PART.key()));
     }
 }

@@ -7,7 +7,7 @@ import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.custom.BabyCreatureCapsule;
 import com.coolerpromc.ancientcreature.item.custom.DNASampleItem;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
-import com.coolerpromc.ancientcreature.item.custom.FossilFragmentItem;
+import com.coolerpromc.ancientcreature.item.custom.FossilPartItem;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.coolerpromc.ancientcreature.tag.ModBlockTags;
@@ -25,9 +25,8 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
     public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
 
-    public static final RegistryHandler.Items<FossilFragmentItem> FOSSIL_FRAGMENT = registerItem("fossil_fragment", p -> new FossilFragmentItem(p.stacksTo(1).component(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY)));
+    public static final RegistryHandler.Items<FossilPartItem> FOSSIL_PART = registerItem("fossil_part", p -> new FossilPartItem(p.stacksTo(1).component(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY)));
     public static final RegistryHandler.Items<Item> EGG_SHELL_FRAGMENT = registerItem("egg_shell_fragment", Item::new);
-    public static final RegistryHandler.Items<EggFossilItem> EGG_FOSSIL = registerItem("egg_fossil", p -> new EggFossilItem(p.stacksTo(1).component(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY)));
 
     public static final RegistryHandler.Items<Item> ROCK_FRAGMENT = registerItem("rock_fragment", Item::new);
     public static final RegistryHandler.Items<Item> DIRT_FRAGMENT = registerItem("dirt_fragment", Item::new);

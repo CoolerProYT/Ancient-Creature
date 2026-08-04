@@ -1,4 +1,11 @@
-// 26.1.2	2026-08-04T14:28:40.497405	Registries
+// 26.1.2	2026-08-04T22:39:50.5662602	Registries
+9d765050cc8e22ff820056e595e3a83d63f3e949 data/ancientcreature/ancientcreature/fossil_part/claw.json
+8d0a1c37132bf705f3c3f93ffd822ad1e83169ee data/ancientcreature/ancientcreature/fossil_part/egg.json
+66de3419cabbf6d8714b40b9a9dd117767ab862f data/ancientcreature/ancientcreature/fossil_part/limb.json
+e76141c5b90988a068a2f0e17fd2453283f4f6a0 data/ancientcreature/ancientcreature/fossil_part/rib.json
+295ab37bb084fc57da2eb644fdff2c2a41bff831 data/ancientcreature/ancientcreature/fossil_part/skull.json
+c70c58f99e76c31960286b3dbf12207739c868df data/ancientcreature/ancientcreature/fossil_part/tooth.json
+ed8713b47821e109c5ffaf67c2fa142bb0c84cbe data/ancientcreature/ancientcreature/fossil_part/vertebra.json
 15079ef1530224855079c08e036606626f5315a3 data/ancientcreature/neoforge/biome_modifier/forest_rocks.json
 9902cf778e914ebaaa007a85faeb745abba6ad9e data/ancientcreature/neoforge/biome_modifier/fossil_ore.json
 0707936c2b97a8826bc26ff77552a00a3702a3f7 data/ancientcreature/worldgen/configured_feature/forest_rocks.json

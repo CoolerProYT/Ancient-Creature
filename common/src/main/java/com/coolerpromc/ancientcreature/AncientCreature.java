@@ -10,15 +10,19 @@ import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.entity.custom.Megalodon;
 import com.coolerpromc.ancientcreature.entity.custom.Triceratops;
 import com.coolerpromc.ancientcreature.entity.custom.TyrannosaurusRex;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
 import com.coolerpromc.ancientcreature.platform.Services;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModFeatures;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModPlacedFeatures;
 import com.coolerpromc.ancientcreature.worldgen.structure.ModStructureTypes;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -79,6 +83,10 @@ public class AncientCreature {
 
     }
 
+    public static void initDatapackRegistry(){
+        registerDatapackRegistry(ModRegistries.FOSSIL_PART, FossilPart.DIRECT_CODEC, FossilPart.DIRECT_CODEC);
+    }
+
     private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider, Function<T, Container[]> containers){
         Services.CAPABILITIES.registerBlockEntityItemStorage(type, provider, containers);
     }
@@ -93,5 +101,9 @@ public class AncientCreature {
 
     private static void registerBrewingRecipe(Item from, Item ingredient, Item to){
         Services.REGISTRY.registerBrewingRecipe(from, ingredient, to);
+    }
+
+    private static <T> void registerDatapackRegistry(ResourceKey<Registry<T>> resourceKey, Codec<T> serverCodec, Codec<T> clientCodec){
+        Services.REGISTRY.registerDatapackRegistry(resourceKey, serverCodec, clientCodec);
     }
 }

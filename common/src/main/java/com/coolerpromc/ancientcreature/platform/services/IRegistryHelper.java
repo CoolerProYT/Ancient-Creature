@@ -5,7 +5,9 @@ import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -82,6 +84,9 @@ public interface IRegistryHelper {
     void registerBrewingRecipe(Item from, Item ingredient, Item to);
     void applyBrewingRecipeRegistrations(BrewingRecipeRegistrar registrar);
 
+    <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec);
+    void applyDatapackRegistryRegistrations(DatapackRegistryRegistrar registrar);
+
     interface EntityAttributeRegistrar {
         void register(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     }
@@ -90,6 +95,9 @@ public interface IRegistryHelper {
     }
     interface BrewingRecipeRegistrar {
         void register(Item from, Item ingredient, Item to);
+    }
+    interface DatapackRegistryRegistrar {
+        <T> void register(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec);
     }
 
     static ResourceKey<Block> blockKey(String name) {

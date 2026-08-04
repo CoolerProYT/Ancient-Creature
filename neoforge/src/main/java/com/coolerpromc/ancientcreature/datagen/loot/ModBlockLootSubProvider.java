@@ -3,11 +3,12 @@ package com.coolerpromc.ancientcreature.datagen.loot;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
-import com.coolerpromc.ancientcreature.loot.custom.SetFossilCompletenessFunction;
-import com.coolerpromc.ancientcreature.loot.custom.SetFossilPartFunction;
-import com.coolerpromc.ancientcreature.loot.custom.SetFossilSpeciesFunction;
+import com.coolerpromc.ancientcreature.loot.custom.SetFossilDataFunction;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
+import java.util.List;
 import java.util.Set;
 
 public class ModBlockLootSubProvider extends BlockLootSubProvider {
@@ -44,13 +46,15 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
     private LootTable.Builder createFossilDrop(Block block) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
             LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilPartFunction.setPart()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.3f))).apply(SetFossilSpeciesFunction.setSpecies()))
+                .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(FossilPart.all(registries))))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
     }
 
     private LootTable.Builder createRockPileDrop(Block block){
+        HolderGetter<FossilPart> fossilParts = registries.lookupOrThrow(ModRegistries.FOSSIL_PART);
+
         return LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()
@@ -59,12 +63,12 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_EGG, true)))
-                    .add(LootItem.lootTableItem(ModItems.EGG_FOSSIL.get()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.7f, 0.9f))).apply(SetFossilSpeciesFunction.setSpecies()))
+                    .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(List.of(fossilParts.getOrThrow(FossilPart.EGG)))))
             )
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(LootItem.lootTableItem(ModItems.FOSSIL_FRAGMENT).apply(SetFossilPartFunction.setPart()).apply(SetFossilCompletenessFunction.setCompleteness(UniformGenerator.between(0.01f, 0.2f))).apply(SetFossilSpeciesFunction.setSpecies()))
+                    .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(FossilPart.all(registries))))
             );
     }
 

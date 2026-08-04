@@ -1,6 +1,8 @@
 package com.coolerpromc.ancientcreature.datagen;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.item.FossilPart;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModConfiguredFeatures;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModPlacedFeatures;
 import com.coolerpromc.ancientcreature.worldgen.structure.ModStructureSets;
@@ -23,7 +25,8 @@ public class ModDataPackProvider extends DatapackBuiltinEntriesProvider {
         .add(Registries.TEMPLATE_POOL, ModStructureTemplatePools::boostrap)
         .add(Registries.STRUCTURE, ModStructures::boostrap)
         .add(Registries.STRUCTURE_SET, ModStructureSets::boostrap)
-        .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);
+        .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
+        .add(ModRegistries.FOSSIL_PART, FossilPart::bootstrap);
 
     public ModDataPackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(Constants.MODID));

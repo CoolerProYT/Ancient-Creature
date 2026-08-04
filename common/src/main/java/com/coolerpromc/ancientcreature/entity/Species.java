@@ -1,6 +1,5 @@
 package com.coolerpromc.ancientcreature.entity;
 
-import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
@@ -23,25 +22,21 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 0.2f, 0.05f, 1000, ModEntities.TRICERATOPS),
-    TYRANNOSAURUS_REX("tyrannosaurus_rex", BiomeTags.IS_OVERWORLD, 0.35f, 0.08f, 1600, ModEntities.TYRANNOSAURUS_REX),
-    MEGALODON("megalodon", BiomeTags.IS_OCEAN, 0.4f, 0.1f, 2000, ModEntities.MEGALODON);
+    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 1000, ModEntities.TRICERATOPS),
+    TYRANNOSAURUS_REX("tyrannosaurus_rex", BiomeTags.IS_OVERWORLD, 1600, ModEntities.TYRANNOSAURUS_REX),
+    MEGALODON("megalodon", BiomeTags.IS_OCEAN, 2000, ModEntities.MEGALODON);
 
     public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
     public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     final String name;
     final TagKey<Biome> biomeTag;
-    final float identifyFailChance;
-    final float fossilDamageRate;
     final int incubationTime;
     final RegistryHandler.Entities<?> entityType;
 
-    Species(String name, TagKey<Biome> biomeTag, float identifyFailChance, float fossilDamageRate, int incubationTime, RegistryHandler.Entities<?> entityType){
+    Species(String name, TagKey<Biome> biomeTag, int incubationTime, RegistryHandler.Entities<?> entityType){
         this.name = name;
         this.biomeTag = biomeTag;
-        this.identifyFailChance = identifyFailChance;
-        this.fossilDamageRate = fossilDamageRate;
         this.incubationTime = incubationTime;
         this.entityType = entityType;
     }
@@ -53,14 +48,6 @@ public enum Species implements StringRepresentable, TooltipProvider {
 
     public boolean isValidBiome(Holder<Biome> holder){
         return holder.is(this.biomeTag);
-    }
-
-    public float getIdentifyFailChance() {
-        return identifyFailChance;
-    }
-
-    public float getFossilDamageRate() {
-        return fossilDamageRate;
     }
 
     public int getIncubationTime() {

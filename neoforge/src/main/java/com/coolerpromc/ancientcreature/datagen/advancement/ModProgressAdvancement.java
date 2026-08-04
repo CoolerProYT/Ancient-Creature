@@ -7,6 +7,7 @@ import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import com.coolerpromc.ancientcreature.tag.ModItemTags;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -32,6 +33,7 @@ public class ModProgressAdvancement implements AdvancementSubProvider {
     @Override
     public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderGetter<FossilPart> fossilParts = registries.lookupOrThrow(ModRegistries.FOSSIL_PART);
 
         AdvancementHolder root = Advancement.Builder.advancement()
             .display(
@@ -53,14 +55,13 @@ public class ModProgressAdvancement implements AdvancementSubProvider {
         AdvancementHolder obtainFossil = Advancement.Builder.advancement()
             .parent(craftChisel)
             .display(
-                new ItemStackTemplate(ModItems.FOSSIL_FRAGMENT.get(), 1, DataComponentPatch.builder().set(ModDataComponents.FOSSIL_DATA.get(), FossilData.ofDefault(FossilPart.SKULL, Species.TRICERATOPS, 1f)).build()),
+                new ItemStackTemplate(ModItems.FOSSIL_PART.get(), 1, DataComponentPatch.builder().set(ModDataComponents.FOSSIL_DATA.get(), FossilData.ofDefault(fossilParts.getOrThrow(FossilPart.SKULL), Species.TRICERATOPS, 1f)).build()),
                 title("obtain_fossil"),
                 description("obtain_fossil"),
                 null,
                 AdvancementType.TASK, true, true, false
             )
-            .addCriterion("fossil_fragment", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.FOSSIL_FRAGMENT))
-            .addCriterion("egg_fossil", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.EGG_FOSSIL))
+            .addCriterion("fossil_fragment", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.FOSSIL_PART))
             .requirements(AdvancementRequirements.Strategy.OR)
             .save(consumer, Constants.id("progression/obtain_fossil"));
 

@@ -4,6 +4,7 @@ import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -13,17 +14,15 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
-import org.jspecify.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
-public record FossilData(Optional<FossilPart> fossilPart, Optional<Species> species, float completeness, boolean isDirty, boolean identified, boolean identificationFailed) implements TooltipProvider {
-    public static final FossilData EMPTY = ofDefault(null, null, 0f);
+public record FossilData(Holder<FossilPart> fossilPart, Species species, float completeness, boolean isDirty, boolean identified, boolean identificationFailed) implements TooltipProvider {
+    public static final FossilData EMPTY = ofDefault(Holder.direct(FossilPart.EMPTY), Species.TRICERATOPS, 0f);
 
     public static final Codec<FossilData> CODEC = RecordCodecBuilder.create(i -> i.group(
-        FossilPart.CODEC.optionalFieldOf("fossilPart").forGetter(FossilData::fossilPart),
-        Species.CODEC.optionalFieldOf("species").forGetter(FossilData::species),
+        FossilPart.CODEC.fieldOf("fossilPart").forGetter(FossilData::fossilPart),
+        Species.CODEC.fieldOf("species").forGetter(FossilData::species),
         ExtraCodecs.floatRange(0.0f, 1.0f).fieldOf("completeness").forGetter(FossilData::completeness),
         Codec.BOOL.fieldOf("isDirty").forGetter(FossilData::isDirty),
         Codec.BOOL.fieldOf("identified").forGetter(FossilData::identified),
@@ -31,9 +30,9 @@ public record FossilData(Optional<FossilPart> fossilPart, Optional<Species> spec
     ).apply(i, FossilData::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, FossilData> STREAM_CODEC = StreamCodec.composite(
-        ByteBufCodecs.optional(FossilPart.STREAM_CODEC),
+        FossilPart.STREAM_CODEC,
         FossilData::fossilPart,
-        ByteBufCodecs.optional(Species.STREAM_CODEC),
+        Species.STREAM_CODEC,
         FossilData::species,
         ByteBufCodecs.FLOAT,
         FossilData::completeness,
@@ -46,15 +45,11 @@ public record FossilData(Optional<FossilPart> fossilPart, Optional<Species> spec
         FossilData::new
     );
 
-    public FossilData(@Nullable FossilPart fossilPart, @Nullable Species species, float completeness, boolean isDirty, boolean identified, boolean identificationFailed){
-        this(Optional.ofNullable(fossilPart), Optional.ofNullable(species), completeness, isDirty, identified, identificationFailed);
+    public FossilData(Holder<FossilPart> fossilPart, Species species, float completeness, boolean isDirty, boolean identified){
+        this(fossilPart, species, completeness, isDirty, identified, false);
     }
 
-    public FossilData(@Nullable FossilPart fossilPart, @Nullable Species species, float completeness, boolean isDirty, boolean identified){
-        this(Optional.ofNullable(fossilPart), Optional.ofNullable(species), completeness, isDirty, identified, false);
-    }
-
-    public static FossilData ofDefault(FossilPart fossilPart, Species species, float completeness){
+    public static FossilData ofDefault(Holder<FossilPart> fossilPart, Species species, float completeness){
         return new FossilData(fossilPart, species, completeness, true, false, false);
     }
 
@@ -75,15 +70,11 @@ public record FossilData(Optional<FossilPart> fossilPart, Optional<Species> spec
     }
 
     public FossilData setSpecies(Species species){
-        return new FossilData(fossilPart, Optional.of(species), completeness, isDirty, identified, identificationFailed);
+        return new FossilData(fossilPart, species, completeness, isDirty, identified, identificationFailed);
     }
 
-    public @Nullable FossilPart getFossilPart(){
-        return fossilPart.orElse(null);
-    }
-
-    public @Nullable Species getSpecies(){
-        return species.orElse(null);
+    public Species getSpecies(){
+        return species;
     }
 
     @Override

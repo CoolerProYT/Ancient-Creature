@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
@@ -62,6 +63,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
     private final List<BrewingRecipeEntry> brewingRecipes = new ArrayList<>();
+    private final List<DatapackRegistryEntry<?>> datapackRegistries = new ArrayList<>();
 
     @Override
     public <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func, BlockBehaviour.Properties p) {
@@ -228,6 +230,18 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
+    @Override
+    public <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec) {
+        this.datapackRegistries.add(new DatapackRegistryEntry<>(key, serverCodec, clientCodec));
+    }
+
+    @Override
+    public void applyDatapackRegistryRegistrations(DatapackRegistryRegistrar registrar) {
+        for (DatapackRegistryEntry<?> entry : datapackRegistries) {
+            entry.register(registrar);
+        }
+    }
+
     private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         private void register(EntityAttributeRegistrar registrar) {
             registrar.register(this.entityType, this.supplier);
@@ -243,6 +257,12 @@ public class FabricRegistryHelper implements IRegistryHelper {
     private record BrewingRecipeEntry(Item from, Item ingredient, Item to){
         private void register(BrewingRecipeRegistrar registrar){
             registrar.register(this.from, this.ingredient, this.to);
+        }
+    }
+
+    private record DatapackRegistryEntry<T>(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec){
+        private void register(DatapackRegistryRegistrar registrar){
+            registrar.register(this.key, this.serverCodec, this.clientCodec);
         }
     }
 }

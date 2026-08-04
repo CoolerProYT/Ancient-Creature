@@ -10,7 +10,11 @@ import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,8 +36,11 @@ public final class AncientCreatureJeiRecipes {
     private AncientCreatureJeiRecipes() {
     }
 
-    public static List<AncientCreatureJeiRecipe> fossilHunting() {
+    public static List<AncientCreatureJeiRecipe> fossilHunting(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
+        List<Holder<FossilPart>> allParts = FossilPart.all(registries);
+        HolderLookup.RegistryLookup<FossilPart> fossilParts = registries.lookupOrThrow(ModRegistries.FOSSIL_PART);
+        Holder<FossilPart> eggPart = fossilParts.getOrThrow(FossilPart.EGG);
         for (Species species : Species.values()) {
             for (ChiselData chisel : CHISELS) {
                 float min = 0.01f * (1.0f - chisel.damageRate());
@@ -41,12 +48,12 @@ public final class AncientCreatureJeiRecipes {
                 recipes.add(recipe(
                     "fossil_hunting/ore/" + species.getSerializedName() + "/" + chisel.id(),
                     List.of(slot(ModBlocks.FOSSIL_ORE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
-                    List.of(fossilAlternatives(species, List.of(FossilPart.values()), min, max)),
+                    List.of(fossilAlternatives(species, allParts, min, max)),
                     20,
                     Component.translatable("jei.ancientcreature.method.chiseling"),
                     biomeNote(species),
                     speciesNote(species),
-                    partsNote(List.of(FossilPart.values())),
+                    partsNote(allParts),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(min), percent(max)),
                     Component.translatable("jei.ancientcreature.fortune_bonus")
                 ));
@@ -56,12 +63,12 @@ public final class AncientCreatureJeiRecipes {
                 recipes.add(recipe(
                     "fossil_hunting/rock_pile/fragment/" + species.getSerializedName() + "/" + chisel.id(),
                     List.of(slot(ModBlocks.ROCK_PILE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
-                    List.of(fossilAlternatives(species, List.of(FossilPart.values()), rockMin, rockMax)),
+                    List.of(fossilAlternatives(species, allParts, rockMin, rockMax)),
                     20,
                     Component.translatable("jei.ancientcreature.method.rock_pile"),
                     biomeNote(species),
                     speciesNote(species),
-                    partsNote(List.of(FossilPart.values())),
+                    partsNote(allParts),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(rockMin), percent(rockMax)),
                     Component.translatable("jei.ancientcreature.rock_pile_fossil_condition"),
                     Component.translatable("jei.ancientcreature.fortune_bonus")
@@ -72,7 +79,7 @@ public final class AncientCreatureJeiRecipes {
                 recipes.add(recipe(
                     "fossil_hunting/rock_pile/egg/" + species.getSerializedName() + "/" + chisel.id(),
                     List.of(slot(ModBlocks.ROCK_PILE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
-                    List.of(slot(eggFossil(species, eggMin, true, false), eggFossil(species, eggMax, true, false))),
+                    List.of(fossilAlternatives(species, List.of(eggPart), eggMin, eggMax)),
                     20,
                     Component.translatable("jei.ancientcreature.method.rock_pile"),
                     biomeNote(species),
@@ -84,7 +91,12 @@ public final class AncientCreatureJeiRecipes {
                 ));
             }
 
-            List<FossilPart> archaeologyParts = List.of(FossilPart.CLAW, FossilPart.TOOTH, FossilPart.RIB, FossilPart.LIMB);
+            List<Holder<FossilPart>> archaeologyParts = List.of(
+                fossilParts.getOrThrow(FossilPart.CLAW),
+                fossilParts.getOrThrow(FossilPart.TOOTH),
+                fossilParts.getOrThrow(FossilPart.RIB),
+                fossilParts.getOrThrow(FossilPart.LIMB)
+            );
             recipes.add(recipe(
                 "fossil_hunting/archaeology/" + species.getSerializedName(),
                 List.of(slot(Items.SUSPICIOUS_GRAVEL.getDefaultInstance(), Items.SUSPICIOUS_SAND.getDefaultInstance()), slot(Items.BRUSH.getDefaultInstance())),
@@ -101,78 +113,53 @@ public final class AncientCreatureJeiRecipes {
         return recipes;
     }
 
-    public static List<AncientCreatureJeiRecipe> fossilCleaning() {
+    public static List<AncientCreatureJeiRecipe> fossilCleaning(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
         for (Species species : Species.values()) {
-            for (FossilPart part : FossilPart.values()) {
+            for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 ItemStack input = fossil(species, part, 0.50f, true, false);
                 ItemStack output = fossil(species, part, 0.50f, false, false);
-                recipes.add(recipe("fossil_cleaning/" + species.getSerializedName() + "/" + part.getSerializedName(),
+                recipes.add(recipe("fossil_cleaning/" + species.getSerializedName() + "/" + partId(part),
                     List.of(slot(Items.BRUSH.getDefaultInstance()), slot(input)), List.of(slot(output), slot(new ItemStack(ModItems.DIRT_FRAGMENT.get(), 2))), 100,
                     Component.translatable("jei.ancientcreature.cleaning_preserves"),
                     Component.translatable("jei.ancientcreature.dirt_output")));
             }
-            ItemStack input = eggFossil(species, 0.80f, true, false);
-            ItemStack output = eggFossil(species, 0.80f, false, false);
-            recipes.add(recipe("fossil_cleaning/" + species.getSerializedName() + "/egg",
-                List.of(slot(Items.BRUSH.getDefaultInstance()), slot(input)), List.of(slot(output), slot(new ItemStack(ModItems.DIRT_FRAGMENT.get(), 2))), 100,
-                Component.translatable("jei.ancientcreature.cleaning_preserves"),
-                Component.translatable("jei.ancientcreature.dirt_output")));
         }
         return recipes;
     }
 
-    public static List<AncientCreatureJeiRecipe> fossilIdentification() {
+    public static List<AncientCreatureJeiRecipe> fossilIdentification(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
         for (Species species : Species.values()) {
-            for (FossilPart part : FossilPart.values()) {
+            for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 ItemStack input = fossil(species, part, 0.50f, false, false);
                 ItemStack success = input.copy();
                 success.set(ModDataComponents.FOSSIL_DATA.get(), success.get(ModDataComponents.FOSSIL_DATA.get()).identify());
                 ItemStack failure = input.copy();
-                FossilData fossilData = failure.get(ModDataComponents.FOSSIL_DATA.get());
-                fossilData = fossilData.identifyFailed().setCompleteness(0.50f * (1.0f - species.getFossilDamageRate()));
+                FossilData fossilData = failure.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+                fossilData = fossilData.identifyFailed().setCompleteness(0.50f * (1.0f - part.value().fossilDamageRate()));
                 failure.set(ModDataComponents.FOSSIL_DATA.get(), fossilData);
-                recipes.add(identificationRecipe(species, part.getSerializedName(), input, success, failure));
+                recipes.add(identificationRecipe(part, species, input, success, failure));
             }
-            ItemStack input = eggFossil(species, 0.80f, false, false);
-            ItemStack success = input.copy();
-            success.set(ModDataComponents.FOSSIL_DATA.get(), success.get(ModDataComponents.FOSSIL_DATA.get()).identify());
-            ItemStack failure = input.copy();
-            FossilData fossilData = failure.get(ModDataComponents.FOSSIL_DATA.get());
-            fossilData = fossilData.identifyFailed().setCompleteness(0.80f * (1.0f - species.getFossilDamageRate()));
-            failure.set(ModDataComponents.FOSSIL_DATA.get(), fossilData);
-            recipes.add(identificationRecipe(species, "egg", input, success, failure));
         }
         return recipes;
     }
 
-    public static List<AncientCreatureJeiRecipe> dnaExtraction() {
+    public static List<AncientCreatureJeiRecipe> dnaExtraction(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
         for (Species species : Species.values()) {
-            for (FossilPart part : FossilPart.values()) {
+            for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 for (DNAIntegrityLevel integrity : DNAIntegrityLevel.values()) {
                     float completeness = representativeCompleteness(part, integrity);
-                    if (DNAIntegrityLevel.byScore(Math.max(0.01f, completeness + part.getDnaExtractingBonus())) != integrity) continue;
+                    if (DNAIntegrityLevel.byScore(Math.max(0.01f, completeness + part.value().dnaExtractingBonus())) != integrity) continue;
                     ItemStack fossil = fossil(species, part, completeness, false, true);
-                    recipes.add(recipe("dna_extraction/" + species.getSerializedName() + "/" + part.getSerializedName() + "/" + integrity.getSerializedName(),
+                    recipes.add(recipe("dna_extraction/" + species.getSerializedName() + "/" + partId(part) + "/" + integrity.getSerializedName(),
                         List.of(slot(ModItems.EXTRACTION_FLUID.toStack()), slot(fossil), slot(ModItems.SAMPLE_VIAL.toStack())),
                         List.of(slot(dnaSample(species, integrity))), 100,
                         Component.translatable("jei.ancientcreature.dna_formula"),
                         Component.translatable("jei.ancientcreature.integrity_result", Component.translatable("dna.ancientcreature." + integrity.getSerializedName())),
                         Component.translatable("jei.ancientcreature.extraction_consumption")));
                 }
-            }
-            for (DNAIntegrityLevel integrity : List.of(DNAIntegrityLevel.STABLE, DNAIntegrityLevel.PRESERVED_EMBRYO)) {
-                float completeness = integrity == DNAIntegrityLevel.STABLE ? 0.45f : 0.80f;
-                ItemStack egg = eggFossil(species, completeness, false, true);
-                recipes.add(recipe("dna_extraction/" + species.getSerializedName() + "/egg/" + integrity.getSerializedName(),
-                    List.of(slot(ModItems.EXTRACTION_FLUID.toStack()), slot(egg), slot(ModItems.SAMPLE_VIAL.toStack())),
-                    List.of(slot(dnaSample(species, integrity))), 100,
-                    Component.translatable("jei.ancientcreature.dna_formula"),
-                    Component.translatable("jei.ancientcreature.egg_limb_bonus"),
-                    Component.translatable("jei.ancientcreature.integrity_result", Component.translatable("dna.ancientcreature." + integrity.getSerializedName())),
-                    Component.translatable("jei.ancientcreature.extraction_consumption")));
             }
         }
         return recipes;
@@ -232,11 +219,11 @@ public final class AncientCreatureJeiRecipes {
         return recipes;
     }
 
-    private static AncientCreatureJeiRecipe identificationRecipe(Species species, String suffix, ItemStack input, ItemStack success, ItemStack failure) {
-        return recipe("fossil_identification/" + species.getSerializedName() + "/" + suffix,
+    private static AncientCreatureJeiRecipe identificationRecipe(Holder<FossilPart> fossilPart, Species species, ItemStack input, ItemStack success, ItemStack failure) {
+        return recipe("fossil_identification/" + partId(fossilPart) + "/" + species.getSerializedName(),
             List.of(slot(input)), List.of(slot(success, failure)), 400,
-            Component.translatable("jei.ancientcreature.identification_chance", percent(species.getIdentifyFailChance())),
-            Component.translatable("jei.ancientcreature.identification_damage", percent(species.getFossilDamageRate())),
+            Component.translatable("jei.ancientcreature.identification_chance", percent(fossilPart.value().identifyFailChance())),
+            Component.translatable("jei.ancientcreature.identification_damage", percent(fossilPart.value().fossilDamageRate())),
             Component.translatable("jei.ancientcreature.identification_time"));
     }
 
@@ -248,24 +235,18 @@ public final class AncientCreatureJeiRecipes {
         return List.of(stacks);
     }
 
-    private static List<ItemStack> fossilAlternatives(Species species, List<FossilPart> parts, float min, float max) {
+    private static List<ItemStack> fossilAlternatives(Species species, List<Holder<FossilPart>> parts, float min, float max) {
         List<ItemStack> stacks = new ArrayList<>();
-        for (FossilPart part : parts) {
+        for (Holder<FossilPart> part : parts) {
             stacks.add(fossil(species, part, min, true, false));
             stacks.add(fossil(species, part, max, true, false));
         }
         return stacks;
     }
 
-    private static ItemStack fossil(Species species, FossilPart part, float completeness, boolean dirty, boolean identified) {
-        ItemStack stack = ModItems.FOSSIL_FRAGMENT.toStack();
+    private static ItemStack fossil(Species species, Holder<FossilPart> part, float completeness, boolean dirty, boolean identified) {
+        ItemStack stack = ModItems.FOSSIL_PART.toStack();
         stack.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(part, species, Math.clamp(completeness, 0f, 1f), dirty, identified));
-        return stack;
-    }
-
-    private static ItemStack eggFossil(Species species, float completeness, boolean dirty, boolean identified) {
-        ItemStack stack = ModItems.EGG_FOSSIL.toStack();
-        stack.set(ModDataComponents.FOSSIL_DATA.get(), new FossilData(null, species, Math.clamp(completeness, 0f, 1f), dirty, identified));
         return stack;
     }
 
@@ -287,14 +268,14 @@ public final class AncientCreatureJeiRecipes {
         return stack;
     }
 
-    private static float representativeCompleteness(FossilPart part, DNAIntegrityLevel integrity) {
+    private static float representativeCompleteness(Holder<FossilPart> part, DNAIntegrityLevel integrity) {
         float target = switch (integrity) {
             case DEGRADED -> 0.10f;
             case PARTIAL -> 0.225f;
             case STABLE -> 0.45f;
             case PRESERVED_EMBRYO -> 0.80f;
         };
-        return Math.clamp(target - part.getDnaExtractingBonus(), 0f, 1f);
+        return Math.clamp(target - part.value().dnaExtractingBonus(), 0f, 1f);
     }
 
     private static int[] genomeRange(DNAIntegrityLevel integrity) {
@@ -315,12 +296,22 @@ public final class AncientCreatureJeiRecipes {
         return Component.translatable("jei.ancientcreature.species_result", Component.translatable("species.ancientcreature." + species.getSerializedName()));
     }
 
-    private static Component partsNote(List<FossilPart> parts) {
+    private static Component partsNote(List<Holder<FossilPart>> parts) {
         String joined = parts.stream()
-            .map(part -> Component.translatable("fossilPart.ancientcreature." + part.getSerializedName()).getString())
+            .map(part -> Component.translatable(partTranslationKey(part)).getString())
             .reduce((left, right) -> left + ", " + right)
             .orElse("");
         return Component.translatable("jei.ancientcreature.parts", joined);
+    }
+
+    private static String partId(Holder<FossilPart> part) {
+        Identifier id = part.unwrapKey().orElseThrow().identifier();
+        return id.getNamespace() + "/" + id.getPath();
+    }
+
+    private static String partTranslationKey(Holder<FossilPart> part) {
+        Identifier id = part.unwrapKey().orElseThrow().identifier();
+        return "fossilPart." + id.getNamespace() + "." + id.getPath().replace('/', '.');
     }
 
     private static int percent(float value) {

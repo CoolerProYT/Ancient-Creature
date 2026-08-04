@@ -7,11 +7,13 @@ import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.menu.custom.FossilIdentificationChamberMenu;
 import com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -195,15 +197,18 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     private void finishIdentifying(ServerLevel level, BlockPos pos) {
         ItemStack fossil = inputContainer.removeItem(0, 1);
-        FossilData fossilData = fossil.get(ModDataComponents.FOSSIL_DATA.get());
+        FossilData fossilData = fossil.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+        Holder<FossilPart> fossilPart = fossilData.fossilPart();
         Species species = fossilData.getSpecies();
         IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
+        float failChance = fossilPart.value().identifyFailChance();
+        float damageRate = fossilPart.value().fossilDamageRate();
 
         if (species != null){
-            if (level.getRandom().nextFloat() <= species.getIdentifyFailChance() && !data.getIdentifiedSpecies().contains(species)){
+            if (level.getRandom().nextFloat() <= failChance && !data.getIdentifiedSpecies().contains(species)){
                 level.playSound(null, pos, ModSounds.IDENTIFICATION_CHAMBER_FAILED.get(), SoundSource.BLOCKS, 0.5f, 0.5f);
                 FossilData newData = fossilData.identifyFailed();
-                newData = newData.setCompleteness(newData.completeness() * (1f - species.getFossilDamageRate()));
+                newData = newData.setCompleteness(newData.completeness() * (1f - damageRate));
                 fossil.set(ModDataComponents.FOSSIL_DATA.get(), newData);
                 outputContainer.addItem(fossil);
             }

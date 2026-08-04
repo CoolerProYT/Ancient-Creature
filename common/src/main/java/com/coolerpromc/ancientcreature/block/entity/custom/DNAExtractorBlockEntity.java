@@ -16,6 +16,7 @@ import com.coolerpromc.ancientcreature.sound.ModSounds;
 import com.coolerpromc.ancientcreature.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -225,12 +226,12 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private ItemStack calculateOutputStack(){
         ItemStack input = fossilContainer.getItem(0);
-        FossilData fossilData = input.get(ModDataComponents.FOSSIL_DATA.get());
-        FossilPart part = fossilData.getFossilPart();
+        FossilData fossilData = input.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
+        Holder<FossilPart> part = fossilData.fossilPart();
         Species species = fossilData.getSpecies();
         float completeness = fossilData.completeness();
         ItemStack output = ModItems.DNA_SAMPLE.toStack();
-        float integrityScore = Math.max(0.01f, completeness + (part == null ? 0 : part.getDnaExtractingBonus()));
+        float integrityScore = Math.max(0.01f, completeness + part.value().dnaExtractingBonus());
         DNAIntegrityLevel integrityLevel = DNAIntegrityLevel.byScore(integrityScore);
         if (integrityLevel == null){
             return ItemStack.EMPTY;

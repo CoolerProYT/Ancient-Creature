@@ -14,6 +14,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 @Mod(Constants.MODID)
 @EventBusSubscriber(modid = Constants.MODID)
@@ -51,5 +52,11 @@ public class NeoForgeAncientCreature {
     public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
         AncientCreature.initBrewingRecipe();
         Services.REGISTRY.applyBrewingRecipeRegistrations(event.getBuilder()::addContainerRecipe);
+    }
+
+    @SubscribeEvent
+    public static void onDataPackRegistryNewRegistry(DataPackRegistryEvent.NewRegistry event) {
+        AncientCreature.initDatapackRegistry();
+        Services.REGISTRY.applyDatapackRegistryRegistrations(event::dataPackRegistry);
     }
 }

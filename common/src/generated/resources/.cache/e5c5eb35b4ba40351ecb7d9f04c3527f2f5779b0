@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-03T15:12:14.9407202	Advancements
+// 26.1.2	2026-08-04T19:57:32.1794201	Advancements
 b5a8acce7f8c318a9e74df14402649720dd138bb data/ancientcreature/advancement/progression/complete_genome.json
 d37c35ee6eb23b1bc41192c252621e8c93bb3b23 data/ancientcreature/advancement/progression/craft_chisel.json
 9fc304ad151eef7b6dfe66ba819b3eedb9eaa573 data/ancientcreature/advancement/progression/craft_cleaning_table.json
@@ -9,6 +9,6 @@ d37c35ee6eb23b1bc41192c252621e8c93bb3b23 data/ancientcreature/advancement/progre
 8eb4b79a628c0063df6775d0df6e216ca73e8d38 data/ancientcreature/advancement/progression/craft_incubator.json
 45776457cbe20229e2016c148940879b71a64482 data/ancientcreature/advancement/progression/create_fertilized_egg.json
 667f1bae236c6f54ab4a24759b39754ecaa46f22 data/ancientcreature/advancement/progression/extract_dna.json
-bf8fba5ce2dd349f207b9909190031acc9323701 data/ancientcreature/advancement/progression/obtain_fossil.json
+2227faf2d92e3d1d5884d6b69f40a2a9768bf51a data/ancientcreature/advancement/progression/obtain_fossil.json
 210911c58069672e37e2589434be55fcd22ab8ac data/ancientcreature/advancement/progression/revive_creature.json
 fa971a1da5c43c852ae8e6e48a0cccf59032e31a data/ancientcreature/advancement/progression/root.json

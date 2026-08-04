@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "ancientcreature:item/dirty_egg_fossil"
-  }
-}
