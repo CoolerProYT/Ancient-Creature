@@ -15,6 +15,7 @@ import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
+import com.coolerpromc.ancientcreature.worldgen.feature.ModFeatures;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModPlacedFeatures;
 import com.coolerpromc.ancientcreature.worldgen.structure.ModStructureTypes;
 import net.minecraft.core.Direction;
@@ -50,6 +51,7 @@ public class AncientCreature {
         ModStructureTypes.init();
         ModLootFunctions.init();
         ModSounds.init();
+        ModFeatures.init();
     }
 
     public static void initCapability(){
@@ -69,7 +71,7 @@ public class AncientCreature {
     }
 
     public static void initBiomeModifier(){
-        registerBiomeModifier(BiomeTags.IS_FOREST, GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.FOREST_ROCKS);
+        registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.FOREST_ROCKS);
         registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.FOSSIL_ORE);
     }
 

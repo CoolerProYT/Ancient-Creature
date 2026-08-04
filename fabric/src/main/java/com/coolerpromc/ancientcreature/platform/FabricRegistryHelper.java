@@ -44,6 +44,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -180,6 +182,13 @@ public class FabricRegistryHelper implements IRegistryHelper {
     public RegistryHandler<SoundEvent, SoundEvent> registerSoundEvent(String name) {
         Identifier id = Constants.id(name);
         Holder<SoundEvent> holder = Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
+        return () -> holder;
+    }
+
+    @Override
+    public <T extends FeatureConfiguration> RegistryHandler<Feature<?>, Feature<T>> registerFeature(String name, Feature<T> feature) {
+        Identifier id = Constants.id(name);
+        Holder<Feature<?>> holder = Registry.registerForHolder(BuiltInRegistries.FEATURE, id, feature);
         return () -> holder;
     }
 

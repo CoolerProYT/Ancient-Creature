@@ -36,6 +36,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -69,6 +71,7 @@ public interface IRegistryHelper {
     <T extends Structure> RegistryHandler<StructureType<?>, StructureType<T>> registerStructureType(String name, MapCodec<T> mapCodec);
     <T extends LootItemFunction> RegistryHandler<MapCodec<? extends LootItemFunction>, MapCodec<T>> registerLootItemFunction(String name, MapCodec<T> mapCodec);
     RegistryHandler<SoundEvent, SoundEvent> registerSoundEvent(String name);
+    <T extends FeatureConfiguration> RegistryHandler<Feature<?>, Feature<T>> registerFeature(String name, Feature<T> feature);
 
     void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     void applyEntityAttributeRegistrations(EntityAttributeRegistrar registrar);

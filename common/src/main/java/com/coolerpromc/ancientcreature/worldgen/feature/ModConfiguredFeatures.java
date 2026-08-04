@@ -34,7 +34,7 @@ public final class ModConfiguredFeatures {
             .add(ModBlocks.ROCK_PILE.defaultBlockState().setValue(RockPileBlock.HAS_EGG, true), 4)
             .add(ModBlocks.ROCK_PILE.defaultBlockState().setValue(RockPileBlock.HAS_EGG, true).setValue(RockPileBlock.HAS_FOSSIL, true), 1);
 
-        FeatureUtils.register(context, FOREST_ROCKS, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(rocks)));
+        FeatureUtils.register(context, FOREST_ROCKS, ModFeatures.WATERLOGGABLE_BLOCK.get(), new SimpleBlockConfiguration(new WeightedStateProvider(rocks)));
 
         RuleTest stoneReplaceable = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         List<OreConfiguration.TargetBlockState> fossilOres = List.of(OreConfiguration.target(stoneReplaceable, ModBlocks.FOSSIL_ORE.defaultBlockState()));

@@ -39,6 +39,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -73,6 +75,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Constants.MODID);
     public static final DeferredRegister<MapCodec<? extends LootItemFunction>> LOOT_FUNCTIONS = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, Constants.MODID);
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Constants.MODID);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(BuiltInRegistries.FEATURE, Constants.MODID);
 
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
@@ -169,6 +172,12 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     }
 
     @Override
+    public <T extends FeatureConfiguration> RegistryHandler<Feature<?>, Feature<T>> registerFeature(String name, Feature<T> feature) {
+        DeferredHolder<Feature<?>, Feature<T>> deferredHolder = FEATURES.register(name, () -> feature);
+        return () -> deferredHolder;
+    }
+
+    @Override
     public void registerEntityAttribute(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         this.entityAttributes.add(new EntityAttributeEntry(entityType, supplier));
     }
@@ -239,5 +248,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         STRUCTURE_TYPES.register(eventBus);
         LOOT_FUNCTIONS.register(eventBus);
         SOUND_EVENTS.register(eventBus);
+        FEATURES.register(eventBus);
     }
 }
