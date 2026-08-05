@@ -14,6 +14,8 @@ import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
+import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
@@ -23,6 +25,9 @@ import com.coolerpromc.ancientcreature.worldgen.structure.ModStructureTypes;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -87,6 +92,10 @@ public class AncientCreature {
         registerDatapackRegistry(ModRegistries.FOSSIL_PART, FossilPart.DIRECT_CODEC, FossilPart.DIRECT_CODEC);
     }
 
+    public static void initPayloadType(){
+        registerClientboundPayload(ClientboundIdentifiedSpeciesSyncPacket.TYPE, ClientboundIdentifiedSpeciesSyncPacket.STREAM_CODEC);
+    }
+
     private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider, Function<T, Container[]> containers){
         Services.CAPABILITIES.registerBlockEntityItemStorage(type, provider, containers);
     }
@@ -105,5 +114,9 @@ public class AncientCreature {
 
     private static <T> void registerDatapackRegistry(ResourceKey<Registry<T>> resourceKey, Codec<T> serverCodec, Codec<T> clientCodec){
         Services.REGISTRY.registerDatapackRegistry(resourceKey, serverCodec, clientCodec);
+    }
+
+    private static <T extends HandledCustomPacketPayload> void registerClientboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec){
+        Services.REGISTRY.registerClientboundPayload(type, streamCodec);
     }
 }

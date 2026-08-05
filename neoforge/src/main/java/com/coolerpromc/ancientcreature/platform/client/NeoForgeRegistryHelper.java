@@ -1,5 +1,6 @@
 package com.coolerpromc.ancientcreature.platform.client;
 
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.color.item.ItemTintSource;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,6 +39,8 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private final List<BlockEntityRendererEntry<?, ?>> blockEntityRenders = new ArrayList<>();
     private final List<MenuScreenEntry<?, ?>> menuScreens = new ArrayList<>();
     private final List<SpecialModelRendererEntry> specialModelRenderers = new ArrayList<>();
+    private final List<ClientPayloadReceiverEntry<?>> clientPayloadReceivers = new ArrayList<>();
+
 
     @Override
     public <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider) {
@@ -81,6 +85,11 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     @Override
     public void registerSpecialModelRenderer(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec) {
         this.specialModelRenderers.add(new SpecialModelRendererEntry(id, mapCodec));
+    }
+
+    @Override
+    public <T extends HandledCustomPacketPayload> void registerClientPayloadReceiver(CustomPacketPayload.Type<T> type) {
+        this.clientPayloadReceivers.add(new ClientPayloadReceiverEntry<>(type));
     }
 
     @Override
@@ -146,6 +155,13 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         }
     }
 
+    @Override
+    public void applyClientPayloadReceiverRegistrations(ClientPayloadReceiverRegistrar registrar) {
+        for (ClientPayloadReceiverEntry<?> entry : clientPayloadReceivers) {
+            entry.register(registrar);
+        }
+    }
+
     private record EntityRendererEntry<T extends Entity>(EntityType<T> entityType, EntityRendererProvider<T> provider) {
         private void register(EntityRendererRegistrar registrar) {
             registrar.register(this.entityType, this.provider);
@@ -199,6 +215,12 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private record SpecialModelRendererEntry(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec){
         private void register(SpecialModelRendererRegistrar registrar){
             registrar.register(this.id, this.mapCodec);
+        }
+    }
+
+    private record ClientPayloadReceiverEntry<T extends HandledCustomPacketPayload>(CustomPacketPayload.Type<T> type){
+        private void register(ClientPayloadReceiverRegistrar registrar){
+            registrar.register(this.type);
         }
     }
 }

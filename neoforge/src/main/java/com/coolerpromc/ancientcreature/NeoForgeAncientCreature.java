@@ -3,8 +3,10 @@ package com.coolerpromc.ancientcreature;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.event.CreativeTabEvents;
 import com.coolerpromc.ancientcreature.event.ItemEvents;
+import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.NeoForgeRegistryHelper;
 import com.coolerpromc.ancientcreature.platform.Services;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,6 +16,9 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 @Mod(Constants.MODID)
@@ -58,5 +63,17 @@ public class NeoForgeAncientCreature {
     public static void onDataPackRegistryNewRegistry(DataPackRegistryEvent.NewRegistry event) {
         AncientCreature.initDatapackRegistry();
         Services.REGISTRY.applyDatapackRegistryRegistrations(event::dataPackRegistry);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event) {
+        AncientCreature.initPayloadType();
+        PayloadRegistrar registrar = event.registrar("1");
+        Services.REGISTRY.applyClientboundPayloadRegistrations(registrar::playToClient);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        PlayerEvents.onPlayerJoin((ServerPlayer) event.getEntity());
     }
 }

@@ -1,5 +1,7 @@
 package com.coolerpromc.ancientcreature.platform.services.client;
 
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
+import com.coolerpromc.ancientcreature.platform.util.PayloadContext;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.color.item.ItemTintSource;
@@ -15,6 +17,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +39,7 @@ public interface IRegistryHelper {
     <T extends BlockEntity, S extends BlockEntityRenderState> void registerBlockEntityRenderer(BlockEntityType<? extends T> blockEntityType, BlockEntityRendererProvider<T, S> provider);
     <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(MenuType<? extends M> menuType, MenuScreens.ScreenConstructor<M, @NonNull U> screenConstructor);
     void registerSpecialModelRenderer(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec);
+    <T extends HandledCustomPacketPayload> void registerClientPayloadReceiver(CustomPacketPayload.Type<T> type);
 
     void applyEntityRendererRegistrations(EntityRendererRegistrar registrar);
     void applyEntityModelLayerRegistrations(EntityModelLayerRegistrar registrar);
@@ -46,6 +50,7 @@ public interface IRegistryHelper {
     void applyBlockEntityRendererRegistrations(BlockEntityRendererRegistrar registrar);
     void applyMenuScreenRegistrations(MenuScreenRegistrar registrar);
     void applySpecialModelRendererRegistrations(SpecialModelRendererRegistrar registrar);
+    void applyClientPayloadReceiverRegistrations(ClientPayloadReceiverRegistrar registrar);
 
     interface EntityRendererRegistrar {
         <T extends Entity> void register(EntityType<T> entityType, EntityRendererProvider<T> provider);
@@ -73,6 +78,9 @@ public interface IRegistryHelper {
     }
     interface SpecialModelRendererRegistrar{
         void register(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec);
+    }
+    interface ClientPayloadReceiverRegistrar{
+        <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type);
     }
 
     @FunctionalInterface

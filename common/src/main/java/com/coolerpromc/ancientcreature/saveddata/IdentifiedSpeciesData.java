@@ -2,6 +2,8 @@ package com.coolerpromc.ancientcreature.saveddata;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
+import com.coolerpromc.ancientcreature.platform.Services;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.MinecraftServer;
@@ -19,6 +21,8 @@ public class IdentifiedSpeciesData extends SavedData {
 
     public static final SavedDataType<IdentifiedSpeciesData> TYPE = new SavedDataType<>(Constants.id("identified_species"), IdentifiedSpeciesData::new, CODEC, null);
 
+    public static final IdentifiedSpeciesData CLIENT_CACHE = new IdentifiedSpeciesData();
+
     private List<Species> identifiedSpecies = new ArrayList<>();
 
     public IdentifiedSpeciesData(){}
@@ -30,9 +34,14 @@ public class IdentifiedSpeciesData extends SavedData {
         return identifiedSpecies;
     }
 
-    public void addIdentifiedSpecies(Species species){
+    public void addIdentifiedSpecies(Species species, ServerLevel level){
         this.identifiedSpecies.add(species);
         setDirty();
+        level.getServer().getPlayerList().getPlayers().forEach(p -> Services.NETWORK.sendToPlayer(p, new ClientboundIdentifiedSpeciesSyncPacket(this.identifiedSpecies)));
+    }
+
+    public static void setClientCache(List<Species> identifiedSpecies){
+        CLIENT_CACHE.identifiedSpecies = new ArrayList<>(identifiedSpecies);
     }
 
     public static IdentifiedSpeciesData getIdentifiedSpeciesData(MinecraftServer server){

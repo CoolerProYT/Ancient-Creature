@@ -14,7 +14,9 @@
   "client": [
     "ClientItemInfoLoaderMixin",
     "CreativeModeInventoryScreenMixin",
+    "EntityRenderStateMixin",
     "ItemPickerMenuMixin",
-    "LevelRendererMixin"
+    "LevelRendererMixin",
+    "LivingEntityRendererMixin"
   ]
 }

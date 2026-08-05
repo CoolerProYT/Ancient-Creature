@@ -17,6 +17,8 @@ import com.coolerpromc.ancientcreature.client.item.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.client.item.special.*;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
+import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
 import com.mojang.serialization.MapCodec;
@@ -32,6 +34,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -58,6 +61,7 @@ public class AncientCreatureClient {
         initItemSelect();
         initMenuScreen();
         initSpecialModelRenderer();
+        initClientPayloadHandler();
     }
 
     public static void initMenuScreen(){
@@ -119,6 +123,10 @@ public class AncientCreatureClient {
         registerSpecialModelRenderer(Constants.id("incubator"), IncubatorSpecialRenderer.Unbaked.CODEC);
     }
 
+    public static void initClientPayloadHandler(){
+        registerClientPayloadReceiver(ClientboundIdentifiedSpeciesSyncPacket.TYPE);
+    }
+
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){
         ServicesClient.REGISTRY.registerEntityRenderer(entityType, provider);
     }
@@ -153,5 +161,9 @@ public class AncientCreatureClient {
 
     private static void registerSpecialModelRenderer(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec){
         ServicesClient.REGISTRY.registerSpecialModelRenderer(id, mapCodec);
+    }
+
+    private static <T extends HandledCustomPacketPayload> void registerClientPayloadReceiver(CustomPacketPayload.Type<T> type){
+        ServicesClient.REGISTRY.registerClientPayloadReceiver(type);
     }
 }

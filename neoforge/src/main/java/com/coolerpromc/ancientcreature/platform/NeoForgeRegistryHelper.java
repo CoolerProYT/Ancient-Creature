@@ -1,6 +1,7 @@
 package com.coolerpromc.ancientcreature.platform;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.services.IRegistryHelper;
 import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
@@ -16,6 +17,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -83,6 +85,7 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
     private final List<BrewingRecipeEntry> brewingRecipes = new ArrayList<>();
     private final List<DatapackRegistryEntry<?>> datapackRegistries = new ArrayList<>();
+    private final List<ClientboundPayloadEntry<?>> clientboundPayloads = new ArrayList<>();
 
     @Override
     public <T extends Block> RegistryHandler.Blocks<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func, BlockBehaviour.Properties p) {
@@ -228,6 +231,18 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         }
     }
 
+    @Override
+    public <T extends HandledCustomPacketPayload> void registerClientboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        this.clientboundPayloads.add(new ClientboundPayloadEntry<>(type, streamCodec));
+    }
+
+    @Override
+    public void applyClientboundPayloadRegistrations(ClientboundPayloadRegistrar registrar) {
+        for (ClientboundPayloadEntry<?> entry : clientboundPayloads) {
+            entry.register(registrar);
+        }
+    }
+
     private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         private void register(EntityAttributeRegistrar registrar) {
             registrar.register(this.entityType, this.supplier);
@@ -249,6 +264,12 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private record DatapackRegistryEntry<T>(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec){
         private void register(DatapackRegistryRegistrar registrar){
             registrar.register(this.key, this.serverCodec, this.clientCodec);
+        }
+    }
+
+    private record ClientboundPayloadEntry<T extends HandledCustomPacketPayload>(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec){
+        private void register(ClientboundPayloadRegistrar registrar){
+            registrar.register(this.type, this.streamCodec);
         }
     }
 

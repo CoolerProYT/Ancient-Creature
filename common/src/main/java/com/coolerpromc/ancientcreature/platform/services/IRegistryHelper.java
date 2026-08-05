@@ -1,6 +1,7 @@
 package com.coolerpromc.ancientcreature.platform.services;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
@@ -13,6 +14,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -87,6 +89,9 @@ public interface IRegistryHelper {
     <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec);
     void applyDatapackRegistryRegistrations(DatapackRegistryRegistrar registrar);
 
+    <T extends HandledCustomPacketPayload> void registerClientboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
+    void applyClientboundPayloadRegistrations(ClientboundPayloadRegistrar registrar);
+
     interface EntityAttributeRegistrar {
         void register(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     }
@@ -98,6 +103,9 @@ public interface IRegistryHelper {
     }
     interface DatapackRegistryRegistrar {
         <T> void register(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec);
+    }
+    interface ClientboundPayloadRegistrar {
+        <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     }
 
     static ResourceKey<Block> blockKey(String name) {

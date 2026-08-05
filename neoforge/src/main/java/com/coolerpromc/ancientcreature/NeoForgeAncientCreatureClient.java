@@ -1,12 +1,16 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
+import com.coolerpromc.ancientcreature.platform.util.NeoForgePayloadContext;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 
 @Mod(dist = Dist.CLIENT, value = Constants.MODID)
 @EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT)
@@ -62,5 +66,17 @@ public class NeoForgeAncientCreatureClient {
     public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
         AncientCreatureClient.initSpecialModelRenderer();
         ServicesClient.REGISTRY.applySpecialModelRendererRegistrations(event::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
+        AncientCreatureClient.initClientPayloadHandler();
+        ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(new NeoForgePayloadRegistrar(event)::register);
+    }
+
+    private record NeoForgePayloadRegistrar(RegisterClientPayloadHandlersEvent event) {
+        private <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type) {
+            event.register(type, (payload, context) -> payload.handle(new NeoForgePayloadContext(context)));
+        }
     }
 }

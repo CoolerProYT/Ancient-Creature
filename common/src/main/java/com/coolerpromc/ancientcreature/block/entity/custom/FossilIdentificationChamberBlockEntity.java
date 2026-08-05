@@ -217,7 +217,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
                 outputContainer.addItem(fossil);
 
                 if (!data.getIdentifiedSpecies().contains(species)){
-                    data.addIdentifiedSpecies(species);
+                    data.addIdentifiedSpecies(species, level);
                 }
             }
         }

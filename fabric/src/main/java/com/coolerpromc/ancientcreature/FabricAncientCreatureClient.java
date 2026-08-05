@@ -1,7 +1,10 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
+import com.coolerpromc.ancientcreature.platform.util.FabricPayloadContext;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.color.item.ItemTintSources;
@@ -11,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class FabricAncientCreatureClient implements ClientModInitializer {
     @Override
@@ -25,5 +29,10 @@ public class FabricAncientCreatureClient implements ClientModInitializer {
         ServicesClient.REGISTRY.applyItemConditionRegistrations(ConditionalItemModelProperties.ID_MAPPER::put);
         ServicesClient.REGISTRY.applyItemSelectRegistrations(SelectItemModelProperties.ID_MAPPER::put);
         ServicesClient.REGISTRY.applySpecialModelRendererRegistrations(SpecialModelRenderers.ID_MAPPER::put);
+        ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(FabricAncientCreatureClient::registerPayloadReceiver);
+    }
+
+    private static <T extends HandledCustomPacketPayload> void registerPayloadReceiver(CustomPacketPayload.Type<T> type) {
+        ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> payload.handle(new FabricPayloadContext(context)));
     }
 }
