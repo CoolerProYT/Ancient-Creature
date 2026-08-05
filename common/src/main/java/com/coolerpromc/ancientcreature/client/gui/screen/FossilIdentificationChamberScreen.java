@@ -21,7 +21,9 @@ import net.minecraft.world.entity.player.Inventory;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FossilIdentificationChamberScreen extends AbstractContainerScreen<FossilIdentificationChamberMenu> {
@@ -30,7 +32,7 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
     private static final Identifier SLOT_HIGHLIGHT_BACK_SPRITE = Identifier.withDefaultNamespace("container/slot_highlight_back");
     private static final Identifier SLOT_HIGHLIGHT_FRONT_SPRITE = Identifier.withDefaultNamespace("container/slot_highlight_front");
 
-    private final Map<Species, EntityIdentified> speciesStatuses = new HashMap<>();
+    private final LinkedHashMap<Species, EntityIdentified> speciesStatuses = new LinkedHashMap<>();
     private int currentPage = 0;
 
     private Button previousPageButton;
@@ -47,7 +49,7 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
         titleLabelX = 86;
 
         if (minecraft.level == null) return;
-        for (Species species : Species.values()) {
+        for (Species species : Arrays.stream(Species.values()).sorted(Comparator.comparing(Species::name)).toList()) {
             LivingEntity entity = (LivingEntity) species.getEntityType().create(this.minecraft.level, EntitySpawnReason.LOAD);
 
             if (entity == null) {
@@ -189,12 +191,18 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
             int y0 = startY + (visibleIndex * cellHeight) + (visibleIndex);
             int x1 = startX + renderWidth;
 
+            boolean isHovered = mouseX >= startX && mouseX <= x1 && mouseY >= y0 && mouseY <= bottomY;
+            if (isHovered){
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK_SPRITE, startX - 4, y0 - 4, x1 - startX + 8, bottomY - y0 + 8);
+                graphics.setTooltipForNextFrame(Component.translatable("species.ancientcreature." + (entry.getValue().identified ? entry.getKey().getSerializedName() : "unidentified")), mouseX, mouseY);
+            }
+
             graphics.entity(renderState, scale, new Vector3f(0.0F, entityHeight * 0.5F, 0.0F), entityRotation, cameraRotation, startX, y0, x1, bottomY);
 
             visibleIndex++;
             absoluteIndex++;
 
-            if (mouseX >= startX && mouseX <= x1 && mouseY >= y0 && mouseY <= bottomY){
+            if (isHovered){
                 graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT_SPRITE, startX - 4, y0 - 4, x1 - startX + 8, bottomY - y0 + 8);
                 graphics.setTooltipForNextFrame(Component.translatable("species.ancientcreature." + (entry.getValue().identified ? entry.getKey().getSerializedName() : "unidentified")), mouseX, mouseY);
             }
