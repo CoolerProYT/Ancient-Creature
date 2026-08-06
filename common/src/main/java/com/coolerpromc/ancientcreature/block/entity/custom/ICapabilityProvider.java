@@ -4,7 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import org.jspecify.annotations.Nullable;
 
-public interface ICapabilityExposure {
+public interface ICapabilityProvider {
     Container getContainerBySide(@Nullable Direction direction);
     Container[] getAllContainers();
 }

@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityExposure{
+public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityProvider {
     private double minX = 0.0;
     private double minY = 0.0;
     private double minZ = 0.0;
@@ -134,7 +134,7 @@ public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityEx
 
     public Container getContainerBySide(@Nullable Direction direction) {
         BlockEntity actual = level.getBlockEntity(this.getActualPos());
-        if (actual instanceof ICapabilityExposure exposure){
+        if (actual instanceof ICapabilityProvider exposure){
             return exposure.getContainerBySide(direction);
         }
         return null;
@@ -143,7 +143,7 @@ public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityEx
     @Override
     public Container[] getAllContainers() {
         BlockEntity actual = level.getBlockEntity(this.getActualPos());
-        if (actual instanceof ICapabilityExposure exposure){
+        if (actual instanceof ICapabilityProvider exposure){
             return exposure.getAllContainers();
         }
         return new Container[0];

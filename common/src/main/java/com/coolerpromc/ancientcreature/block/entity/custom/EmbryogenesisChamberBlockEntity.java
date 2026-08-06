@@ -37,7 +37,7 @@ import org.jspecify.annotations.Nullable;
 
 import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopSound;
 
-public class EmbryogenesisChamberBlockEntity extends BlockEntity implements MenuProvider, ICapabilityExposure {
+public class EmbryogenesisChamberBlockEntity extends BlockEntity implements MenuProvider, ICapabilityProvider {
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_MAX_PROGRESS = 1;
 
