@@ -8,6 +8,7 @@ import com.coolerpromc.ancientcreature.client.item.special.*;
 import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
+import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -23,6 +24,7 @@ import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -32,13 +34,17 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING;
 
 public class ModModelProvider extends ModelProvider {
-    public ModModelProvider(PackOutput output) {
+    private final HolderLookup.Provider registries;
+
+    public ModModelProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
         super(output, Constants.MODID);
+        this.registries = provider.copy().join();
     }
 
     @Override
@@ -101,7 +107,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void generateFossilPartItem(ItemModelGenerators itemModels){
-        for (ResourceKey<FossilPart> value : FossilPart.builtinKeys) {
+        for (ResourceKey<FossilPart> value : this.registries.lookupOrThrow(ModRegistries.FOSSIL_PART).listElementIds().toList()) {
             String name = value.identifier().getPath();
             Identifier dirtyLoc = Constants.id("item/fossil_part/dirty_" + name);
             Identifier normalLoc = Constants.id("item/fossil_part/" + name);
