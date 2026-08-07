@@ -52,7 +52,7 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
         BlockPos pos = entity.getOnPos();
         RandomSource random = entity.level().getRandom();
         Holder<Biome> biome = entity.level().getBiome(pos);
-        List<Species> species = Arrays.stream(Species.values()).filter(s -> s.isValidBiome(biome)).toList();
+        List<Species> species = Species.values().stream().filter(s -> s.isValidBiome(biome)).toList();
         if (species.isEmpty()){
             return ItemStack.EMPTY;
         }

@@ -109,5 +109,25 @@
   "entity.tyrannosaurus_rex.step": {
     "subtitle": "subtitles.ancientcreature.entity.tyrannosaurus_rex.step",
     "sounds": ["ancientcreature:entity/tyrannosaurus_rex/step"]
+  },
+  "entity.megalodon.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.megalodon.ambient",
+    "sounds": ["ancientcreature:entity/megalodon/ambient"]
+  },
+  "entity.megalodon.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.megalodon.hurt",
+    "sounds": ["ancientcreature:entity/megalodon/hurt"]
+  },
+  "entity.megalodon.death": {
+    "subtitle": "subtitles.ancientcreature.entity.megalodon.death",
+    "sounds": ["ancientcreature:entity/megalodon/death"]
+  },
+  "entity.megalodon.bite": {
+    "subtitle": "subtitles.ancientcreature.entity.megalodon.bite",
+    "sounds": ["ancientcreature:entity/megalodon/bite"]
+  },
+  "entity.megalodon.step": {
+    "subtitle": "subtitles.ancientcreature.entity.megalodon.step",
+    "sounds": ["ancientcreature:entity/megalodon/step"]
   }
 }

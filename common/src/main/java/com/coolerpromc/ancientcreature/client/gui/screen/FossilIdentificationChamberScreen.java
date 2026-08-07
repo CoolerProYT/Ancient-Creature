@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.client.gui.screen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.client.entity.state.IdentifiedSpeciesRenderState;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.coolerpromc.ancientcreature.menu.custom.FossilIdentificationChamberMenu;
 import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
 import com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData;
@@ -21,8 +22,6 @@ import net.minecraft.world.entity.player.Inventory;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,11 +48,15 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
         titleLabelX = 86;
 
         if (minecraft.level == null) return;
-        for (Species species : Arrays.stream(Species.values()).sorted(Comparator.comparing(Species::name)).toList()) {
+        for (Species species : Species.values()) {
             LivingEntity entity = (LivingEntity) species.getEntityType().create(this.minecraft.level, EntitySpawnReason.LOAD);
 
             if (entity == null) {
                 continue;
+            }
+
+            if (entity instanceof AncientCreatureEntity creature) {
+                creature.setSpecies(species);
             }
 
             preparePreviewEntity(entity);
@@ -63,10 +66,7 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
             this.speciesStatuses.put(species, new EntityIdentified(entity, identified));
         }
         ClientboundIdentifiedSpeciesSyncPacket.addListener(identifiedSpecies -> {
-            for (Species species : Species.values()) {
-                LivingEntity entity = speciesStatuses.get(species).entity;
-                speciesStatuses.put(species, new EntityIdentified(entity, identifiedSpecies.contains(species)));
-            }
+            this.speciesStatuses.replaceAll((species, previous) -> new EntityIdentified(previous.entity(), identifiedSpecies.contains(species)));
         });
 
         int buttonY = this.topPos + this.imageHeight - 21;
@@ -194,7 +194,7 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
             boolean isHovered = mouseX >= startX && mouseX <= x1 && mouseY >= y0 && mouseY <= bottomY;
             if (isHovered){
                 graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_BACK_SPRITE, startX - 4, y0 - 4, x1 - startX + 8, bottomY - y0 + 8);
-                graphics.setTooltipForNextFrame(Component.translatable("species.ancientcreature." + (entry.getValue().identified ? entry.getKey().getSerializedName() : "unidentified")), mouseX, mouseY);
+                graphics.setTooltipForNextFrame((entry.getValue().identified() ? entry.getKey().displayName() : Component.translatable("species.ancientcreature.unidentified")), mouseX, mouseY);
             }
 
             graphics.entity(renderState, scale, new Vector3f(0.0F, entityHeight * 0.5F, 0.0F), entityRotation, cameraRotation, startX, y0, x1, bottomY);
@@ -204,7 +204,7 @@ public class FossilIdentificationChamberScreen extends AbstractContainerScreen<F
 
             if (isHovered){
                 graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_HIGHLIGHT_FRONT_SPRITE, startX - 4, y0 - 4, x1 - startX + 8, bottomY - y0 + 8);
-                graphics.setTooltipForNextFrame(Component.translatable("species.ancientcreature." + (entry.getValue().identified ? entry.getKey().getSerializedName() : "unidentified")), mouseX, mouseY);
+                graphics.setTooltipForNextFrame((entry.getValue().identified() ? entry.getKey().displayName() : Component.translatable("species.ancientcreature.unidentified")), mouseX, mouseY);
             }
         }
     }

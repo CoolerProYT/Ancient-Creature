@@ -1,15 +1,14 @@
 package com.coolerpromc.ancientcreature;
 
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.client.animation.bedrock.AnimationControllerManager;
+import com.coolerpromc.ancientcreature.client.animation.bedrock.BedrockAnimationManager;
+import com.coolerpromc.ancientcreature.client.entity.renderer.AncientCreatureRenderer;
+import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockGeometryManager;
+import com.coolerpromc.ancientcreature.client.species.ClientSpeciesManager;
 import com.coolerpromc.ancientcreature.client.block.renderer.*;
-import com.coolerpromc.ancientcreature.client.entity.model.MegalodonModel;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
-import com.coolerpromc.ancientcreature.client.entity.model.TriceratopsModel;
-import com.coolerpromc.ancientcreature.client.entity.model.TyrannosaurusRexModel;
 import com.coolerpromc.ancientcreature.client.entity.model.block.*;
-import com.coolerpromc.ancientcreature.client.entity.renderer.MegalodonRenderer;
-import com.coolerpromc.ancientcreature.client.entity.renderer.TriceratopsRenderer;
-import com.coolerpromc.ancientcreature.client.entity.renderer.TyrannosaurusRexRenderer;
 import com.coolerpromc.ancientcreature.client.gui.screen.*;
 import com.coolerpromc.ancientcreature.client.item.condition.DirtyCondition;
 import com.coolerpromc.ancientcreature.client.item.select.DNAIntegritySelect;
@@ -18,6 +17,7 @@ import com.coolerpromc.ancientcreature.client.item.special.*;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
 import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
+import com.coolerpromc.ancientcreature.network.ClientboundSpeciesSyncPacket;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.item.properties.select.SelectItemModelPrope
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -62,6 +63,14 @@ public class AncientCreatureClient {
         initMenuScreen();
         initSpecialModelRenderer();
         initClientPayloadHandler();
+        initClientReloadListener();
+    }
+
+    public static void initClientReloadListener(){
+        registerClientReloadListener(BedrockGeometryManager.ID, BedrockGeometryManager.INSTANCE);
+        registerClientReloadListener(BedrockAnimationManager.ID, BedrockAnimationManager.INSTANCE);
+        registerClientReloadListener(AnimationControllerManager.ID, AnimationControllerManager.INSTANCE);
+        registerClientReloadListener(ClientSpeciesManager.ID, ClientSpeciesManager.INSTANCE);
     }
 
     public static void initMenuScreen(){
@@ -74,9 +83,7 @@ public class AncientCreatureClient {
     }
 
     public static void initRenderer(){
-        registerEntityRenderer(ModEntities.TRICERATOPS.get(), TriceratopsRenderer::new);
-        registerEntityRenderer(ModEntities.TYRANNOSAURUS_REX.get(), TyrannosaurusRexRenderer::new);
-        registerEntityRenderer(ModEntities.MEGALODON.get(), MegalodonRenderer::new);
+        ModEntities.allCreatureTypes().forEach(type -> registerEntityRenderer(type.get(), AncientCreatureRenderer::new));
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_CLEANING_TABLE.get(), FossilCleaningTableBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER.get(), FossilIdentificationChamberBlockEntityRenderer::new);
         registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR.get(), DNAExtractorBlockEntityRenderer::new);
@@ -86,9 +93,6 @@ public class AncientCreatureClient {
     }
 
     public static void initModelLayer(){
-        registerEntityModelLayer(ModModelLayers.TRICERATOPS, TriceratopsModel::createBodyLayer);
-        registerEntityModelLayer(ModModelLayers.TYRANNOSAURUS_REX, TyrannosaurusRexModel::createBodyLayer);
-        registerEntityModelLayer(ModModelLayers.MEGALODON, MegalodonModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_CLEANING_TABLE, FossilCleaningTableModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.FOSSIL_IDENTIFYING_CHAMBER, FossilIdentificationChamberModel::createBodyLayer);
         registerEntityModelLayer(ModModelLayers.DNA_EXTRACTOR, DNAExtractorModel::createBodyLayer);
@@ -125,6 +129,7 @@ public class AncientCreatureClient {
 
     public static void initClientPayloadHandler(){
         registerClientPayloadReceiver(ClientboundIdentifiedSpeciesSyncPacket.TYPE);
+        registerClientPayloadReceiver(ClientboundSpeciesSyncPacket.TYPE);
     }
 
     private static <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider){
@@ -165,5 +170,9 @@ public class AncientCreatureClient {
 
     private static <T extends HandledCustomPacketPayload> void registerClientPayloadReceiver(CustomPacketPayload.Type<T> type){
         ServicesClient.REGISTRY.registerClientPayloadReceiver(type);
+    }
+
+    private static void registerClientReloadListener(Identifier id, PreparableReloadListener listener){
+        ServicesClient.REGISTRY.registerClientReloadListener(id, listener);
     }
 }

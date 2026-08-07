@@ -60,6 +60,22 @@ The mod is developed as a multi-loader project with shared gameplay code in `com
 
 Fabric and NeoForge builds are separate and cannot be used with the other loader.
 
+## Adding Your Own Creatures
+
+Creatures are data-driven. A species is defined by a datapack file and four resource-pack files — no Java, no mod build:
+
+```
+data/<ns>/ancientcreature/species/<name>.json                              gameplay
+assets/<ns>/ancientcreature/species/<name>.json                            appearance
+assets/<ns>/ancientcreature/geo/<name>.geo.json                            model
+assets/<ns>/ancientcreature/animations/<name>.animation.json               animations
+assets/<ns>/ancientcreature/animation_controllers/<name>.controller.json   when to play what
+```
+
+Blockbench **Bedrock Entity** and **Bedrock Animation** exports load directly. Datapack changes apply with `/reload`, resource-pack changes with F3+T.
+
+Full documentation is in the wiki, which is maintained outside this repository — start at `guide/quick-start.md`. Other mods can add behaviour components and animation queries through the API; see `guide/api.md`. [`docs/data-driven-species.md`](docs/data-driven-species.md) summarises the system and indexes the wiki pages.
+
 ## Development
 
 Clone the repository and import the root Gradle project using Java 25. Most shared development belongs in the `common` project.

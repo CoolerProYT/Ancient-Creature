@@ -288,12 +288,14 @@ public final class AncientCreatureJeiRecipes {
     }
 
     private static Component biomeNote(Species species) {
-        String biome = species == Species.MEGALODON ? "ocean" : "overworld";
+        // Read the biome tag from the species definition instead of testing for one hard-coded species.
+        String tag = species.definitionOrFallback().spawn().biomeTag().getPath();
+        String biome = tag.contains("ocean") ? "ocean" : "overworld";
         return Component.translatable("jei.ancientcreature.biomes", Component.translatable("jei.ancientcreature.biome." + biome));
     }
 
     private static Component speciesNote(Species species) {
-        return Component.translatable("jei.ancientcreature.species_result", Component.translatable("species.ancientcreature." + species.getSerializedName()));
+        return Component.translatable("jei.ancientcreature.species_result", species.displayName());
     }
 
     private static Component partsNote(List<Holder<FossilPart>> parts) {

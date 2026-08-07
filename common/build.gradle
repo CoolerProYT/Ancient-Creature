@@ -22,6 +22,26 @@ dependencies {
     compileOnly "maven.modrinth:jade:${jade_version}+fabric"
 
     compileOnly "com.coolerpromc.coolerconfig:coolerconfig-common-${minecraft_version}:${cooler_config_version}"
+
+    // Unit tests for the data-driven species format. These run against the same Minecraft classes the
+    // mod compiles against, so a species/geometry/animation JSON is validated by the real codecs.
+    testImplementation platform("org.junit:junit-bom:5.11.3")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
+    // moddev only wires Minecraft into the main source set; hand the same classpath to tests as plain
+    // files so the test configurations do not have to re-resolve (and re-attribute) it.
+    testImplementation sourceSets.main.output
+    testImplementation files(sourceSets.main.compileClasspath)
+    testRuntimeOnly files(sourceSets.main.runtimeClasspath)
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
 }
 
 configurations {

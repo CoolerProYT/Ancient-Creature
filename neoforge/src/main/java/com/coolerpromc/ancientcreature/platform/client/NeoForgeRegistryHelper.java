@@ -1,5 +1,7 @@
 package com.coolerpromc.ancientcreature.platform.client;
 
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
 import com.mojang.serialization.MapCodec;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
+    private final List<ClientReloadListenerEntry> clientReloadListeners = new ArrayList<>();
     private final List<EntityRendererEntry<?>> entityRenderers = new ArrayList<>();
     private final List<EntityModelLayerEntry> entityModelLayers = new ArrayList<>();
     private final List<GuiLayerEntry> guiLayers = new ArrayList<>();
@@ -221,6 +224,24 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private record ClientPayloadReceiverEntry<T extends HandledCustomPacketPayload>(CustomPacketPayload.Type<T> type){
         private void register(ClientPayloadReceiverRegistrar registrar){
             registrar.register(this.type);
+        }
+    }
+
+    @Override
+    public void registerClientReloadListener(Identifier id, PreparableReloadListener listener) {
+        this.clientReloadListeners.add(new ClientReloadListenerEntry(id, listener));
+    }
+
+    @Override
+    public void applyClientReloadListenerRegistrations(ClientReloadListenerRegistrar registrar) {
+        for (ClientReloadListenerEntry entry : clientReloadListeners) {
+            entry.register(registrar);
+        }
+    }
+
+    private record ClientReloadListenerEntry(Identifier id, PreparableReloadListener listener) {
+        private void register(ClientReloadListenerRegistrar registrar) {
+            registrar.register(this.id, this.listener);
         }
     }
 }

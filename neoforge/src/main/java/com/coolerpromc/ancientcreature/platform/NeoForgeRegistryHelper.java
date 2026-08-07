@@ -1,5 +1,10 @@
 package com.coolerpromc.ancientcreature.platform;
 
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.services.IRegistryHelper;
@@ -63,6 +68,8 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
+    private final List<ReloadListenerEntry> serverReloadListeners = new ArrayList<>();
+    private final List<CommandBuilder> commands = new ArrayList<>();
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Constants.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Constants.MODID);
@@ -291,5 +298,35 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         LOOT_FUNCTIONS.register(eventBus);
         SOUND_EVENTS.register(eventBus);
         FEATURES.register(eventBus);
+    }
+
+    @Override
+    public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
+        this.serverReloadListeners.add(new ReloadListenerEntry(id, listener));
+    }
+
+    @Override
+    public void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar) {
+        for (ReloadListenerEntry entry : serverReloadListeners) {
+            entry.register(registrar);
+        }
+    }
+
+    @Override
+    public void registerCommand(CommandBuilder builder) {
+        this.commands.add(builder);
+    }
+
+    @Override
+    public void applyCommandRegistrations(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
+        for (CommandBuilder builder : commands) {
+            builder.build(dispatcher, context);
+        }
+    }
+
+    private record ReloadListenerEntry(Identifier id, PreparableReloadListener listener) {
+        private void register(ReloadListenerRegistrar registrar) {
+            registrar.register(this.id, this.listener);
+        }
     }
 }

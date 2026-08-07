@@ -1,5 +1,10 @@
 package com.coolerpromc.ancientcreature.platform;
 
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.services.IRegistryHelper;
@@ -62,6 +67,8 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class FabricRegistryHelper implements IRegistryHelper {
+    private final List<ReloadListenerEntry> serverReloadListeners = new ArrayList<>();
+    private final List<CommandBuilder> commands = new ArrayList<>();
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
     private final List<BrewingRecipeEntry> brewingRecipes = new ArrayList<>();
@@ -284,6 +291,36 @@ public class FabricRegistryHelper implements IRegistryHelper {
     private record ClientboundPayloadEntry<T extends HandledCustomPacketPayload>(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec){
         private void register(ClientboundPayloadRegistrar registrar){
             registrar.register(this.type, this.streamCodec);
+        }
+    }
+
+    @Override
+    public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
+        this.serverReloadListeners.add(new ReloadListenerEntry(id, listener));
+    }
+
+    @Override
+    public void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar) {
+        for (ReloadListenerEntry entry : serverReloadListeners) {
+            entry.register(registrar);
+        }
+    }
+
+    @Override
+    public void registerCommand(CommandBuilder builder) {
+        this.commands.add(builder);
+    }
+
+    @Override
+    public void applyCommandRegistrations(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
+        for (CommandBuilder builder : commands) {
+            builder.build(dispatcher, context);
+        }
+    }
+
+    private record ReloadListenerEntry(Identifier id, PreparableReloadListener listener) {
+        private void register(ReloadListenerRegistrar registrar) {
+            registrar.register(this.id, this.listener);
         }
     }
 }

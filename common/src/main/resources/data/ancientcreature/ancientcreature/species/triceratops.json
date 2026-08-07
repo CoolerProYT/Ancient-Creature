@@ -1,0 +1,41 @@
+{
+  "format_version": 1,
+  "entity_category": "land",
+  "physical": {
+    "width": 1.8,
+    "height": 2.2,
+    "eye_height": 1.4
+  },
+  "attributes": {
+    "max_health": 45.0,
+    "movement_speed": 0.22,
+    "attack_damage": 8.0,
+    "attack_knockback": 1.5,
+    "follow_range": 20.0,
+    "knockback_resistance": 0.65
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.5,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:defensive_herbivore"
+  },
+  "diet": {
+    "items": ["minecraft:wheat"]
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_overworld",
+    "incubation_time": 1000
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.triceratops.ambient",
+    "hurt": "ancientcreature:entity.triceratops.hurt",
+    "death": "ancientcreature:entity.triceratops.death",
+    "step": "ancientcreature:entity.triceratops.step",
+    "attack": "ancientcreature:entity.triceratops.attack",
+    "alert": "ancientcreature:entity.triceratops.bellow",
+    "ambient_interval": 240
+  }
+}

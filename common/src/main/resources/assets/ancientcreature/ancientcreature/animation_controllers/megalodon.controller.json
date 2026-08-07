@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "initial_state": "idle",
+  "states": {
+    "idle": {
+      "animations": ["idle"],
+      "blend_transition": 0.25,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "bite": "query.action == 'attack'" },
+        { "swim": "query.is_moving" }
+      ]
+    },
+    "swim": {
+      "animations": ["swim"],
+      "blend_transition": 0.2,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "bite": "query.action == 'attack'" },
+        { "idle": "!query.is_moving" }
+      ]
+    },
+    "bite": {
+      "animations": ["bite"],
+      "blend_transition": 0.08,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "swim": "query.action != 'attack' && query.is_moving" },
+        { "idle": "query.action != 'attack'" }
+      ]
+    },
+    "death": {
+      "animations": ["idle"],
+      "blend_transition": 0.2,
+      "transitions": []
+    }
+  }
+}

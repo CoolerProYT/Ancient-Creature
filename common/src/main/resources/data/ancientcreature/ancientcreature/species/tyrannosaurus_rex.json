@@ -1,0 +1,42 @@
+{
+  "format_version": 1,
+  "entity_category": "land",
+  "physical": {
+    "width": 1.2,
+    "height": 2.0,
+    "eye_height": 1.7
+  },
+  "attributes": {
+    "max_health": 100.0,
+    "movement_speed": 0.25,
+    "attack_damage": 16.0,
+    "attack_knockback": 2.0,
+    "follow_range": 32.0,
+    "knockback_resistance": 0.75,
+    "armor": 6.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.42,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:apex_predator"
+  },
+  "diet": {
+    "items": "#minecraft:meat"
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_overworld",
+    "incubation_time": 1600
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.tyrannosaurus_rex.ambient",
+    "hurt": "ancientcreature:entity.tyrannosaurus_rex.hurt",
+    "death": "ancientcreature:entity.tyrannosaurus_rex.death",
+    "step": "ancientcreature:entity.tyrannosaurus_rex.step",
+    "attack": "ancientcreature:entity.tyrannosaurus_rex.bite",
+    "alert": "ancientcreature:entity.tyrannosaurus_rex.roar",
+    "ambient_interval": 300
+  }
+}

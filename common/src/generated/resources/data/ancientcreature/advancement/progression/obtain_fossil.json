@@ -24,7 +24,7 @@
           "identificationFailed": false,
           "identified": false,
           "isDirty": true,
-          "species": "triceratops"
+          "species": "ancientcreature:triceratops"
         }
       },
       "id": "ancientcreature:fossil_part"

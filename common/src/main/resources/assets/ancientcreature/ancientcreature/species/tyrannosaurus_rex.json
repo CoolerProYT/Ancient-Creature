@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "geometry": "ancientcreature:tyrannosaurus_rex",
+  "texture": "ancientcreature:textures/entity/tyrannosaurus_rex.png",
+  "animations": "ancientcreature:tyrannosaurus_rex",
+  "controller": "ancientcreature:tyrannosaurus_rex",
+  "shadow_radius": 1.1,
+  "render_scale": 1.0,
+  "gui": {
+    "scale": 9.0,
+    "translation": [0.0, 0.0, 0.0],
+    "rotation": [0.0, 215.0, 0.0]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 100,
+      "texture": "ancientcreature:textures/entity/tyrannosaurus_rex.png"
+    }
+  ]
+}

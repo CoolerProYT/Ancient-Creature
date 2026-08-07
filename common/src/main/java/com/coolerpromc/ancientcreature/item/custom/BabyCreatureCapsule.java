@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.item.custom;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.coolerpromc.ancientcreature.entity.custom.OwnableAncientCreature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,18 +43,23 @@ public class BabyCreatureCapsule extends Item {
                 spawnPos = pos.relative(clickedFace);
             }
 
-            return spawnMob(context.getPlayer(), stack, serverLevel, spawnPos, true, !Objects.equals(pos, spawnPos) && clickedFace == Direction.UP, entityType);
+            return spawnMob(context.getPlayer(), stack, serverLevel, spawnPos, true, !Objects.equals(pos, spawnPos) && clickedFace == Direction.UP, entityType, species);
         }
         return InteractionResult.SUCCESS;
     }
 
-    private static InteractionResult spawnMob(@Nullable LivingEntity user, ItemStack itemStack, ServerLevel level, BlockPos spawnPos, boolean tryMoveDown, boolean movedUp, EntityType<?> type) {
+    private static InteractionResult spawnMob(@Nullable LivingEntity user, ItemStack itemStack, ServerLevel level, BlockPos spawnPos, boolean tryMoveDown, boolean movedUp, EntityType<?> type, Species species) {
         if (type == null) {
             return InteractionResult.FAIL;
         } else if (!type.isAllowedInPeaceful() && level.getDifficulty() == Difficulty.PEACEFUL) {
             return InteractionResult.FAIL;
         } else {
             Entity spawned = type.create(level, entity -> {
+                // The species has to be applied before the entity is added: it decides the entity's
+                // dimensions, so setting it later would place it using the wrong bounding box.
+                if (entity instanceof AncientCreatureEntity creature) {
+                    creature.setSpecies(species);
+                }
                 if (entity instanceof AgeableMob ageable) {
                     ageable.setBaby(true);
                 }

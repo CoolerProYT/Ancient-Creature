@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.item.properties.select.SelectItemModelPrope
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -40,6 +41,7 @@ public interface IRegistryHelper {
     <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(MenuType<? extends M> menuType, MenuScreens.ScreenConstructor<M, @NonNull U> screenConstructor);
     void registerSpecialModelRenderer(Identifier id, MapCodec<? extends SpecialModelRenderer.Unbaked<?>> mapCodec);
     <T extends HandledCustomPacketPayload> void registerClientPayloadReceiver(CustomPacketPayload.Type<T> type);
+    void registerClientReloadListener(Identifier id, PreparableReloadListener listener);
 
     void applyEntityRendererRegistrations(EntityRendererRegistrar registrar);
     void applyEntityModelLayerRegistrations(EntityModelLayerRegistrar registrar);
@@ -51,6 +53,7 @@ public interface IRegistryHelper {
     void applyMenuScreenRegistrations(MenuScreenRegistrar registrar);
     void applySpecialModelRendererRegistrations(SpecialModelRendererRegistrar registrar);
     void applyClientPayloadReceiverRegistrations(ClientPayloadReceiverRegistrar registrar);
+    void applyClientReloadListenerRegistrations(ClientReloadListenerRegistrar registrar);
 
     interface EntityRendererRegistrar {
         <T extends Entity> void register(EntityType<T> entityType, EntityRendererProvider<T> provider);
@@ -81,6 +84,9 @@ public interface IRegistryHelper {
     }
     interface ClientPayloadReceiverRegistrar{
         <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type);
+    }
+    interface ClientReloadListenerRegistrar{
+        void register(Identifier id, PreparableReloadListener listener);
     }
 
     @FunctionalInterface

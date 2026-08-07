@@ -7,6 +7,10 @@ import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModPlacedFeatures;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.minecraft.server.packs.PackType;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -29,6 +33,8 @@ public class FabricAncientCreature implements ModInitializer {
         AncientCreature.initBrewingRecipe();
         AncientCreature.initDatapackRegistry();
         AncientCreature.initPayloadType();
+        AncientCreature.initReloadListener();
+        AncientCreature.initCommand();
 
         Services.REGISTRY.applyEntityAttributeRegistrations(FabricDefaultAttributeRegistry::register);
         Services.REGISTRY.applyBiomeModifierRegistrations((biomeTagKey, step, placedFeatureKey) -> BiomeModifications.addFeature(BiomeSelectors.tag(biomeTagKey), step, placedFeatureKey));
@@ -42,5 +48,12 @@ public class FabricAncientCreature implements ModInitializer {
         Services.REGISTRY.applyDatapackRegistryRegistrations(DynamicRegistries::registerSynced);
 
         Services.REGISTRY.applyClientboundPayloadRegistrations(PayloadTypeRegistry.clientboundPlay()::register);
+
+        Services.REGISTRY.applyServerReloadListenerRegistrations(ResourceLoader.get(PackType.SERVER_DATA)::registerReloadListener);
+        CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) ->
+            Services.REGISTRY.applyCommandRegistrations(dispatcher, context));
+
+        ServerLifecycleEvents.SERVER_STARTED.register(AncientCreature::onServerStarted);
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> AncientCreature.onServerStopped());
     }
 }

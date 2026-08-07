@@ -1,70 +1,101 @@
 package com.coolerpromc.ancientcreature.entity;
 
-import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.species.SpeciesCodecs;
+import com.coolerpromc.ancientcreature.species.SpeciesDefinition;
+import com.coolerpromc.ancientcreature.species.SpeciesManager;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.biome.Biome;
-import org.jspecify.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
-public enum Species implements StringRepresentable, TooltipProvider {
-    TRICERATOPS("triceratops", BiomeTags.IS_OVERWORLD, 1000, ModEntities.TRICERATOPS),
-    TYRANNOSAURUS_REX("tyrannosaurus_rex", BiomeTags.IS_OVERWORLD, 1600, ModEntities.TYRANNOSAURUS_REX),
-    MEGALODON("megalodon", BiomeTags.IS_OCEAN, 2000, ModEntities.MEGALODON);
+public record Species(Identifier id) implements TooltipProvider, Comparable<Species> {
+    public static final Codec<Species> CODEC = SpeciesCodecs.SPECIES_ID.xmap(Species::new, Species::id);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = Identifier.STREAM_CODEC.map(Species::new, Species::id).cast();
 
-    public static final Codec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Species> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
+    public static final Species TRICERATOPS = of("triceratops");
+    public static final Species TYRANNOSAURUS_REX = of("tyrannosaurus_rex");
+    public static final Species MEGALODON = of("megalodon");
 
-    final String name;
-    final TagKey<Biome> biomeTag;
-    final int incubationTime;
-    final RegistryHandler.Entities<?> entityType;
-
-    Species(String name, TagKey<Biome> biomeTag, int incubationTime, RegistryHandler.Entities<?> entityType){
-        this.name = name;
-        this.biomeTag = biomeTag;
-        this.incubationTime = incubationTime;
-        this.entityType = entityType;
+    public static Species of(String path) {
+        return new Species(Constants.id(path));
     }
 
-    @Override
+    public static List<Species> values() {
+        SpeciesManager manager = SpeciesManager.SERVER.isEmpty() ? SpeciesManager.CLIENT : SpeciesManager.SERVER;
+        return manager.ids().stream().map(Species::new).sorted().toList();
+    }
+
+    public Optional<SpeciesDefinition> definition() {
+        Optional<SpeciesDefinition> server = SpeciesManager.SERVER.getOptional(this.id);
+        return server.isPresent() ? server : SpeciesManager.CLIENT.getOptional(this.id);
+    }
+
+    public SpeciesDefinition definitionOrFallback() {
+        return this.definition().orElse(SpeciesDefinition.FALLBACK);
+    }
+
+    public boolean isLoaded() {
+        return this.definition().isPresent();
+    }
+
     public String getSerializedName() {
-        return name;
+        return this.id.getPath();
     }
 
-    public boolean isValidBiome(Holder<Biome> holder){
-        return holder.is(this.biomeTag);
+    public String name() {
+        return this.id.getPath();
+    }
+
+    public String translationKey() {
+        return "species." + this.id.getNamespace() + "." + this.id.getPath();
+    }
+
+    public Component displayName() {
+        return Component.translatable(this.translationKey());
+    }
+
+    public boolean isValidBiome(Holder<Biome> holder) {
+        return this.definitionOrFallback().spawn().isValidBiome(holder);
     }
 
     public int getIncubationTime() {
-        return incubationTime;
+        return this.definitionOrFallback().spawn().incubationTime();
     }
 
     public EntityType<?> getEntityType() {
-        return entityType.get();
+        return ModEntities.ANCIENT_CREATURE.get();
     }
 
     @Override
+    public int compareTo(Species other) {
+        return COMPARATOR.compare(this, other);
+    }
+
+    private static final Comparator<Species> COMPARATOR =
+        Comparator.comparing((Species s) -> s.id.getNamespace()).thenComparing(s -> s.id.getPath());
+
+    @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
-        String name = "§9" + Component.translatable("species.ancientcreature." + this.name).getString();
+        String name = "§9" + this.displayName().getString();
         consumer.accept(Component.translatable("tooltip.ancientcreature.species", name));
     }
 
-    public static @Nullable Species byEntityType(EntityType<?> type){
-        return Arrays.stream(values()).filter(e -> e.entityType.get().equals(type)).findFirst().orElse(null);
+    @Override
+    public String toString() {
+        return this.id.toString();
     }
 }

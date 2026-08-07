@@ -1,0 +1,72 @@
+{
+  "format_version": 1,
+  "initial_state": "idle",
+  "states": {
+    "idle": {
+      "animations": ["idle"],
+      "blend_transition": 0.2,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "hurt": "query.is_hurt" },
+        { "graze": "query.action == 'graze'" },
+        { "attack": "query.action == 'attack' || query.action == 'roar'" },
+        { "charge": "query.is_moving && query.is_running && query.is_attacking" },
+        { "walk": "query.is_moving" }
+      ]
+    },
+    "walk": {
+      "animations": ["idle", "walk"],
+      "blend_transition": 0.15,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "hurt": "query.is_hurt" },
+        { "charge": "query.is_running && query.is_attacking" },
+        { "idle": "!query.is_moving" }
+      ]
+    },
+    "charge": {
+      "animations": ["charge"],
+      "blend_transition": 0.1,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "walk": "!query.is_attacking && query.is_moving" },
+        { "idle": "!query.is_moving" }
+      ]
+    },
+    "attack": {
+      "animations": ["bellow"],
+      "blend_transition": 0.1,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "charge": "query.action == 'none' && query.is_running" },
+        { "walk": "query.action == 'none' && query.is_moving" },
+        { "idle": "query.action == 'none'" }
+      ]
+    },
+    "graze": {
+      "animations": ["graze"],
+      "blend_transition": 0.3,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "hurt": "query.is_hurt" },
+        { "walk": "query.is_moving" },
+        { "idle": "query.action != 'graze'" }
+      ]
+    },
+    "hurt": {
+      "animations": ["idle"],
+      "blend_transition": 0.05,
+      "transitions": [
+        { "death": "query.is_dead" },
+        { "charge": "!query.is_hurt && query.is_running && query.is_attacking" },
+        { "walk": "!query.is_hurt && query.is_moving" },
+        { "idle": "!query.is_hurt" }
+      ]
+    },
+    "death": {
+      "animations": ["idle"],
+      "blend_transition": 0.2,
+      "transitions": []
+    }
+  }
+}

@@ -38,7 +38,7 @@ public record GenomeData(float completeness, Species species) implements Tooltip
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         consumer.accept(Component.translatable("tooltip.ancientcreature.genome_completeness",  "§9" + String.format("%.0f", completeness * 100) + "%"));
-        String name = "§9" + Component.translatable("species.ancientcreature." + this.species.getSerializedName()).getString();
+        String name = "§9" + this.species.displayName().getString();
         consumer.accept(Component.translatable("tooltip.ancientcreature.species", name));
     }
 }

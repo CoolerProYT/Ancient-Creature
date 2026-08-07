@@ -32,7 +32,7 @@ public record DNAData(DNAIntegrityLevel integrityLevel, Species species) impleme
 
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
-        String name = "§9" + Component.translatable("species.ancientcreature." + this.species.getSerializedName()).getString();
+        String name = "§9" + this.species.displayName().getString();
         consumer.accept(Component.translatable("tooltip.ancientcreature.species", name));
     }
 }

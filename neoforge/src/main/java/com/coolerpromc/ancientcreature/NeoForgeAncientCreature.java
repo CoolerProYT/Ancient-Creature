@@ -12,6 +12,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -75,5 +79,27 @@ public class NeoForgeAncientCreature {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEvents.onPlayerJoin((ServerPlayer) event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onAddServerReloadListeners(AddServerReloadListenersEvent event) {
+        AncientCreature.initReloadListener();
+        Services.REGISTRY.applyServerReloadListenerRegistrations(event::addListener);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
+        AncientCreature.initCommand();
+        Services.REGISTRY.applyCommandRegistrations(event.getDispatcher(), event.getBuildContext());
+    }
+
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        AncientCreature.onServerStarted(event.getServer());
+    }
+
+    @SubscribeEvent
+    public static void onServerStopped(ServerStoppedEvent event) {
+        AncientCreature.onServerStopped();
     }
 }

@@ -62,13 +62,17 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
         this.ownerReference = EntityReference.readWithOldOwnerConversion(input, OWNER_TAG, this.level());
     }
 
+    public @Nullable Species speciesForBreedingEgg() {
+        return null;
+    }
+
     public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
         AgeableMob offspring = this.getBreedOffspring(level, partner);
         if (offspring != null) {
             offspring.setBaby(true);
             offspring.snapTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
             this.finalizeSpawnChildFromBreeding(level, partner, offspring);
-            Species species = Species.byEntityType(offspring.getType());
+            Species species = offspring instanceof OwnedAncientCreature creature ? creature.speciesForBreedingEgg() : null;
 
             if (species == null) return;
 

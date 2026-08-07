@@ -103,6 +103,11 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.death", "Tyrannosaurus rex dies");
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.bite", "Tyrannosaurus rex bites");
         add("subtitles.ancientcreature.entity.tyrannosaurus_rex.step", "Tyrannosaurus rex steps");
+        add("subtitles.ancientcreature.entity.megalodon.ambient", "Megalodon looms");
+        add("subtitles.ancientcreature.entity.megalodon.hurt", "Megalodon hurts");
+        add("subtitles.ancientcreature.entity.megalodon.death", "Megalodon dies");
+        add("subtitles.ancientcreature.entity.megalodon.bite", "Megalodon bites");
+        add("subtitles.ancientcreature.entity.megalodon.step", "Megalodon thrashes");
 
         add("advancements.ancientcreature.progression.root.title", "Ancient Creature");
         add("advancements.ancientcreature.progression.root.description", "Unearth the past and bring ancient creatures back to life");
@@ -131,9 +136,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add("advancements.ancientcreature.progression.revive_creature.title", "Life Finds a Way");
         add("advancements.ancientcreature.progression.revive_creature.description", "Incubate a baby ancient creature and bring it back from extinction");
 
-        add(ModEntities.TRICERATOPS.get(), "Triceratops");
-        add(ModEntities.TYRANNOSAURUS_REX.get(), "Tyrannosaurus Rex");
-        add(ModEntities.MEGALODON.get(), "Megalodon");
+        // The generic entity's name is only seen in /summon output and death messages; a data-driven
+        // creature is normally named after its species.
+        add(ModEntities.ANCIENT_CREATURE.get(), "Ancient Creature");
 
         add(ModItems.STONE_CHISEL.get(), "Stone Chisel");
         add(ModItems.COPPER_CHISEL.get(), "Copper Chisel");

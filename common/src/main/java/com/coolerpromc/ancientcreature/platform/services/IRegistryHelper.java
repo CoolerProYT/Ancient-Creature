@@ -6,9 +6,13 @@ import com.coolerpromc.ancientcreature.platform.util.BlockEntityTypeFactory;
 import com.coolerpromc.ancientcreature.platform.util.CreativeTabOutput;
 import com.coolerpromc.ancientcreature.platform.util.MenuFactory;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -92,6 +96,12 @@ public interface IRegistryHelper {
     <T extends HandledCustomPacketPayload> void registerClientboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     void applyClientboundPayloadRegistrations(ClientboundPayloadRegistrar registrar);
 
+    void registerServerReloadListener(Identifier id, PreparableReloadListener listener);
+    void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar);
+
+    void registerCommand(CommandBuilder builder);
+    void applyCommandRegistrations(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context);
+
     interface EntityAttributeRegistrar {
         void register(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier);
     }
@@ -106,6 +116,13 @@ public interface IRegistryHelper {
     }
     interface ClientboundPayloadRegistrar {
         <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
+    }
+    interface ReloadListenerRegistrar {
+        void register(Identifier id, PreparableReloadListener listener);
+    }
+    @FunctionalInterface
+    interface CommandBuilder {
+        void build(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context);
     }
 
     static ResourceKey<Block> blockKey(String name) {

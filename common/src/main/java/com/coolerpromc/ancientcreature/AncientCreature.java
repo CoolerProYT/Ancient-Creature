@@ -7,17 +7,21 @@ import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
-import com.coolerpromc.ancientcreature.entity.custom.Megalodon;
-import com.coolerpromc.ancientcreature.entity.custom.Triceratops;
-import com.coolerpromc.ancientcreature.entity.custom.TyrannosaurusRex;
+import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.ModLootFunctions;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
+import com.coolerpromc.ancientcreature.command.AncientCreatureCommand;
 import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
+import com.coolerpromc.ancientcreature.network.ClientboundSpeciesSyncPacket;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
+import com.coolerpromc.ancientcreature.species.SpeciesManager;
+import com.coolerpromc.ancientcreature.species.SpeciesReloadListener;
+import com.coolerpromc.ancientcreature.species.SpeciesSyncHandler;
+import net.minecraft.server.MinecraftServer;
 import com.coolerpromc.ancientcreature.sound.ModSounds;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModFeatures;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModPlacedFeatures;
@@ -74,9 +78,10 @@ public class AncientCreature {
     }
 
     public static void initEntityAttribute(){
-        registerEntityAttribute(ModEntities.TRICERATOPS.get(), Triceratops.createAttributes().build());
-        registerEntityAttribute(ModEntities.TYRANNOSAURUS_REX.get(), TyrannosaurusRex.createAttributes().build());
-        registerEntityAttribute(ModEntities.MEGALODON.get(), Megalodon.createAttributes().build());
+        // One broad attribute set for every creature type. Species values are applied on top of it per
+        // entity; see AncientCreatureEntity.createAttributes().
+        AttributeSupplier attributes = AncientCreatureEntity.createAttributes().build();
+        ModEntities.allCreatureTypes().forEach(type -> registerEntityAttribute(type.get(), attributes));
     }
 
     public static void initBiomeModifier(){
@@ -94,6 +99,23 @@ public class AncientCreature {
 
     public static void initPayloadType(){
         registerClientboundPayload(ClientboundIdentifiedSpeciesSyncPacket.TYPE, ClientboundIdentifiedSpeciesSyncPacket.STREAM_CODEC);
+        registerClientboundPayload(ClientboundSpeciesSyncPacket.TYPE, ClientboundSpeciesSyncPacket.STREAM_CODEC);
+    }
+
+    public static void initReloadListener(){
+        Services.REGISTRY.registerServerReloadListener(SpeciesReloadListener.ID, new SpeciesReloadListener(SpeciesManager.SERVER, SpeciesSyncHandler::onSpeciesReloaded));
+    }
+
+    public static void initCommand(){
+        Services.REGISTRY.registerCommand(AncientCreatureCommand::register);
+    }
+
+    public static void onServerStarted(MinecraftServer server){
+        SpeciesSyncHandler.onServerStarted(server);
+    }
+
+    public static void onServerStopped(){
+        SpeciesSyncHandler.onServerStopped();
     }
 
     private static <T extends BlockEntity> void registerCapability(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider, Function<T, Container[]> containers){

@@ -80,7 +80,7 @@ public record FossilData(Holder<FossilPart> fossilPart, Species species, float c
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         consumer.accept(Component.translatable("tooltip.ancientcreature.fossil_completeness",  "§9" + String.format("%.0f", completeness * 100) + "%"));
-        String name = "§9" + Component.translatable("species.ancientcreature." + this.getSpecies().getSerializedName()).getString();
+        String name = "§9" + this.getSpecies().displayName().getString();
         if (!identified){
             name = Component.translatable("species.ancientcreature.unidentified").getString();
         }

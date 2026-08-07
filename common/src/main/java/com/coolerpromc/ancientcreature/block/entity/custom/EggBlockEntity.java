@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.coolerpromc.ancientcreature.entity.custom.OwnableAncientCreature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -91,7 +92,12 @@ public class EggBlockEntity extends BlockEntity {
         }
 
         if (progress >= hatchTime){
+            final Species hatching = species;
             Entity spawned = species.getEntityType().create(serverLevel, entity -> {
+                // Applied before the entity is added so it is placed with its own bounding box.
+                if (entity instanceof AncientCreatureEntity creature) {
+                    creature.setSpecies(hatching);
+                }
                 if (entity instanceof AgeableMob ageable) {
                     ageable.setBaby(true);
                 }

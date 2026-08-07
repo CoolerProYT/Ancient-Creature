@@ -69,6 +69,12 @@ public class NeoForgeAncientCreatureClient {
     }
 
     @SubscribeEvent
+    public static void onAddClientReloadListeners(AddClientReloadListenersEvent event) {
+        AncientCreatureClient.initClientReloadListener();
+        ServicesClient.REGISTRY.applyClientReloadListenerRegistrations(event::addListener);
+    }
+
+    @SubscribeEvent
     public static void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
         AncientCreatureClient.initClientPayloadHandler();
         ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(new NeoForgePayloadRegistrar(event)::register);
