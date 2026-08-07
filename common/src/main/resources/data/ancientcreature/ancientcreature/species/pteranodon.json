@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "entity_category": "flying",
+  "physical": {
+    "width": 1.5,
+    "height": 1.4,
+    "eye_height": 0.85
+  },
+  "attributes": {
+    "max_health": 26.0,
+    "movement_speed": 0.3,
+    "flying_speed": 0.62,
+    "attack_damage": 5.0,
+    "attack_knockback": 0.4,
+    "follow_range": 32.0,
+    "knockback_resistance": 0.0,
+    "armor": 1.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.4,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:flying_predator",
+    "components": [
+      {
+        "type": "ancientcreature:fly",
+        "speed_modifier": 1.0,
+        "wander_range": 24,
+        "vertical_range": 16,
+        "min_altitude": 8,
+        "max_altitude": 48
+      },
+      { "type": "ancientcreature:breed", "speed_modifier": 1.0 },
+      { "type": "ancientcreature:tempt", "speed_modifier": 1.1, "can_scare": true },
+      { "type": "ancientcreature:follow_parent", "speed_modifier": 1.15 }
+    ]
+  },
+  "diet": {
+    "items": ["minecraft:cod", "minecraft:salmon"]
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_beach",
+    "incubation_time": 1200
+  }
+}

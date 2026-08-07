@@ -10,9 +10,11 @@ import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorType;
 import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureAction;
 import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.coolerpromc.ancientcreature.species.SpeciesDefinition;
+import com.coolerpromc.ancientcreature.species.SpeciesHungerProperties;
 import com.coolerpromc.ancientcreature.species.SpeciesManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -74,6 +76,12 @@ public final class AncientCreatureCommand {
                             .executes(context -> loopAction(context, IntegerArgumentType.getInteger(context, "period")))))
                     .then(Commands.argument("ticks", IntegerArgumentType.integer(0, 72000))
                         .executes(context -> setAction(context, IntegerArgumentType.getInteger(context, "ticks")))))));
+
+        root.then(Commands.literal("hunger")
+            .then(Commands.argument("targets", EntityArgument.entities())
+                .executes(AncientCreatureCommand::queryHunger)
+                .then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, SpeciesHungerProperties.MAX_HUNGER))
+                    .executes(AncientCreatureCommand::setHunger))));
 
         root.then(Commands.literal("summon")
             .then(Commands.argument("species", IdentifierArgument.id())
@@ -166,6 +174,53 @@ public final class AncientCreatureCommand {
             : " for " + ticks + " tick" + (ticks == 1 ? "" : "s");
         source.sendSuccess(() -> Component.literal("Set action " + action.queryName() + " on "
             + count + " creature" + (count == 1 ? "" : "s") + duration), true);
+        return count;
+    }
+
+    /**
+     * Reports how fed the selected creatures are and whether that is enough to make them hunt.
+     *
+     * <p>Hunger is otherwise invisible, and it moves on the order of minutes, so without this there is no
+     * way to tell a predator that is ignoring prey because it is full from one that is failing to target.
+     */
+    private static int queryHunger(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        CommandSourceStack source = context.getSource();
+        List<AncientCreatureEntity> creatures = creatures(context);
+        if (creatures.isEmpty()) {
+            source.sendFailure(Component.literal("No ancient creatures matched that selector."));
+            return 0;
+        }
+
+        for (AncientCreatureEntity creature : creatures) {
+            SpeciesHungerProperties hunger = creature.hungerProperties();
+            String line = String.format(java.util.Locale.ROOT,
+                "%s: %.1f/%.1f (hunts at %.1f, full at %.1f) - %s",
+                creature.getSpecies(), creature.getHunger(), hunger.max(),
+                hunger.huntThreshold(), hunger.fullThreshold(),
+                creature.wantsToHunt() ? "hunting" : "not hunting");
+            source.sendSuccess(() -> Component.literal(line), false);
+        }
+        return creatures.size();
+    }
+
+    /** Sets hunger directly, so the hunting threshold can be crossed without waiting out the decay. */
+    private static int setHunger(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        CommandSourceStack source = context.getSource();
+        float value = FloatArgumentType.getFloat(context, "value");
+
+        List<AncientCreatureEntity> creatures = creatures(context);
+        if (creatures.isEmpty()) {
+            source.sendFailure(Component.literal("No ancient creatures matched that selector."));
+            return 0;
+        }
+
+        for (AncientCreatureEntity creature : creatures) {
+            creature.setHunger(value);
+        }
+
+        int count = creatures.size();
+        source.sendSuccess(() -> Component.literal(String.format(java.util.Locale.ROOT,
+            "Set hunger to %.1f on %d creature%s", value, count, count == 1 ? "" : "s")), true);
         return count;
     }
 
@@ -272,6 +327,11 @@ public final class AncientCreatureCommand {
             + ", baby_scale " + definition.growth().babyScale()), false);
         context.getSource().sendSuccess(() -> Component.literal("  incubation: " + definition.spawn().incubationTime()
             + " ticks, biomes #" + definition.spawn().biomeTag()), false);
+        context.getSource().sendSuccess(() -> Component.literal("  hunger: max " + definition.hunger().max()
+            + ", hunts at " + definition.hunger().huntThreshold()
+            + ", full at " + definition.hunger().fullThreshold()
+            + ", -1 every " + definition.hunger().decayInterval() + " ticks"
+            + (definition.hunger().starves() ? ", starves for " + definition.hunger().starveDamage() : "")), false);
         definition.attributes().values().forEach((attribute, value) ->
             context.getSource().sendSuccess(() -> Component.literal("  attribute " + attribute + " = " + value), false));
         for (CreatureBehaviorComponent component : definition.resolvedBehaviors()) {

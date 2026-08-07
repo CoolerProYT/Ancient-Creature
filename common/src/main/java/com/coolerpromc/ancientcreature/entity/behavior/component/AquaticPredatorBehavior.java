@@ -26,7 +26,8 @@ public record AquaticPredatorBehavior(
     boolean targetPlayers,
     boolean targetAquaticLife,
     boolean requireInWater,
-    boolean adultsOnly
+    boolean adultsOnly,
+    boolean requiresHunger
 ) implements CreatureBehaviorConfig {
 
     public static final MapCodec<AquaticPredatorBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
@@ -34,8 +35,10 @@ public record AquaticPredatorBehavior(
         Codec.BOOL.optionalFieldOf("target_players", true).forGetter(AquaticPredatorBehavior::targetPlayers),
         Codec.BOOL.optionalFieldOf("target_aquatic_life", true).forGetter(AquaticPredatorBehavior::targetAquaticLife),
         Codec.BOOL.optionalFieldOf("require_in_water", true).forGetter(AquaticPredatorBehavior::requireInWater),
-        Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(AquaticPredatorBehavior::adultsOnly)
+        Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(AquaticPredatorBehavior::adultsOnly),
+        Codec.BOOL.optionalFieldOf("requires_hunger", true).forGetter(AquaticPredatorBehavior::requiresHunger)
     ).apply(i, AquaticPredatorBehavior::new));
+
 
     @Override
     public CreatureBehaviorType<?> type() {
@@ -55,6 +58,9 @@ public record AquaticPredatorBehavior(
 
     private boolean isPrey(AncientCreatureEntity creature, LivingEntity target) {
         if (this.adultsOnly && creature.isBaby()) {
+            return false;
+        }
+        if (this.requiresHunger && !creature.wantsToHunt()) {
             return false;
         }
         if (creature.isOwnedBy(target)) {

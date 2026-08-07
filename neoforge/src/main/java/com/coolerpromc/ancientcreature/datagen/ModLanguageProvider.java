@@ -50,7 +50,11 @@ public class ModLanguageProvider extends LanguageProvider {
         add("jei.ancientcreature.incubation_time", "Incubation time: %ss");
 
         add("jade.ancientcreature.remaining_time", "Remaining Time: %ss");
+        add("jade.ancientcreature.hunger", "Hunger: %s/%s");
+        add("jade.ancientcreature.hungry", "Hungry - will hunt");
+        add("jade.ancientcreature.fed", "Fed - not hunting");
         add("config.jade.plugin_ancientcreature.egg_data", "Egg Data");
+        add("config.jade.plugin_ancientcreature.creature_hunger", "Creature Hunger");
 
         add("tab.ancientcreature.ancient_creature", "Ancient Creature");
         add("tab.ancientcreature.fossils", "Fossils");
@@ -77,6 +81,7 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.triceratops", "Triceratops");
         add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
         add("species.ancientcreature.megalodon", "Megalodon");
+        add("species.ancientcreature.pteranodon", "Pteranodon");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");

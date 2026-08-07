@@ -20,7 +20,8 @@ public record SpeciesDefinition(
     SpeciesBehaviorDefinition behavior,
     SpeciesDietProperties diet,
     SpeciesSpawnProperties spawn,
-    SpeciesSoundDefinition sounds
+    SpeciesSoundDefinition sounds,
+    SpeciesHungerProperties hunger
 ) {
     public static final int CURRENT_FORMAT_VERSION = 1;
 
@@ -33,7 +34,8 @@ public record SpeciesDefinition(
         SpeciesBehaviorDefinition.EMPTY,
         SpeciesDietProperties.EMPTY,
         SpeciesSpawnProperties.DEFAULT,
-        SpeciesSoundDefinition.EMPTY
+        SpeciesSoundDefinition.EMPTY,
+        SpeciesHungerProperties.DEFAULT
     );
 
     private static final Codec<Integer> FORMAT_VERSION_CODEC = Codec.INT.validate(
@@ -50,7 +52,8 @@ public record SpeciesDefinition(
         SpeciesBehaviorDefinition.CODEC.optionalFieldOf("behavior", SpeciesBehaviorDefinition.EMPTY).forGetter(SpeciesDefinition::behavior),
         SpeciesDietProperties.CODEC.optionalFieldOf("diet", SpeciesDietProperties.EMPTY).forGetter(SpeciesDefinition::diet),
         SpeciesSpawnProperties.CODEC.optionalFieldOf("spawn", SpeciesSpawnProperties.DEFAULT).forGetter(SpeciesDefinition::spawn),
-        SpeciesSoundDefinition.CODEC.optionalFieldOf("sounds", SpeciesSoundDefinition.EMPTY).forGetter(SpeciesDefinition::sounds)
+        SpeciesSoundDefinition.CODEC.optionalFieldOf("sounds", SpeciesSoundDefinition.EMPTY).forGetter(SpeciesDefinition::sounds),
+        SpeciesHungerProperties.CODEC.optionalFieldOf("hunger", SpeciesHungerProperties.DEFAULT).forGetter(SpeciesDefinition::hunger)
     ).apply(i, SpeciesDefinition::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SpeciesDefinition> STREAM_CODEC = StreamCodec.composite(
@@ -63,6 +66,7 @@ public record SpeciesDefinition(
         SpeciesDietProperties.STREAM_CODEC, SpeciesDefinition::diet,
         SpeciesSpawnProperties.STREAM_CODEC, SpeciesDefinition::spawn,
         SpeciesSoundDefinition.STREAM_CODEC, SpeciesDefinition::sounds,
+        SpeciesHungerProperties.STREAM_CODEC, SpeciesDefinition::hunger,
         SpeciesDefinition::new
     );
 

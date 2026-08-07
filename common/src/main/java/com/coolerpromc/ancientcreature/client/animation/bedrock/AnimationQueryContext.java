@@ -22,6 +22,9 @@ import java.util.Set;
  *   <tr><td>{@code query.is_moving} / {@code query.is_running}</td><td>0 or 1</td></tr>
  *   <tr><td>{@code query.is_attacking} / {@code query.is_baby} / {@code query.is_in_water}</td><td>0 or 1</td></tr>
  *   <tr><td>{@code query.is_hurt} / {@code query.is_dead}</td><td>0 or 1</td></tr>
+ *   <tr><td>{@code query.is_on_ground}</td><td>0 or 1; a flying species needs this to tell perched from airborne</td></tr>
+ *   <tr><td>{@code query.hunger}</td><td>how fed the creature is; high is full, zero is starving</td></tr>
+ *   <tr><td>{@code query.is_hungry}</td><td>0 or 1; whether hunger has fallen to the species' hunt threshold</td></tr>
  *   <tr><td>{@code query.action}</td><td>current action name: {@code none}, {@code attack}, {@code roar}, {@code graze}, {@code eat}</td></tr>
  * </table>
  */
@@ -32,7 +35,7 @@ public interface AnimationQueryContext {
     Set<String> BUILT_IN = Set.of(
         "anim_time", "life_time", "head_yaw", "head_pitch", "limb_swing", "limb_swing_amount",
         "ground_speed", "health", "max_health", "is_moving", "is_running", "is_attacking",
-        "is_baby", "is_in_water", "is_hurt", "is_dead", "action");
+        "is_baby", "is_in_water", "is_hurt", "is_dead", "is_on_ground", "hunger", "is_hungry", "action");
 
     static boolean isBuiltIn(String name) {
         return BUILT_IN.contains(name);
@@ -57,6 +60,9 @@ public interface AnimationQueryContext {
                 case "is_in_water" -> this.state.isInWater ? 1.0 : 0.0;
                 case "is_hurt" -> this.state.hurtTimeRemaining > 0 ? 1.0 : 0.0;
                 case "is_dead" -> this.state.deathTime > 0.0F ? 1.0 : 0.0;
+                case "is_on_ground" -> this.state.isOnGround ? 1.0 : 0.0;
+                case "hunger" -> this.state.hunger;
+                case "is_hungry" -> this.state.isHungry ? 1.0 : 0.0;
                 default -> CreatureQueryRegistry.number(name, this.state, this.stateSeconds);
             };
         }

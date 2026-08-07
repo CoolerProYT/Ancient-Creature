@@ -41,6 +41,9 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
         state.action = entity.getAction();
         state.isSprinting = entity.isSprinting();
         state.isAggressive = entity.isAggressive();
+        state.isOnGround = entity.onGround();
+        state.hunger = entity.getHunger();
+        state.isHungry = entity.hungerProperties().isHungryAt(entity.getHunger());
         state.creatureHealth = entity.getHealth();
         state.creatureMaxHealth = entity.getMaxHealth();
         state.hurtTimeRemaining = entity.hurtTime;

@@ -16,6 +16,9 @@ public class AncientCreatureRenderState extends LivingEntityRenderState {
 
     public boolean isSprinting;
     public boolean isAggressive;
+    public boolean isOnGround = true;
+    public float hunger = 20.0F;
+    public boolean isHungry;
     public float creatureHealth = 20.0F;
     public float creatureMaxHealth = 20.0F;
     public int hurtTimeRemaining;

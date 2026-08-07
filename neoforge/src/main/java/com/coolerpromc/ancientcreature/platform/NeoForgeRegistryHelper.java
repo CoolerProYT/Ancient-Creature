@@ -60,7 +60,9 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -68,7 +70,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
-    private final List<ReloadListenerEntry> serverReloadListeners = new ArrayList<>();
+    private final Map<Identifier, PreparableReloadListener> serverReloadListeners = new LinkedHashMap<>();
     private final List<CommandBuilder> commands = new ArrayList<>();
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Constants.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.MODID);
@@ -300,16 +302,18 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         FEATURES.register(eventBus);
     }
 
+    /**
+     * Keyed by id, because NeoForge throws if two listeners share one and the registrations are
+     * collected from an event that fires again on every world load.
+     */
     @Override
     public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
-        this.serverReloadListeners.add(new ReloadListenerEntry(id, listener));
+        this.serverReloadListeners.put(id, listener);
     }
 
     @Override
     public void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar) {
-        for (ReloadListenerEntry entry : serverReloadListeners) {
-            entry.register(registrar);
-        }
+        this.serverReloadListeners.forEach(registrar::register);
     }
 
     @Override
@@ -324,9 +328,4 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         }
     }
 
-    private record ReloadListenerEntry(Identifier id, PreparableReloadListener listener) {
-        private void register(ReloadListenerRegistrar registrar) {
-            registrar.register(this.id, this.listener);
-        }
-    }
 }

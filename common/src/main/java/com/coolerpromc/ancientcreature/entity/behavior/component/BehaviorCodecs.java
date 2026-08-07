@@ -19,6 +19,15 @@ public final class BehaviorCodecs {
     /** Reciprocal chance for goals that use {@code randomInterval}. */
     public static final Codec<Integer> CHANCE = Codec.intRange(1, 10000);
 
+    /** Whole-block spread of a single wander hop. */
+    public static final Codec<Integer> BLOCK_RANGE = Codec.intRange(1, 128);
+
+    /** Height above the terrain column, in whole blocks. Spans the full build range. */
+    public static final Codec<Integer> ALTITUDE = Codec.intRange(0, 320);
+
+    /** Points of hunger restored by one helping of food. */
+    public static final Codec<Float> HUNGER = Codec.floatRange(0.0F, 1024.0F);
+
     private BehaviorCodecs() {
     }
 }

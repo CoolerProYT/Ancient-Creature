@@ -6,6 +6,7 @@ import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorComponent;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorConfig;
 import com.coolerpromc.ancientcreature.species.*;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,6 +26,9 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,9 +45,11 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private static final EntityDataAccessor<String> DATA_SPECIES = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_VARIANT = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Byte> DATA_ACTION = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Float> DATA_HUNGER = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
 
     private static final String SPECIES_TAG = "Species";
     private static final String VARIANT_TAG = "Variant";
+    private static final String HUNGER_TAG = "Hunger";
 
     public static final String DEFAULT_VARIANT = "default";
 
@@ -56,6 +62,17 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private boolean goalsBuilt;
     private int actionTicks;
     private @Nullable SpeciesEntityCategory appliedCategory;
+
+    /** Counts down to the next single point of hunger lost, and to the next starvation tick. */
+    private int hungerTicks;
+    private int starveTicks;
+
+    /**
+     * Whether hunger came from saved data. A creature restored from NBT keeps the meter it had; one that
+     * has never been saved starts full, which needs the species max and so cannot be done in
+     * {@code defineSynchedData}.
+     */
+    private boolean hungerRestored;
 
     /**
      * Debug-only: an action to re-trigger forever, set by the {@code /ancientcreature action ... loop}
@@ -77,6 +94,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return Animal.createAnimalAttributes()
             .add(Attributes.MAX_HEALTH, 20.0)
             .add(Attributes.MOVEMENT_SPEED, 0.25)
+            .add(Attributes.FLYING_SPEED, 0.4)
             .add(Attributes.ATTACK_DAMAGE, 1.0)
             .add(Attributes.ATTACK_KNOCKBACK, 0.0)
             .add(Attributes.ATTACK_SPEED, Attributes.DEFAULT_ATTACK_SPEED)
@@ -106,6 +124,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         builder.define(DATA_SPECIES, Species.TRICERATOPS.id().toString());
         builder.define(DATA_VARIANT, DEFAULT_VARIANT);
         builder.define(DATA_ACTION, AncientCreatureAction.NONE.id());
+        builder.define(DATA_HUNGER, SpeciesHungerProperties.DEFAULT.max());
     }
 
     @Override
@@ -172,6 +191,75 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesDefinition().diet();
     }
 
+    public SpeciesHungerProperties hungerProperties() {
+        return this.speciesDefinition().hunger();
+    }
+
+    /** How fed this creature is. High is full; zero is starving. */
+    public float getHunger() {
+        return this.entityData.get(DATA_HUNGER);
+    }
+
+    public void setHunger(float hunger) {
+        if (!this.level().isClientSide()) {
+            this.hungerRestored = true;
+            this.entityData.set(DATA_HUNGER, this.hungerProperties().clamp(hunger));
+        }
+    }
+
+    /**
+     * Whether this creature is hungry enough to go looking for prey.
+     *
+     * <p>Only prey <em>selection</em> consults this. Retaliation, territorial defence and the attack goals
+     * themselves never do, so a well-fed creature still defends itself and still drives off armed players.
+     *
+     * <p>Once a hunt starts the creature stays interested until eating brings it up to
+     * {@code full_threshold}, rather than losing its target the instant it crosses {@code hunt_threshold}
+     * again. Without that gap a predator mid-chase would drop and reacquire its target every tick.
+     */
+    public boolean wantsToHunt() {
+        SpeciesHungerProperties hunger = this.hungerProperties();
+        if (hunger.isSatedAt(this.getHunger())) {
+            return false;
+        }
+        return hunger.isHungryAt(this.getHunger()) || this.getTarget() != null;
+    }
+
+    /** Restores hunger and plays the eating action. Returns whether anything was actually eaten. */
+    public boolean feed(float amount) {
+        if (this.level().isClientSide() || amount <= 0.0F) {
+            return false;
+        }
+        float before = this.getHunger();
+        if (before >= this.hungerProperties().max()) {
+            return false;
+        }
+        this.setHunger(before + amount);
+        this.setAction(AncientCreatureAction.EAT, 20);
+        return true;
+    }
+
+    private void tickHunger() {
+        SpeciesHungerProperties hunger = this.hungerProperties();
+
+        if (++this.hungerTicks >= hunger.decayInterval()) {
+            this.hungerTicks = 0;
+            float next = hunger.clamp(this.getHunger() - 1.0F);
+            if (next != this.getHunger()) {
+                this.entityData.set(DATA_HUNGER, next);
+            }
+        }
+
+        if (!hunger.starves() || this.getHunger() > 0.0F) {
+            this.starveTicks = 0;
+            return;
+        }
+        if (++this.starveTicks >= hunger.starveInterval()) {
+            this.starveTicks = 0;
+            this.hurtServer((ServerLevel) this.level(), this.damageSources().starve(), hunger.starveDamage());
+        }
+    }
+
     private void refreshSpecies() {
         SpeciesManager manager = this.level().isClientSide() ? SpeciesManager.CLIENT : SpeciesManager.SERVER;
         int generation = manager.generation();
@@ -196,9 +284,27 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.applyMovementDomain(resolved);
         if (!this.level().isClientSide()) {
             this.applyAttributes(resolved);
+            this.applyHunger(resolved);
             this.rebuildGoals(resolved);
         }
         this.refreshDimensionsForNewDefinition();
+    }
+
+    /**
+     * A creature that was never saved starts fed; one restored from disk keeps what it had, clamped in
+     * case the datapack lowered {@code hunger.max} since.
+     */
+    private void applyHunger(SpeciesDefinition definition) {
+        SpeciesHungerProperties hunger = definition.hunger();
+        if (!this.hungerRestored) {
+            this.hungerRestored = true;
+            this.entityData.set(DATA_HUNGER, hunger.max());
+            return;
+        }
+        float clamped = hunger.clamp(this.getHunger());
+        if (clamped != this.getHunger()) {
+            this.entityData.set(DATA_HUNGER, clamped);
+        }
     }
 
     private void applyAttributes(SpeciesDefinition definition) {
@@ -326,13 +432,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesDefinition().scaleFor(this.isBaby());
     }
 
-    /**
-     * Resizes after a growth-scale change (a baby ageing up, {@code /data} editing Age).
-     *
-     * <p>Only tracks the scale, so it cannot see a datapack edit to {@code physical}: the scale is
-     * still 1.0 either side of a reload. Definition changes go through
-     * {@link #refreshDimensionsForNewDefinition()} instead.
-     */
     private void updateDimensionsIfNeeded() {
         float scale = this.growthScale();
         if (this.appliedScale != scale) {
@@ -341,11 +440,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /**
-     * Resizes unconditionally because the definition itself changed — a datapack reload or a species
-     * swap. Width, height and eye height all come from {@code physical}, and editing those is the
-     * normal iteration loop for a pack author, so this must not be gated on the growth scale.
-     */
     private void refreshDimensionsForNewDefinition() {
         this.appliedScale = this.growthScale();
         this.refreshDimensions();
@@ -375,14 +469,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /**
-     * Debug-only: repeatedly replay {@code action}, or stop repeating when given {@code null}.
-     *
-     * <p>The client's animation controller only restarts a clip when the state it is in changes, so
-     * simply holding the action would play a non-looping clip once and then sit in the rest pose. This
-     * drops back to {@link AncientCreatureAction#NONE} for {@link #LOOP_GAP_TICKS} between plays so the
-     * controller genuinely leaves and re-enters the state.
-     */
     public void setLoopAction(@Nullable AncientCreatureAction action, int period) {
         if (this.level().isClientSide()) {
             return;
@@ -426,6 +512,9 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
 
         if (!this.level().isClientSide()) {
             this.tickActionLoop();
+            if (this.hasResolvedSpecies()) {
+                this.tickHunger();
+            }
         }
     }
 
@@ -484,6 +573,48 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.diet().test(stack);
     }
 
+    /**
+     * Eating a kill is what refills a predator, and is the other half of gating hunting on hunger — without
+     * it a hungry creature would hunt forever and never be satisfied.
+     */
+    @Override
+    public boolean killedEntity(ServerLevel level, LivingEntity killed, DamageSource source) {
+        boolean result = super.killedEntity(level, killed, source);
+        this.feed(this.hungerProperties().killValue());
+        return result;
+    }
+
+    /**
+     * Hand-feeding tops the creature up as well as breeding it.
+     *
+     * <p>Breeding is left to {@code Animal}, which consumes the item and sets the creature in love. Only
+     * when it declines — an adult on breeding cooldown, say — does this fall through to plain feeding, so
+     * a player can still keep a fed creature out of a hunting mood.
+     */
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        boolean wasFood = this.isFood(held);
+
+        InteractionResult result = super.mobInteract(player, hand);
+        if (result.consumesAction()) {
+            if (wasFood) {
+                this.feed(this.hungerProperties().foodValue());
+            }
+            return result;
+        }
+
+        if (!wasFood || this.getHunger() >= this.hungerProperties().max()) {
+            return result;
+        }
+
+        if (!this.level().isClientSide()) {
+            this.feed(this.hungerProperties().foodValue());
+            held.consume(1, player);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
     @Override
     public boolean canMate(Animal partner) {
         return partner instanceof AncientCreatureEntity other && other.getSpecies().equals(this.getSpecies()) && super.canMate(partner);
@@ -509,12 +640,21 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         super.addAdditionalSaveData(output);
         output.store(SPECIES_TAG, Species.CODEC, this.species);
         output.putString(VARIANT_TAG, this.getVariant());
+        output.putFloat(HUNGER_TAG, this.getHunger());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         Species stored = input.read(SPECIES_TAG, Species.CODEC).orElse(this.species);
         this.setVariant(input.getStringOr(VARIANT_TAG, DEFAULT_VARIANT));
+
+        // Read before setSpecies, because applying the species is what decides whether an unsaved
+        // creature starts full — and a creature saved before hunger existed has no tag to restore.
+        input.read(HUNGER_TAG, Codec.FLOAT).ifPresent(hunger -> {
+            this.hungerRestored = true;
+            this.entityData.set(DATA_HUNGER, hunger);
+        });
+
         this.setSpecies(stored);
 
         super.readAdditionalSaveData(input);

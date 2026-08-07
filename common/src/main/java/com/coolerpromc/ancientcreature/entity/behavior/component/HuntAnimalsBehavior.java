@@ -17,11 +17,13 @@ import net.minecraft.world.entity.animal.Animal;
  * <p>Members of the hunter's own species are excluded by {@code AncientCreatureEntity#canAttack}, so a
  * pack of the same creature never turns on itself.
  */
-public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly) implements CreatureBehaviorConfig {
+public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly, boolean requiresHunger) implements CreatureBehaviorConfig {
     public static final MapCodec<HuntAnimalsBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.CHANCE.optionalFieldOf("random_interval", 10).forGetter(HuntAnimalsBehavior::randomInterval),
-        Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(HuntAnimalsBehavior::adultsOnly)
+        Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(HuntAnimalsBehavior::adultsOnly),
+        Codec.BOOL.optionalFieldOf("requires_hunger", true).forGetter(HuntAnimalsBehavior::requiresHunger)
     ).apply(i, HuntAnimalsBehavior::new));
+
 
     @Override
     public CreatureBehaviorType<?> type() {
@@ -36,6 +38,8 @@ public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly) implem
     @Override
     public Goal createGoal(AncientCreatureEntity entity) {
         return new NearestAttackableTargetGoal<>(entity, Animal.class, this.randomInterval, true, false,
-            (target, level) -> (!this.adultsOnly || !entity.isBaby()) && target instanceof Animal);
+            (target, level) -> (!this.adultsOnly || !entity.isBaby())
+                && (!this.requiresHunger || entity.wantsToHunt())
+                && target instanceof Animal);
     }
 }

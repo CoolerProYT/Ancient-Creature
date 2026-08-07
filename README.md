@@ -29,11 +29,26 @@ A defensive herbivore that normally wanders and grazes. It becomes aggressive to
 
 ### Tyrannosaurus Rex
 
-A territorial apex predator with idle, walking, roaring, and biting animations. Adults hunt animals, hostile mobs, and survival players. A T-Rex roars when beginning an engagement, then sprints after its target and can smash tagged obstacles in its path. Babies do not hunt.
+A territorial apex predator with idle, walking, roaring, and biting animations. Adults hunt animals and survival players when hungry, and hostile mobs at any time. A T-Rex roars when beginning an engagement, then sprints after its target and can smash tagged obstacles in its path. Babies do not hunt.
 
 ### Megalodon
 
-A giant aquatic predator with smooth three-dimensional swimming, an articulated tail, and a bite animation. Adults hunt aquatic creatures and survival players in the water, while babies remain non-aggressive. Its model uses a more elongated reconstruction rather than simply scaling up a modern great white shark.
+A giant aquatic predator with smooth three-dimensional swimming, an articulated tail, and a bite animation. Hungry adults hunt aquatic creatures and survival players in the water, while babies remain non-aggressive. Its model uses a more elongated reconstruction rather than simply scaling up a modern great white shark.
+
+### Pteranodon
+
+A coastal flyer with a 4.6-block wingspan, a three-segment wing that folds when it perches, and a crested, toothless skull. It nests on beaches and spends most of its time airborne, alternating a powered flap with a gliding hold, then circling and diving on prey. Hungry adults hunt animals from the air; babies do not. It is tempted by cod and salmon and breeds like the land species. Being the first flying creature, it is also the first species assembled entirely from the data-driven pipeline, with no Java of its own.
+
+## Hunger
+
+Every creature has a hunger meter. Predators only hunt when it runs low, so a fed creature ignores animals
+and players instead of attacking everything that comes near. Killing prey, being hand-fed its diet item, or
+finishing a graze all refill it.
+
+Hunger gates hunting only. Creatures still fight back when attacked and still drive off hostile mobs
+whether or not they are fed. Starvation is off by default; a datapack can enable it per species.
+
+With Jade installed, looking at a creature shows its hunger and whether it is hungry enough to hunt.
 
 ## Creature Ownership
 

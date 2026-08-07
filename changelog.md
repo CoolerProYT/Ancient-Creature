@@ -45,6 +45,98 @@ assets/<ns>/ancientcreature/animation_controllers/<name>.controller.json   when 
   hovering movement and no fall damage, with the `ancientcreature:fly` and
   `ancientcreature:circle_target` components and the `flying_passive` / `flying_predator` profiles.
   Previously it was a label with nothing behind it.
+- Added the **Pteranodon**, the first flying creature and the first species built entirely on the
+  data-driven pipeline — five resource files, no Java. It nests on beaches, hunts on the wing, eats cod
+  and salmon, and breeds like the land species.
+
+  | | |
+  | --- | --- |
+  | hitbox / eye height | 1.5 × 1.4 / 0.85 |
+  | health / attack | 26 / 5 |
+  | wingspan | 4.6 blocks |
+  | clips | `fly`, `glide`, `idle`, `walk`, `dive`, `screech`, `death` |
+
+  Two gaps in the flying category surfaced while building it, both fixed:
+
+  - `query.is_on_ground` is a new animation-controller query. Without it a flyer cannot tell perched
+    from airborne, so it would either freeze mid-air with folded wings or flap while standing.
+  - `minecraft:flying_speed` is now on the creature's attribute supplier, so species JSON can tune
+    flight speed. Previously setting it was ignored with a warning and flyers fell back to ground speed.
+
+### Fixes
+
+- **Fixed a crash loading any world after the first**, which reported `Attempted to register two reload
+  listeners for the same key: ancientcreature:species`. NeoForge fires its reload-listener and command
+  events once per world load rather than once per launch, and the registration list was appended to each
+  time, so the second world you joined registered the species listener twice. The registrations are now
+  collected once and replayed against each new registrar, and reload listeners are keyed by id so a
+  duplicate is impossible by construction.
+- **Flying creatures are no longer stuck at one altitude.** `ancientcreature:fly` delegated to vanilla's
+  `WaterAvoidingRandomFlyingGoal`, whose wander box is hard-coded to 8 blocks out and 7 up, so a flyer
+  could never pick a waypoint far enough above itself to climb. It now takes:
+
+  | field | default | meaning |
+  | --- | --- | --- |
+  | `wander_range` | 16 | horizontal spread of one hop, in blocks |
+  | `vertical_range` | 12 | vertical spread of one hop |
+  | `min_altitude` | 5 | floor of the flight band, above the terrain |
+  | `max_altitude` | 32 | ceiling of the flight band, above the terrain |
+  | `interval` | 10 | reciprocal chance per tick of picking a new waypoint |
+
+  The band is measured from the ground column under each candidate waypoint rather than from the
+  creature, so a species holds its altitude over hills instead of drifting into them. `max_altitude`
+  below `min_altitude` is rejected when the species loads. The Pteranodon soars at 8–48 blocks.
+
+### Hunger
+
+**Predators no longer attack everything that walks past.** Every creature now has a hunger meter, and
+predatory components only pick a target once it falls far enough. A fed Tyrannosaurus Rex ignores you.
+
+Hunger is a *fullness* meter, like the player's food bar: it starts full, drops over time, and a low value
+means a hungry creature. Configured per species under a new optional `hunger` block:
+
+| Field | Default | Meaning |
+| --- | --- | --- |
+| `max` | 20.0 | Full meter |
+| `decay_interval` | 1200 | Ticks to lose one point — 20 minutes from full to empty |
+| `hunt_threshold` | 10.0 | Start hunting at or below this |
+| `full_threshold` | 18.0 | Stop hunting at or above this |
+| `food_value` | 6.0 | Restored per item hand-fed |
+| `kill_value` | 8.0 | Restored per prey killed |
+| `starve_damage` | 0.0 | Damage at zero hunger; `0` disables starving, which is the default |
+| `starve_interval` | 200 | Ticks between starvation ticks |
+
+The two thresholds are separate on purpose. With one, a predator would sit exactly on the boundary after
+its first bite and flicker between hunting and idling every tick; the gap makes it commit to a hunt and
+then genuinely stop.
+
+**Only prey selection is gated. Defence never is.** Gating retaliation or the attack goals would leave a
+fed creature unable to fight back, which is worse than attacking at random.
+
+| Gated (`requires_hunger` default) | Never gated |
+| --- | --- |
+| `hunt_animals` — `true` | `defensive_retaliation` — fighting back |
+| `aquatic_predator` — `true` | `hunt_hostiles` — driving off zombies is defence, not a meal |
+| `territorial` — `false`, see below | `melee_attack`, `charge_attack`, `roar_attack` |
+
+`territorial` defaults to ungated, because guarding your space is defence. But with `require_weapon: false`
+it stops being defence and becomes hunting players on sight — which is exactly what made the Tyrannosaurus
+Rex feel random, since it charged anyone within 32 blocks forever. The `apex_predator` and `flying_predator`
+profiles now set `requires_hunger: true` there.
+
+Creatures refill by killing prey, by being hand-fed a `diet` item (which still breeds them as before), or
+by finishing a graze — `ancientcreature:graze` gained a `hunger_value`, and that is how herbivores feed
+themselves. Every `requires_hunger` flag can be set to `false` to restore the old always-hunting behaviour.
+
+Hunger is saved per creature; a creature from a world saved before this update starts full.
+
+Because a mechanic that decides whether something attacks you should not be invisible, it is exposed three
+ways:
+
+- **Jade** — looking at a creature shows `Hunger: 14/20` and, once past a threshold, a red *Hungry - will
+  hunt* or green *Fed - not hunting*. Toggle it as **Creature Hunger** in Jade's settings.
+- **`/ancientcreature hunger`** — reports the same, and can set the value to cross the threshold on demand.
+- **Animation controllers** — two new queries, `query.hunger` and `query.is_hungry`.
 
 ### Behaviour
 
@@ -76,6 +168,8 @@ Register during mod initialization; the registries freeze once species data load
 
 ```
 /ancientcreature summon <species> [<pos>] [<baby>] [<variant>]
+/ancientcreature hunger <targets>          how fed they are, and whether that makes them hunt
+/ancientcreature hunger <targets> <value>  set it, to cross the threshold without waiting
 /ancientcreature species list        every loaded species with its category and size
 /ancientcreature species get <id>    size, growth, attributes, resolved behaviour list
 /ancientcreature species validate    re-run validation and report problems

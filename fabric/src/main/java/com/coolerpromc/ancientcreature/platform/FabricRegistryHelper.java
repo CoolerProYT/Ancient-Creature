@@ -60,14 +60,16 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class FabricRegistryHelper implements IRegistryHelper {
-    private final List<ReloadListenerEntry> serverReloadListeners = new ArrayList<>();
+    private final Map<Identifier, PreparableReloadListener> serverReloadListeners = new LinkedHashMap<>();
     private final List<CommandBuilder> commands = new ArrayList<>();
     private final List<EntityAttributeEntry> entityAttributes = new ArrayList<>();
     private final List<FeatureBiomeModifierEntry> featureBiomeModifiers = new ArrayList<>();
@@ -294,16 +296,15 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
+    /** Keyed by id, so collecting the same registration twice cannot produce a duplicate listener. */
     @Override
     public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
-        this.serverReloadListeners.add(new ReloadListenerEntry(id, listener));
+        this.serverReloadListeners.put(id, listener);
     }
 
     @Override
     public void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar) {
-        for (ReloadListenerEntry entry : serverReloadListeners) {
-            entry.register(registrar);
-        }
+        this.serverReloadListeners.forEach(registrar::register);
     }
 
     @Override
@@ -318,9 +319,4 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
-    private record ReloadListenerEntry(Identifier id, PreparableReloadListener listener) {
-        private void register(ReloadListenerRegistrar registrar) {
-            registrar.register(this.id, this.listener);
-        }
-    }
 }

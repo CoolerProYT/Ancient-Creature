@@ -39,8 +39,8 @@ public final class BehaviorProfiles {
     /**
      * Peaceful grazer that charges anything which threatens it.
      *
-     * <p>This is an exact match for the goal list {@code Triceratops} used to hard-code, which is what
-     * lets the migrated species keep its current behaviour.
+     * <p>Nothing here is gated on hunger: a herbivore that fights back, guards its space and drives off
+     * zombies is defending itself, not feeding. Grazing is what keeps it fed.
      */
     public static final Identifier DEFENSIVE_HERBIVORE = register("defensive_herbivore", List.of(
         component(FloatBehavior.INSTANCE),
@@ -52,15 +52,21 @@ public final class BehaviorProfiles {
         component(new LookAtPlayerBehavior(8.0F, 0.02F)),
         component(RandomLookBehavior.INSTANCE),
         component(new DefensiveRetaliationBehavior(false)),
-        component(new TerritorialBehavior(12.0, 5, true, false)),
-        component(new HuntHostilesBehavior(5, false))
+        component(new TerritorialBehavior(12.0, 5, true, false, false)),
+        component(new HuntHostilesBehavior(5, false, false))
     ));
 
     /**
      * Apex land predator: roars before it charges, hunts players, animals and hostiles, and only does
      * any of it once grown.
      *
-     * <p>Matches the goal list {@code TyrannosaurusRex} used to hard-code.
+     * <p>The two <em>predatory</em> components are hunger-gated. Hunting animals is feeding, and so is
+     * stalking players -- this profile sets {@code require_weapon: false}, so without the gate the creature
+     * charges anyone who walks within 32 blocks forever, which is what made it feel like it attacked at
+     * random. Fed, it now ignores them.
+     *
+     * <p>Retaliation stays ungated, and so does {@code hunt_hostiles}: driving off a zombie is defence,
+     * and a predator that only did it while starving would ignore threats it should answer.
      */
     public static final Identifier APEX_PREDATOR = register("apex_predator", List.of(
         component(FloatBehavior.INSTANCE),
@@ -72,16 +78,16 @@ public final class BehaviorProfiles {
         component(new LookAtPlayerBehavior(12.0F, 0.02F)),
         component(RandomLookBehavior.INSTANCE),
         component(new DefensiveRetaliationBehavior(false)),
-        component(new TerritorialBehavior(32.0, 10, false, true)),
-        component(new HuntAnimalsBehavior(10, true)),
-        component(new HuntHostilesBehavior(10, true))
+        component(new TerritorialBehavior(32.0, 10, false, true, true)),
+        component(new HuntAnimalsBehavior(10, true, true)),
+        component(new HuntHostilesBehavior(10, true, false))
     ));
 
     /**
      * Open-water hunter.
      *
-     * <p>Matches the goal list {@code Megalodon} used to hard-code: no breeding or tempting, a swim
-     * wander, and prey selection restricted to things actually in the water.
+     * <p>No breeding or tempting, a swim wander, and prey selection restricted to things actually in the
+     * water -- and, now, to when it is hungry. A fed Megalodon lets swimmers past.
      */
     public static final Identifier AQUATIC_PREDATOR = register("aquatic_predator", List.of(
         component(FindWaterBehavior.INSTANCE),
@@ -89,7 +95,7 @@ public final class BehaviorProfiles {
         component(new SwimmingBehavior(1.0, 30)),
         component(RandomLookBehavior.INSTANCE),
         component(new DefensiveRetaliationBehavior(false)),
-        component(new AquaticPredatorBehavior(10, true, true, true, true))
+        component(new AquaticPredatorBehavior(10, true, true, true, true, true))
     ));
 
     /**
@@ -103,7 +109,7 @@ public final class BehaviorProfiles {
         component(new BreedBehavior(1.0)),
         component(new TemptBehavior(1.1, false)),
         component(new FollowParentBehavior(1.1)),
-        component(new FlyBehavior(1.0)),
+        component(FlyBehavior.wandering(1.0)),
         component(new LookAtPlayerBehavior(10.0F, 0.02F)),
         component(RandomLookBehavior.INSTANCE)
     ));
@@ -111,17 +117,18 @@ public final class BehaviorProfiles {
     /**
      * Airborne hunter: circles its target, then dives.
      *
-     * <p>Requires {@code "entity_category": "flying"}.
+     * <p>Requires {@code "entity_category": "flying"}. Prey selection is hunger-gated, so a fed flyer
+     * soars past animals and players instead of stooping on everything it passes.
      */
     public static final Identifier FLYING_PREDATOR = register("flying_predator", List.of(
         component(new CircleTargetBehavior(1.2, 8.0, 6.0, 100)),
         component(new MeleeAttackBehavior(1.3, true, true)),
-        component(new FlyBehavior(1.0)),
+        component(FlyBehavior.wandering(1.0)),
         component(new LookAtPlayerBehavior(16.0F, 0.02F)),
         component(RandomLookBehavior.INSTANCE),
         component(new DefensiveRetaliationBehavior(false)),
-        component(new TerritorialBehavior(24.0, 10, false, true)),
-        component(new HuntAnimalsBehavior(10, true))
+        component(new TerritorialBehavior(24.0, 10, false, true, true)),
+        component(new HuntAnimalsBehavior(10, true, true))
     ));
 
     public static final Codec<Identifier> PROFILE_ID_CODEC = Identifier.CODEC.validate(

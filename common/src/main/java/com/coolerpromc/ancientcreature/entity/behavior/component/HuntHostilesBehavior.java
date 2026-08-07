@@ -13,11 +13,13 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 
 /** Attacks nearby hostile mobs. */
-public record HuntHostilesBehavior(int randomInterval, boolean adultsOnly) implements CreatureBehaviorConfig {
+public record HuntHostilesBehavior(int randomInterval, boolean adultsOnly, boolean requiresHunger) implements CreatureBehaviorConfig {
     public static final MapCodec<HuntHostilesBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.CHANCE.optionalFieldOf("random_interval", 5).forGetter(HuntHostilesBehavior::randomInterval),
-        Codec.BOOL.optionalFieldOf("adults_only", false).forGetter(HuntHostilesBehavior::adultsOnly)
+        Codec.BOOL.optionalFieldOf("adults_only", false).forGetter(HuntHostilesBehavior::adultsOnly),
+        Codec.BOOL.optionalFieldOf("requires_hunger", false).forGetter(HuntHostilesBehavior::requiresHunger)
     ).apply(i, HuntHostilesBehavior::new));
+
 
     @Override
     public CreatureBehaviorType<?> type() {
@@ -32,6 +34,8 @@ public record HuntHostilesBehavior(int randomInterval, boolean adultsOnly) imple
     @Override
     public Goal createGoal(AncientCreatureEntity entity) {
         return new NearestAttackableTargetGoal<>(entity, Mob.class, this.randomInterval, true, false,
-            (target, level) -> (!this.adultsOnly || !entity.isBaby()) && target instanceof Enemy);
+            (target, level) -> (!this.adultsOnly || !entity.isBaby())
+                && (!this.requiresHunger || entity.wantsToHunt())
+                && target instanceof Enemy);
     }
 }

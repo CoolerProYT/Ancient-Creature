@@ -10,9 +10,17 @@ import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockGeometry;
 import com.coolerpromc.ancientcreature.client.species.ClientSpeciesDefinition;
 import com.coolerpromc.ancientcreature.api.AncientCreatureApi;
 import com.coolerpromc.ancientcreature.entity.Species;
+import com.coolerpromc.ancientcreature.entity.behavior.BehaviorProfiles;
+import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorComponent;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorConfig;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorType;
+import com.coolerpromc.ancientcreature.entity.behavior.component.AquaticPredatorBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.FlyBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.GrazeBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.HuntAnimalsBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.HuntHostilesBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.TerritorialBehavior;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
@@ -146,7 +154,7 @@ class SpeciesResourcesTest {
      * there, so an eye above the model sees over blocks the creature is standing behind.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"})
     void hitboxesFitTheirModel(String name) throws IOException {
         SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
@@ -233,7 +241,7 @@ class SpeciesResourcesTest {
 
     /** Every shipped species must have a complete, self-consistent set of files. */
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"})
     void everyShippedSpeciesIsComplete(String species) throws IOException {
         SpeciesDefinition server = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + species + ".json"));
@@ -410,6 +418,62 @@ class SpeciesResourcesTest {
         }
     }
 
+    /**
+     * A flying species has to switch between perched and airborne clips, and the only thing that can
+     * tell it which it is, is {@code query.is_on_ground}.
+     *
+     * <p>Controller validation only checks the state graph, not query names, so a query that does not
+     * resolve reads as NaN and silently counts as false. That would leave a Pteranodon flapping while it
+     * stands, or frozen mid-air with folded wings, with nothing logged. This drives the real state
+     * machine through both cases instead.
+     */
+    @Test
+    void theFlyingControllerSwitchesOnIsOnGround() throws IOException {
+        AnimationController controller = parse(AnimationController.CODEC,
+            RESOURCES.resolve("assets/ancientcreature/ancientcreature/animation_controllers/pteranodon.controller.json"));
+
+        assertTrue(AnimationQueryContext.isBuiltIn("is_on_ground"),
+            "is_on_ground has to be a built-in query, or the controller silently reads it as false");
+
+        // Flapping is the airborne default, so hovering in place still beats its wings. Gliding is only
+        // for a committed soar at speed, which is the opposite of what "not moving" would suggest.
+        assertEquals("fly", controller.resolveState("fly", flight(false, false, false)));
+        assertEquals("fly", controller.resolveState("fly", flight(false, true, false)));
+        assertEquals("glide", controller.resolveState("fly", flight(false, true, true)));
+        assertEquals("fly", controller.resolveState("glide", flight(false, true, false)));
+
+        // Landed and still: perch, wings folded. Landed and moving: waddle.
+        assertEquals("idle", controller.resolveState("fly", flight(true, false, false)));
+        assertEquals("walk", controller.resolveState("fly", flight(true, true, false)));
+
+        // Leaving a perch has to drop the folded-wing clip and start flapping, not glide off the ground.
+        assertEquals("fly", controller.resolveState("idle", flight(false, false, false)));
+        assertEquals("fly", controller.resolveState("walk", flight(false, true, false)));
+
+        // And landing has to come back out of flight. resolveState follows chained transitions, so this
+        // is the whole hop from airborne straight to the perched clip in one resolve.
+        assertEquals("idle", controller.resolveState("glide", flight(true, false, false)));
+    }
+
+    private static AnimationQueryContext flight(boolean onGround, boolean moving, boolean running) {
+        return new AnimationQueryContext() {
+            @Override
+            public double number(String name) {
+                return switch (name) {
+                    case "is_on_ground" -> onGround ? 1.0 : 0.0;
+                    case "is_moving" -> moving ? 1.0 : 0.0;
+                    case "is_running" -> running ? 1.0 : 0.0;
+                    default -> 0.0;
+                };
+            }
+
+            @Override
+            public String string(String name) {
+                return "action".equals(name) ? "none" : null;
+            }
+        };
+    }
+
     @Test
     void controllerValidationCatchesUnknownStates() {
         assertFalse(parseResult(AnimationController.CODEC,
@@ -493,6 +557,181 @@ class SpeciesResourcesTest {
         assertTrue(hunter.resolvedBehaviors().stream()
                 .anyMatch(c -> c.config().type() == CreatureBehaviorRegistry.FLY),
             "flying_predator must include the fly component");
+    }
+
+    /**
+     * Flight altitude has to be tunable from JSON.
+     *
+     * <p>Free flight used to delegate to vanilla's {@code WaterAvoidingRandomFlyingGoal}, whose wander box
+     * is hard-coded to 8 blocks out and 7 up, so every flyer sat at whatever height it spawned at with no
+     * way to raise it. These are the knobs that replaced it, and the band has to survive a round trip
+     * through the codec or a datapack cannot move a species off the default.
+     */
+    @Test
+    void flightAltitudeIsConfigurable() {
+        SpeciesDefinition soarer = parseResult(SpeciesDefinition.CODEC,
+            "{\"entity_category\":\"flying\",\"physical\":{\"width\":1.0,\"height\":1.0},"
+                + "\"behavior\":{\"profile\":\"ancientcreature:flying_passive\",\"components\":["
+                + "{\"type\":\"ancientcreature:fly\",\"wander_range\":24,\"vertical_range\":16,"
+                + "\"min_altitude\":8,\"max_altitude\":48}]}}").getOrThrow();
+
+        FlyBehavior fly = soarer.resolvedBehaviors().stream()
+            .map(c -> c.config())
+            .filter(FlyBehavior.class::isInstance)
+            .map(FlyBehavior.class::cast)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("the fly component went missing"));
+
+        assertEquals(24, fly.wanderRange());
+        assertEquals(16, fly.verticalRange());
+        assertEquals(8, fly.minAltitude());
+        assertEquals(48, fly.maxAltitude());
+
+        // The declared component has to replace the profile's, not sit alongside it.
+        assertEquals(1, soarer.resolvedBehaviors().stream()
+            .filter(c -> c.config().type() == CreatureBehaviorRegistry.FLY).count());
+
+        // An inverted band has nowhere legal to fly and must be rejected at load, not at spawn.
+        assertFalse(parseResult(SpeciesDefinition.CODEC,
+            "{\"entity_category\":\"flying\",\"physical\":{\"width\":1.0,\"height\":1.0},"
+                + "\"behavior\":{\"components\":[{\"type\":\"ancientcreature:fly\","
+                + "\"min_altitude\":40,\"max_altitude\":10}]}}").result().isPresent(),
+            "max_altitude below min_altitude must be rejected");
+    }
+
+    /** The shipped Pteranodon has to actually use the wide band, or it soars at the default height. */
+    @Test
+    void thePteranodonSoarsWellAboveTheTerrain() throws IOException {
+        SpeciesDefinition pteranodon = parse(SpeciesDefinition.CODEC,
+            RESOURCES.resolve("data/ancientcreature/ancientcreature/species/pteranodon.json"));
+
+        FlyBehavior fly = pteranodon.resolvedBehaviors().stream()
+            .map(c -> c.config())
+            .filter(FlyBehavior.class::isInstance)
+            .map(FlyBehavior.class::cast)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("pteranodon has no fly component"));
+
+        assertTrue(fly.maxAltitude() >= 40,
+            () -> "pteranodon caps out at " + fly.maxAltitude() + " blocks; it should soar higher than that");
+        assertTrue(fly.minAltitude() >= 6,
+            () -> "pteranodon can drop to " + fly.minAltitude() + " blocks, which puts it in the trees");
+    }
+
+    // ------------------------------------------------------------------ hunger
+
+    /** Every species gets a hunger meter, whether or not its JSON mentions one. */
+    @Test
+    void hungerDefaultsAreAppliedToEverySpecies() throws IOException {
+        for (String name : new String[]{"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"}) {
+            SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
+                RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
+            SpeciesHungerProperties hunger = definition.hunger();
+
+            assertTrue(hunger.max() > 0.0F, name + " has no hunger capacity");
+            assertTrue(hunger.huntThreshold() <= hunger.max(), name + " can never stop being hungry");
+            assertTrue(hunger.fullThreshold() >= hunger.huntThreshold(),
+                name + " would start and stop hunting on the same tick");
+        }
+    }
+
+    @Test
+    void hungerBlockIsConfigurableAndValidated() {
+        SpeciesDefinition tuned = parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},\"behavior\":{\"profile\":\"ancientcreature:passive\"},"
+                + "\"hunger\":{\"max\":40.0,\"decay_interval\":300,\"hunt_threshold\":15.0,"
+                + "\"full_threshold\":35.0,\"food_value\":9.0,\"kill_value\":12.0,"
+                + "\"starve_damage\":2.0,\"starve_interval\":100}}").getOrThrow();
+
+        SpeciesHungerProperties hunger = tuned.hunger();
+        assertEquals(40.0F, hunger.max());
+        assertEquals(300, hunger.decayInterval());
+        assertEquals(15.0F, hunger.huntThreshold());
+        assertEquals(35.0F, hunger.fullThreshold());
+        assertEquals(9.0F, hunger.foodValue());
+        assertEquals(12.0F, hunger.killValue());
+        assertTrue(hunger.starves(), "a positive starve_damage means the species starves");
+
+        // Starvation is opt-in: a species that says nothing about it must not take damage.
+        SpeciesDefinition plain = parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},\"behavior\":{\"profile\":\"ancientcreature:passive\"}}")
+            .getOrThrow();
+        assertFalse(plain.hunger().starves(), "starvation must default to off");
+
+        // A threshold above the meter's own capacity would leave the creature permanently hungry.
+        assertFalse(parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},\"hunger\":{\"max\":10.0,\"hunt_threshold\":25.0}}")
+            .result().isPresent(), "hunt_threshold above max must be rejected");
+
+        // Inverted thresholds would make a predator flicker in and out of hunting every tick.
+        assertFalse(parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},"
+                + "\"hunger\":{\"hunt_threshold\":18.0,\"full_threshold\":4.0}}")
+            .result().isPresent(), "full_threshold below hunt_threshold must be rejected");
+    }
+
+    /**
+     * The point of the whole feature: feeding decides whether a predator picks prey, and nothing else.
+     *
+     * <p>The split matters more than the gate. Gating retaliation or the attack goals themselves would
+     * leave a fed creature unable to defend itself, which is a worse bug than attacking at random.
+     */
+    @Test
+    void onlyPredatoryTargetingIsGatedOnHunger() {
+        assertTrue(isHungerGated(CreatureBehaviorRegistry.HUNT_ANIMALS, BehaviorProfiles.APEX_PREDATOR),
+            "hunting animals is feeding, so it must wait for hunger");
+        assertTrue(isHungerGated(CreatureBehaviorRegistry.AQUATIC_PREDATOR, BehaviorProfiles.AQUATIC_PREDATOR),
+            "an aquatic predator's prey selection must wait for hunger");
+        assertTrue(isHungerGated(CreatureBehaviorRegistry.TERRITORIAL, BehaviorProfiles.APEX_PREDATOR),
+            "an apex predator stalks players with require_weapon off, which is feeding, not defence");
+
+        // Defence is never gated.
+        assertFalse(isHungerGated(CreatureBehaviorRegistry.HUNT_HOSTILES, BehaviorProfiles.APEX_PREDATOR),
+            "driving off hostiles is defence and must work when fed");
+        assertFalse(isHungerGated(CreatureBehaviorRegistry.TERRITORIAL, BehaviorProfiles.DEFENSIVE_HERBIVORE),
+            "a herbivore guarding its space is defending itself, not eating");
+        assertFalse(isHungerGated(CreatureBehaviorRegistry.HUNT_HOSTILES, BehaviorProfiles.DEFENSIVE_HERBIVORE),
+            "a herbivore does not eat zombies");
+    }
+
+    /** A datapack has to be able to turn the gate off and get the old always-hunting behaviour back. */
+    @Test
+    void theHungerGateCanBeTurnedOff() {
+        SpeciesDefinition always = parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},\"behavior\":{\"components\":["
+                + "{\"type\":\"ancientcreature:hunt_animals\",\"requires_hunger\":false}]}}").getOrThrow();
+
+        CreatureBehaviorConfig config = always.resolvedBehaviors().getFirst().config();
+        assertFalse(((HuntAnimalsBehavior) config).requiresHunger(),
+            "requires_hunger:false must disable the gate");
+    }
+
+    /** Grazing is how a herbivore refills, so the profile that grazes has to award hunger. */
+    @Test
+    void grazingFeedsTheCreature() {
+        SpeciesDefinition grazer = parseResult(SpeciesDefinition.CODEC,
+            "{\"physical\":{\"width\":1.0,\"height\":1.0},\"behavior\":{\"components\":["
+                + "{\"type\":\"ancientcreature:graze\"}]}}").getOrThrow();
+
+        GrazeBehavior graze = (GrazeBehavior) grazer.resolvedBehaviors().getFirst().config();
+        assertTrue(graze.hungerValue() > 0.0F,
+            "a graze that restores nothing leaves a herbivore permanently hungry");
+    }
+
+    private static boolean isHungerGated(CreatureBehaviorType<?> type, Identifier profile) {
+        CreatureBehaviorConfig config = BehaviorProfiles.get(profile).orElseThrow().stream()
+            .map(CreatureBehaviorComponent::config)
+            .filter(c -> c.type() == type)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError(profile + " has no " + type + " component"));
+
+        return switch (config) {
+            case HuntAnimalsBehavior hunt -> hunt.requiresHunger();
+            case HuntHostilesBehavior hunt -> hunt.requiresHunger();
+            case AquaticPredatorBehavior hunt -> hunt.requiresHunger();
+            case TerritorialBehavior territorial -> territorial.requiresHunger();
+            default -> throw new AssertionError(type + " has no hunger gate to report");
+        };
     }
 
     @Test

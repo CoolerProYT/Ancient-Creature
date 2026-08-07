@@ -78,8 +78,6 @@ public class AncientCreature {
     }
 
     public static void initEntityAttribute(){
-        // One broad attribute set for every creature type. Species values are applied on top of it per
-        // entity; see AncientCreatureEntity.createAttributes().
         AttributeSupplier attributes = AncientCreatureEntity.createAttributes().build();
         ModEntities.allCreatureTypes().forEach(type -> registerEntityAttribute(type.get(), attributes));
     }
@@ -102,11 +100,31 @@ public class AncientCreature {
         registerClientboundPayload(ClientboundSpeciesSyncPacket.TYPE, ClientboundSpeciesSyncPacket.STREAM_CODEC);
     }
 
+    /**
+     * Collected once, then replayed against every new registrar.
+     *
+     * <p>NeoForge fires its reload-listener and command events once per <em>world load</em>, not once per
+     * launch, so these run again on the second world you join. What is collected here describes a fixed
+     * set of registrations, so adding to it again would hand NeoForge two listeners under
+     * {@code ancientcreature:species}, which it rejects outright — the world would fail to load the
+     * second time with nothing wrong in the data.
+     */
+    private static boolean reloadListenersCollected;
+    private static boolean commandsCollected;
+
     public static void initReloadListener(){
+        if (reloadListenersCollected) {
+            return;
+        }
+        reloadListenersCollected = true;
         Services.REGISTRY.registerServerReloadListener(SpeciesReloadListener.ID, new SpeciesReloadListener(SpeciesManager.SERVER, SpeciesSyncHandler::onSpeciesReloaded));
     }
 
     public static void initCommand(){
+        if (commandsCollected) {
+            return;
+        }
+        commandsCollected = true;
         Services.REGISTRY.registerCommand(AncientCreatureCommand::register);
     }
 
