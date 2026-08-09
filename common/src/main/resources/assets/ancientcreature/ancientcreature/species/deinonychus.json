@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "geometry": "ancientcreature:deinonychus",
+  "texture": "ancientcreature:textures/entity/deinonychus.png",
+  "animations": "ancientcreature:deinonychus",
+  "controller": "ancientcreature:deinonychus",
+  "shadow_radius": 0.55,
+  "render_scale": 0.5,
+  "gui": {
+    "scale": 11.0,
+    "translation": [0.0, -0.2, 0.0],
+    "rotation": [0.0, 215.0, 0.0]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 100,
+      "texture": "ancientcreature:textures/entity/deinonychus.png"
+    }
+  ]
+}

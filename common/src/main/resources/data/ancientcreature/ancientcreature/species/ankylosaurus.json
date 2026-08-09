@@ -1,0 +1,42 @@
+{
+  "format_version": 1,
+  "entity_category": "land",
+  "physical": {
+    "width": 1.9,
+    "height": 1.45,
+    "eye_height": 0.8
+  },
+  "attributes": {
+    "max_health": 64.0,
+    "movement_speed": 0.18,
+    "attack_damage": 12.0,
+    "attack_knockback": 2.25,
+    "follow_range": 22.0,
+    "knockback_resistance": 0.9,
+    "armor": 12.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.45,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:armored_herbivore"
+  },
+  "diet": {
+    "items": ["minecraft:wheat", "minecraft:hay_block", "minecraft:fern"]
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_overworld",
+    "incubation_time": 1400
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.ankylosaurus.ambient",
+    "hurt": "ancientcreature:entity.ankylosaurus.hurt",
+    "death": "ancientcreature:entity.ankylosaurus.death",
+    "step": "ancientcreature:entity.ankylosaurus.step",
+    "attack": "ancientcreature:entity.ankylosaurus.attack",
+    "alert": "ancientcreature:entity.ankylosaurus.alert",
+    "ambient_interval": 280
+  }
+}

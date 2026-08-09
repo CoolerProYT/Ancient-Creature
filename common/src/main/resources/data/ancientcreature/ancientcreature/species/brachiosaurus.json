@@ -1,0 +1,49 @@
+{
+  "format_version": 1,
+  "entity_category": "land",
+  "physical": {
+    "width": 3.2,
+    "height": 6.0,
+    "eye_height": 5.45
+  },
+  "attributes": {
+    "max_health": 180.0,
+    "movement_speed": 0.14,
+    "attack_damage": 20.0,
+    "attack_knockback": 3.0,
+    "follow_range": 30.0,
+    "knockback_resistance": 0.95,
+    "armor": 8.0
+  },
+  "growth": {
+    "adult_age": 48000,
+    "baby_scale": 0.28,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:sauropod_browser"
+  },
+  "diet": {
+    "items": ["minecraft:wheat", "minecraft:hay_block", "minecraft:apple", "minecraft:fern"]
+  },
+  "hunger": {
+    "max": 160.0,
+    "decay_interval": 260,
+    "hunt_threshold": 55.0,
+    "full_threshold": 135.0,
+    "food_value": 10.0
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_overworld",
+    "incubation_time": 2200
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.brachiosaurus.ambient",
+    "hurt": "ancientcreature:entity.brachiosaurus.hurt",
+    "death": "ancientcreature:entity.brachiosaurus.death",
+    "step": "ancientcreature:entity.brachiosaurus.step",
+    "attack": "ancientcreature:entity.brachiosaurus.attack",
+    "alert": "ancientcreature:entity.brachiosaurus.call",
+    "ambient_interval": 360
+  }
+}

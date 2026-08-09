@@ -82,6 +82,9 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.tyrannosaurus_rex", "Tyrannosaurus Rex");
         add("species.ancientcreature.megalodon", "Megalodon");
         add("species.ancientcreature.pteranodon", "Pteranodon");
+        add("species.ancientcreature.ankylosaurus", "Ankylosaurus");
+        add("species.ancientcreature.deinonychus", "Deinonychus");
+        add("species.ancientcreature.brachiosaurus", "Brachiosaurus");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");
@@ -113,6 +116,30 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.megalodon.death", "Megalodon dies");
         add("subtitles.ancientcreature.entity.megalodon.bite", "Megalodon bites");
         add("subtitles.ancientcreature.entity.megalodon.step", "Megalodon thrashes");
+        add("subtitles.ancientcreature.entity.pteranodon.ambient", "Pteranodon croaks");
+        add("subtitles.ancientcreature.entity.pteranodon.alert", "Pteranodon screeches");
+        add("subtitles.ancientcreature.entity.pteranodon.hurt", "Pteranodon hurts");
+        add("subtitles.ancientcreature.entity.pteranodon.death", "Pteranodon dies");
+        add("subtitles.ancientcreature.entity.pteranodon.attack", "Pteranodon snaps its beak");
+        add("subtitles.ancientcreature.entity.pteranodon.step", "Pteranodon steps");
+        add("subtitles.ancientcreature.entity.ankylosaurus.ambient", "Ankylosaurus rumbles");
+        add("subtitles.ancientcreature.entity.ankylosaurus.alert", "Ankylosaurus bellows");
+        add("subtitles.ancientcreature.entity.ankylosaurus.hurt", "Ankylosaurus hurts");
+        add("subtitles.ancientcreature.entity.ankylosaurus.death", "Ankylosaurus dies");
+        add("subtitles.ancientcreature.entity.ankylosaurus.attack", "Ankylosaurus swings its tail club");
+        add("subtitles.ancientcreature.entity.ankylosaurus.step", "Ankylosaurus stomps");
+        add("subtitles.ancientcreature.entity.deinonychus.ambient", "Deinonychus chirps");
+        add("subtitles.ancientcreature.entity.deinonychus.call", "Deinonychus calls to its pack");
+        add("subtitles.ancientcreature.entity.deinonychus.hurt", "Deinonychus hurts");
+        add("subtitles.ancientcreature.entity.deinonychus.death", "Deinonychus dies");
+        add("subtitles.ancientcreature.entity.deinonychus.attack", "Deinonychus snaps");
+        add("subtitles.ancientcreature.entity.deinonychus.step", "Deinonychus steps");
+        add("subtitles.ancientcreature.entity.brachiosaurus.ambient", "Brachiosaurus rumbles");
+        add("subtitles.ancientcreature.entity.brachiosaurus.call", "Brachiosaurus calls across the canopy");
+        add("subtitles.ancientcreature.entity.brachiosaurus.hurt", "Brachiosaurus hurts");
+        add("subtitles.ancientcreature.entity.brachiosaurus.death", "Brachiosaurus dies");
+        add("subtitles.ancientcreature.entity.brachiosaurus.attack", "Brachiosaurus sweeps its tail");
+        add("subtitles.ancientcreature.entity.brachiosaurus.step", "Brachiosaurus stomps");
 
         add("advancements.ancientcreature.progression.root.title", "Ancient Creature");
         add("advancements.ancientcreature.progression.root.description", "Unearth the past and bring ancient creatures back to life");

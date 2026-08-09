@@ -49,6 +49,8 @@ public final class CreatureBehaviorRegistry {
         register("follow_parent", FollowParentBehavior.CODEC, 5);
     public static final CreatureBehaviorType<GrazeBehavior> GRAZE =
         register("graze", GrazeBehavior.CODEC, 5);
+    public static final CreatureBehaviorType<BrowseLeavesBehavior> BROWSE_LEAVES =
+        register("browse_leaves", BrowseLeavesBehavior.CODEC, 5);
     public static final CreatureBehaviorType<HerdingBehavior> HERDING =
         register("herding", HerdingBehavior.CODEC, 6);
     public static final CreatureBehaviorType<SwimmingBehavior> SWIMMING =

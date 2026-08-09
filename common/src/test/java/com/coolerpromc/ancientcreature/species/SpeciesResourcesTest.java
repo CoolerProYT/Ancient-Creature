@@ -16,6 +16,7 @@ import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorConfig;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorType;
 import com.coolerpromc.ancientcreature.entity.behavior.component.AquaticPredatorBehavior;
+import com.coolerpromc.ancientcreature.entity.behavior.component.BrowseLeavesBehavior;
 import com.coolerpromc.ancientcreature.entity.behavior.component.FlyBehavior;
 import com.coolerpromc.ancientcreature.entity.behavior.component.GrazeBehavior;
 import com.coolerpromc.ancientcreature.entity.behavior.component.HuntAnimalsBehavior;
@@ -154,7 +155,7 @@ class SpeciesResourcesTest {
      * there, so an eye above the model sees over blocks the creature is standing behind.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"})
     void hitboxesFitTheirModel(String name) throws IOException {
         SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
@@ -241,7 +242,7 @@ class SpeciesResourcesTest {
 
     /** Every shipped species must have a complete, self-consistent set of files. */
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"})
     void everyShippedSpeciesIsComplete(String species) throws IOException {
         SpeciesDefinition server = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + species + ".json"));
@@ -380,6 +381,65 @@ class SpeciesResourcesTest {
         assertEquals(3.2F, animations.get("animation.triceratops.graze").length());
         assertEquals(2.4F, animations.get("animation.triceratops.bellow").length());
         assertFalse(animations.get("animation.triceratops.bellow").loop(), "bellow is a one-shot");
+    }
+
+    @Test
+    void ankylosaurusHasACompleteTailClubAnimationSet() throws IOException {
+        Map<String, BedrockAnimation> animations = parse(BedrockAnimation.FILE_CODEC,
+            RESOURCES.resolve("assets/ancientcreature/ancientcreature/animations/ankylosaurus.animation.json"));
+
+        assertEquals(6, animations.size());
+        for (String name : List.of("idle", "walk", "graze", "tail_swing", "hurt", "death")) {
+            BedrockAnimation animation = animations.get("animation.ankylosaurus." + name);
+            assertNotNull(animation, name + " is missing");
+            assertTrue(animation.effectiveLength() > 0.0F, name + " has no length");
+        }
+        assertTrue(animations.get("animation.ankylosaurus.tail_swing").bones().containsKey("club"),
+            "the attack clip must animate the tail club itself");
+    }
+
+    @Test
+    void deinonychusHasPackBehaviorAndCompleteAnimations() throws IOException {
+        SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
+            RESOURCES.resolve("data/ancientcreature/ancientcreature/species/deinonychus.json"));
+        var types = definition.resolvedBehaviors().stream()
+            .map(component -> component.config().type()).toList();
+
+        assertTrue(types.contains(CreatureBehaviorRegistry.HERDING));
+        assertTrue(types.contains(CreatureBehaviorRegistry.ROAR_ATTACK));
+        assertTrue(types.contains(CreatureBehaviorRegistry.HUNT_ANIMALS));
+        assertFalse(types.contains(CreatureBehaviorRegistry.CHARGE_ATTACK),
+            "a lightweight pack hunter should not inherit the block-breaking charge goal");
+
+        Map<String, BedrockAnimation> animations = parse(BedrockAnimation.FILE_CODEC,
+            RESOURCES.resolve("assets/ancientcreature/ancientcreature/animations/deinonychus.animation.json"));
+        assertEquals(7, animations.size());
+        for (String name : List.of("idle", "walk", "run", "bite", "call", "hurt", "death")) {
+            assertNotNull(animations.get("animation.deinonychus." + name), name + " is missing");
+        }
+    }
+
+    @Test
+    void brachiosaurusBrowsesCanopiesAndHasCompleteAnimations() throws IOException {
+        SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
+            RESOURCES.resolve("data/ancientcreature/ancientcreature/species/brachiosaurus.json"));
+        BrowseLeavesBehavior browse = definition.resolvedBehaviors().stream()
+            .map(component -> component.config())
+            .filter(BrowseLeavesBehavior.class::isInstance)
+            .map(BrowseLeavesBehavior.class::cast)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("brachiosaurus has no canopy-browsing behavior"));
+
+        assertTrue(browse.minHeight() >= 3, "a sauropod should not browse at grass height");
+        assertTrue(browse.maxHeight() >= 7, "a sauropod should reach into the canopy");
+        assertTrue(browse.hungerValue() > 0.0F, "browsing must feed the creature");
+
+        Map<String, BedrockAnimation> animations = parse(BedrockAnimation.FILE_CODEC,
+            RESOURCES.resolve("assets/ancientcreature/ancientcreature/animations/brachiosaurus.animation.json"));
+        assertEquals(7, animations.size());
+        for (String name : List.of("idle", "walk", "browse", "tail_sweep", "call", "hurt", "death")) {
+            assertNotNull(animations.get("animation.brachiosaurus." + name), name + " is missing");
+        }
     }
 
     @Test
@@ -623,7 +683,7 @@ class SpeciesResourcesTest {
     /** Every species gets a hunger meter, whether or not its JSON mentions one. */
     @Test
     void hungerDefaultsAreAppliedToEverySpecies() throws IOException {
-        for (String name : new String[]{"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon"}) {
+        for (String name : new String[]{"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"}) {
             SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
                 RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
             SpeciesHungerProperties hunger = definition.hunger();

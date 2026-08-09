@@ -87,7 +87,7 @@ class AnimationPoseTest {
 
     @Test
     void everyShippedClipResolvesAllOfItsBones() throws IOException {
-        for (String species : new String[]{"tyrannosaurus_rex", "triceratops", "megalodon", "pteranodon"}) {
+        for (String species : new String[]{"tyrannosaurus_rex", "triceratops", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"}) {
             Map<String, BedrockAnimation> animations = loadAnimations(species);
             for (Map.Entry<String, BedrockAnimation> entry : animations.entrySet()) {
                 ModelPart root = BedrockModelBaker.bake(loadGeometry(species));

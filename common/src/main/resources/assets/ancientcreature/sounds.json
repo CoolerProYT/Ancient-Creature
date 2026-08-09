@@ -129,5 +129,107 @@
   "entity.megalodon.step": {
     "subtitle": "subtitles.ancientcreature.entity.megalodon.step",
     "sounds": ["ancientcreature:entity/megalodon/step"]
+  },
+  "entity.pteranodon.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.ambient",
+    "sounds": [
+      { "name": "ancientcreature:entity/pteranodon/ambient", "weight": 4 },
+      { "name": "ancientcreature:entity/pteranodon/alert", "weight": 1 }
+    ]
+  },
+  "entity.pteranodon.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.alert",
+    "sounds": ["ancientcreature:entity/pteranodon/alert"]
+  },
+  "entity.pteranodon.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.hurt",
+    "sounds": ["ancientcreature:entity/pteranodon/hurt"]
+  },
+  "entity.pteranodon.death": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.death",
+    "sounds": ["ancientcreature:entity/pteranodon/death"]
+  },
+  "entity.pteranodon.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.attack",
+    "sounds": ["ancientcreature:entity/pteranodon/attack"]
+  },
+  "entity.pteranodon.step": {
+    "subtitle": "subtitles.ancientcreature.entity.pteranodon.step",
+    "sounds": ["ancientcreature:entity/pteranodon/step"]
+  },
+  "entity.ankylosaurus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.ambient",
+    "sounds": ["ancientcreature:entity/ankylosaurus/ambient"]
+  },
+  "entity.ankylosaurus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.alert",
+    "sounds": ["ancientcreature:entity/ankylosaurus/alert"]
+  },
+  "entity.ankylosaurus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.hurt",
+    "sounds": ["ancientcreature:entity/ankylosaurus/hurt"]
+  },
+  "entity.ankylosaurus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.death",
+    "sounds": ["ancientcreature:entity/ankylosaurus/death"]
+  },
+  "entity.ankylosaurus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.attack",
+    "sounds": ["ancientcreature:entity/ankylosaurus/attack"]
+  },
+  "entity.ankylosaurus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.ankylosaurus.step",
+    "sounds": ["ancientcreature:entity/ankylosaurus/step"]
+  },
+  "entity.deinonychus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.ambient",
+    "sounds": ["ancientcreature:entity/deinonychus/ambient"]
+  },
+  "entity.deinonychus.call": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.call",
+    "sounds": ["ancientcreature:entity/deinonychus/call"]
+  },
+  "entity.deinonychus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.hurt",
+    "sounds": ["ancientcreature:entity/deinonychus/hurt"]
+  },
+  "entity.deinonychus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.death",
+    "sounds": ["ancientcreature:entity/deinonychus/death"]
+  },
+  "entity.deinonychus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.attack",
+    "sounds": ["ancientcreature:entity/deinonychus/attack"]
+  },
+  "entity.deinonychus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.deinonychus.step",
+    "sounds": ["ancientcreature:entity/deinonychus/step"]
+  },
+  "entity.brachiosaurus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.ambient",
+    "sounds": [
+      { "name": "ancientcreature:entity/brachiosaurus/ambient", "weight": 4 },
+      { "name": "ancientcreature:entity/brachiosaurus/call", "weight": 1 }
+    ]
+  },
+  "entity.brachiosaurus.call": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.call",
+    "sounds": ["ancientcreature:entity/brachiosaurus/call"]
+  },
+  "entity.brachiosaurus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.hurt",
+    "sounds": ["ancientcreature:entity/brachiosaurus/hurt"]
+  },
+  "entity.brachiosaurus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.death",
+    "sounds": ["ancientcreature:entity/brachiosaurus/death"]
+  },
+  "entity.brachiosaurus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.attack",
+    "sounds": ["ancientcreature:entity/brachiosaurus/attack"]
+  },
+  "entity.brachiosaurus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.brachiosaurus.step",
+    "sounds": ["ancientcreature:entity/brachiosaurus/step"]
   }
 }

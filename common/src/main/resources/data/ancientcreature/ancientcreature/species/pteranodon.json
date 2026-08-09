@@ -43,5 +43,14 @@
   "spawn": {
     "biomes": "#minecraft:is_beach",
     "incubation_time": 1200
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.pteranodon.ambient",
+    "hurt": "ancientcreature:entity.pteranodon.hurt",
+    "death": "ancientcreature:entity.pteranodon.death",
+    "step": "ancientcreature:entity.pteranodon.step",
+    "attack": "ancientcreature:entity.pteranodon.attack",
+    "alert": "ancientcreature:entity.pteranodon.alert",
+    "ambient_interval": 220
   }
 }

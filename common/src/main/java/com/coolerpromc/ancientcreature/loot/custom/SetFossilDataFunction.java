@@ -26,7 +26,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class SetFossilDataFunction extends LootItemConditionalFunction {
@@ -38,7 +38,7 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
 
     public SetFossilDataFunction(List<LootItemCondition> lootItemConditions, List<Holder<FossilPart>> fossilParts) {
         super(lootItemConditions);
-        this.validParts = fossilParts;
+        this.validParts = fossilParts.stream().sorted(Comparator.comparing(h -> h.unwrapKey().orElse(FossilPart.key("empty")).identifier())).toList();
     }
 
     @Override

@@ -30,6 +30,9 @@ public record Species(Identifier id) implements TooltipProvider, Comparable<Spec
     public static final Species TYRANNOSAURUS_REX = of("tyrannosaurus_rex");
     public static final Species MEGALODON = of("megalodon");
     public static final Species PTERANODON = of("pteranodon");
+    public static final Species ANKYLOSAURUS = of("ankylosaurus");
+    public static final Species DEINONYCHUS = of("deinonychus");
+    public static final Species BRACHIOSAURUS = of("brachiosaurus");
 
     public static Species of(String path) {
         return new Species(Constants.id(path));

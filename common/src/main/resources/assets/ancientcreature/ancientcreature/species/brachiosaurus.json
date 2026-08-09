@@ -1,0 +1,21 @@
+{
+  "format_version": 1,
+  "geometry": "ancientcreature:brachiosaurus",
+  "texture": "ancientcreature:textures/entity/brachiosaurus.png",
+  "animations": "ancientcreature:brachiosaurus",
+  "controller": "ancientcreature:brachiosaurus",
+  "shadow_radius": 1.6,
+  "render_scale": 1.0,
+  "gui": {
+    "scale": 4.2,
+    "translation": [0.0, -0.32, 0.0],
+    "rotation": [0.0, 215.0, 0.0]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 100,
+      "texture": "ancientcreature:textures/entity/brachiosaurus.png"
+    }
+  ]
+}

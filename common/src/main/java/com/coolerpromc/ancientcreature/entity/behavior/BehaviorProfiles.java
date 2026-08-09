@@ -57,6 +57,60 @@ public final class BehaviorProfiles {
     ));
 
     /**
+     * Slow armored grazer that stands its ground and answers threats with a close-range strike.
+     *
+     * <p>This deliberately uses the regular melee goal instead of {@link ChargeAttackBehavior}: plated
+     * animals such as Ankylosaurus should pivot and swing their weapon rather than sprint head-first.
+     */
+    public static final Identifier ARMORED_HERBIVORE = register("armored_herbivore", List.of(
+        component(FloatBehavior.INSTANCE),
+        component(new MeleeAttackBehavior(1.05, true, true)),
+        component(new BreedBehavior(0.9)),
+        component(new TemptBehavior(1.0, false)),
+        component(new FollowParentBehavior(1.0)),
+        component(new GrazeBehavior(90, 360, 5.0F)),
+        component(new HerdingBehavior(0.85, 22.0, 11.0, 5.0)),
+        component(new WanderBehavior(0.72, true, 150)),
+        component(new LookAtPlayerBehavior(9.0F, 0.02F)),
+        component(RandomLookBehavior.INSTANCE),
+        component(new DefensiveRetaliationBehavior(true)),
+        component(new TerritorialBehavior(9.0, 5, true, false, false)),
+        component(new HuntHostilesBehavior(5, false, false))
+    ));
+
+    /** Towering herd herbivore that feeds from tree canopies and answers attacks with its tail. */
+    public static final Identifier SAUROPOD_BROWSER = register("sauropod_browser", List.of(
+        component(FloatBehavior.INSTANCE),
+        component(new MeleeAttackBehavior(0.82, true, true)),
+        component(new BreedBehavior(0.72)),
+        component(new TemptBehavior(0.8, false)),
+        component(new FollowParentBehavior(0.82)),
+        component(new BrowseLeavesBehavior(110, 260, 8, 3, 8, 0.72, 3.0, 9.0F)),
+        component(new HerdingBehavior(0.7, 34.0, 19.0, 7.0)),
+        component(new WanderBehavior(0.58, true, 180)),
+        component(new LookAtPlayerBehavior(14.0F, 0.015F)),
+        component(RandomLookBehavior.INSTANCE),
+        component(new DefensiveRetaliationBehavior(true))
+    ));
+
+    /** Fast social predator that stays near its own kind and calls before committing to a chase. */
+    public static final Identifier PACK_PREDATOR = register("pack_predator", List.of(
+        component(FloatBehavior.INSTANCE),
+        component(new RoarAttackBehavior(1.4, true, 24, 200, false, 1.0, true)),
+        component(new BreedBehavior(0.95)),
+        component(new TemptBehavior(1.05, false)),
+        component(new FollowParentBehavior(1.15)),
+        component(new HerdingBehavior(1.1, 28.0, 16.0, 5.0)),
+        component(new WanderBehavior(1.0, true, 100)),
+        component(new LookAtPlayerBehavior(12.0F, 0.025F)),
+        component(RandomLookBehavior.INSTANCE),
+        component(new DefensiveRetaliationBehavior(true)),
+        component(new TerritorialBehavior(18.0, 10, false, true, true)),
+        component(new HuntAnimalsBehavior(5, true, true)),
+        component(new HuntHostilesBehavior(10, true, false))
+    ));
+
+    /**
      * Apex land predator: roars before it charges, hunts players, animals and hostiles, and only does
      * any of it once grown.
      *

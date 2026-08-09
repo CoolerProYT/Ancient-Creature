@@ -39,6 +39,22 @@ A giant aquatic predator with smooth three-dimensional swimming, an articulated 
 
 A coastal flyer with a 4.6-block wingspan, a three-segment wing that folds when it perches, and a crested, toothless skull. It nests on beaches and spends most of its time airborne, alternating a powered flap with a gliding hold, then circling and diving on prey. Hungry adults hunt animals from the air; babies do not. It is tempted by cod and salmon and breeds like the land species. Being the first flying creature, it is also the first species assembled entirely from the data-driven pipeline, with no Java of its own.
 
+### Ankylosaurus
+
+A slow, heavily armored herd herbivore with a broad low body, layered osteoderms, and an articulated tail club. It wanders and grazes peacefully, groups with its own species, and alerts nearby herd members when attacked. Adults stand their ground and answer threats with a sweeping club strike instead of charging. Its 256×256 texture, standard box-UV Bedrock geometry, six animations, and generated sound set are all included in the editable Blockbench project.
+
+### Deinonychus
+
+A fast feathered pack predator with a stiff banded tail, wing-like forearm feathers, and raised sickle claws. Adults form loose groups and hunt animals or players only while hungry. A short pack call announces an engagement before the group sprints after prey; babies remain non-aggressive. Its direct-export Blockbench project contains a 256×256 texture and seven animations, including separate walk, sprint, bite, and call clips.
+
+### Brachiosaurus
+
+A towering social sauropod with high shoulders, a segmented upright neck, pillar-like legs, and a long
+tapering tail. It moves in loose herds and uses the new canopy-browsing behavior to seek reachable leaf
+blocks, feed beneath them without destroying the tree, and animate its neck and jaw while eating. When
+attacked it stands its ground and delivers a broad defensive tail sweep. The direct-export Blockbench
+project includes a 512×512 texture, seven animations, and six original sounds.
+
 ## Hunger
 
 Every creature has a hunger meter. Predators only hunt when it runs low, so a fed creature ignores animals

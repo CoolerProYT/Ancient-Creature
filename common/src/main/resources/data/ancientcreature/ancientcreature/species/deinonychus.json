@@ -1,0 +1,42 @@
+{
+  "format_version": 1,
+  "entity_category": "land",
+  "physical": {
+    "width": 0.95,
+    "height": 1.45,
+    "eye_height": 1.15
+  },
+  "attributes": {
+    "max_health": 34.0,
+    "movement_speed": 0.34,
+    "attack_damage": 7.0,
+    "attack_knockback": 0.6,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.15,
+    "armor": 2.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.42,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "diet": {
+    "items": "#minecraft:meat"
+  },
+  "spawn": {
+    "biomes": "#minecraft:is_overworld",
+    "incubation_time": 900
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.deinonychus.ambient",
+    "hurt": "ancientcreature:entity.deinonychus.hurt",
+    "death": "ancientcreature:entity.deinonychus.death",
+    "step": "ancientcreature:entity.deinonychus.step",
+    "attack": "ancientcreature:entity.deinonychus.attack",
+    "alert": "ancientcreature:entity.deinonychus.call",
+    "ambient_interval": 210
+  }
+}
