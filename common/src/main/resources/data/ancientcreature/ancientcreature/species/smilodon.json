@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/small_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.05,
+    "height": 1.25,
+    "eye_height": 1.05
+  },
+  "attributes": {
+    "max_health": 46,
+    "movement_speed": 0.32,
+    "attack_damage": 11,
+    "attack_knockback": 1.3,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.42,
+    "armor": 2
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_smilodon",
+    "incubation_time": 1100
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.smilodon.ambient",
+    "hurt": "ancientcreature:entity.smilodon.hurt",
+    "death": "ancientcreature:entity.smilodon.death",
+    "step": "ancientcreature:entity.smilodon.step",
+    "attack": "ancientcreature:entity.smilodon.attack",
+    "alert": "ancientcreature:entity.smilodon.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:beef",
+      "minecraft:porkchop",
+      "minecraft:rabbit"
+    ]
+  }
+}

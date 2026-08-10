@@ -102,6 +102,8 @@ class SpeciesResourcesTest {
         assertEquals(0.5F, definition.growth().babyScale());
         assertEquals(1000, definition.spawn().incubationTime());
         assertEquals(240, definition.sounds().ambientInterval());
+        assertEquals(Identifier.fromNamespaceAndPath("ancientcreature", "entities/large_herbivore"),
+            definition.lootTable().orElseThrow());
 
         Map<Identifier, Double> attributes = definition.attributes().values();
         assertEquals(45.0, attributes.get(Identifier.withDefaultNamespace("max_health")));
@@ -155,7 +157,9 @@ class SpeciesResourcesTest {
      * there, so an eye above the model sees over blocks the creature is standing behind.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus",
+        "stegosaurus", "parasaurolophus", "spinosaurus", "carnotaurus", "velociraptor", "dilophosaurus", "argentinosaurus", "quetzalcoatlus",
+        "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura"})
     void hitboxesFitTheirModel(String name) throws IOException {
         SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
@@ -242,7 +246,9 @@ class SpeciesResourcesTest {
 
     /** Every shipped species must have a complete, self-consistent set of files. */
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"})
+    @ValueSource(strings = {"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus",
+        "stegosaurus", "parasaurolophus", "spinosaurus", "carnotaurus", "velociraptor", "dilophosaurus", "argentinosaurus", "quetzalcoatlus",
+        "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura"})
     void everyShippedSpeciesIsComplete(String species) throws IOException {
         SpeciesDefinition server = parse(SpeciesDefinition.CODEC,
             RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + species + ".json"));
@@ -250,6 +256,11 @@ class SpeciesResourcesTest {
             () -> species + " failed validation: " + server.validate().error().orElseThrow().message());
         assertTrue(server.attributes().resolve().result().isPresent(), species + " has an unknown attribute");
         assertFalse(server.resolvedBehaviors().isEmpty(), species + " has no behaviour");
+        Identifier lootTable = server.lootTable()
+            .orElseThrow(() -> new AssertionError(species + " declares no loot table"));
+        assertTrue(Files.exists(RESOURCES.resolve("data/" + lootTable.getNamespace() + "/loot_table/"
+                + lootTable.getPath() + ".json")),
+            species + " references a missing loot table " + lootTable);
 
         ClientSpeciesDefinition client = parse(ClientSpeciesDefinition.CODEC,
             RESOURCES.resolve("assets/ancientcreature/ancientcreature/species/" + species + ".json"));
@@ -278,6 +289,27 @@ class SpeciesResourcesTest {
                 assertTrue(found, species + " controller state '" + stateName + "' plays unknown animation '" + clip + "'");
             }
         });
+    }
+
+    /** Regression check for the first expansion pass, whose eyes were buried inside the skull cubes. */
+    @ParameterizedTest(name = "{0} has externally visible eyes")
+    @ValueSource(strings = {"stegosaurus", "parasaurolophus", "spinosaurus", "carnotaurus", "velociraptor", "dilophosaurus",
+        "argentinosaurus", "quetzalcoatlus", "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth",
+        "woolly_rhinoceros", "dire_wolf", "arthropleura"})
+    void expandedSpeciesEyesProtrudeBeyondTheSkull(String species) throws IOException {
+        BedrockGeometry geometry = parse(BedrockGeometry.FILE_CODEC,
+            RESOURCES.resolve("assets/ancientcreature/ancientcreature/geo/" + species + ".geo.json")).getFirst();
+        BedrockBone head = geometry.bones().stream().filter(bone -> bone.name().equals("head")).findFirst().orElseThrow();
+        BedrockBone eyes = geometry.bones().stream().filter(bone -> bone.name().equals("eyes")).findFirst().orElseThrow();
+
+        float skullMinX = head.cubes().stream().map(cube -> cube.origin().x() - cube.inflate()).min(Float::compare).orElseThrow();
+        float skullMaxX = head.cubes().stream().map(cube -> cube.origin().x() + cube.size().x() + cube.inflate()).max(Float::compare).orElseThrow();
+        float eyeMinX = eyes.cubes().stream().map(cube -> cube.origin().x()).min(Float::compare).orElseThrow();
+        float eyeMaxX = eyes.cubes().stream().map(cube -> cube.origin().x() + cube.size().x()).max(Float::compare).orElseThrow();
+
+        assertTrue(eyes.cubes().size() >= 4, species + " needs two irises and two pupils");
+        assertTrue(eyeMinX < skullMinX, species + " left eye is buried in the skull");
+        assertTrue(eyeMaxX > skullMaxX, species + " right eye is buried in the skull");
     }
 
     private static Path assetPath(Identifier id, String directory, String extension) {
@@ -683,7 +715,9 @@ class SpeciesResourcesTest {
     /** Every species gets a hunger meter, whether or not its JSON mentions one. */
     @Test
     void hungerDefaultsAreAppliedToEverySpecies() throws IOException {
-        for (String name : new String[]{"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus"}) {
+        for (String name : new String[]{"triceratops", "tyrannosaurus_rex", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus",
+            "stegosaurus", "parasaurolophus", "spinosaurus", "carnotaurus", "velociraptor", "dilophosaurus", "argentinosaurus", "quetzalcoatlus",
+            "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura"}) {
             SpeciesDefinition definition = parse(SpeciesDefinition.CODEC,
                 RESOURCES.resolve("data/ancientcreature/ancientcreature/species/" + name + ".json"));
             SpeciesHungerProperties hunger = definition.hunger();
@@ -807,6 +841,7 @@ class SpeciesResourcesTest {
                 + "\"components\":[{\"type\":\"testmod:sunbathe\",\"priority\":2,\"duration\":123}]}}").getOrThrow();
 
         assertTrue(definition.validate().result().isPresent());
+        assertTrue(definition.lootTable().isEmpty(), "loot is optional for third-party species");
         List<com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorComponent> resolved =
             definition.resolvedBehaviors();
         // The explicit component replaces the profile's entry of the same type.

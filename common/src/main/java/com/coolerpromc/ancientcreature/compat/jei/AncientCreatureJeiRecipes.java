@@ -13,8 +13,11 @@ import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,7 +54,7 @@ public final class AncientCreatureJeiRecipes {
                     List.of(fossilAlternatives(species, allParts, min, max)),
                     20,
                     Component.translatable("jei.ancientcreature.method.chiseling"),
-                    biomeNote(species),
+                    biomeNote(species, registries),
                     speciesNote(species),
                     partsNote(allParts),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(min), percent(max)),
@@ -66,7 +69,7 @@ public final class AncientCreatureJeiRecipes {
                     List.of(fossilAlternatives(species, allParts, rockMin, rockMax)),
                     20,
                     Component.translatable("jei.ancientcreature.method.rock_pile"),
-                    biomeNote(species),
+                    biomeNote(species, registries),
                     speciesNote(species),
                     partsNote(allParts),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(rockMin), percent(rockMax)),
@@ -82,7 +85,7 @@ public final class AncientCreatureJeiRecipes {
                     List.of(fossilAlternatives(species, List.of(eggPart), eggMin, eggMax)),
                     20,
                     Component.translatable("jei.ancientcreature.method.rock_pile"),
-                    biomeNote(species),
+                    biomeNote(species, registries),
                     speciesNote(species),
                     Component.translatable("jei.ancientcreature.parts_egg_only"),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(eggMin), percent(eggMax)),
@@ -103,7 +106,7 @@ public final class AncientCreatureJeiRecipes {
                 List.of(fossilAlternatives(species, archaeologyParts, 0.10f, 0.25f)),
                 20,
                 Component.translatable("jei.ancientcreature.method.brushing"),
-                biomeNote(species),
+                biomeNote(species, registries),
                 speciesNote(species),
                 partsNote(archaeologyParts),
                 Component.translatable("jei.ancientcreature.completeness_range", 10, 25),
@@ -287,11 +290,26 @@ public final class AncientCreatureJeiRecipes {
         };
     }
 
-    private static Component biomeNote(Species species) {
-        // Read the biome tag from the species definition instead of testing for one hard-coded species.
-        String tag = species.definitionOrFallback().spawn().biomeTag().getPath();
-        String biome = tag.contains("ocean") ? "ocean" : "overworld";
-        return Component.translatable("jei.ancientcreature.biomes", Component.translatable("jei.ancientcreature.biome." + biome));
+    private static Component biomeNote(Species species, HolderLookup.Provider registries) {
+        Identifier tagId = species.definitionOrFallback().spawn().biomeTag();
+        var biomes = registries.lookupOrThrow(Registries.BIOME).get(species.definitionOrFallback().spawn().biomeTagKey());
+        if (biomes.isEmpty() || biomes.get().size() == 0) {
+            return Component.translatable("jei.ancientcreature.biomes", Component.literal("#" + tagId));
+        }
+
+        MutableComponent names = Component.empty();
+        boolean first = true;
+        for (Holder<Biome> biome : biomes.get()) {
+            if (!first) {
+                names.append(", ");
+            }
+            biome.unwrapKey().ifPresentOrElse(
+                key -> names.append(Component.translatable(key.identifier().toLanguageKey("biome"))),
+                () -> names.append(Component.literal("Unknown"))
+            );
+            first = false;
+        }
+        return Component.translatable("jei.ancientcreature.biomes", names);
     }
 
     private static Component speciesNote(Species species) {

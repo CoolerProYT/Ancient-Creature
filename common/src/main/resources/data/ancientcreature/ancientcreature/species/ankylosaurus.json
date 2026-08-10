@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/large_herbivore",
   "entity_category": "land",
   "physical": {
     "width": 1.9,
@@ -27,7 +28,7 @@
     "items": ["minecraft:wheat", "minecraft:hay_block", "minecraft:fern"]
   },
   "spawn": {
-    "biomes": "#minecraft:is_overworld",
+    "biomes": "#ancientcreature:spawns_ankylosaurus",
     "incubation_time": 1400
   },
   "sounds": {

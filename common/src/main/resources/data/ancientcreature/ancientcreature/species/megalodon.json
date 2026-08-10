@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/aquatic_predator",
   "entity_category": "aquatic",
   "physical": {
     "width": 2.8,
@@ -24,7 +25,7 @@
     "profile": "ancientcreature:aquatic_predator"
   },
   "spawn": {
-    "biomes": "#minecraft:is_ocean",
+    "biomes": "#ancientcreature:spawns_megalodon",
     "incubation_time": 2000
   },
   "sounds": {

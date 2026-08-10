@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "entity_category": "aquatic",
+  "physical": {
+    "width": 2.15,
+    "height": 1.45,
+    "eye_height": 0.72
+  },
+  "attributes": {
+    "max_health": 112,
+    "movement_speed": 0.94,
+    "attack_damage": 17,
+    "attack_knockback": 2.2,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.78,
+    "armor": 12
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:aquatic_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_dunkleosteus",
+    "incubation_time": 1950
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.dunkleosteus.ambient",
+    "hurt": "ancientcreature:entity.dunkleosteus.hurt",
+    "death": "ancientcreature:entity.dunkleosteus.death",
+    "step": "ancientcreature:entity.dunkleosteus.step",
+    "attack": "ancientcreature:entity.dunkleosteus.attack",
+    "alert": "ancientcreature:entity.dunkleosteus.alert",
+    "ambient_interval": 280
+  }
+}

@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/giant_herbivore",
   "entity_category": "land",
   "physical": {
     "width": 3.2,
@@ -34,7 +35,7 @@
     "food_value": 10.0
   },
   "spawn": {
-    "biomes": "#minecraft:is_overworld",
+    "biomes": "#ancientcreature:spawns_brachiosaurus",
     "incubation_time": 2200
   },
   "sounds": {

@@ -8,11 +8,13 @@ import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorConfig;
 import com.coolerpromc.ancientcreature.species.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashSet;
@@ -539,6 +542,20 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     @Override
     protected @Nullable SoundEvent getDeathSound() {
         return this.speciesSounds().deathSound();
+    }
+
+    /**
+     * All species share one entity type, so its registry loot table cannot identify the creature that
+     * died. Route the normal vanilla death-loot pipeline through the table selected by species data.
+     * The four-argument overload still builds the complete entity loot context, including the damage
+     * source, attacker and looting level.
+     */
+    @Override
+    protected void dropFromLootTable(ServerLevel level, DamageSource source, boolean causedByPlayer) {
+        this.speciesDefinition().lootTable().ifPresent(id -> {
+            ResourceKey<LootTable> lootTable = ResourceKey.create(Registries.LOOT_TABLE, id);
+            super.dropFromLootTable(level, source, causedByPlayer, lootTable);
+        });
     }
 
     @Override

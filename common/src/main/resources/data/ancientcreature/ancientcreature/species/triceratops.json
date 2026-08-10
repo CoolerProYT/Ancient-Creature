@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/large_herbivore",
   "entity_category": "land",
   "physical": {
     "width": 1.8,
@@ -26,7 +27,7 @@
     "items": ["minecraft:wheat"]
   },
   "spawn": {
-    "biomes": "#minecraft:is_overworld",
+    "biomes": "#ancientcreature:spawns_triceratops",
     "incubation_time": 1000
   },
   "sounds": {

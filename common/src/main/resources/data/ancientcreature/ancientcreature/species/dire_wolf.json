@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/small_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 0.95,
+    "height": 1.25,
+    "eye_height": 1.05
+  },
+  "attributes": {
+    "max_health": 38,
+    "movement_speed": 0.34,
+    "attack_damage": 9,
+    "attack_knockback": 1.0,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.32,
+    "armor": 2
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_dire_wolf",
+    "incubation_time": 1050
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.dire_wolf.ambient",
+    "hurt": "ancientcreature:entity.dire_wolf.hurt",
+    "death": "ancientcreature:entity.dire_wolf.death",
+    "step": "ancientcreature:entity.dire_wolf.step",
+    "attack": "ancientcreature:entity.dire_wolf.attack",
+    "alert": "ancientcreature:entity.dire_wolf.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:beef",
+      "minecraft:mutton",
+      "minecraft:rabbit"
+    ]
+  }
+}

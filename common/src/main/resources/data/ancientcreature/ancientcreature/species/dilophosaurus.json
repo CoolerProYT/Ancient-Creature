@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/small_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.0,
+    "height": 1.72,
+    "eye_height": 1.43
+  },
+  "attributes": {
+    "max_health": 52,
+    "movement_speed": 0.31,
+    "attack_damage": 10,
+    "attack_knockback": 1.1,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.38,
+    "armor": 2
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_dilophosaurus",
+    "incubation_time": 1250
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.dilophosaurus.ambient",
+    "hurt": "ancientcreature:entity.dilophosaurus.hurt",
+    "death": "ancientcreature:entity.dilophosaurus.death",
+    "step": "ancientcreature:entity.dilophosaurus.step",
+    "attack": "ancientcreature:entity.dilophosaurus.attack",
+    "alert": "ancientcreature:entity.dilophosaurus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:beef",
+      "minecraft:chicken",
+      "minecraft:rabbit"
+    ]
+  }
+}

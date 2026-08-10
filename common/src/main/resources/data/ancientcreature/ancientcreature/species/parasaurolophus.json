@@ -1,0 +1,55 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/large_herbivore",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.55,
+    "height": 2.45,
+    "eye_height": 1.88
+  },
+  "attributes": {
+    "max_health": 58,
+    "movement_speed": 0.24,
+    "attack_damage": 8,
+    "attack_knockback": 1.2,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.55,
+    "armor": 3
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:defensive_herbivore",
+    "components": [
+      {
+        "type": "ancientcreature:graze",
+        "min_duration": 90,
+        "max_duration": 320,
+        "hunger_value": 6.0
+      }
+    ]
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_parasaurolophus",
+    "incubation_time": 1300
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.parasaurolophus.ambient",
+    "hurt": "ancientcreature:entity.parasaurolophus.hurt",
+    "death": "ancientcreature:entity.parasaurolophus.death",
+    "step": "ancientcreature:entity.parasaurolophus.step",
+    "attack": "ancientcreature:entity.parasaurolophus.attack",
+    "alert": "ancientcreature:entity.parasaurolophus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:wheat",
+      "minecraft:apple",
+      "minecraft:fern"
+    ]
+  }
+}

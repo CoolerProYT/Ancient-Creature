@@ -7,9 +7,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityDimensions;
 
 import java.util.List;
+import java.util.Optional;
 
 public record SpeciesDefinition(
     int formatVersion,
@@ -21,7 +23,8 @@ public record SpeciesDefinition(
     SpeciesDietProperties diet,
     SpeciesSpawnProperties spawn,
     SpeciesSoundDefinition sounds,
-    SpeciesHungerProperties hunger
+    SpeciesHungerProperties hunger,
+    Optional<Identifier> lootTable
 ) {
     public static final int CURRENT_FORMAT_VERSION = 1;
 
@@ -35,7 +38,8 @@ public record SpeciesDefinition(
         SpeciesDietProperties.EMPTY,
         SpeciesSpawnProperties.DEFAULT,
         SpeciesSoundDefinition.EMPTY,
-        SpeciesHungerProperties.DEFAULT
+        SpeciesHungerProperties.DEFAULT,
+        Optional.empty()
     );
 
     private static final Codec<Integer> FORMAT_VERSION_CODEC = Codec.INT.validate(
@@ -53,7 +57,8 @@ public record SpeciesDefinition(
         SpeciesDietProperties.CODEC.optionalFieldOf("diet", SpeciesDietProperties.EMPTY).forGetter(SpeciesDefinition::diet),
         SpeciesSpawnProperties.CODEC.optionalFieldOf("spawn", SpeciesSpawnProperties.DEFAULT).forGetter(SpeciesDefinition::spawn),
         SpeciesSoundDefinition.CODEC.optionalFieldOf("sounds", SpeciesSoundDefinition.EMPTY).forGetter(SpeciesDefinition::sounds),
-        SpeciesHungerProperties.CODEC.optionalFieldOf("hunger", SpeciesHungerProperties.DEFAULT).forGetter(SpeciesDefinition::hunger)
+        SpeciesHungerProperties.CODEC.optionalFieldOf("hunger", SpeciesHungerProperties.DEFAULT).forGetter(SpeciesDefinition::hunger),
+        SpeciesCodecs.SPECIES_ID.optionalFieldOf("loot_table").forGetter(SpeciesDefinition::lootTable)
     ).apply(i, SpeciesDefinition::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SpeciesDefinition> STREAM_CODEC = StreamCodec.composite(
@@ -67,6 +72,7 @@ public record SpeciesDefinition(
         SpeciesSpawnProperties.STREAM_CODEC, SpeciesDefinition::spawn,
         SpeciesSoundDefinition.STREAM_CODEC, SpeciesDefinition::sounds,
         SpeciesHungerProperties.STREAM_CODEC, SpeciesDefinition::hunger,
+        ByteBufCodecs.optional(Identifier.STREAM_CODEC), SpeciesDefinition::lootTable,
         SpeciesDefinition::new
     );
 

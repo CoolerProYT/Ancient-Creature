@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "entity_category": "aquatic",
+  "physical": {
+    "width": 1.75,
+    "height": 1.4,
+    "eye_height": 1.05
+  },
+  "attributes": {
+    "max_health": 74,
+    "movement_speed": 0.86,
+    "attack_damage": 11,
+    "attack_knockback": 1.0,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.5,
+    "armor": 3
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:aquatic_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_plesiosaurus",
+    "incubation_time": 1600
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.plesiosaurus.ambient",
+    "hurt": "ancientcreature:entity.plesiosaurus.hurt",
+    "death": "ancientcreature:entity.plesiosaurus.death",
+    "step": "ancientcreature:entity.plesiosaurus.step",
+    "attack": "ancientcreature:entity.plesiosaurus.attack",
+    "alert": "ancientcreature:entity.plesiosaurus.alert",
+    "ambient_interval": 280
+  }
+}

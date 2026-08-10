@@ -1,0 +1,70 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/flying_predator",
+  "entity_category": "flying",
+  "physical": {
+    "width": 1.45,
+    "height": 2.55,
+    "eye_height": 2.05
+  },
+  "attributes": {
+    "max_health": 44,
+    "movement_speed": 0.31,
+    "attack_damage": 8,
+    "attack_knockback": 0.8,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.2,
+    "armor": 1
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:flying_predator",
+    "components": [
+      {
+        "type": "ancientcreature:fly",
+        "speed_modifier": 1.05,
+        "wander_range": 28,
+        "vertical_range": 18,
+        "min_altitude": 10,
+        "max_altitude": 56
+      },
+      {
+        "type": "ancientcreature:breed",
+        "speed_modifier": 1.0
+      },
+      {
+        "type": "ancientcreature:tempt",
+        "speed_modifier": 1.1,
+        "can_scare": true
+      },
+      {
+        "type": "ancientcreature:follow_parent",
+        "speed_modifier": 1.15
+      }
+    ]
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_quetzalcoatlus",
+    "incubation_time": 1550
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.quetzalcoatlus.ambient",
+    "hurt": "ancientcreature:entity.quetzalcoatlus.hurt",
+    "death": "ancientcreature:entity.quetzalcoatlus.death",
+    "step": "ancientcreature:entity.quetzalcoatlus.step",
+    "attack": "ancientcreature:entity.quetzalcoatlus.attack",
+    "alert": "ancientcreature:entity.quetzalcoatlus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:cod",
+      "minecraft:salmon",
+      "minecraft:rabbit"
+    ]
+  }
+}

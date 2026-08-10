@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/flying_predator",
   "entity_category": "flying",
   "physical": {
     "width": 1.5,
@@ -41,7 +42,7 @@
     "items": ["minecraft:cod", "minecraft:salmon"]
   },
   "spawn": {
-    "biomes": "#minecraft:is_beach",
+    "biomes": "#ancientcreature:spawns_pteranodon",
     "incubation_time": 1200
   },
   "sounds": {

@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/large_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.15,
+    "height": 2.0,
+    "eye_height": 1.72
+  },
+  "attributes": {
+    "max_health": 76,
+    "movement_speed": 0.29,
+    "attack_damage": 13,
+    "attack_knockback": 1.7,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.62,
+    "armor": 4
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:apex_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_carnotaurus",
+    "incubation_time": 1450
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.carnotaurus.ambient",
+    "hurt": "ancientcreature:entity.carnotaurus.hurt",
+    "death": "ancientcreature:entity.carnotaurus.death",
+    "step": "ancientcreature:entity.carnotaurus.step",
+    "attack": "ancientcreature:entity.carnotaurus.attack",
+    "alert": "ancientcreature:entity.carnotaurus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:beef",
+      "minecraft:porkchop",
+      "minecraft:chicken"
+    ]
+  }
+}

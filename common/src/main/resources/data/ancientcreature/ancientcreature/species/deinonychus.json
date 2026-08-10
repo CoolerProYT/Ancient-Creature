@@ -1,5 +1,6 @@
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/small_predator",
   "entity_category": "land",
   "physical": {
     "width": 0.95,
@@ -27,7 +28,7 @@
     "items": "#minecraft:meat"
   },
   "spawn": {
-    "biomes": "#minecraft:is_overworld",
+    "biomes": "#ancientcreature:spawns_deinonychus",
     "incubation_time": 900
   },
   "sounds": {

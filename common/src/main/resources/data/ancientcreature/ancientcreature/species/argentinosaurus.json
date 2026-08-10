@@ -1,0 +1,48 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/giant_herbivore",
+  "entity_category": "land",
+  "physical": {
+    "width": 4.25,
+    "height": 7.6,
+    "eye_height": 6.8
+  },
+  "attributes": {
+    "max_health": 260,
+    "movement_speed": 0.115,
+    "attack_damage": 26,
+    "attack_knockback": 4.0,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.98,
+    "armor": 10
+  },
+  "growth": {
+    "adult_age": 48000,
+    "baby_scale": 0.32,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:sauropod_browser"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_argentinosaurus",
+    "incubation_time": 2800
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.argentinosaurus.ambient",
+    "hurt": "ancientcreature:entity.argentinosaurus.hurt",
+    "death": "ancientcreature:entity.argentinosaurus.death",
+    "step": "ancientcreature:entity.argentinosaurus.step",
+    "attack": "ancientcreature:entity.argentinosaurus.attack",
+    "alert": "ancientcreature:entity.argentinosaurus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:hay_block",
+      "minecraft:apple",
+      "minecraft:fern",
+      "minecraft:wheat"
+    ]
+  }
+}

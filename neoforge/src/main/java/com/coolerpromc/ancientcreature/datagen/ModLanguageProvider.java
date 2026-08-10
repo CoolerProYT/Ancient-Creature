@@ -25,8 +25,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add("jei.ancientcreature.method.rock_pile", "Method: Break a rock pile that has egg");
         add("jei.ancientcreature.method.brushing", "Method: Brush suspicious blocks at dig sites");
         add("jei.ancientcreature.biomes", "Biomes: %s");
-        add("jei.ancientcreature.biome.overworld", "All Overworld biomes");
-        add("jei.ancientcreature.biome.ocean", "Ocean biomes only");
         add("jei.ancientcreature.species_result", "Possible species: %s");
         add("jei.ancientcreature.parts", "Possible parts: %s");
         add("jei.ancientcreature.parts_egg_only", "Result: Egg fossil");

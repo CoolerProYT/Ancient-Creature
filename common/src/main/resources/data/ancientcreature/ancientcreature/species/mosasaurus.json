@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "entity_category": "aquatic",
+  "physical": {
+    "width": 3.25,
+    "height": 1.75,
+    "eye_height": 0.8
+  },
+  "attributes": {
+    "max_health": 175,
+    "movement_speed": 1.08,
+    "attack_damage": 23,
+    "attack_knockback": 3.0,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.88,
+    "armor": 6
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:aquatic_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_mosasaurus",
+    "incubation_time": 2300
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.mosasaurus.ambient",
+    "hurt": "ancientcreature:entity.mosasaurus.hurt",
+    "death": "ancientcreature:entity.mosasaurus.death",
+    "step": "ancientcreature:entity.mosasaurus.step",
+    "attack": "ancientcreature:entity.mosasaurus.attack",
+    "alert": "ancientcreature:entity.mosasaurus.alert",
+    "ambient_interval": 280
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/giant_herbivore",
+  "entity_category": "land",
+  "physical": {
+    "width": 2.35,
+    "height": 3.2,
+    "eye_height": 2.55
+  },
+  "attributes": {
+    "max_health": 145,
+    "movement_speed": 0.17,
+    "attack_damage": 18,
+    "attack_knockback": 3.3,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.94,
+    "armor": 7
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:defensive_herbivore",
+    "components": [
+      {
+        "type": "ancientcreature:graze",
+        "min_duration": 90,
+        "max_duration": 320,
+        "hunger_value": 6.0
+      }
+    ]
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_woolly_mammoth",
+    "incubation_time": 2200
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.woolly_mammoth.ambient",
+    "hurt": "ancientcreature:entity.woolly_mammoth.hurt",
+    "death": "ancientcreature:entity.woolly_mammoth.death",
+    "step": "ancientcreature:entity.woolly_mammoth.step",
+    "attack": "ancientcreature:entity.woolly_mammoth.attack",
+    "alert": "ancientcreature:entity.woolly_mammoth.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:wheat",
+      "minecraft:hay_block",
+      "minecraft:apple"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/large_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.65,
+    "height": 2.75,
+    "eye_height": 2.35
+  },
+  "attributes": {
+    "max_health": 125,
+    "movement_speed": 0.245,
+    "attack_damage": 18,
+    "attack_knockback": 2.2,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.8,
+    "armor": 7
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:apex_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_spinosaurus",
+    "incubation_time": 1900
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.spinosaurus.ambient",
+    "hurt": "ancientcreature:entity.spinosaurus.hurt",
+    "death": "ancientcreature:entity.spinosaurus.death",
+    "step": "ancientcreature:entity.spinosaurus.step",
+    "attack": "ancientcreature:entity.spinosaurus.attack",
+    "alert": "ancientcreature:entity.spinosaurus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:cod",
+      "minecraft:salmon",
+      "minecraft:beef"
+    ]
+  }
+}

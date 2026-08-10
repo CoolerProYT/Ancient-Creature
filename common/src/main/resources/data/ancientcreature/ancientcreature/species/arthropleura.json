@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/arthropod",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.25,
+    "height": 0.55,
+    "eye_height": 0.3
+  },
+  "attributes": {
+    "max_health": 32,
+    "movement_speed": 0.19,
+    "attack_damage": 5,
+    "attack_knockback": 0.5,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.55,
+    "armor": 10
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:passive"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_arthropleura",
+    "incubation_time": 950
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.arthropleura.ambient",
+    "hurt": "ancientcreature:entity.arthropleura.hurt",
+    "death": "ancientcreature:entity.arthropleura.death",
+    "step": "ancientcreature:entity.arthropleura.step",
+    "attack": "ancientcreature:entity.arthropleura.attack",
+    "alert": "ancientcreature:entity.arthropleura.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:brown_mushroom",
+      "minecraft:red_mushroom",
+      "minecraft:fern"
+    ]
+  }
+}

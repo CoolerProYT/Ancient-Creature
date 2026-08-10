@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/small_predator",
+  "entity_category": "land",
+  "physical": {
+    "width": 0.7,
+    "height": 1.15,
+    "eye_height": 0.94
+  },
+  "attributes": {
+    "max_health": 28,
+    "movement_speed": 0.37,
+    "attack_damage": 7,
+    "attack_knockback": 0.7,
+    "follow_range": 28.0,
+    "knockback_resistance": 0.18,
+    "armor": 1
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.43,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_velociraptor",
+    "incubation_time": 900
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.velociraptor.ambient",
+    "hurt": "ancientcreature:entity.velociraptor.hurt",
+    "death": "ancientcreature:entity.velociraptor.death",
+    "step": "ancientcreature:entity.velociraptor.step",
+    "attack": "ancientcreature:entity.velociraptor.attack",
+    "alert": "ancientcreature:entity.velociraptor.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:chicken",
+      "minecraft:rabbit",
+      "minecraft:cod"
+    ]
+  }
+}
