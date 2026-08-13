@@ -100,15 +100,6 @@ public class AncientCreature {
         registerClientboundPayload(ClientboundSpeciesSyncPacket.TYPE, ClientboundSpeciesSyncPacket.STREAM_CODEC);
     }
 
-    /**
-     * Collected once, then replayed against every new registrar.
-     *
-     * <p>NeoForge fires its reload-listener and command events once per <em>world load</em>, not once per
-     * launch, so these run again on the second world you join. What is collected here describes a fixed
-     * set of registrations, so adding to it again would hand NeoForge two listeners under
-     * {@code ancientcreature:species}, which it rejects outright — the world would fail to load the
-     * second time with nothing wrong in the data.
-     */
     private static boolean reloadListenersCollected;
     private static boolean commandsCollected;
 

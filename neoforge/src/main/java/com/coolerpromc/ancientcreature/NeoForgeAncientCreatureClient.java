@@ -1,5 +1,6 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.client.SpeciesJournalKeyHandler;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.util.NeoForgePayloadContext;
@@ -78,6 +79,16 @@ public class NeoForgeAncientCreatureClient {
     public static void onRegisterClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
         AncientCreatureClient.initClientPayloadHandler();
         ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(new NeoForgePayloadRegistrar(event)::register);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
+        event.register(SpeciesJournalKeyHandler.OPEN_JOURNAL);
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        SpeciesJournalKeyHandler.clientTick(net.minecraft.client.Minecraft.getInstance());
     }
 
     private record NeoForgePayloadRegistrar(RegisterClientPayloadHandlersEvent event) {

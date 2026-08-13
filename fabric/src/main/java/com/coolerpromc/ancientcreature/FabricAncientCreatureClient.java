@@ -1,9 +1,12 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.client.SpeciesJournalKeyHandler;
 import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.util.FabricPayloadContext;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.server.packs.PackType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -32,8 +35,9 @@ public class FabricAncientCreatureClient implements ClientModInitializer {
         ServicesClient.REGISTRY.applyItemSelectRegistrations(SelectItemModelProperties.ID_MAPPER::put);
         ServicesClient.REGISTRY.applySpecialModelRendererRegistrations(SpecialModelRenderers.ID_MAPPER::put);
         ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(FabricAncientCreatureClient::registerPayloadReceiver);
-        ServicesClient.REGISTRY.applyClientReloadListenerRegistrations(
-            ResourceLoader.get(PackType.CLIENT_RESOURCES)::registerReloadListener);
+        ServicesClient.REGISTRY.applyClientReloadListenerRegistrations(ResourceLoader.get(PackType.CLIENT_RESOURCES)::registerReloadListener);
+        KeyMappingHelper.registerKeyMapping(SpeciesJournalKeyHandler.OPEN_JOURNAL);
+        ClientTickEvents.END_CLIENT_TICK.register(SpeciesJournalKeyHandler::clientTick);
     }
 
     private static <T extends HandledCustomPacketPayload> void registerPayloadReceiver(CustomPacketPayload.Type<T> type) {

@@ -28,11 +28,11 @@ public class FossilIdentificationChamberMenu extends AbstractContainerMenu {
         this.data = data;
 
         addDataSlots(data);
-        addInventoryHotbarSlots(inventory, 86, 84 + 58);
-        addInventoryExtendedSlots(inventory, 86, 84);
+        addInventoryHotbarSlots(inventory, 8, 84 + 58);
+        addInventoryExtendedSlots(inventory, 8, 84);
 
-        addSlot(new ContainerSlot(blockEntity.getInputContainer(), 0, 44 + 78, 34));
-        addSlot(new ContainerSlot(blockEntity.getOutputContainer(), 0, 116 + 78, 34));
+        addSlot(new ContainerSlot(blockEntity.getInputContainer(), 0, 44, 34));
+        addSlot(new ContainerSlot(blockEntity.getOutputContainer(), 0, 116, 34));
     }
 
     @Override

@@ -38,6 +38,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashSet;
@@ -621,6 +622,13 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             return result;
         }
 
+        if (!wasFood && this.isOwnedBy(player) && !player.isSecondaryUseActive() && !this.isBaby() && !this.isVehicle()) {
+            if (!this.level().isClientSide()) {
+                player.startRiding(this);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         if (!wasFood || this.getHunger() >= this.hungerProperties().max()) {
             return result;
         }
@@ -630,6 +638,64 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             held.consume(1, player);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Ownership is persisted on the server and is not part of the client's synced entity data. The
+     * client therefore trusts the server-approved first passenger so it can simulate and send rider
+     * input, while the server still verifies that passenger is the owner.
+     */
+    @Override
+    public @Nullable LivingEntity getControllingPassenger() {
+        return this.getFirstPassenger() instanceof Player player && (this.level().isClientSide() || this.isOwnedBy(player))
+            ? player
+            : super.getControllingPassenger();
+    }
+
+    @Override
+    protected void tickRidden(Player controller, Vec3 riddenInput) {
+        super.tickRidden(controller, riddenInput);
+        this.setRot(controller.getYRot(), controller.getXRot() * 0.5F);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player controller, Vec3 selfInput) {
+        if (this.speciesCategory() == SpeciesEntityCategory.LAND) {
+            float forward = controller.zza;
+            if (forward < 0.0F) {
+                forward *= 0.25F;
+            }
+            return new Vec3(controller.xxa * 0.5F, 0.0, forward);
+        }
+
+        float forward = controller.zza;
+        float pitchRadians = controller.getXRot() * (float) (Math.PI / 180.0);
+        float horizontal = (float) Math.cos(pitchRadians);
+        float vertical = (float) -Math.sin(pitchRadians);
+        if (forward < 0.0F) {
+            horizontal *= -0.25F;
+            vertical *= -0.25F;
+        } else if (forward == 0.0F) {
+            horizontal = 0.0F;
+            vertical = 0.0F;
+        }
+
+        if (this.speciesCategory().isFlying() && controller.isJumping()) {
+            vertical += 0.5F;
+        }
+        return new Vec3(controller.xxa * 0.5F, vertical, horizontal);
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player controller) {
+        if (this.speciesCategory().isAquatic()) {
+            return 0.0325F * (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        }
+        if (this.speciesCategory().isFlying()) {
+            return (float) this.getAttributeValue(Attributes.FLYING_SPEED);
+        }
+        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
     }
 
     @Override

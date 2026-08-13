@@ -67,6 +67,25 @@ public class ModLanguageProvider extends LanguageProvider {
         add("name.ancientcreature.dirty", "Dirty");
         add("name.ancientcreature.unidentified", "Unidentified");
 
+        add("key.ancientcreature.open_species_journal", "Open Species Journal");
+        add("key.category.ancientcreature.ancient_creature", "Ancient Creature");
+        add("screen.ancientcreature.species_journal", "Species Journal");
+        add("screen.ancientcreature.species_journal.search", "Search species...");
+        add("screen.ancientcreature.species_journal.progress", "%s / %s identified");
+        add("screen.ancientcreature.species_journal.no_results", "No entries found");
+        add("screen.ancientcreature.species_journal.classified", "Identify a fossil to unlock");
+        add("screen.ancientcreature.species_journal.category.land", "Land species");
+        add("screen.ancientcreature.species_journal.category.aquatic", "Aquatic species");
+        add("screen.ancientcreature.species_journal.category.flying", "Flying species");
+        add("screen.ancientcreature.species_journal.size", "Size");
+        add("screen.ancientcreature.species_journal.health", "Health");
+        add("screen.ancientcreature.species_journal.diet", "Diet");
+        add("screen.ancientcreature.species_journal.attack", "Attack");
+        add("screen.ancientcreature.species_journal.habitat", "Habitat");
+        add("screen.ancientcreature.species_journal.speed", "Speed");
+        add("screen.ancientcreature.species_journal.maturity", "Maturity");
+        add("screen.ancientcreature.species_journal.incubation", "Incubation");
+
         add("fossilPart.ancientcreature.empty", "Illegal Item");
         add("fossilPart.ancientcreature.rib", "Rib Fossil Fragment");
         add("fossilPart.ancientcreature.tooth", "Tooth Fossil Fragment");
