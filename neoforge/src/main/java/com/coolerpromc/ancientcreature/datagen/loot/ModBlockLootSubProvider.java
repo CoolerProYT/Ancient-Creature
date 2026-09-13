@@ -7,7 +7,7 @@ import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.custom.SetFossilDataFunction;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;

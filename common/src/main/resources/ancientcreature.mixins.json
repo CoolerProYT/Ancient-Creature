@@ -16,7 +16,7 @@
     "CreativeModeInventoryScreenMixin",
     "EntityRenderStateMixin",
     "ItemPickerMenuMixin",
-    "LevelRendererMixin",
+    "ClientLevelMixin",
     "LivingEntityRendererMixin"
   ]
 }

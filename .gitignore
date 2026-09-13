@@ -28,3 +28,4 @@ tmp
 
 # Minecraft's Bootstrap writes a log here when the common unit tests boot the registries
 logs
+**/.cache/

@@ -744,12 +744,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     }
 
     @Override
-    public void setBaby(boolean baby) {
-        super.setBaby(baby);
-        this.updateDimensionsIfNeeded();
-    }
-
-    @Override
     public void setAge(int age) {
         super.setAge(age);
         this.updateDimensionsIfNeeded();

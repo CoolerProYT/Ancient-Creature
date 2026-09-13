@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "ancientcreature:egg_shell_fragment",
     "ancientcreature:egg_shell_fragment",

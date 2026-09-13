@@ -2,7 +2,6 @@
   "type": "minecraft:archaeology",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -10,9 +9,9 @@
             {
               "fossilParts": [
                 "ancientcreature:claw",
-                "ancientcreature:tooth",
+                "ancientcreature:limb",
                 "ancientcreature:rib",
-                "ancientcreature:limb"
+                "ancientcreature:tooth"
               ],
               "function": "ancientcreature:set_fossil_data"
             }

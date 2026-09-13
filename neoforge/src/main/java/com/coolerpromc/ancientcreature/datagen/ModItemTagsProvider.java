@@ -17,16 +17,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModItemTags.CHISELS).add(
-            ModItems.STONE_CHISEL.get(),
-            ModItems.COPPER_CHISEL.get(),
-            ModItems.IRON_CHISEL.get(),
-            ModItems.GOLDEN_CHISEL.get(),
-            ModItems.DIAMOND_CHISEL.get(),
-            ModItems.NETHERITE_CHISEL.get()
+            ModItems.STONE_CHISEL.key(),
+            ModItems.COPPER_CHISEL.key(),
+            ModItems.IRON_CHISEL.key(),
+            ModItems.GOLDEN_CHISEL.key(),
+            ModItems.DIAMOND_CHISEL.key(),
+            ModItems.NETHERITE_CHISEL.key()
         );
 
         tag(ModItemTags.EXTRACTION_FLUIDS).add(
-            ModItems.EXTRACTION_FLUID.get()
+            ModItems.EXTRACTION_FLUID.key()
         );
     }
 }

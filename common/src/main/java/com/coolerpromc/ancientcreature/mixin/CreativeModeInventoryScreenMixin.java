@@ -30,7 +30,6 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
             this.extractContents(graphics, mouseX, mouseY, a);
             BannerRenderer.render((CreativeModeInventoryScreen)(Object)this, graphics);
             this.extractCarriedItem(graphics, mouseX, mouseY);
-            this.extractSnapbackItem(graphics);
             this.extractTooltip(graphics, mouseX, mouseY);
         }
         else{

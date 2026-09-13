@@ -2,13 +2,11 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "count": {
                 "type": "minecraft:uniform",
                 "max": 4.0,
@@ -23,7 +21,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "block": "ancientcreature:rock_pile",
@@ -50,7 +47,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "conditions": [
         {
           "block": "ancientcreature:rock_pile",
@@ -67,12 +63,12 @@
             {
               "fossilParts": [
                 "ancientcreature:claw",
-                "ancientcreature:vertebra",
-                "ancientcreature:limb",
-                "ancientcreature:skull",
-                "ancientcreature:rib",
                 "ancientcreature:egg",
-                "ancientcreature:tooth"
+                "ancientcreature:limb",
+                "ancientcreature:rib",
+                "ancientcreature:skull",
+                "ancientcreature:tooth",
+                "ancientcreature:vertebra"
               ],
               "function": "ancientcreature:set_fossil_data"
             }

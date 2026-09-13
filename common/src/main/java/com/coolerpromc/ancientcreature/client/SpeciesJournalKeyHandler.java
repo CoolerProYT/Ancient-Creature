@@ -20,8 +20,8 @@ public final class SpeciesJournalKeyHandler {
 
     public static void clientTick(Minecraft minecraft) {
         while (OPEN_JOURNAL.consumeClick()) {
-            if (minecraft.level != null && minecraft.player != null && minecraft.screen == null) {
-                minecraft.setScreen(new SpeciesJournalScreen());
+            if (minecraft.level != null && minecraft.player != null && minecraft.gui.screen() == null) {
+                minecraft.gui.setScreen(new SpeciesJournalScreen());
             }
         }
     }

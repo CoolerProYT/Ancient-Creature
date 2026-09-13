@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -36,10 +37,10 @@ public class ModRecipeProvider extends RecipeProvider {
             .pattern("SSS")
             .define('W', Ingredient.of(this.items.getOrThrow(ItemTags.PLANKS)))
             .define('B', Ingredient.of(Items.BRUSH))
-            .define('S', Ingredient.of(this.items.getOrThrow(ItemTags.SLABS)))
+            .define('S', Ingredient.of(this.items.getOrThrow(BlockItemTags.SLABS.item())))
             .unlockedBy(getHasName(Items.BRUSH), has(Items.BRUSH))
             .unlockedBy("has_planks", has(ItemTags.PLANKS))
-            .unlockedBy("has_slabs", has(ItemTags.SLABS))
+            .unlockedBy("has_slabs", has(BlockItemTags.SLABS.item()))
             .save(output);
 
         shaped(RecipeCategory.DECORATIONS, ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.item())
