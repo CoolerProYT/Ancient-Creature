@@ -24,7 +24,7 @@ public record IncubatorSpecialRenderer(IncubatorModel model) implements NoDataSp
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, int overlay, boolean foil, int outlineColor) {
         poseStack.pushPose();
         applyTransform(poseStack);
-        collector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/incubator.png")), light, overlay, outlineColor, null);
+        collector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/incubator.png")), light, overlay, outlineColor);
         poseStack.popPose();
     }
 
@@ -38,7 +38,7 @@ public record IncubatorSpecialRenderer(IncubatorModel model) implements NoDataSp
 
     private static void applyTransform(PoseStack poseStack) {
         poseStack.translate(0.5, 1.5, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - Direction.NORTH.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, 180.0F - Direction.NORTH.toYRot());
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.scale(0.75f, 0.75f, 0.75f);
         poseStack.translate(0, 0.55, 0);

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:nutrient_solution"
+        "recipes": "ancientcreature:nutrient_solution"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

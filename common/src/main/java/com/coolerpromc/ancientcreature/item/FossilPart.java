@@ -10,9 +10,10 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.RegistryFileCodec;
+import net.minecraft.core.registries.codec.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.floats.UniformGenerator;
 
 import java.util.List;
 
@@ -23,10 +24,10 @@ public record FossilPart(float dnaExtractingBonus, float identifyFailChance, flo
         Codec.FLOAT.fieldOf("fossilDamageRate").forGetter(FossilPart::fossilDamageRate),
         UniformGenerator.MAP_CODEC.fieldOf("completeness").forGetter(FossilPart::completeness)
     ).apply(i, FossilPart::new));
-    public static final Codec<Holder<FossilPart>> CODEC = RegistryFileCodec.create(ModRegistries.FOSSIL_PART, DIRECT_CODEC);
+    public static final Codec<Holder<FossilPart>> CODEC = RegistryFileCodec.create(ModRegistries.FOSSIL_PART, DIRECT_CODEC, false);
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FossilPart>> STREAM_CODEC = ByteBufCodecs.holderRegistry(ModRegistries.FOSSIL_PART);
 
-    public static final FossilPart EMPTY = new FossilPart(0, 1, 1, UniformGenerator.between(0, 0.01f));
+    public static final FossilPart EMPTY = new FossilPart(0, 1, 1, uniform(0, 0.01f));
 
     public static final ResourceKey<FossilPart> RIB = key("rib");
     public static final ResourceKey<FossilPart> TOOTH = key("tooth");
@@ -37,13 +38,17 @@ public record FossilPart(float dnaExtractingBonus, float identifyFailChance, flo
     public static final ResourceKey<FossilPart> EGG = key("egg");
 
     public static void bootstrap(BootstrapContext<FossilPart> context){
-        context.register(RIB, new FossilPart(0.04f, 0.3f, 0.1f, UniformGenerator.between(0.05f, 0.2f)));
-        context.register(TOOTH, new FossilPart(0.16f, 0.01f, 0.1f, UniformGenerator.between(0.3f, 0.6f)));
-        context.register(SKULL, new FossilPart(0.12f, 0.1f, 0.1f, UniformGenerator.between(0.2f, 0.4f)));
-        context.register(VERTEBRA, new FossilPart(0.08f, 0.2f, 0.1f, UniformGenerator.between(0.1f, 0.3f)));
-        context.register(LIMB, new FossilPart(0.0f, 0.35f, 0.1f, UniformGenerator.between(0.01f, 0.15f)));
-        context.register(CLAW, new FossilPart(-0.04f, 0.5f, 0.1f, UniformGenerator.between(0.01f, 0.1f)));
-        context.register(EGG, new FossilPart(0.2f, 0.2f, 0.1f, UniformGenerator.between(0.6f, 0.8f)));
+        context.register(RIB, new FossilPart(0.04f, 0.3f, 0.1f, uniform(0.05f, 0.2f)));
+        context.register(TOOTH, new FossilPart(0.16f, 0.01f, 0.1f, uniform(0.3f, 0.6f)));
+        context.register(SKULL, new FossilPart(0.12f, 0.1f, 0.1f, uniform(0.2f, 0.4f)));
+        context.register(VERTEBRA, new FossilPart(0.08f, 0.2f, 0.1f, uniform(0.1f, 0.3f)));
+        context.register(LIMB, new FossilPart(0.0f, 0.35f, 0.1f, uniform(0.01f, 0.15f)));
+        context.register(CLAW, new FossilPart(-0.04f, 0.5f, 0.1f, uniform(0.01f, 0.1f)));
+        context.register(EGG, new FossilPart(0.2f, 0.2f, 0.1f, uniform(0.6f, 0.8f)));
+    }
+
+    private static UniformGenerator uniform(float min, float max) {
+        return new UniformGenerator(ContextFloatProviders.exactly(min), ContextFloatProviders.exactly(max));
     }
 
     public static ResourceKey<FossilPart> key(String name){

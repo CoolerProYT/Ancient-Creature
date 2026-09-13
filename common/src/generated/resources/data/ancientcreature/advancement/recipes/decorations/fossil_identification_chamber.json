@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:fossil_identification_chamber"
+        "recipes": "ancientcreature:fossil_identification_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -8,10 +8,11 @@ import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.custom.SetFossilDataFunction;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -19,16 +20,15 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.List;
 import java.util.Set;
 
 public class ModBlockLootSubProvider extends BlockLootSubProvider {
-    public ModBlockLootSubProvider(HolderLookup.Provider provider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+    public ModBlockLootSubProvider(LootTableSubProvider.Context context) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
     }
 
     @Override
@@ -45,31 +45,35 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     private LootTable.Builder createFossilDrop(Block block) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
-            LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(FossilPart.all(registries))))
+            LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
+                .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(allFossilParts())))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
     }
 
     private LootTable.Builder createRockPileDrop(Block block){
-        HolderGetter<FossilPart> fossilParts = registries.lookupOrThrow(ModRegistries.FOSSIL_PART);
+        HolderGetter<FossilPart> fossilParts = output.lookup(ModRegistries.FOSSIL_PART);
 
         return LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()
-                    .add(LootItem.lootTableItem(ModItems.ROCK_FRAGMENT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))))
+                    .add(LootItem.lootTableItem(ModItems.ROCK_FRAGMENT).apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 4))))
             )
             .withPool(
                 LootPool.lootPool()
-                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_EGG, true)))
+                    .when(MatchBlock.blockMatches(this.blocks, block, StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_EGG, true)))
                     .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(List.of(fossilParts.getOrThrow(FossilPart.EGG)))))
             )
             .withPool(
                 LootPool.lootPool()
-                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(FossilPart.all(registries))))
+                    .when(MatchBlock.blockMatches(this.blocks, block, StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
+                    .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(allFossilParts())))
             );
+    }
+
+    private List<Holder<FossilPart>> allFossilParts() {
+        return output.listContextElements(ModRegistries.FOSSIL_PART).<Holder<FossilPart>>map(h -> h).toList();
     }
 
     @Override

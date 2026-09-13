@@ -1,0 +1,48 @@
+{
+  "type": "ancientcreature:waterloggable_block",
+  "state_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": "ancientcreature:rock_pile",
+        "weight": 100
+      },
+      {
+        "data": {
+          "id": "ancientcreature:rock_pile",
+          "properties": {
+            "facing": "north",
+            "has_egg": "false",
+            "has_fossil": "true",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 30
+      },
+      {
+        "data": {
+          "id": "ancientcreature:rock_pile",
+          "properties": {
+            "facing": "north",
+            "has_egg": "true",
+            "has_fossil": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "ancientcreature:rock_pile",
+          "properties": {
+            "facing": "north",
+            "has_egg": "true",
+            "has_fossil": "true",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

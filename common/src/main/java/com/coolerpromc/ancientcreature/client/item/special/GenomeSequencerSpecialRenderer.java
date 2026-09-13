@@ -24,7 +24,7 @@ public record GenomeSequencerSpecialRenderer(GenomeSequencerModel model) impleme
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
         applyModelTransform(poseStack);
-        submitNodeCollector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/genome_sequencer.png")), lightCoords, overlayCoords, outlineColor, null);
+        submitNodeCollector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/genome_sequencer.png")), lightCoords, overlayCoords, outlineColor);
         poseStack.popPose();
     }
 
@@ -38,7 +38,7 @@ public record GenomeSequencerSpecialRenderer(GenomeSequencerModel model) impleme
 
     private static void applyModelTransform(PoseStack poseStack) {
         poseStack.translate(0.5, 1.5, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - Direction.NORTH.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, 180.0F - Direction.NORTH.toYRot());
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.scale(0.75f, 0.75f, 0.75f);
         poseStack.translate(0, 0.575, 0);

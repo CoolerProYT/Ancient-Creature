@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:incubator"
+        "recipes": "ancientcreature:incubator"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

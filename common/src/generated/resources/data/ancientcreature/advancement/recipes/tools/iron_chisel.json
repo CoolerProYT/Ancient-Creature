@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:iron_chisel"
+        "recipes": "ancientcreature:iron_chisel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

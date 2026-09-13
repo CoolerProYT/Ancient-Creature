@@ -65,11 +65,6 @@ public class FossilIdentificationChamberBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(FossilIdentificationChamberBlock::new);
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos worldPosition, BlockState blockState) {
         return new FossilIdentificationChamberBlockEntity(worldPosition, blockState);
     }

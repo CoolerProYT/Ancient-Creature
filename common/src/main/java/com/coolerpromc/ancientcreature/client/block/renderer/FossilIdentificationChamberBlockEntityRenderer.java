@@ -49,9 +49,13 @@ public class FossilIdentificationChamberBlockEntityRenderer implements BlockEnti
     public void submit(FossilIdentificationChamberBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.facing.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, 180.0F - state.facing.toYRot());
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        submitNodeCollector.submitModel(model, state.entityRenderState, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/fossil_identification_chamber.png")), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+        var renderType = RenderTypes.entityCutout(Constants.id("textures/entity/block/fossil_identification_chamber.png"));
+        submitNodeCollector.submitModel(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        if (state.breakProgress != null) {
+            submitNodeCollector.submitCrumblingOverlay(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+        }
         poseStack.popPose();
     }
 }

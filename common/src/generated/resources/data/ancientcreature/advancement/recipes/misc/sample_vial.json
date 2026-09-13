@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:sample_vial"
+        "recipes": "ancientcreature:sample_vial"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

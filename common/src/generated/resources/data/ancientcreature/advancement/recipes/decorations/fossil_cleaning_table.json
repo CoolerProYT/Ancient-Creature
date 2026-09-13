@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:fossil_cleaning_table"
+        "recipes": "ancientcreature:fossil_cleaning_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

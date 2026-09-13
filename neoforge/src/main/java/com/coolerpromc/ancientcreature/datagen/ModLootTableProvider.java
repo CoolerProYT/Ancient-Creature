@@ -3,14 +3,11 @@ package com.coolerpromc.ancientcreature.datagen;
 import com.coolerpromc.ancientcreature.datagen.loot.ModArchaeologyLootSubProvider;
 import com.coolerpromc.ancientcreature.datagen.loot.ModBlockLootSubProvider;
 import com.coolerpromc.ancientcreature.datagen.loot.ModChestLootSubProvider;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public class ModLootTableProvider extends LootTableProvider {
     public static final List<SubProviderEntry> providers = List.of(
@@ -19,7 +16,7 @@ public class ModLootTableProvider extends LootTableProvider {
         new SubProviderEntry(ModArchaeologyLootSubProvider::new, LootContextParamSets.ARCHAEOLOGY)
     );
 
-    public ModLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, Set.of(), providers, registries);
+    public ModLootTableProvider() {
+        super(Set.of(), providers);
     }
 }

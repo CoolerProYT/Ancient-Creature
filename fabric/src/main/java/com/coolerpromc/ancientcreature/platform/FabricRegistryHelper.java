@@ -53,7 +53,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -200,9 +199,9 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends FeatureConfiguration> RegistryHandler<Feature<?>, Feature<T>> registerFeature(String name, Feature<T> feature) {
+    public <T extends Feature> RegistryHandler<MapCodec<? extends Feature>, MapCodec<T>> registerFeature(String name, MapCodec<T> mapCodec) {
         Identifier id = Constants.id(name);
-        Holder<Feature<?>> holder = Registry.registerForHolder(BuiltInRegistries.FEATURE, id, feature);
+        Holder<MapCodec<? extends Feature>> holder = Registry.registerForHolder(BuiltInRegistries.FEATURE_TYPE, id, mapCodec);
         return () -> holder;
     }
 

@@ -13,8 +13,9 @@ import java.util.concurrent.CompletableFuture;
 public class ModDataGenerator {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent.Client event) {
-        ModDataPackProvider datapackProvider = event.createProvider(ModDataPackProvider::new);
-        CompletableFuture<HolderLookup.Provider> modRegistries = datapackProvider.getRegistryProvider();
+        event.createWorldRegistryObjects(ModDataPackProvider.WORLD_BUILDER);
+        event.createReloadableRegistryObjects(ModDataPackProvider.RELOADABLE_BUILDER);
+        CompletableFuture<HolderLookup.Provider> modRegistries = event.getReloadableLookupProvider();
         PackOutput output = event.getGenerator().getPackOutput();
 
         event.createProvider(ModLanguageProvider::new);
@@ -22,8 +23,5 @@ public class ModDataGenerator {
         event.createProvider(ModItemTagsProvider::new);
         event.createProvider(ModBlockTagsProvider::new);
         event.createProvider(ModBiomeTagsProvider::new);
-        event.addProvider(new ModLootTableProvider(output, modRegistries));
-        event.addProvider(new ModRecipeProvider.Runner(output, modRegistries));
-        event.addProvider(new ModAdvancementProvider(output, modRegistries));
     }
 }

@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:embryogenesis_chamber"
+        "recipes": "ancientcreature:embryogenesis_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

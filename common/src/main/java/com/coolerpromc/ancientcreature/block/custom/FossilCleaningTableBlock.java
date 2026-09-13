@@ -71,11 +71,6 @@ public class FossilCleaningTableBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(FossilCleaningTableBlock::new);
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos worldPosition, BlockState blockState) {
         return new FossilCleaningTableBlockEntity(worldPosition, blockState);
     }

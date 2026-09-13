@@ -35,11 +35,6 @@ public class PlaceholderBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(PlaceholderBlock::new);
-    }
-
-    @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.INVISIBLE;
     }
@@ -77,7 +72,7 @@ public class PlaceholderBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+    public void spawnDestroyParticles(Level level, BlockPos pos, BlockState state) {
 
     }
 

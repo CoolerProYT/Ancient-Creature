@@ -67,11 +67,6 @@ public class EmbryogenesisChamberBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(EmbryogenesisChamberBlock::new);
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new EmbryogenesisChamberBlockEntity(pos, state);
     }

@@ -146,11 +146,6 @@ public class RockPileBlock extends HorizontalDirectionalBlock implements SimpleW
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return simpleCodec(RockPileBlock::new);
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HAS_EGG, HAS_FOSSIL, FACING, WATERLOGGED);
     }

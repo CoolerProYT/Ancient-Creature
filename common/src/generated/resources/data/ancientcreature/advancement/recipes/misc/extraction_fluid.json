@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:extraction_fluid"
+        "recipes": "ancientcreature:extraction_fluid"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -71,6 +71,7 @@ processResources {
             'minecraft_version_range'      : minecraft_version_range,
             'fabric_version'               : fabric_version,
             'fabric_loader_version'        : fabric_loader_version,
+            'fabric_mc_version_range'      : fabric_mc_version_range,
             'mod_name'                     : mod_name,
             'mod_author'                   : mod_author,
             'mod_id'                       : mod_id,
@@ -80,6 +81,7 @@ processResources {
             'neoforge_loader_version_range': neoforge_loader_version_range,
             'credits'                      : credits,
             'java_version'                 : java_version,
+            'jei_minecraft_version'        : jei_minecraft_version,
             'jei_version'                  : jei_version,
             'jade_version'                 : jade_version,
             'cooler_config_version'        : cooler_config_version

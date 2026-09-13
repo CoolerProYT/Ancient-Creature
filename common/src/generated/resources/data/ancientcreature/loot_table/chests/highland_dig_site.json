@@ -8,7 +8,7 @@
           "name": "ancientcreature:fossil_part"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "ancientcreature:chests/highland_dig_site"

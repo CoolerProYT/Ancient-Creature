@@ -28,6 +28,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class SetFossilDataFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetFossilDataFunction> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -36,8 +37,8 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
 
     private final List<Holder<FossilPart>> validParts;
 
-    public SetFossilDataFunction(List<LootItemCondition> lootItemConditions, List<Holder<FossilPart>> fossilParts) {
-        super(lootItemConditions);
+    public SetFossilDataFunction(Optional<Holder<LootItemCondition>> condition, List<Holder<FossilPart>> fossilParts) {
+        super(condition);
         this.validParts = fossilParts.stream().sorted(Comparator.comparing(h -> h.unwrapKey().orElse(FossilPart.key("empty")).identifier())).toList();
     }
 
@@ -48,7 +49,7 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack itemStack, LootContext context) {
-        Entity entity = context.getParameter(LootContextParams.THIS_ENTITY);
+        Entity entity = context.getOptional(LootContextParams.THIS_ENTITY);
         BlockPos pos = entity.getOnPos();
         RandomSource random = entity.level().getRandom();
         Holder<Biome> biome = entity.level().getBiome(pos);
@@ -57,7 +58,7 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
             return ItemStack.EMPTY;
         }
 
-        ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
+        ItemInstance tool = context.getOptional(LootContextParams.TOOL);
         int fortuneLevel = 0;
         float damageRate = 0f;
         if (tool != null && tool.is(ModItemTags.CHISELS)) {

@@ -10,7 +10,7 @@ public final class SpeciesJournalKeyHandler {
     public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Constants.id("ancient_creature"));
     public static final KeyMapping OPEN_JOURNAL = new KeyMapping(
         "key.ancientcreature.open_species_journal",
-        InputConstants.Type.KEYSYM,
+        InputConstants.Type.KEYBOARD,
         InputConstants.KEY_J,
         CATEGORY
     );

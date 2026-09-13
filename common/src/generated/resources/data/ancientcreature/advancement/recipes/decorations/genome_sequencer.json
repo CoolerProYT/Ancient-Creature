@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:genome_sequencer"
+        "recipes": "ancientcreature:genome_sequencer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

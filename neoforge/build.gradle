@@ -4,6 +4,17 @@ plugins {
     id "me.modmuss50.mod-publish-plugin"
 }
 
+repositories {
+    maven {
+        name "coolerpromcMavenPrivate"
+        url "https://maven.coolerpromc.com/private"
+        credentials {
+            username = findProperty("maven_username")
+            password = findProperty("maven_password")
+        }
+    }
+}
+
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
@@ -41,11 +52,10 @@ neoForge {
 }
 
 dependencies {
-    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-
+    // JEI/Jade have no build for minecraft_version yet; compiled (only, not bundled/run) against their
+    // last known-good (26.2) build so the compat code keeps building until they catch up.
+    compileOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}")
     compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
-    runtimeOnly "maven.modrinth:jade:${jade_version}+neoforge"
 
     jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${cooler_config_version}")
 }

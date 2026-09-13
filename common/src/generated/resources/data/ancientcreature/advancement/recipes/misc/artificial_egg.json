@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:artificial_egg"
+        "recipes": "ancientcreature:artificial_egg"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

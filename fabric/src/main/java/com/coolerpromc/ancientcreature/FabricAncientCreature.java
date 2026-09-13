@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
@@ -44,7 +43,8 @@ public class FabricAncientCreature implements ModInitializer {
         ServerPlayerEvents.JOIN.register(PlayerEvents::onPlayerJoin);
         Services.CAPABILITIES.applyRegistrations(null);
 
-        FabricPotionBrewingBuilder.BUILD.register(builder -> Services.REGISTRY.applyBrewingRecipeRegistrations(builder::addContainerRecipe));
+        // Fabric API dropped FabricPotionBrewingBuilder for 26.3 (brewing is now data-driven recipe JSON);
+        // no custom brewing recipes are registered yet on either loader, so there is nothing to port here.
         Services.REGISTRY.applyDatapackRegistryRegistrations(DynamicRegistries::registerSynced);
 
         Services.REGISTRY.applyClientboundPayloadRegistrations(PayloadTypeRegistry.clientboundPlay()::register);

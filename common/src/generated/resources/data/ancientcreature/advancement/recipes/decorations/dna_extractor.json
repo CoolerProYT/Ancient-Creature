@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:dna_extractor"
+        "recipes": "ancientcreature:dna_extractor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

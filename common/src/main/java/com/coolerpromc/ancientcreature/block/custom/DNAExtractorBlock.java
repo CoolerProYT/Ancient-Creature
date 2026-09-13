@@ -68,11 +68,6 @@ public class DNAExtractorBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(DNAExtractorBlock::new);
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos worldPosition, BlockState blockState) {
         return new DNAExtractorBlockEntity(worldPosition, blockState);
     }

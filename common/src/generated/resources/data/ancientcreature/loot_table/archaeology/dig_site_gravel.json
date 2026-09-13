@@ -5,17 +5,15 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "fossilParts": [
-                "ancientcreature:claw",
-                "ancientcreature:limb",
-                "ancientcreature:rib",
-                "ancientcreature:tooth"
-              ],
-              "function": "ancientcreature:set_fossil_data"
-            }
-          ],
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:claw",
+              "ancientcreature:limb",
+              "ancientcreature:rib",
+              "ancientcreature:tooth"
+            ]
+          },
           "name": "ancientcreature:fossil_part",
           "weight": 5
         },
@@ -43,7 +41,7 @@
           "type": "minecraft:empty"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "ancientcreature:archaeology/dig_site_gravel"

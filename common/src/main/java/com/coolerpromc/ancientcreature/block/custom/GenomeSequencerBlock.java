@@ -68,11 +68,6 @@ public class GenomeSequencerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(GenomeSequencerBlock::new);
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos worldPosition, BlockState blockState) {
         return new GenomeSequencerBlockEntity(worldPosition, blockState);
     }

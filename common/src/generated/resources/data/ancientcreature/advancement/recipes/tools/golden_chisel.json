@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ancientcreature:golden_chisel"
+        "recipes": "ancientcreature:golden_chisel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

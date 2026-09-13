@@ -5,78 +5,68 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 1
             }
-          ],
+          },
           "name": "ancientcreature:rock_fragment"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "conditions": [
-        {
-          "block": "ancientcreature:rock_pile",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "has_egg": "true"
-          }
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "ancientcreature:rock_pile",
+        "state": {
+          "has_egg": "true"
         }
-      ],
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "fossilParts": [
-                "ancientcreature:egg"
-              ],
-              "function": "ancientcreature:set_fossil_data"
-            }
-          ],
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:egg"
+            ]
+          },
           "name": "ancientcreature:fossil_part"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "conditions": [
-        {
-          "block": "ancientcreature:rock_pile",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "has_fossil": "true"
-          }
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "ancientcreature:rock_pile",
+        "state": {
+          "has_fossil": "true"
         }
-      ],
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "fossilParts": [
-                "ancientcreature:claw",
-                "ancientcreature:egg",
-                "ancientcreature:limb",
-                "ancientcreature:rib",
-                "ancientcreature:skull",
-                "ancientcreature:tooth",
-                "ancientcreature:vertebra"
-              ],
-              "function": "ancientcreature:set_fossil_data"
-            }
-          ],
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:claw",
+              "ancientcreature:egg",
+              "ancientcreature:limb",
+              "ancientcreature:rib",
+              "ancientcreature:skull",
+              "ancientcreature:tooth",
+              "ancientcreature:vertebra"
+            ]
+          },
           "name": "ancientcreature:fossil_part"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "ancientcreature:blocks/rock_pile"
