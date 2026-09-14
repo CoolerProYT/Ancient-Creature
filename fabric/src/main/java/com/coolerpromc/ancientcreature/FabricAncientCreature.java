@@ -1,7 +1,5 @@
 package com.coolerpromc.ancientcreature;
 
-import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
-import com.coolerpromc.ancientcreature.event.CreativeTabEvents;
 import com.coolerpromc.ancientcreature.event.ItemEvents;
 import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.Services;
@@ -14,7 +12,6 @@ import net.minecraft.server.packs.PackType;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -39,7 +36,6 @@ public class FabricAncientCreature implements ModInitializer {
         Services.REGISTRY.applyBiomeModifierRegistrations((biomeTagKey, step, placedFeatureKey) -> BiomeModifications.addFeature(BiomeSelectors.tag(biomeTagKey), step, placedFeatureKey));
 
         ItemTooltipCallback.EVENT.register(ItemEvents::onItemTooltip);
-        CreativeModeTabEvents.modifyOutputEvent(ModCreativeTabs.TAB.key()).register(output -> CreativeTabEvents.onModifyOutput(output.getContext()));
         ServerPlayerEvents.JOIN.register(PlayerEvents::onPlayerJoin);
         Services.CAPABILITIES.applyRegistrations(null);
 

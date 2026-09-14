@@ -1,7 +1,5 @@
 package com.coolerpromc.ancientcreature;
 
-import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
-import com.coolerpromc.ancientcreature.event.CreativeTabEvents;
 import com.coolerpromc.ancientcreature.event.ItemEvents;
 import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.NeoForgeRegistryHelper;
@@ -41,13 +39,6 @@ public class NeoForgeAncientCreature {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         ItemEvents.onItemTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
-    }
-
-    @SubscribeEvent
-    public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() == ModCreativeTabs.TAB.get()){
-            CreativeTabEvents.onModifyOutput(event.getParameters());
-        }
     }
 
     @SubscribeEvent
