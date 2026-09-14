@@ -142,7 +142,8 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     }
 
     private boolean isValidFossil(ItemStack stack){
-        return stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY).isDirty();
+        FossilData fossilData = stack.get(ModDataComponents.FOSSIL_DATA.get());
+        return fossilData != null && fossilData.isDirty();
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState state) {

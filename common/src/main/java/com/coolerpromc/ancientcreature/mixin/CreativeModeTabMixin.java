@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.mixin;
 
 import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
 import com.coolerpromc.ancientcreature.creativetab.TabLayout;
+import com.coolerpromc.ancientcreature.event.CreativeTabEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +22,8 @@ public class CreativeModeTabMixin {
         if (self != ModCreativeTabs.TAB.get()) {
             return;
         }
+
+        CreativeTabEvents.onModifyOutput(parameters);
 
         List<ItemStack> display = new ArrayList<>(TabLayout.CACHED_ITEMS);
         self.displayItems = display;
