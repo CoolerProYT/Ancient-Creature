@@ -1,7 +1,5 @@
 package com.coolerpromc.ancientcreature;
 
-import com.coolerpromc.ancientcreature.creativetab.ModCreativeTabs;
-import com.coolerpromc.ancientcreature.event.CreativeTabEvents;
 import com.coolerpromc.ancientcreature.event.ItemEvents;
 import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.NeoForgeRegistryHelper;
@@ -16,7 +14,6 @@ import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -42,13 +39,6 @@ public class NeoForgeAncientCreature {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         ItemEvents.onItemTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
-    }
-
-    @SubscribeEvent
-    public static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() == ModCreativeTabs.TAB.get()){
-            CreativeTabEvents.onModifyOutput(event.getParameters());
-        }
     }
 
     @SubscribeEvent
