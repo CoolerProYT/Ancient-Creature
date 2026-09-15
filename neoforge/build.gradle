@@ -95,4 +95,10 @@ publishMods {
         client = true
         server = true
     }
+
+    modrinth {
+        projectId = 'ygrX3nKx'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
 }
