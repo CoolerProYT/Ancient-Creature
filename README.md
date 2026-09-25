@@ -116,7 +116,7 @@ assets/<ns>/ancientcreature/animation_controllers/<name>.controller.json   when 
 
 Blockbench **Bedrock Entity** and **Bedrock Animation** exports load directly. Datapack changes apply with `/reload`, resource-pack changes with F3+T.
 
-Full documentation is in the wiki, which is maintained outside this repository — start at `guide/quick-start.md`. Other mods can add behaviour components and animation queries through the API; see `guide/api.md`. [`docs/data-driven-species.md`](docs/data-driven-species.md) summarises the system and indexes the wiki pages.
+Full documentation is in the wiki, whose source lives in [`docs/`](docs/) — start at [`docs/species/quick-start.md`](docs/species/quick-start.md). Other mods can add behaviour components and animation queries through the API; see [`docs/species/api.md`](docs/species/api.md). The wiki also covers the gameplay loop, from fossils to hatching, under [`docs/guide/`](docs/guide/).
 
 ## Development
 

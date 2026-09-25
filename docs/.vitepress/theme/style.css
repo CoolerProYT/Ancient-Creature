@@ -1,0 +1,56 @@
+/* Sandstone and amber for the dig, teal for the lab. */
+:root {
+  --vp-c-brand-1: #9a5b1c;
+  --vp-c-brand-2: #b06a24;
+  --vp-c-brand-3: #c47d34;
+  --vp-c-brand-soft: rgba(154, 91, 28, 0.14);
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #9a5b1c 15%, #0f8f82);
+  --vp-home-hero-image-background-image: radial-gradient(circle, rgba(196, 125, 52, 0.4) 0%, rgba(15, 143, 130, 0.12) 55%, rgba(15, 143, 130, 0) 70%);
+  --vp-home-hero-image-filter: blur(40px);
+
+  --ac-slot-bg: #8b8b8b;
+  --ac-slot-hover: #a0a0a0;
+  --ac-slot-dark: #373737;
+  --ac-slot-light: #ffffff;
+  --ac-accent: #0f8f82;
+  --ac-accent-soft: rgba(15, 143, 130, 0.14);
+  --ac-land: #9a5b1c;
+  --ac-aquatic: #2563eb;
+  --ac-flying: #7c3aed;
+}
+
+.dark {
+  --vp-c-brand-1: #e0a15e;
+  --vp-c-brand-2: #d18d46;
+  --vp-c-brand-3: #b06a24;
+  --vp-c-brand-soft: rgba(224, 161, 94, 0.16);
+  --ac-accent: #3cc7b8;
+  --ac-accent-soft: rgba(60, 199, 184, 0.16);
+  --ac-land: #e0a15e;
+  --ac-aquatic: #60a5fa;
+  --ac-flying: #a78bfa;
+}
+
+/* Pixel art stays crisp at any size. */
+.VPHero .image-src,
+.pixelated {
+  image-rendering: pixelated;
+}
+
+.VPHero .image-src {
+  width: 240px;
+  height: 240px;
+}
+
+.ac-muted {
+  color: var(--vp-c-text-2);
+  font-size: 0.875em;
+}
+
+/* Two recipes side by side on wide screens. */
+.ac-recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0 16px;
+}
