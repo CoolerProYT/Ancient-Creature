@@ -44,6 +44,7 @@ public class ModSections {
             ModBlocks.INCUBATOR.toStack()
         );
         List<ItemStack> misc = List.of(
+            ModItems.FIELD_GUIDE.toStack(),
             ModBlocks.FOSSIL_ORE.toStack(),
             ModBlocks.ROCK_PILE.toStack(),
             ModItems.ROCK_FRAGMENT.toStack(),

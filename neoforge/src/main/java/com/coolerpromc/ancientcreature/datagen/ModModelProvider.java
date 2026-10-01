@@ -60,6 +60,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.PLACEHOLDER.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/placeholder"))))));
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.EGG.getBlock(), new MultiVariant(WeightedList.of(new Variant(Constants.id("block/egg"))))));
 
+        itemModels.generateFlatItem(ModItems.FIELD_GUIDE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.STONE_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.COPPER_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.IRON_CHISEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);

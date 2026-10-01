@@ -10,9 +10,9 @@
             {
               "fossilParts": [
                 "ancientcreature:claw",
-                "ancientcreature:tooth",
+                "ancientcreature:limb",
                 "ancientcreature:rib",
-                "ancientcreature:limb"
+                "ancientcreature:tooth"
               ],
               "function": "ancientcreature:set_fossil_data"
             }

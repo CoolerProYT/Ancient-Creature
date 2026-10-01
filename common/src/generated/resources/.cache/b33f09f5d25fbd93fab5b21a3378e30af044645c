@@ -1,4 +1,4 @@
-// 26.1.2	2026-08-04T22:23:42.5780774	Model Definitions - ancientcreature
+// 26.1.2	2026-10-01T20:34:14.7697325	Model Definitions - ancientcreature
 83914e5f17f471a4bf454e44fda5f1e435eb014d assets/ancientcreature/blockstates/dna_extractor.json
 02f51bc21deaa74e51a524f6fa468f6fd07a05d2 assets/ancientcreature/blockstates/egg.json
 704cf66d2ba7dc73992e46ca35bc9ece49a6ffba assets/ancientcreature/blockstates/embryogenesis_chamber.json
@@ -21,6 +21,7 @@ e169c976dee9f6d6b5de2a89cbe1afbb0d5fa86f assets/ancientcreature/items/egg_shell_
 d5866764fe048d47113f7267b563a60baa9d158e assets/ancientcreature/items/embryogenesis_chamber.json
 ddeb0581e9ad570f0f63cf14bed774d0d856a078 assets/ancientcreature/items/extraction_fluid.json
 548536f6da8b41e9de1f09a79ddaf5c254364fc4 assets/ancientcreature/items/fertilized_ancient_egg.json
+52de500c861868c96b3af63e9accfc8c8b165549 assets/ancientcreature/items/field_guide.json
 ed60b36972b5142d87f9e4d26a0155835d4e1965 assets/ancientcreature/items/fossil_cleaning_table.json
 8b2eda170421292c2a3bf3abf846dc9846084ca4 assets/ancientcreature/items/fossil_identification_chamber.json
 532209a5e0a626eecb3b304867aacee5be54771c assets/ancientcreature/items/fossil_ore.json
@@ -51,6 +52,7 @@ be79d89d0415b7b8e0fb780c41c01709b21130b7 assets/ancientcreature/models/item/dna_
 59e03a2afaaf0ce28cd231892710978cf9135a3d assets/ancientcreature/models/item/egg_shell_fragment.json
 464b3bb43557e95ba398eaf978ae38d08b57d4fa assets/ancientcreature/models/item/extraction_fluid.json
 59cf883f23b4f7fa53a61550aaccd5818c0bc616 assets/ancientcreature/models/item/fertilized_ancient_egg.json
+8224b79124015bdc60eed8a9840709822c8eed44 assets/ancientcreature/models/item/field_guide.json
 d463dea33147f74ad6c35c4e2671323c34905bb5 assets/ancientcreature/models/item/fossil_part/claw.json
 e299bf8542205eb5eccacd35caa6ba1c6c3cf8cd assets/ancientcreature/models/item/fossil_part/dirty_claw.json
 39e0283ac4fc5ac3c6e1bacc07506797bb955f6a assets/ancientcreature/models/item/fossil_part/dirty_egg.json

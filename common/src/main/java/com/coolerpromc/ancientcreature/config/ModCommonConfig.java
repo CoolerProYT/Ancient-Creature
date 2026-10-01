@@ -17,6 +17,7 @@ public final class ModCommonConfig {
     public final ConfigValue<Integer> sequencingTick;
     public final ConfigValue<Integer> embryogenesisTick;
     public final ConfigValue<Float> incubationTimeMultiplier;
+    public final ConfigValue<Boolean> giveFieldGuideOnFirstJoin;
 
     private ModCommonConfig(ConfigBuilder builder){
         cleaningTick = builder.defineInt("FossilCleaningTable.cleaningTick", 100, 1, Integer.MAX_VALUE, "Total processing time for cleaning a fossil fragment or fossil egg");
@@ -26,6 +27,7 @@ public final class ModCommonConfig {
         sequencingTick = builder.defineInt("GenomeSequencing.sequencingTick", 100, 1, Integer.MAX_VALUE, "Total processing time for genome sequencing");
         embryogenesisTick = builder.defineInt("EmbryogenesisChamber.embryogenesisTick", 100, 1, Integer.MAX_VALUE, "Total processing time for embryogenesis chamber");
         incubationTimeMultiplier = builder.defineFloat("Incubator.incubationTimeMultiplier", 1f, 0.01f, Float.MAX_VALUE, "Incubation time are defined per species, but modifying this config value can make the machine work slower or faster []");
+        giveFieldGuideOnFirstJoin = builder.defineBoolean("FieldGuide.giveOnFirstJoin", true, "Give players a Paleontologist's Field Guide the first time they join a world");
     }
 
     static {
