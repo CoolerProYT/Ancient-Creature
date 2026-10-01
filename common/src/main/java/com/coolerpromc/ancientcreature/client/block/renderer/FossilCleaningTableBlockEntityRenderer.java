@@ -1,6 +1,5 @@
 package com.coolerpromc.ancientcreature.client.block.renderer;
 
-import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.custom.FossilCleaningTableBlock;
 import com.coolerpromc.ancientcreature.block.entity.custom.FossilCleaningTableBlockEntity;
 import com.coolerpromc.ancientcreature.client.block.state.FossilCleaningTableBlockEntityRenderState;
@@ -13,13 +12,13 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRenderer<FossilCleaningTableBlockEntity, FossilCleaningTableBlockEntityRenderState> {
+    private static final MachineLayers LAYERS = MachineLayers.withoutGlow("fossil_cleaning_table");
     private final FossilCleaningTableModel model;
 
     public FossilCleaningTableBlockEntityRenderer(BlockEntityRendererProvider.Context context){
@@ -51,8 +50,9 @@ public class FossilCleaningTableBlockEntityRenderer implements BlockEntityRender
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.rotateDegrees(Axis.YP, 180.0F - state.facing.toYRot());
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-        var renderType = RenderTypes.entityCutout(Constants.id("textures/entity/block/fossil_cleaning_table.png"));
+        var renderType = LAYERS.base();
         submitNodeCollector.submitModel(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        LAYERS.submitLights(model, state.entityRenderState, poseStack, submitNodeCollector, state.isBrushing);
         if (state.breakProgress != null) {
             submitNodeCollector.submitCrumblingOverlay(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
         }

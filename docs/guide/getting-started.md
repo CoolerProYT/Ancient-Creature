@@ -38,6 +38,12 @@ Each machine does one job and passes its result to the next. Every machine accep
 Better fossils make better DNA, and better DNA fills a genome in fewer samples. Teeth, skulls and egg fossils are the best finds. A Diamond or Netherite Chisel keeps most or all of their quality.
 :::
 
+## Field Guide
+
+<ItemSlot id="ancientcreature:field_guide" label size="lg" />
+
+The **Paleontologist's Field Guide** is this guide in book form. Every player gets one the first time they join a world (turn this off with `FieldGuide.giveOnFirstJoin` in the config), and you can craft another from a **Book** and a **Bone**. Right-click it to read it: pick a chapter on the left and scroll the page. Recipes, machine steps and items are shown with real item icons, so you can hover over them for their names.
+
 ## Species Journal
 
 Press <kbd>J</kbd> to open the Species Journal. It lists every species that has been identified on the server, with its habitat, diet, size, speed, health, attack, incubation time and how long it takes to grow up. Species nobody has identified yet show as locked.

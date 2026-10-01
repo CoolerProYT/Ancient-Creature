@@ -22,6 +22,13 @@ public class ModRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes() {
+        shapeless(RecipeCategory.MISC, ModItems.FIELD_GUIDE)
+            .requires(Items.BOOK)
+            .requires(Items.BONE)
+            .unlockedBy(getHasName(Items.BONE), has(Items.BONE))
+            .unlockedBy(getHasName(Items.BOOK), has(Items.BOOK))
+            .save(output);
+
         chisel(ModItems.STONE_CHISEL, ItemTags.STONE_CRAFTING_MATERIALS);
         chisel(ModItems.COPPER_CHISEL, ItemTags.COPPER_TOOL_MATERIALS);
         chisel(ModItems.IRON_CHISEL, ItemTags.IRON_TOOL_MATERIALS);

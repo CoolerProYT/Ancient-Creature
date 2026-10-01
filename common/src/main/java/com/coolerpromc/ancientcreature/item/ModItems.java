@@ -7,6 +7,7 @@ import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.custom.BabyCreatureCapsule;
 import com.coolerpromc.ancientcreature.item.custom.DNASampleItem;
 import com.coolerpromc.ancientcreature.item.custom.EggFossilItem;
+import com.coolerpromc.ancientcreature.item.custom.FieldGuideItem;
 import com.coolerpromc.ancientcreature.item.custom.FossilPartItem;
 import com.coolerpromc.ancientcreature.platform.Services;
 import com.coolerpromc.ancientcreature.platform.util.RegistryHandler;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.ToolMaterial;
 import java.util.function.Function;
 
 public class ModItems {
+    public static final RegistryHandler.Items<FieldGuideItem> FIELD_GUIDE = registerItem("field_guide", p -> new FieldGuideItem(p.stacksTo(1)));
+
     public static final RegistryHandler.Items<Item> STONE_CHISEL = registerItem("stone_chisel", p -> new Item(chisel(p, ToolMaterial.STONE, -1, -2, 0.4f).repairable(ItemTags.STONE_TOOL_MATERIALS)));
     public static final RegistryHandler.Items<Item> COPPER_CHISEL = registerItem("copper_chisel", p -> new Item(chisel(p, ToolMaterial.COPPER, -1, -2, 0.35f).repairable(ItemTags.COPPER_TOOL_MATERIALS)));
     public static final RegistryHandler.Items<Item> IRON_CHISEL = registerItem("iron_chisel", p -> new Item(chisel(p, ToolMaterial.IRON, -2, -1, 0.25f).repairable(ItemTags.IRON_TOOL_MATERIALS)));

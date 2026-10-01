@@ -1,14 +1,13 @@
 package com.coolerpromc.ancientcreature.client.item.special;
 
-import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.client.entity.model.block.FossilIdentificationChamberModel;
+import com.coolerpromc.ancientcreature.client.block.renderer.MachineLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.state.block.FossilIdentificationChamberRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
@@ -19,12 +18,14 @@ import java.util.function.Consumer;
 
 public record FossilIdentificationChamberSpecialRenderer(FossilIdentificationChamberModel model) implements NoDataSpecialModelRenderer {
     private static final FossilIdentificationChamberRenderState ITEM_STATE = new FossilIdentificationChamberRenderState();
+    private static final MachineLayers LAYERS = MachineLayers.of("fossil_identification_chamber");
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
         poseStack.pushPose();
         applyModelTransform(poseStack);
-        submitNodeCollector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/fossil_identification_chamber.png")), lightCoords, overlayCoords, outlineColor);
+        submitNodeCollector.submitModel(model, ITEM_STATE, poseStack, LAYERS.base(), lightCoords, overlayCoords, outlineColor);
+        LAYERS.submitLights(model, ITEM_STATE, poseStack, submitNodeCollector, false);
         poseStack.popPose();
     }
 

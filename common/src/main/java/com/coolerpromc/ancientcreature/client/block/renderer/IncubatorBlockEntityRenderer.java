@@ -1,6 +1,5 @@
 package com.coolerpromc.ancientcreature.client.block.renderer;
 
-import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.custom.IncubatorBlock;
 import com.coolerpromc.ancientcreature.block.entity.custom.IncubatorBlockEntity;
 import com.coolerpromc.ancientcreature.client.block.state.IncubatorBlockEntityRenderState;
@@ -13,13 +12,13 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 public class IncubatorBlockEntityRenderer implements BlockEntityRenderer<IncubatorBlockEntity, IncubatorBlockEntityRenderState> {
+    private static final MachineLayers LAYERS = MachineLayers.of("incubator");
     private final IncubatorModel model;
 
     public IncubatorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -50,8 +49,9 @@ public class IncubatorBlockEntityRenderer implements BlockEntityRenderer<Incubat
         poseStack.translate(0.5, 1.5, 0.5);
         poseStack.rotateDegrees(Axis.YP, 180.0F - state.facing.toYRot());
         poseStack.scale(-1, -1, 1);
-        var renderType = RenderTypes.entityCutout(Constants.id("textures/entity/block/incubator.png"));
+        var renderType = LAYERS.base();
         collector.submitModel(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        LAYERS.submitLights(model, state.entityRenderState, poseStack, collector, state.isProcessing);
         if (state.breakProgress != null) {
             collector.submitCrumblingOverlay(model, state.entityRenderState, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
         }
