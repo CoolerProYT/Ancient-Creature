@@ -1,4 +1,4 @@
-// 26.2	2026-09-13T13:52:50.2184743	Ancient Creature Recipes
+// 26.2	2026-10-01T20:19:13.463263	Ancient Creature Recipes
 47eeb614037fe7a963936e9d6219f2112dd5a4a2 data/ancientcreature/advancement/recipes/decorations/dna_extractor.json
 0403f74d7477a700bc33e5e7c973ad2dc51bdd1f data/ancientcreature/advancement/recipes/decorations/embryogenesis_chamber.json
 d442b6fee0b881ff254eec2fff647351c0d56fc5 data/ancientcreature/advancement/recipes/decorations/fossil_cleaning_table.json
@@ -7,6 +7,7 @@ fbec242efea9737edfc279ca9f0e8f692aebc07d data/ancientcreature/advancement/recipe
 d8233d33482eef04f2e5df468c2e55563f3bc367 data/ancientcreature/advancement/recipes/decorations/incubator.json
 c0371512a830367eb4bc2b4c6792b5b5e4bb604f data/ancientcreature/advancement/recipes/misc/artificial_egg.json
 83061828115fb8719825fa5d80ddf06c190c89f2 data/ancientcreature/advancement/recipes/misc/extraction_fluid.json
+e76750e40c3de31929f9436890775c77191092dc data/ancientcreature/advancement/recipes/misc/field_guide.json
 e1764e659b00db70c876f5f400a5d0475878e423 data/ancientcreature/advancement/recipes/misc/genome_cartridge_blank.json
 ce9473c85cd9e30cd9663a3354dec0c9b78e519a data/ancientcreature/advancement/recipes/misc/nutrient_solution.json
 b4cfd04fdba8831dcb9d268413ad0bc085cfd439 data/ancientcreature/advancement/recipes/misc/sample_vial.json
@@ -21,6 +22,7 @@ aa104c81feb78adb916ad28b877b02139c7e1cfb data/ancientcreature/advancement/recipe
 7632c54ffea6783bd3109025064170f9fa57a25d data/ancientcreature/recipe/dna_extractor.json
 f018e6f2482ea695895086c00dadeb3cfde15bf2 data/ancientcreature/recipe/embryogenesis_chamber.json
 ef68a25923ea6e04b6d210bfbe6b0290faf64019 data/ancientcreature/recipe/extraction_fluid.json
+756e843c2ef615e1cc5711608646ae232a5e0d36 data/ancientcreature/recipe/field_guide.json
 904d1a5d1e398db5e448e132e0f19b1816cc9b90 data/ancientcreature/recipe/fossil_cleaning_table.json
 bb04bc31d81d61767041ad1dc6bfcca77f125278 data/ancientcreature/recipe/fossil_identification_chamber.json
 36dea741e16a0d9e78d7768b031af8401ff05f20 data/ancientcreature/recipe/genome_cartridge_blank.json

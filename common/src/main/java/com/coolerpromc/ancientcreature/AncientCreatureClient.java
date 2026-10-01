@@ -15,6 +15,7 @@ import com.coolerpromc.ancientcreature.client.item.select.DNAIntegritySelect;
 import com.coolerpromc.ancientcreature.client.item.select.FossilPartSelect;
 import com.coolerpromc.ancientcreature.client.item.special.*;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
+import com.coolerpromc.ancientcreature.item.custom.FieldGuideItem;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
 import com.coolerpromc.ancientcreature.network.ClientboundIdentifiedSpeciesSyncPacket;
 import com.coolerpromc.ancientcreature.network.ClientboundSpeciesSyncPacket;
@@ -22,6 +23,7 @@ import com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload;
 import com.coolerpromc.ancientcreature.platform.ServicesClient;
 import com.coolerpromc.ancientcreature.platform.services.client.IRegistryHelper;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
@@ -49,7 +51,7 @@ import java.util.function.Supplier;
 
 public class AncientCreatureClient {
     public static void init(){
-
+        FieldGuideItem.clientOpener = () -> Minecraft.getInstance().gui.setScreen(new FieldGuideScreen());
     }
 
     public static void initAll(){

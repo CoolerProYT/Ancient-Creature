@@ -1,6 +1,6 @@
 package com.coolerpromc.ancientcreature.client.item.special;
 
-import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.client.block.renderer.MachineLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.ModModelLayers;
 import com.coolerpromc.ancientcreature.client.entity.model.block.IncubatorModel;
 import com.coolerpromc.ancientcreature.client.entity.state.block.IncubatorRenderState;
@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
@@ -19,12 +18,14 @@ import java.util.function.Consumer;
 
 public record IncubatorSpecialRenderer(IncubatorModel model) implements NoDataSpecialModelRenderer {
     private static final IncubatorRenderState ITEM_STATE = new IncubatorRenderState();
+    private static final MachineLayers LAYERS = MachineLayers.of("incubator");
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, int overlay, boolean foil, int outlineColor) {
         poseStack.pushPose();
         applyTransform(poseStack);
-        collector.submitModel(model, ITEM_STATE, poseStack, RenderTypes.entityCutout(Constants.id("textures/entity/block/incubator.png")), light, overlay, outlineColor, null);
+        collector.submitModel(model, ITEM_STATE, poseStack, LAYERS.base(), light, overlay, outlineColor, null);
+        LAYERS.submitLights(model, ITEM_STATE, poseStack, collector, false);
         poseStack.popPose();
     }
 
