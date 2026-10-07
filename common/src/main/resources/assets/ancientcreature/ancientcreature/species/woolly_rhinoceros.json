@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:woolly_rhinoceros",
-  "texture": "ancientcreature:textures/entity/woolly_rhinoceros.png",
-  "animations": "ancientcreature:woolly_rhinoceros",
-  "controller": "ancientcreature:woolly_rhinoceros",
+  "format_version": 2,
   "shadow_radius": 0.935,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/woolly_rhinoceros.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/woolly_rhinoceros_mottled.png"
-    }
-  ]
+  }
 }

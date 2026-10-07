@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_herbivore",
+  "loot_table": "ancientcreature:entities/parasaurolophus",
   "entity_category": "land",
   "physical": {
     "width": 1.55,
@@ -51,5 +51,26 @@
       "minecraft:apple",
       "minecraft:fern"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 3,
+    "group_max": 12
+  },
+  "riding": {
+    "ability": "roar",
+    "cooldown": 200,
+    "power": 1.0
   }
 }

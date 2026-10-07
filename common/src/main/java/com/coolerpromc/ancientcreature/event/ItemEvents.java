@@ -1,6 +1,7 @@
 package com.coolerpromc.ancientcreature.event;
 
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.CreatureGenome;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
@@ -31,7 +32,12 @@ public class ItemEvents {
         if (damageRate != null){
             damageRate.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
         }
-        Species species = stack.get(ModDataComponents.SPECIES.get());
+        CreatureGenome genome = stack.get(ModDataComponents.GENOME.get());
+        if (genome != null){
+            genome.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
+        }
+        // the genome readout already names the species
+        Species species = genomeData == null ? stack.get(ModDataComponents.SPECIES.get()) : null;
         if (species != null){
             species.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
         }

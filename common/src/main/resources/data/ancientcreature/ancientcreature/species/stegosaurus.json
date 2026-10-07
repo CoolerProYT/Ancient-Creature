@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_herbivore",
+  "loot_table": "ancientcreature:entities/stegosaurus",
   "entity_category": "land",
   "physical": {
     "width": 2.25,
@@ -51,5 +51,26 @@
       "minecraft:fern",
       "minecraft:hay_block"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 6
+  },
+  "riding": {
+    "ability": "tail_sweep",
+    "cooldown": 80,
+    "power": 1.0
   }
 }

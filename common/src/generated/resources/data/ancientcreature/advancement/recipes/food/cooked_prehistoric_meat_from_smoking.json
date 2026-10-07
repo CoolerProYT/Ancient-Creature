@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_prehistoric_meat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:raw_prehistoric_meat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ancientcreature:cooked_prehistoric_meat_from_smoking"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_raw_prehistoric_meat"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ancientcreature:cooked_prehistoric_meat_from_smoking"
+    ]
+  }
+}

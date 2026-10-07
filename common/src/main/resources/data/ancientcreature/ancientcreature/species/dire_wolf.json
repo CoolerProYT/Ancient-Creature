@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/small_predator",
+  "loot_table": "ancientcreature:entities/dire_wolf",
   "entity_category": "land",
   "physical": {
     "width": 0.95,
@@ -43,5 +43,26 @@
       "minecraft:mutton",
       "minecraft:rabbit"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 3,
+    "group_max": 8
+  },
+  "riding": {
+    "ability": "pounce",
+    "cooldown": 50,
+    "power": 0.9
   }
 }

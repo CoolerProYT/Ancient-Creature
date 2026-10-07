@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:woolly_mammoth",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/woolly_mammoth",
+        "mottled": "textures/entity/woolly_mammoth_mottled",
+        "saddle": "textures/entity/gear/woolly_mammoth_saddle",
+        "armor_iron": "textures/entity/gear/woolly_mammoth_armor_iron",
+        "armor_golden": "textures/entity/gear/woolly_mammoth_armor_golden",
+        "armor_diamond": "textures/entity/gear/woolly_mammoth_armor_diamond",
+        "armor_netherite": "textures/entity/gear/woolly_mammoth_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.woolly_mammoth"
+      },
+      "animations": {
+        "idle": "animation.woolly_mammoth.idle",
+        "walk": "animation.woolly_mammoth.walk",
+        "run": "animation.woolly_mammoth.run",
+        "attack": "animation.woolly_mammoth.attack",
+        "special": "animation.woolly_mammoth.special",
+        "hurt": "animation.woolly_mammoth.hurt",
+        "death": "animation.woolly_mammoth.death",
+        "main": "controller.animation.woolly_mammoth.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.woolly_mammoth"
+      ]
+    }
+  }
+}

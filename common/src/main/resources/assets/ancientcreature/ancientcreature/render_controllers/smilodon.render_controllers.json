@@ -1,0 +1,32 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.ancientcreature.smilodon": {
+      "arrays": {
+        "textures": {
+          "Array.skins": [
+            "Texture.default",
+            "Texture.mottled"
+          ],
+          "Array.armor": [
+            "Texture.armor_iron",
+            "Texture.armor_golden",
+            "Texture.armor_diamond",
+            "Texture.armor_netherite"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.skins[query.variant]",
+        "query.armor_tier > 0 ? Array.armor[query.armor_tier - 1] : 0",
+        "query.is_saddled ? Texture.saddle : 0"
+      ]
+    }
+  }
+}

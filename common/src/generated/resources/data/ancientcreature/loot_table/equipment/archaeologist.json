@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:equipment",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:dyed_color": 9132587
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "minecraft:leather_helmet"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:brush"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ancientcreature:equipment/archaeologist"
+}

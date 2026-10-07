@@ -1,0 +1,47 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/savanna/trench",
+        "processors": "ancientcreature:dig_site/savanna_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/savanna/quarry",
+        "processors": "ancientcreature:dig_site/savanna_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/savanna/skeleton",
+        "processors": "ancientcreature:dig_site/savanna_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/savanna/sinkhole",
+        "processors": "ancientcreature:dig_site/savanna_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 3
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

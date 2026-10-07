@@ -2,7 +2,6 @@ package com.coolerpromc.ancientcreature.client.gui.screen;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.client.SpeciesJournalKeyHandler;
-import com.coolerpromc.ancientcreature.client.species.ClientSpeciesDefinition;
 import com.coolerpromc.ancientcreature.client.species.ClientSpeciesGuiSettings;
 import com.coolerpromc.ancientcreature.client.species.ClientSpeciesManager;
 import com.coolerpromc.ancientcreature.entity.Species;
@@ -242,8 +241,7 @@ public final class SpeciesJournalScreen extends Screen {
         if (this.previewEntity != null) {
             EntityRenderDispatcher dispatcher = this.minecraft.getEntityRenderDispatcher();
             EntityRenderState state = dispatcher.extractEntity(this.previewEntity, partialTick);
-            ClientSpeciesDefinition clientDefinition = ClientSpeciesManager.INSTANCE.get(this.selected.id());
-            ClientSpeciesGuiSettings settings = clientDefinition == null ? ClientSpeciesGuiSettings.DEFAULT : clientDefinition.gui();
+            ClientSpeciesGuiSettings settings = ClientSpeciesManager.INSTANCE.settings(this.selected.id()).gui();
             Vector3f rotation = new Vector3f(settings.rotation());
             Quaternionf entityRotation = new Quaternionf().rotateZ((float) Math.PI).rotateXYZ(
                 (float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y), (float) Math.toRadians(rotation.z));

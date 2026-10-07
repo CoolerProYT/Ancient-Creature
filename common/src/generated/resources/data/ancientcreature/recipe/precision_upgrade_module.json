@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond",
+    "I": "minecraft:iron_ingot",
+    "Q": "minecraft:quartz",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "IQI",
+    "RDR",
+    "IQI"
+  ],
+  "result": {
+    "id": "ancientcreature:precision_upgrade_module"
+  }
+}

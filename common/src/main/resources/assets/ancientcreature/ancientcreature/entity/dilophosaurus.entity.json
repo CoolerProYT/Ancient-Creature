@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:dilophosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/dilophosaurus",
+        "mottled": "textures/entity/dilophosaurus_mottled",
+        "saddle": "textures/entity/gear/dilophosaurus_saddle",
+        "armor_iron": "textures/entity/gear/dilophosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/dilophosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/dilophosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/dilophosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.dilophosaurus"
+      },
+      "animations": {
+        "idle": "animation.dilophosaurus.idle",
+        "walk": "animation.dilophosaurus.walk",
+        "run": "animation.dilophosaurus.run",
+        "attack": "animation.dilophosaurus.attack",
+        "special": "animation.dilophosaurus.special",
+        "hurt": "animation.dilophosaurus.hurt",
+        "death": "animation.dilophosaurus.death",
+        "main": "controller.animation.dilophosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.dilophosaurus"
+      ]
+    }
+  }
+}

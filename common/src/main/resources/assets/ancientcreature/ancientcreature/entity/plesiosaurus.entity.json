@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:plesiosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/plesiosaurus",
+        "mottled": "textures/entity/plesiosaurus_mottled",
+        "saddle": "textures/entity/gear/plesiosaurus_saddle",
+        "armor_iron": "textures/entity/gear/plesiosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/plesiosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/plesiosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/plesiosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.plesiosaurus"
+      },
+      "animations": {
+        "idle": "animation.plesiosaurus.idle",
+        "walk": "animation.plesiosaurus.walk",
+        "run": "animation.plesiosaurus.run",
+        "attack": "animation.plesiosaurus.attack",
+        "special": "animation.plesiosaurus.special",
+        "hurt": "animation.plesiosaurus.hurt",
+        "death": "animation.plesiosaurus.death",
+        "main": "controller.animation.plesiosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.plesiosaurus"
+      ]
+    }
+  }
+}

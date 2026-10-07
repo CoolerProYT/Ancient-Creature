@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/small_predator",
+  "loot_table": "ancientcreature:entities/smilodon",
   "entity_category": "land",
   "physical": {
     "width": 1.05,
@@ -43,5 +43,26 @@
       "minecraft:porkchop",
       "minecraft:rabbit"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 5
+  },
+  "riding": {
+    "ability": "pounce",
+    "cooldown": 50,
+    "power": 1.0
   }
 }

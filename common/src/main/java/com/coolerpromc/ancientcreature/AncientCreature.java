@@ -1,5 +1,7 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.tag.ModBiomeTags;
+import com.coolerpromc.ancientcreature.recipe.ModRecipes;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
 import com.coolerpromc.ancientcreature.block.entity.custom.*;
@@ -65,6 +67,7 @@ public class AncientCreature {
         ModLootFunctions.init();
         ModSounds.init();
         ModFeatures.init();
+        ModRecipes.init();
     }
 
     public static void initCapability(){
@@ -85,6 +88,11 @@ public class AncientCreature {
     public static void initBiomeModifier(){
         registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.FOREST_ROCKS);
         registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.FOSSIL_ORE);
+        registerBiomeModifier(BiomeTags.IS_OVERWORLD, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.DEEPSLATE_FOSSIL_ORE);
+        registerBiomeModifier(ModBiomeTags.HAS_AMBER_ORE, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.AMBER_ORE);
+        registerBiomeModifier(ModBiomeTags.HAS_FROZEN_FOSSIL, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.FROZEN_FOSSIL);
+        registerBiomeModifier(ModBiomeTags.HAS_FOSSIL_SEAM, GenerationStep.Decoration.UNDERGROUND_ORES, ModPlacedFeatures.FOSSIL_SEAM);
+        registerBiomeModifier(ModBiomeTags.HAS_FOSSIL_BED, GenerationStep.Decoration.UNDERGROUND_STRUCTURES, ModPlacedFeatures.FOSSIL_BED);
     }
 
     public static void initBrewingRecipe(){
@@ -98,6 +106,7 @@ public class AncientCreature {
     public static void initPayloadType(){
         registerClientboundPayload(ClientboundIdentifiedSpeciesSyncPacket.TYPE, ClientboundIdentifiedSpeciesSyncPacket.STREAM_CODEC);
         registerClientboundPayload(ClientboundSpeciesSyncPacket.TYPE, ClientboundSpeciesSyncPacket.STREAM_CODEC);
+        Services.REGISTRY.registerServerboundPayload(com.coolerpromc.ancientcreature.network.ServerboundMountAbilityPacket.TYPE, com.coolerpromc.ancientcreature.network.ServerboundMountAbilityPacket.STREAM_CODEC);
     }
 
     private static boolean reloadListenersCollected;

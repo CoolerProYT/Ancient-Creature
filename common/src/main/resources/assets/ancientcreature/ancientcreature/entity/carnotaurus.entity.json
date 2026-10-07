@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:carnotaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/carnotaurus",
+        "mottled": "textures/entity/carnotaurus_mottled",
+        "saddle": "textures/entity/gear/carnotaurus_saddle",
+        "armor_iron": "textures/entity/gear/carnotaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/carnotaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/carnotaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/carnotaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.carnotaurus"
+      },
+      "animations": {
+        "idle": "animation.carnotaurus.idle",
+        "walk": "animation.carnotaurus.walk",
+        "run": "animation.carnotaurus.run",
+        "attack": "animation.carnotaurus.attack",
+        "special": "animation.carnotaurus.special",
+        "hurt": "animation.carnotaurus.hurt",
+        "death": "animation.carnotaurus.death",
+        "main": "controller.animation.carnotaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.carnotaurus"
+      ]
+    }
+  }
+}

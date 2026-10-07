@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#ancientcreature:has_fossil_bed",
+  "features": "ancientcreature:fossil_bed",
+  "step": "underground_structures"
+}

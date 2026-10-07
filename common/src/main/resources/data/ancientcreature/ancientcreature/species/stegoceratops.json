@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/stegoceratops",
+  "entity_category": "land",
+  "physical": {
+    "width": 2.0,
+    "height": 2.4,
+    "eye_height": 1.45
+  },
+  "attributes": {
+    "max_health": 72.0,
+    "movement_speed": 0.2,
+    "attack_damage": 12.0,
+    "attack_knockback": 2.2,
+    "follow_range": 24.0,
+    "knockback_resistance": 0.85,
+    "armor": 8.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.45,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:defensive_herbivore",
+    "components": [
+      {
+        "type": "ancientcreature:graze",
+        "min_duration": 90,
+        "max_duration": 300,
+        "hunger_value": 6.0
+      }
+    ]
+  },
+  "diet": {
+    "items": [
+      "minecraft:wheat",
+      "minecraft:fern",
+      "minecraft:hay_block"
+    ]
+  },
+  "spawn": {
+    "incubation_time": 1800
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.stegoceratops.ambient",
+    "hurt": "ancientcreature:entity.stegoceratops.hurt",
+    "death": "ancientcreature:entity.stegoceratops.death",
+    "step": "ancientcreature:entity.stegoceratops.step",
+    "attack": "ancientcreature:entity.stegoceratops.attack",
+    "alert": "ancientcreature:entity.stegoceratops.alert",
+    "ambient_interval": 260
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 1,
+    "group_max": 4
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 100,
+    "power": 1.3
+  },
+  "hybrid": {
+    "parents": [
+      "ancientcreature:stegosaurus",
+      "ancientcreature:triceratops"
+    ]
+  }
+}

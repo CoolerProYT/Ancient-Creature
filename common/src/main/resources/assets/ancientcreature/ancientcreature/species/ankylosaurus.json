@@ -1,21 +1,18 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:ankylosaurus",
-  "texture": "ancientcreature:textures/entity/ankylosaurus.png",
-  "animations": "ancientcreature:ankylosaurus",
-  "controller": "ancientcreature:ankylosaurus",
+  "format_version": 2,
   "shadow_radius": 1.0,
   "render_scale": 1.0,
   "gui": {
     "scale": 7.19,
-    "translation": [0.0, -0.15, 0.0],
-    "rotation": [0.0, 215.0, 0.0]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 100,
-      "texture": "ancientcreature:textures/entity/ankylosaurus.png"
-    }
-  ]
+    "translation": [
+      0.0,
+      -0.15,
+      0.0
+    ],
+    "rotation": [
+      0.0,
+      215.0,
+      0.0
+    ]
+  }
 }

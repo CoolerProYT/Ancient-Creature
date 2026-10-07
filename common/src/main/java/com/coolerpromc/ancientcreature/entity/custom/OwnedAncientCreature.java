@@ -26,6 +26,7 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
 
     public void setOwner(@Nullable LivingEntity owner) {
         this.ownerReference = EntityReference.of(owner);
+        this.onOwnerChanged();
         if (this.isOwnedBy(this.getTarget())) {
             this.setTarget(null);
         }
@@ -34,6 +35,19 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
     @Override
     public @Nullable EntityReference<LivingEntity> getOwnerReference() {
         return this.ownerReference;
+    }
+
+    /** Sets the owner by id, for when the owner may be offline (a hatching egg). */
+    public void setOwnerUuid(java.util.@Nullable UUID owner) {
+        this.ownerReference = owner == null ? null : EntityReference.of(owner);
+        this.onOwnerChanged();
+    }
+
+    protected void onOwnerChanged() {
+    }
+
+    public java.util.@Nullable UUID getOwnerUuid() {
+        return this.ownerReference == null ? null : this.ownerReference.getUUID();
     }
 
     public boolean isOwnedBy(@Nullable LivingEntity entity) {
@@ -82,6 +96,14 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
             if (level.getBlockEntity(pos) instanceof EggBlockEntity blockEntity){
                 blockEntity.setSpecies(species);
                 blockEntity.setHatchTime(species.getIncubationTime());
+                java.util.UUID owner = this.getOwnerUuid();
+                if (owner == null && partner instanceof OwnedAncientCreature other) {
+                    owner = other.getOwnerUuid();
+                }
+                blockEntity.setParents(owner, offspring instanceof AncientCreatureEntity child ? child.getVariant() : null);
+                if (offspring instanceof AncientCreatureEntity child) {
+                    blockEntity.setGenome(child.getGenome());
+                }
             }
         }
     }

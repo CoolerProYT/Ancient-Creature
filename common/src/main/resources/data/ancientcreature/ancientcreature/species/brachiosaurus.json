@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/giant_herbivore",
+  "loot_table": "ancientcreature:entities/brachiosaurus",
   "entity_category": "land",
   "physical": {
     "width": 3.2,
@@ -25,7 +25,12 @@
     "profile": "ancientcreature:sauropod_browser"
   },
   "diet": {
-    "items": ["minecraft:wheat", "minecraft:hay_block", "minecraft:apple", "minecraft:fern"]
+    "items": [
+      "minecraft:wheat",
+      "minecraft:hay_block",
+      "minecraft:apple",
+      "minecraft:fern"
+    ]
   },
   "hunger": {
     "max": 160.0,
@@ -46,5 +51,27 @@
     "attack": "ancientcreature:entity.brachiosaurus.attack",
     "alert": "ancientcreature:entity.brachiosaurus.call",
     "ambient_interval": 360
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 6,
+    "space": 900
+  },
+  "riding": {
+    "ability": "stomp",
+    "cooldown": 140,
+    "power": 1.2
   }
 }

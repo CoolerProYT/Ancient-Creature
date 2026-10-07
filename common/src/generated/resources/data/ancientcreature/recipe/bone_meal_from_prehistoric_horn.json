@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "bonemeal",
+  "ingredients": [
+    "ancientcreature:prehistoric_horn"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:bone_meal"
+  }
+}

@@ -25,5 +25,7 @@ public class ModDataGenerator {
         event.addProvider(new ModLootTableProvider(output, modRegistries));
         event.addProvider(new ModRecipeProvider.Runner(output, modRegistries));
         event.addProvider(new ModAdvancementProvider(output, modRegistries));
+        event.addProvider(new ModStructureTagsProvider(output, modRegistries));
+        event.addProvider(new ModVillagerTradeTagsProvider(output, modRegistries));
     }
 }

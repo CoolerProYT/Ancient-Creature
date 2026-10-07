@@ -1,110 +1,144 @@
 package com.coolerpromc.ancientcreature.client.animation.bedrock;
 
-import com.coolerpromc.ancientcreature.Constants;
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
+import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockFormatException;
+import com.coolerpromc.ancientcreature.molang.MolangContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The keyframes of one bone channel (rotation, position or scale), sampled the way Blockbench's
+ * animator does so playback in game matches its preview:
+ * <ul>
+ *   <li>exactly on a keyframe, or before the first one, the keyframe's {@code pre} value;</li>
+ *   <li>after the last keyframe, its {@code post} value;</li>
+ *   <li>after a {@code step} keyframe, that keyframe's value held until the next;</li>
+ *   <li>between two linear keyframes, linear interpolation from {@code post} to the next {@code pre};</li>
+ *   <li>if either neighbour is {@code catmullrom}, a uniform Catmull-Rom spline through the neighbours,
+ *       skipping the outer neighbour when the inner keyframe has a split pre/post value.</li>
+ * </ul>
+ */
 public record BedrockAnimationChannel(List<BedrockKeyframe> keyframes) {
     public static final BedrockAnimationChannel EMPTY = new BedrockAnimationChannel(List.of());
-
-    public static final Codec<BedrockAnimationChannel> CODEC = Codec.either(
-        Codec.unboundedMap(Codec.STRING, BedrockKeyframe.VALUE_CODEC),
-        BedrockKeyframe.VALUE_CODEC
-    ).xmap(
-        either -> either.map(BedrockAnimationChannel::fromMap,
-            constant -> new BedrockAnimationChannel(List.of(BedrockKeyframe.of(0.0F, constant)))),
-        channel -> Either.left(channel.toMap())
-    );
-
-    private static BedrockAnimationChannel fromMap(Map<String, BedrockKeyframe.ValueAtTime> map) {
-        List<BedrockKeyframe> frames = map.entrySet().stream()
-            .map(entry -> {
-                float time;
-                try {
-                    time = Float.parseFloat(entry.getKey());
-                } catch (NumberFormatException e) {
-                    Constants.LOG.warn("Ignoring animation keyframe with a non-numeric timestamp '{}'", entry.getKey());
-                    return null;
-                }
-                return BedrockKeyframe.of(time, entry.getValue());
-            })
-            .filter(java.util.Objects::nonNull)
-            .toList();
-        return new BedrockAnimationChannel(BedrockKeyframe.sorted(frames));
-    }
-
-    private Map<String, BedrockKeyframe.ValueAtTime> toMap() {
-        return this.keyframes.stream().collect(java.util.stream.Collectors.toMap(
-            frame -> Float.toString(frame.time()),
-            frame -> new BedrockKeyframe.ValueAtTime(frame.pre(), frame.post(), frame.interpolation()),
-            (a, b) -> b,
-            java.util.LinkedHashMap::new));
-    }
+    private static final float EPSILON = 1.0F / 1200.0F;
 
     public boolean isEmpty() {
         return this.keyframes.isEmpty();
     }
 
-    public Vector3f sample(float time, Vector3f out) {
+    public float lastTime() {
+        return this.keyframes.isEmpty() ? 0.0F : this.keyframes.getLast().time();
+    }
+
+    static BedrockAnimationChannel parse(JsonElement element, boolean scale, String path) throws BedrockFormatException {
+        if (element == null) {
+            return EMPTY;
+        }
+        List<BedrockKeyframe> frames = new ArrayList<>();
+        if (element.isJsonObject() && !isKeyframeObject(element.getAsJsonObject())) {
+            for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
+                float time;
+                try {
+                    time = Float.parseFloat(entry.getKey().trim());
+                } catch (NumberFormatException e) {
+                    throw new BedrockFormatException(path + " has a non-numeric keyframe time '" + entry.getKey() + "'");
+                }
+                frames.add(BedrockKeyframe.parse(time, entry.getValue(), scale, path + "." + entry.getKey()));
+            }
+        } else {
+            frames.add(BedrockKeyframe.parse(0.0F, element, scale, path));
+        }
+        frames.sort(Comparator.comparingDouble(BedrockKeyframe::time));
+        return new BedrockAnimationChannel(List.copyOf(frames));
+    }
+
+    private static boolean isKeyframeObject(JsonObject object) {
+        return object.has("pre") || object.has("post") || object.has("lerp_mode");
+    }
+
+    /** Samples the channel at {@code time} seconds into the animation. */
+    public Vector3f sample(float time, MolangContext ctx, Vector3f out) {
         int count = this.keyframes.size();
         if (count == 0) {
-            return out.set(0.0F, 0.0F, 0.0F);
+            return out.set(0.0F);
         }
         if (count == 1) {
-            return out.set(this.keyframes.getFirst().post());
+            BedrockKeyframe only = this.keyframes.getFirst();
+            if (time <= only.time() + EPSILON) {
+                only.pre(ctx, out);
+            } else {
+                only.post(ctx, out);
+            }
+            return out;
         }
 
-        BedrockKeyframe first = this.keyframes.getFirst();
-        if (time <= first.time()) {
-            return out.set(first.post());
+        // before: last keyframe strictly earlier than time; after: first at or later than time
+        int afterIndex = this.firstAtOrAfter(time);
+        int beforeIndex = afterIndex - 1;
+
+        if (beforeIndex >= 0 && Math.abs(this.keyframes.get(beforeIndex).time() - time) <= EPSILON) {
+            this.keyframes.get(beforeIndex).pre(ctx, out);
+            return out;
         }
-        BedrockKeyframe last = this.keyframes.getLast();
-        if (time >= last.time()) {
-            return out.set(last.pre());
+        if (afterIndex < count && Math.abs(this.keyframes.get(afterIndex).time() - time) <= EPSILON) {
+            this.keyframes.get(afterIndex).pre(ctx, out);
+            return out;
+        }
+        if (beforeIndex < 0) {
+            this.keyframes.get(afterIndex).pre(ctx, out);
+            return out;
+        }
+        BedrockKeyframe before = this.keyframes.get(beforeIndex);
+        if (afterIndex >= count || before.interpolation() == BedrockKeyframe.Interpolation.STEP) {
+            before.post(ctx, out);
+            return out;
+        }
+        BedrockKeyframe after = this.keyframes.get(afterIndex);
+        float span = after.time() - before.time();
+        float alpha = span <= 1.0E-6F ? 0.0F : (time - before.time()) / span;
+
+        if (before.interpolation() == BedrockKeyframe.Interpolation.CATMULL_ROM || after.interpolation() == BedrockKeyframe.Interpolation.CATMULL_ROM) {
+            Vector3f p1 = new Vector3f();
+            Vector3f p2 = new Vector3f();
+            before.post(ctx, p1);
+            after.pre(ctx, p2);
+            Vector3f p0 = new Vector3f(p1);
+            Vector3f p3 = new Vector3f(p2);
+            if (beforeIndex > 0 && !before.hasSplitValue()) {
+                this.keyframes.get(beforeIndex - 1).post(ctx, p0);
+            }
+            if (afterIndex + 1 < count && !after.hasSplitValue()) {
+                this.keyframes.get(afterIndex + 1).pre(ctx, p3);
+            }
+            return out.set(
+                catmullRom(p0.x, p1.x, p2.x, p3.x, alpha),
+                catmullRom(p0.y, p1.y, p2.y, p3.y, alpha),
+                catmullRom(p0.z, p1.z, p2.z, p3.z, alpha));
         }
 
-        int index = this.indexBefore(time);
-        BedrockKeyframe from = this.keyframes.get(index);
-        BedrockKeyframe to = this.keyframes.get(index + 1);
-
-        float span = to.time() - from.time();
-        float progress = span <= 1.0E-6F ? 0.0F : (time - from.time()) / span;
-
-        if (from.interpolation() == BedrockKeyframe.Interpolation.CATMULL_ROM) {
-            Vector3fc before = this.keyframes.get(Math.max(0, index - 1)).post();
-            Vector3fc after = this.keyframes.get(Math.min(count - 1, index + 2)).pre();
-            return catmullRom(before, from.post(), to.pre(), after, progress, out);
-        }
-
-        Vector3fc a = from.post();
-        Vector3fc b = to.pre();
-        return out.set(a.x() + (b.x() - a.x()) * progress, a.y() + (b.y() - a.y()) * progress, a.z() + (b.z() - a.z()) * progress);
+        Vector3f a = new Vector3f();
+        before.post(ctx, a);
+        after.pre(ctx, out);
+        return out.set(a.x + (out.x - a.x) * alpha, a.y + (out.y - a.y) * alpha, a.z + (out.z - a.z) * alpha);
     }
 
-    private int indexBefore(float time) {
+    private int firstAtOrAfter(float time) {
         int low = 0;
-        int high = this.keyframes.size() - 1;
+        int high = this.keyframes.size();
         while (low < high) {
-            int mid = (low + high + 1) >>> 1;
-            if (this.keyframes.get(mid).time() <= time) {
-                low = mid;
+            int mid = (low + high) >>> 1;
+            if (this.keyframes.get(mid).time() < time) {
+                low = mid + 1;
             } else {
-                high = mid - 1;
+                high = mid;
             }
         }
-        return Math.min(low, this.keyframes.size() - 2);
-    }
-
-    private static Vector3f catmullRom(Vector3fc p0, Vector3fc p1, Vector3fc p2, Vector3fc p3, float t, Vector3f out) {
-        return out.set(
-            catmullRom(p0.x(), p1.x(), p2.x(), p3.x(), t),
-            catmullRom(p0.y(), p1.y(), p2.y(), p3.y(), t),
-            catmullRom(p0.z(), p1.z(), p2.z(), p3.z(), t));
+        return low;
     }
 
     private static float catmullRom(float p0, float p1, float p2, float p3, float t) {

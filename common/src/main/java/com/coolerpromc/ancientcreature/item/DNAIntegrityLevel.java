@@ -33,6 +33,16 @@ public enum DNAIntegrityLevel implements StringRepresentable {
         return this.name.toLowerCase(Locale.ROOT).replace(" ", "_");
     }
 
+    /** The middle of this band's integrity score range, for samples that predate exact quality. */
+    public float typicalQuality() {
+        return switch (this) {
+            case DEGRADED -> 0.10F;
+            case PARTIAL -> 0.22F;
+            case STABLE -> 0.45F;
+            case PRESERVED_EMBRYO -> 0.80F;
+        };
+    }
+
     public float getGenomeCompleteness(RandomSource random) {
         return genomeCompleteness.sample(random) / 100f;
     }

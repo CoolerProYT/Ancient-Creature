@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_herbivore",
+  "loot_table": "ancientcreature:entities/triceratops",
   "entity_category": "land",
   "physical": {
     "width": 1.8,
@@ -24,7 +24,9 @@
     "profile": "ancientcreature:defensive_herbivore"
   },
   "diet": {
-    "items": ["minecraft:wheat"]
+    "items": [
+      "minecraft:wheat"
+    ]
   },
   "spawn": {
     "biomes": "#ancientcreature:spawns_triceratops",
@@ -38,5 +40,26 @@
     "attack": "ancientcreature:entity.triceratops.attack",
     "alert": "ancientcreature:entity.triceratops.bellow",
     "ambient_interval": 240
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 8
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 100,
+    "power": 1.0
   }
 }

@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "loot_table": "ancientcreature:entities/megalodon",
   "entity_category": "aquatic",
   "physical": {
     "width": 2.8,
@@ -35,5 +35,25 @@
     "step": "ancientcreature:entity.megalodon.step",
     "attack": "ancientcreature:entity.megalodon.bite",
     "ambient_interval": 360
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "any",
+    "social": "solitary",
+    "space": 1500
+  },
+  "riding": {
+    "ability": "bite",
+    "cooldown": 80,
+    "power": 1.0
   }
 }

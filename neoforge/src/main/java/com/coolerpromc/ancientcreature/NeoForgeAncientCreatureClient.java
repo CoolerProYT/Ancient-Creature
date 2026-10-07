@@ -84,6 +84,7 @@ public class NeoForgeAncientCreatureClient {
     @SubscribeEvent
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
         event.register(SpeciesJournalKeyHandler.OPEN_JOURNAL);
+        event.register(SpeciesJournalKeyHandler.MOUNT_ABILITY);
     }
 
     @SubscribeEvent

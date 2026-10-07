@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": "ancientcreature:thick_hide",
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:leather",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "HLH",
+    "LIL",
+    "S S"
+  ],
+  "result": {
+    "id": "ancientcreature:creature_saddle"
+  }
+}

@@ -24,7 +24,12 @@ public record SpeciesDefinition(
     SpeciesSpawnProperties spawn,
     SpeciesSoundDefinition sounds,
     SpeciesHungerProperties hunger,
-    Optional<Identifier> lootTable
+    Optional<Identifier> lootTable,
+    List<SpeciesVariant> variants,
+    Optional<SpeciesRespiration> respirationOverride,
+    SpeciesCareProperties care,
+    SpeciesRidingProperties riding,
+    Optional<SpeciesHybridProperties> hybrid
 ) {
     public static final int CURRENT_FORMAT_VERSION = 1;
 
@@ -39,6 +44,11 @@ public record SpeciesDefinition(
         SpeciesSpawnProperties.DEFAULT,
         SpeciesSoundDefinition.EMPTY,
         SpeciesHungerProperties.DEFAULT,
+        Optional.empty(),
+        List.of(),
+        Optional.empty(),
+        SpeciesCareProperties.DEFAULT,
+        SpeciesRidingProperties.DEFAULT,
         Optional.empty()
     );
 
@@ -58,23 +68,18 @@ public record SpeciesDefinition(
         SpeciesSpawnProperties.CODEC.optionalFieldOf("spawn", SpeciesSpawnProperties.DEFAULT).forGetter(SpeciesDefinition::spawn),
         SpeciesSoundDefinition.CODEC.optionalFieldOf("sounds", SpeciesSoundDefinition.EMPTY).forGetter(SpeciesDefinition::sounds),
         SpeciesHungerProperties.CODEC.optionalFieldOf("hunger", SpeciesHungerProperties.DEFAULT).forGetter(SpeciesDefinition::hunger),
-        SpeciesCodecs.SPECIES_ID.optionalFieldOf("loot_table").forGetter(SpeciesDefinition::lootTable)
+        SpeciesCodecs.SPECIES_ID.optionalFieldOf("loot_table").forGetter(SpeciesDefinition::lootTable),
+        SpeciesVariant.CODEC.listOf().optionalFieldOf("variants", List.of()).forGetter(SpeciesDefinition::variants),
+        SpeciesRespiration.CODEC.optionalFieldOf("respiration").forGetter(SpeciesDefinition::respirationOverride),
+        SpeciesCareProperties.CODEC.optionalFieldOf("care", SpeciesCareProperties.DEFAULT).forGetter(SpeciesDefinition::care),
+        SpeciesRidingProperties.CODEC.optionalFieldOf("riding", SpeciesRidingProperties.DEFAULT).forGetter(SpeciesDefinition::riding),
+        SpeciesHybridProperties.CODEC.optionalFieldOf("hybrid").forGetter(SpeciesDefinition::hybrid)
     ).apply(i, SpeciesDefinition::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SpeciesDefinition> STREAM_CODEC = StreamCodec.composite(
-        ByteBufCodecs.VAR_INT, SpeciesDefinition::formatVersion,
-        SpeciesEntityCategory.STREAM_CODEC, SpeciesDefinition::category,
-        SpeciesPhysicalProperties.STREAM_CODEC, SpeciesDefinition::physical,
-        SpeciesAttributeProperties.STREAM_CODEC, SpeciesDefinition::attributes,
-        SpeciesGrowthProperties.STREAM_CODEC, SpeciesDefinition::growth,
-        SpeciesBehaviorDefinition.STREAM_CODEC, SpeciesDefinition::behavior,
-        SpeciesDietProperties.STREAM_CODEC, SpeciesDefinition::diet,
-        SpeciesSpawnProperties.STREAM_CODEC, SpeciesDefinition::spawn,
-        SpeciesSoundDefinition.STREAM_CODEC, SpeciesDefinition::sounds,
-        SpeciesHungerProperties.STREAM_CODEC, SpeciesDefinition::hunger,
-        ByteBufCodecs.optional(Identifier.STREAM_CODEC), SpeciesDefinition::lootTable,
-        SpeciesDefinition::new
-    );
+    /**
+     * Synced as the same structure the datapack file has, so new fields only need adding to {@link #CODEC}.
+     */
+    public static final StreamCodec<RegistryFriendlyByteBuf, SpeciesDefinition> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     public DataResult<SpeciesDefinition> validate() {
         DataResult<List<SpeciesAttributeProperties.Resolved>> attributeResult = this.attributes.resolve();
@@ -85,6 +90,29 @@ public record SpeciesDefinition(
             return DataResult.error(() -> "no behavior: set 'behavior.profile' or a non-empty 'behavior.components'");
         }
         return DataResult.success(this);
+    }
+
+    /** Hybrids have no fossils; they are only made by splicing their parents' genomes. */
+    public boolean isHybrid() {
+        return this.hybrid.isPresent();
+    }
+
+    public SpeciesRespiration respiration() {
+        return this.respirationOverride.orElseGet(() -> SpeciesRespiration.defaultFor(this.category));
+    }
+
+    /** Position of {@code variant} in {@link #variants()}, or -1. Exposed to animations as {@code query.variant}. */
+    public int variantIndex(String variant) {
+        for (int i = 0; i < this.variants.size(); i++) {
+            if (this.variants.get(i).id().equals(variant)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public String rollVariant(net.minecraft.util.RandomSource random) {
+        return SpeciesVariant.roll(this.variants, random);
     }
 
     public List<CreatureBehaviorComponent> resolvedBehaviors() {

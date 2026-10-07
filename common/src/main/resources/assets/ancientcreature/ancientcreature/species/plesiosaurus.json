@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:plesiosaurus",
-  "texture": "ancientcreature:textures/entity/plesiosaurus.png",
-  "animations": "ancientcreature:plesiosaurus",
-  "controller": "ancientcreature:plesiosaurus",
+  "format_version": 2,
   "shadow_radius": 0.9625000000000001,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/plesiosaurus.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/plesiosaurus_mottled.png"
-    }
-  ]
+  }
 }

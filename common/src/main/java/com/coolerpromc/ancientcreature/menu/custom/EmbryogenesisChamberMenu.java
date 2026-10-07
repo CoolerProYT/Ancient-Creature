@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.menu.custom;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.custom.DNAExtractorBlockEntity;
 import com.coolerpromc.ancientcreature.block.entity.custom.EmbryogenesisChamberBlockEntity;
+import com.coolerpromc.ancientcreature.menu.MachineMenu;
 import com.coolerpromc.ancientcreature.menu.ModMenus;
 import com.coolerpromc.ancientcreature.menu.slot.ContainerSlot;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
 
-public class EmbryogenesisChamberMenu extends AbstractContainerMenu {
+public class EmbryogenesisChamberMenu extends MachineMenu {
     private final Level level;
     private final BlockPos pos;
     private final ContainerData data;
@@ -29,53 +30,15 @@ public class EmbryogenesisChamberMenu extends AbstractContainerMenu {
         this.data = data;
 
         addDataSlots(data);
-        addInventoryHotbarSlots(inventory, 8, 84 + 58);
-        addInventoryExtendedSlots(inventory, 8, 84);
+        addPlayerInventory(inventory);
 
         addSlot(new ContainerSlot(blockEntity.getGenomeContainer(), 0, 34, 34));
+        addSlot(new ContainerSlot(blockEntity.getDonorContainer(), 0, 34, 52));
         addSlot(new ContainerSlot(blockEntity.getEggContainer(), 0, 52, 34));
         addSlot(new ContainerSlot(blockEntity.getNutrientContainer(), 0, 70, 34));
+        beginOutputs();
         addSlot(new ContainerSlot(blockEntity.getOutputContainer(), 0, 124, 34));
-    }
-
-    @Override
-    public @NonNull ItemStack quickMoveStack(@NonNull Player player, int slotIndex) {
-        ItemStack clicked = ItemStack.EMPTY;
-        Slot slot = this.slots.get(slotIndex);
-        if (slot.hasItem()) {
-            ItemStack stack = slot.getItem();
-            clicked = stack.copy();
-            if (slotIndex < 9){
-                if (!this.moveItemStackTo(stack, 36, this.slots.size() - 1, false)){
-                    if (!this.moveItemStackTo(stack, 9, 36, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-            }
-            else if (slotIndex < 36) {
-                if (!this.moveItemStackTo(stack, 36, this.slots.size() - 1, false)) {
-                    if (!this.moveItemStackTo(stack, 0, 9, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-            } else if (!this.moveItemStackTo(stack, 0, 36, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (stack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-
-            if (stack.getCount() == clicked.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, stack);
-        }
-
-        return clicked;
+        addUpgradeSlots(blockEntity.getUpgrades());
     }
 
     @Override
@@ -92,6 +55,6 @@ public class EmbryogenesisChamberMenu extends AbstractContainerMenu {
     }
 
     public int getProgressWidth(){
-        return (int) (((float)getProgress() / (float) getMaxProgress()) * 24);
+        return progressWidth(getProgress(), getMaxProgress(), 24);
     }
 }

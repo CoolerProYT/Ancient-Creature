@@ -5,6 +5,7 @@ import com.coolerpromc.ancientcreature.tag.ModBiomeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 
 import java.util.concurrent.CompletableFuture;
@@ -67,6 +68,41 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
         tag(ModBiomeTags.HAS_COASTAL_DIG_SITE)
             .add(Biomes.BEACH);
+
+        // Resin hardens where old forests grew thick and wet.
+        tag(ModBiomeTags.HAS_AMBER_ORE)
+            .addTag(BiomeTags.IS_JUNGLE)
+            .add(Biomes.DARK_FOREST)
+            .add(Biomes.MANGROVE_SWAMP)
+            .add(Biomes.LUSH_CAVES);
+
+        tag(ModBiomeTags.HAS_FROZEN_FOSSIL)
+            .add(Biomes.ICE_SPIKES)
+            .add(Biomes.FROZEN_OCEAN)
+            .add(Biomes.DEEP_FROZEN_OCEAN)
+            .add(Biomes.FROZEN_PEAKS)
+            .add(Biomes.JAGGED_PEAKS)
+            .add(Biomes.SNOWY_SLOPES);
+
+        // Bare rock faces: badland mesas, sea cliffs and windswept highlands.
+        tag(ModBiomeTags.HAS_FOSSIL_SEAM)
+            .addTag(BiomeTags.IS_BADLANDS)
+            .add(Biomes.STONY_SHORE)
+            .add(Biomes.STONY_PEAKS)
+            .add(Biomes.WINDSWEPT_HILLS)
+            .add(Biomes.WINDSWEPT_GRAVELLY_HILLS)
+            .add(Biomes.SAVANNA_PLATEAU)
+            .add(Biomes.WINDSWEPT_SAVANNA);
+
+        tag(ModBiomeTags.HAS_FOSSIL_BED)
+            .add(Biomes.DESERT)
+            .addTag(BiomeTags.IS_BADLANDS)
+            .add(Biomes.SWAMP)
+            .add(Biomes.MANGROVE_SWAMP)
+            .add(Biomes.SAVANNA)
+            .add(Biomes.SAVANNA_PLATEAU)
+            .add(Biomes.PLAINS)
+            .add(Biomes.SNOWY_PLAINS);
 
         tag(ModBiomeTags.SPAWNS_ANKYLOSAURUS)
             .add(Biomes.SAVANNA)

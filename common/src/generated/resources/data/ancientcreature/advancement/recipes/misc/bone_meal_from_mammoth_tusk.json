@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mammoth_tusk": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:mammoth_tusk"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ancientcreature:bone_meal_from_mammoth_tusk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mammoth_tusk"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ancientcreature:bone_meal_from_mammoth_tusk"
+    ]
+  }
+}

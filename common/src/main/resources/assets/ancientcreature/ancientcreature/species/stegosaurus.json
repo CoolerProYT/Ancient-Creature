@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:stegosaurus",
-  "texture": "ancientcreature:textures/entity/stegosaurus.png",
-  "animations": "ancientcreature:stegosaurus",
-  "controller": "ancientcreature:stegosaurus",
+  "format_version": 2,
   "shadow_radius": 1.2375,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/stegosaurus.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/stegosaurus_mottled.png"
-    }
-  ]
+  }
 }

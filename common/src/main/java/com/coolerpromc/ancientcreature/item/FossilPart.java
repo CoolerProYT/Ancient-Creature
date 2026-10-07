@@ -26,7 +26,7 @@ public record FossilPart(float dnaExtractingBonus, float identifyFailChance, flo
     public static final Codec<Holder<FossilPart>> CODEC = RegistryFileCodec.create(ModRegistries.FOSSIL_PART, DIRECT_CODEC);
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FossilPart>> STREAM_CODEC = ByteBufCodecs.holderRegistry(ModRegistries.FOSSIL_PART);
 
-    public static final FossilPart EMPTY = new FossilPart(0, 1, 1, UniformGenerator.between(0, 0.01f));
+    public static final FossilPart EMPTY = new FossilPart(0, 1, 1, uniform(0, 0.01f));
 
     public static final ResourceKey<FossilPart> RIB = key("rib");
     public static final ResourceKey<FossilPart> TOOTH = key("tooth");
@@ -35,15 +35,25 @@ public record FossilPart(float dnaExtractingBonus, float identifyFailChance, flo
     public static final ResourceKey<FossilPart> LIMB = key("limb");
     public static final ResourceKey<FossilPart> CLAW = key("claw");
     public static final ResourceKey<FossilPart> EGG = key("egg");
+    /** Resin that trapped a blood-fed insect: rich in DNA and hard to misidentify. */
+    public static final ResourceKey<FossilPart> AMBER = key("amber");
+
+    /** The skeletal parts, everything except amber; what fossil ore and dig sites turn up. */
+    public static final List<ResourceKey<FossilPart>> BONE_PARTS = List.of(RIB, TOOTH, SKULL, VERTEBRA, LIMB, CLAW, EGG);
 
     public static void bootstrap(BootstrapContext<FossilPart> context){
-        context.register(RIB, new FossilPart(0.04f, 0.3f, 0.1f, UniformGenerator.between(0.05f, 0.2f)));
-        context.register(TOOTH, new FossilPart(0.16f, 0.01f, 0.1f, UniformGenerator.between(0.3f, 0.6f)));
-        context.register(SKULL, new FossilPart(0.12f, 0.1f, 0.1f, UniformGenerator.between(0.2f, 0.4f)));
-        context.register(VERTEBRA, new FossilPart(0.08f, 0.2f, 0.1f, UniformGenerator.between(0.1f, 0.3f)));
-        context.register(LIMB, new FossilPart(0.0f, 0.35f, 0.1f, UniformGenerator.between(0.01f, 0.15f)));
-        context.register(CLAW, new FossilPart(-0.04f, 0.5f, 0.1f, UniformGenerator.between(0.01f, 0.1f)));
-        context.register(EGG, new FossilPart(0.2f, 0.2f, 0.1f, UniformGenerator.between(0.6f, 0.8f)));
+        context.register(RIB, new FossilPart(0.04f, 0.3f, 0.1f, uniform(0.05f, 0.2f)));
+        context.register(TOOTH, new FossilPart(0.16f, 0.01f, 0.1f, uniform(0.3f, 0.6f)));
+        context.register(SKULL, new FossilPart(0.12f, 0.1f, 0.1f, uniform(0.2f, 0.4f)));
+        context.register(VERTEBRA, new FossilPart(0.08f, 0.2f, 0.1f, uniform(0.1f, 0.3f)));
+        context.register(LIMB, new FossilPart(0.0f, 0.35f, 0.1f, uniform(0.01f, 0.15f)));
+        context.register(CLAW, new FossilPart(-0.04f, 0.5f, 0.1f, uniform(0.01f, 0.1f)));
+        context.register(EGG, new FossilPart(0.2f, 0.2f, 0.1f, uniform(0.6f, 0.8f)));
+        context.register(AMBER, new FossilPart(0.24f, 0.05f, 0.1f, uniform(0.45f, 0.75f)));
+    }
+
+    private static UniformGenerator uniform(float min, float max) {
+        return UniformGenerator.between(min, max);
     }
 
     public static ResourceKey<FossilPart> key(String name){
