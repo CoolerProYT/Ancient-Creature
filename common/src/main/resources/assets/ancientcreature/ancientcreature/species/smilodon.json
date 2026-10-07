@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:smilodon",
-  "texture": "ancientcreature:textures/entity/smilodon.png",
-  "animations": "ancientcreature:smilodon",
-  "controller": "ancientcreature:smilodon",
+  "format_version": 2,
   "shadow_radius": 0.5775000000000001,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/smilodon.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/smilodon_mottled.png"
-    }
-  ]
+  }
 }

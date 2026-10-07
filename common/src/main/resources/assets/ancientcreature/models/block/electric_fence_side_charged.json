@@ -1,0 +1,188 @@
+{
+  "textures": {
+    "fence": "ancientcreature:block/electric_fence_charged",
+    "particle": "ancientcreature:block/electric_fence_charged"
+  },
+  "elements": [
+    {
+      "from": [
+        7.75,
+        3.75,
+        0
+      ],
+      "to": [
+        8.25,
+        4.25,
+        6.5
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "down": {
+          "uv": [
+            8,
+            1,
+            15,
+            2
+          ],
+          "texture": "#fence"
+        },
+        "north": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#fence"
+        }
+      },
+      "light_emission": 12
+    },
+    {
+      "from": [
+        7.75,
+        7.75,
+        0
+      ],
+      "to": [
+        8.25,
+        8.25,
+        6.5
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "down": {
+          "uv": [
+            8,
+            1,
+            15,
+            2
+          ],
+          "texture": "#fence"
+        },
+        "north": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#fence"
+        }
+      },
+      "light_emission": 12
+    },
+    {
+      "from": [
+        7.75,
+        11.75,
+        0
+      ],
+      "to": [
+        8.25,
+        12.25,
+        6.5
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "west": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "up": {
+          "uv": [
+            8,
+            0,
+            15,
+            1
+          ],
+          "texture": "#fence"
+        },
+        "down": {
+          "uv": [
+            8,
+            1,
+            15,
+            2
+          ],
+          "texture": "#fence"
+        },
+        "north": {
+          "uv": [
+            8,
+            0,
+            9,
+            1
+          ],
+          "texture": "#fence"
+        }
+      },
+      "light_emission": 12
+    }
+  ]
+}

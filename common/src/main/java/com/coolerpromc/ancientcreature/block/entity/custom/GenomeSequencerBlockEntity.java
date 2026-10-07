@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
@@ -46,6 +47,7 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
 
     private final AnimationState processingAnimationState = new AnimationState();
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private boolean isProcessing = false;
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.sequencingTick.get();
@@ -89,9 +91,6 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
-            maxProgress = ModCommonConfig.CONFIG.sequencingTick.get();
-        });
     }
 
     @Override
@@ -111,6 +110,7 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
             if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
                 level.removeBlock(placeholderPos, false);
             }
+            upgrades.drop(this.level, pos);
             Containers.dropContents(this.level, pos, dnaSampleContainer);
             Containers.dropContents(this.level, pos, cartridgeContainer);
             if (progress > 0 && level instanceof ServerLevel serverLevel){
@@ -122,6 +122,7 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("dnaSample"), dnaSampleContainer.getItems());
         ContainerHelper.saveAllItems(output.child("cartridge"), cartridgeContainer.getItems());
         output.putInt("progress", progress);
@@ -132,6 +133,7 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("dnaSample"), dnaSampleContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("cartridge"), cartridgeContainer.getItems());
         progress = input.getIntOr("progress", 0);
@@ -139,8 +141,19 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
         isProcessing = input.getBooleanOr("isExtracting", false);
     }
 
+    private int baseTicks(ServerLevel level) {
+        return ModCommonConfig.CONFIG.sequencingTick.get();
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canProcess()){
             if (progress == 0){
@@ -176,32 +189,34 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private void finishProcessing(ServerLevel serverLevel, BlockPos pos) {
-        ItemStack dnaSample = dnaSampleContainer.removeItem(0, 1);
-        DNAData dnaData = dnaSample.get(ModDataComponents.DNA_DATA.get());
+        DNAData dnaData = dnaSampleContainer.getItem(0).get(ModDataComponents.DNA_DATA.get());
+        ItemStack cartridge = cartridgeContainer.getItem(0);
+        if (dnaData == null || cartridge.isEmpty()) return;
         Species species = dnaData.species();
         DNAIntegrityLevel integrityLevel = dnaData.integrityLevel();
         if (species == null || integrityLevel == null) return;
-        float completeness = integrityLevel.getGenomeCompleteness(serverLevel.getRandom());
-        ItemStack cartridge = cartridgeContainer.removeItem(0, 1);
-        if (cartridge.is(ModItems.GENOME_CARTRIDGE_BLANK.get())){
-            ItemStack newCartridge = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
-            newCartridge.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(completeness, species));
-            cartridgeContainer.setItem(0, newCartridge);
+        dnaSampleContainer.removeItem(0, 1);
+
+        // Precision modules read more of each sample, and read it more cleanly.
+        int precision = upgrades.precision();
+        float completeness = integrityLevel.getGenomeCompleteness(serverLevel.getRandom()) * (1.0f + 0.15f * precision);
+        float quality = Math.min(1.0f, dnaData.quality() + 0.05f * precision);
+
+        GenomeData current = cartridge.is(ModItems.GENOME_CARTRIDGE_BLANK.get())
+            ? new GenomeData(0.0f, species, quality)
+            : cartridge.get(ModDataComponents.GENOME_DATA.get());
+        if (current == null) return;
+        GenomeData next = current.withSample(completeness, quality);
+
+        ItemStack result;
+        if (next.completeness() < 1.0f) {
+            result = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
+        } else {
+            result = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
+            result.set(ModDataComponents.SPECIES.get(), species);
         }
-        else {
-            GenomeData genomeData = cartridge.get(ModDataComponents.GENOME_DATA.get());
-            if (genomeData == null) return;
-            float currentCompleteness = genomeData.completeness();
-            float newCompleteness = Math.min(currentCompleteness + completeness, 1f);
-            if (newCompleteness < 1f){
-                cartridge.set(ModDataComponents.GENOME_DATA.get(), genomeData.setCompleteness(newCompleteness));
-                cartridgeContainer.setItem(0, cartridge);
-            }else {
-                ItemStack completed = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
-                completed.set(ModDataComponents.SPECIES.get(), species);
-                cartridgeContainer.setItem(0, completed);
-            }
-        }
+        result.set(ModDataComponents.GENOME_DATA.get(), next);
+        cartridgeContainer.setItem(0, result);
     }
 
     private boolean canProcess() {
@@ -213,8 +228,9 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private boolean hasEnoughOutputSlot() {
-        ItemStack dna = dnaSampleContainer.getItem(0).copy();
+        ItemStack dna = dnaSampleContainer.getItem(0);
         DNAData dnaData = dna.get(ModDataComponents.DNA_DATA.get());
+        if (dnaData == null) return false;
         Species species = dnaData.species();
         if (species == null) return false;
         ItemStack cartridge = cartridgeContainer.getItem(0);

@@ -1,74 +1,146 @@
 {
-  "format_version": 1,
-  "initial_state": "idle",
-  "states": {
-    "idle": {
-      "animations": ["idle"],
-      "blend_transition": 0.3,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "call": "query.action == 'roar'" },
-        { "attack": "query.action == 'attack'" },
-        { "browse": "query.action == 'graze'" },
-        { "walk": "query.is_moving" }
-      ]
-    },
-    "walk": {
-      "animations": ["idle", "walk"],
-      "blend_transition": 0.25,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "call": "query.action == 'roar'" },
-        { "attack": "query.action == 'attack'" },
-        { "browse": "query.action == 'graze'" },
-        { "idle": "!query.is_moving" }
-      ]
-    },
-    "browse": {
-      "animations": ["browse"],
-      "blend_transition": 0.35,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "walk": "query.action != 'graze' && query.is_moving" },
-        { "idle": "query.action != 'graze'" }
-      ]
-    },
-    "attack": {
-      "animations": ["tail_sweep"],
-      "blend_transition": 0.08,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "walk": "query.action == 'none' && query.is_moving" },
-        { "idle": "query.action == 'none'" }
-      ]
-    },
-    "call": {
-      "animations": ["call"],
-      "blend_transition": 0.15,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "walk": "query.action != 'roar' && query.is_moving" },
-        { "idle": "query.action != 'roar'" }
-      ]
-    },
-    "hurt": {
-      "animations": ["hurt"],
-      "blend_transition": 0.08,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "walk": "!query.is_hurt && query.is_moving" },
-        { "idle": "!query.is_hurt" }
-      ]
-    },
-    "death": {
-      "animations": ["death"],
-      "blend_transition": 0.12,
-      "transitions": []
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.brachiosaurus.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": [
+            "idle"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "call": "query.action == 'roar'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "browse": "query.action == 'graze'"
+            },
+            {
+              "walk": "query.is_moving"
+            }
+          ],
+          "blend_transition": 0.3
+        },
+        "walk": {
+          "animations": [
+            "idle",
+            "walk"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "call": "query.action == 'roar'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "browse": "query.action == 'graze'"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.25
+        },
+        "browse": {
+          "animations": [
+            "browse"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "walk": "query.action != 'graze' && query.is_moving"
+            },
+            {
+              "idle": "query.action != 'graze'"
+            }
+          ],
+          "blend_transition": 0.35
+        },
+        "attack": {
+          "animations": [
+            "tail_sweep"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "walk": "query.action == 'none' && query.is_moving"
+            },
+            {
+              "idle": "query.action == 'none'"
+            }
+          ],
+          "blend_transition": 0.08
+        },
+        "call": {
+          "animations": [
+            "call"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "walk": "query.action != 'roar' && query.is_moving"
+            },
+            {
+              "idle": "query.action != 'roar'"
+            }
+          ],
+          "blend_transition": 0.15
+        },
+        "hurt": {
+          "animations": [
+            "hurt"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "walk": "!query.is_hurt && query.is_moving"
+            },
+            {
+              "idle": "!query.is_hurt"
+            }
+          ],
+          "blend_transition": 0.08
+        },
+        "death": {
+          "animations": [
+            "death"
+          ],
+          "blend_transition": 0.12
+        }
+      }
     }
   }
 }

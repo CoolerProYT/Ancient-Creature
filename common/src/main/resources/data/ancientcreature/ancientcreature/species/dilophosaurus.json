@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/small_predator",
+  "loot_table": "ancientcreature:entities/dilophosaurus",
   "entity_category": "land",
   "physical": {
     "width": 1.0,
@@ -43,5 +43,24 @@
       "minecraft:chicken",
       "minecraft:rabbit"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "pair"
+  },
+  "riding": {
+    "ability": "bite",
+    "cooldown": 60,
+    "power": 0.9
   }
 }

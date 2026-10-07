@@ -1,0 +1,87 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_post"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side"
+      },
+      "when": {
+        "north": "true",
+        "power": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side_charged"
+      },
+      "when": {
+        "north": "true",
+        "power": "1|10|11|12|13|14|15|2|3|4|5|6|7|8|9"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "power": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side_charged",
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "power": "1|10|11|12|13|14|15|2|3|4|5|6|7|8|9"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side",
+        "y": 180
+      },
+      "when": {
+        "power": "0",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side_charged",
+        "y": 180
+      },
+      "when": {
+        "power": "1|10|11|12|13|14|15|2|3|4|5|6|7|8|9",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side",
+        "y": 270
+      },
+      "when": {
+        "power": "0",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/electric_fence_side_charged",
+        "y": 270
+      },
+      "when": {
+        "power": "1|10|11|12|13|14|15|2|3|4|5|6|7|8|9",
+        "west": "true"
+      }
+    }
+  ]
+}

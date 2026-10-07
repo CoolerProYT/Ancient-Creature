@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:woolly_mammoth",
-  "texture": "ancientcreature:textures/entity/woolly_mammoth.png",
-  "animations": "ancientcreature:woolly_mammoth",
-  "controller": "ancientcreature:woolly_mammoth",
+  "format_version": 2,
   "shadow_radius": 1.2925000000000002,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/woolly_mammoth.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/woolly_mammoth_mottled.png"
-    }
-  ]
+  }
 }

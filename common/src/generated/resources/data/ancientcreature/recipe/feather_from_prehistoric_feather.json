@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "ancientcreature:prehistoric_feather"
+  ],
+  "result": {
+    "count": 2,
+    "id": "minecraft:feather"
+  }
+}

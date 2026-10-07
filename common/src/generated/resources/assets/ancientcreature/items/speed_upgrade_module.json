@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ancientcreature:item/speed_upgrade_module"
+  }
+}

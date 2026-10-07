@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/flying_predator",
+  "loot_table": "ancientcreature:entities/pteranodon",
   "entity_category": "flying",
   "physical": {
     "width": 1.5,
@@ -33,13 +33,26 @@
         "min_altitude": 8,
         "max_altitude": 48
       },
-      { "type": "ancientcreature:breed", "speed_modifier": 1.0 },
-      { "type": "ancientcreature:tempt", "speed_modifier": 1.1, "can_scare": true },
-      { "type": "ancientcreature:follow_parent", "speed_modifier": 1.15 }
+      {
+        "type": "ancientcreature:breed",
+        "speed_modifier": 1.0
+      },
+      {
+        "type": "ancientcreature:tempt",
+        "speed_modifier": 1.1,
+        "can_scare": true
+      },
+      {
+        "type": "ancientcreature:follow_parent",
+        "speed_modifier": 1.15
+      }
     ]
   },
   "diet": {
-    "items": ["minecraft:cod", "minecraft:salmon"]
+    "items": [
+      "minecraft:cod",
+      "minecraft:salmon"
+    ]
   },
   "spawn": {
     "biomes": "#ancientcreature:spawns_pteranodon",
@@ -53,5 +66,26 @@
     "attack": "ancientcreature:entity.pteranodon.attack",
     "alert": "ancientcreature:entity.pteranodon.alert",
     "ambient_interval": 220
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 12
+  },
+  "riding": {
+    "ability": "dive",
+    "cooldown": 80,
+    "power": 0.8
   }
 }

@@ -1,10 +1,19 @@
 package com.coolerpromc.ancientcreature.entity.custom;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
+import com.coolerpromc.ancientcreature.data.component.custom.CreatureGenome;
 import com.coolerpromc.ancientcreature.entity.ModEntities;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorComponent;
 import com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorConfig;
+import com.coolerpromc.ancientcreature.entity.comfort.ComfortTracker;
+import com.coolerpromc.ancientcreature.entity.goal.CommandGoals;
+import com.coolerpromc.ancientcreature.entity.goal.RampageGoal;
+import com.coolerpromc.ancientcreature.entity.riding.MountAbilities;
+import com.coolerpromc.ancientcreature.item.custom.CreatureArmorItem;
+import com.coolerpromc.ancientcreature.item.custom.CreatureSaddleItem;
+import net.minecraft.sounds.SoundEvents;
 import com.coolerpromc.ancientcreature.species.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -50,10 +59,56 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private static final EntityDataAccessor<String> DATA_VARIANT = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Byte> DATA_ACTION = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Float> DATA_HUNGER = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
+    /** Client-visible state bits: see the FLAG_ constants. */
+    private static final EntityDataAccessor<Float> DATA_COMFORT = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Byte> DATA_COMFORT_REASON = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_ARMOR_TIER = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
+    /** The genome's size factor, synced because it decides the bounding box and the rendered size. */
+    private static final EntityDataAccessor<Float> DATA_GENOME_SIZE = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
+    /** Fidelity percent (bits 0-7), temperament (8-9), fertile (10), frail (11): what Jade shows. */
+    private static final EntityDataAccessor<Integer> DATA_GENOME_INFO = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> DATA_FLAGS = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
+
+    protected static final int FLAG_OWNED = 1;
+    protected static final int FLAG_SADDLED = 1 << 1;
+    protected static final int FLAG_SITTING = 1 << 2;
 
     private static final String SPECIES_TAG = "Species";
     private static final String VARIANT_TAG = "Variant";
     private static final String HUNGER_TAG = "Hunger";
+    private static final String COMMAND_TAG = "Command";
+    private static final String COMFORT_TAG = "Comfort";
+    private static final String SADDLE_TAG = "Saddle";
+    private static final String ARMOR_TAG = "CreatureArmor";
+    private static final String GENOME_TAG = "Genome";
+    private static final Identifier GENOME_VITALITY = Constants.id("genome_vitality");
+    private static final Identifier GENOME_VIGOR = Constants.id("genome_vigor");
+    private static final Identifier GENOME_STRENGTH = Constants.id("genome_strength");
+    /** Null for creatures made before genetics, and spawned by command: they read as {@link CreatureGenome#neutral}. */
+    private @Nullable CreatureGenome genome;
+
+    private static final Identifier ARMOR_MODIFIER = Constants.id("creature_armor");
+
+    /** Saddle in slot 0, barding in slot 1. */
+    private ItemStack saddle = ItemStack.EMPTY;
+    private ItemStack armor = ItemStack.EMPTY;
+    private int abilityCooldown;
+    /** Damage a pounce or dive deals on contact, while it is in the air. */
+    private float pounceStrike;
+
+    /** Comfort at or above which a creature breeds. */
+    public static final float BREEDING_COMFORT = 50.0F;
+    /** Comfort at or above which a creature slowly heals. */
+    public static final float CONTENT_COMFORT = 75.0F;
+    /** Comfort below which a creature is distressed. */
+    public static final float DISTRESS_COMFORT = 30.0F;
+
+    private final ComfortTracker comfortTracker = new ComfortTracker(this);
+
+    /** How far a creature told to roam may wander from where it was told. */
+    public static final int ROAM_RADIUS = 24;
+
+    private CreatureCommand command = CreatureCommand.ROAM;
 
     public static final String DEFAULT_VARIANT = "default";
 
@@ -129,6 +184,12 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         builder.define(DATA_VARIANT, DEFAULT_VARIANT);
         builder.define(DATA_ACTION, AncientCreatureAction.NONE.id());
         builder.define(DATA_HUNGER, SpeciesHungerProperties.DEFAULT.max());
+        builder.define(DATA_FLAGS, (byte) 0);
+        builder.define(DATA_ARMOR_TIER, (byte) 0);
+        builder.define(DATA_COMFORT, ComfortTracker.START);
+        builder.define(DATA_COMFORT_REASON, (byte) 0);
+        builder.define(DATA_GENOME_SIZE, 1.0F);
+        builder.define(DATA_GENOME_INFO, packGenomeInfo(CreatureGenome.neutral(Species.TRICERATOPS)));
     }
 
     @Override
@@ -158,6 +219,8 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.appliedCategory = null;
         this.goalsBuilt = false;
         this.refreshSpecies();
+        // a stored genome of another species no longer applies; re-derive the traits
+        this.setGenome(this.genome);
     }
 
     public String getVariant() {
@@ -166,6 +229,238 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
 
     public void setVariant(String variant) {
         this.entityData.set(DATA_VARIANT, variant == null || variant.isBlank() ? DEFAULT_VARIANT : variant);
+    }
+
+    // ------------------------------------------------------------------ gear
+
+    public ItemStack getSaddle() {
+        return this.saddle;
+    }
+
+    public ItemStack getCreatureArmor() {
+        return this.armor;
+    }
+
+    /** {@code query.armor_tier}: 0 without barding, otherwise the tier's index. */
+    public int getArmorTier() {
+        return this.entityData.get(DATA_ARMOR_TIER);
+    }
+
+    public void setSaddle(ItemStack stack) {
+        this.saddle = stack.copyWithCount(stack.isEmpty() ? 0 : 1);
+        if (!this.level().isClientSide()) {
+            this.setFlag(FLAG_SADDLED, !this.saddle.isEmpty());
+        }
+    }
+
+    public void setCreatureArmor(ItemStack stack) {
+        this.armor = stack.isEmpty() ? ItemStack.EMPTY : stack.copyWithCount(1);
+        if (!this.level().isClientSide()) {
+            CreatureArmorItem.Tier tier = this.armor.getItem() instanceof CreatureArmorItem item ? item.tier() : null;
+            this.entityData.set(DATA_ARMOR_TIER, (byte) (tier == null ? 0 : tier.index));
+            this.applyArmorModifiers(tier);
+        }
+    }
+
+    private void applyArmorModifiers(CreatureArmorItem.@Nullable Tier tier) {
+        setModifier(Attributes.ARMOR, tier == null ? 0 : tier.armor);
+        setModifier(Attributes.ARMOR_TOUGHNESS, tier == null ? 0 : tier.toughness);
+        setModifier(Attributes.KNOCKBACK_RESISTANCE, tier == null ? 0 : tier.knockbackResistance);
+    }
+
+    private void setModifier(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, double amount) {
+        AttributeInstance instance = this.getAttribute(attribute);
+        if (instance == null) {
+            return;
+        }
+        instance.removeModifier(ARMOR_MODIFIER);
+        if (amount != 0) {
+            instance.addPermanentModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(ARMOR_MODIFIER, amount,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
+        }
+    }
+
+    /** Whether the owner may mount: adult, and saddled unless the config says otherwise. */
+    public boolean canBeRiddenBy(Player player) {
+        return this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle()
+            && (this.isSaddled() || !ModCommonConfig.CONFIG.ridingRequiresSaddle.get());
+    }
+
+    @Override
+    protected void dropEquipment(ServerLevel level) {
+        super.dropEquipment(level);
+        if (!this.saddle.isEmpty()) {
+            this.spawnAtLocation(level, this.saddle);
+            this.setSaddle(ItemStack.EMPTY);
+        }
+        if (!this.armor.isEmpty()) {
+            this.spawnAtLocation(level, this.armor);
+            this.setCreatureArmor(ItemStack.EMPTY);
+        }
+    }
+
+    // ------------------------------------------------------------------ mount ability
+
+    public int getAbilityCooldown() {
+        return this.abilityCooldown;
+    }
+
+    /** Called from the rider's key press, already validated as coming from this creature's rider. */
+    public void tryMountAbility(Player rider) {
+        if (!(this.level() instanceof ServerLevel level) || this.getControllingPassenger() != rider || !this.isOwnedBy(rider)) {
+            return;
+        }
+        SpeciesRidingProperties riding = this.speciesDefinition().riding();
+        if (riding.ability() == SpeciesRidingProperties.Ability.NONE) {
+            rider.sendOverlayMessage(Component.translatable("message.ancientcreature.ability.none", this.getName()));
+            return;
+        }
+        if (this.abilityCooldown > 0) {
+            rider.sendOverlayMessage(Component.translatable("message.ancientcreature.ability.cooldown", (this.abilityCooldown + 19) / 20));
+            return;
+        }
+        this.abilityCooldown = riding.cooldown();
+        MountAbilities.perform(level, this, rider);
+    }
+
+    public void setPounceStrike(float damage) {
+        this.pounceStrike = damage;
+    }
+
+    private void tickMountAbility(ServerLevel level) {
+        if (this.abilityCooldown > 0) {
+            this.abilityCooldown--;
+        }
+        if (this.pounceStrike > 0.0F) {
+            MountAbilities.strikeOnContact(level, this, this.pounceStrike);
+            if (this.onGround() || this.isInWater()) {
+                this.pounceStrike = 0.0F;
+            }
+        }
+    }
+
+    public float getComfort() {
+        return this.entityData.get(DATA_COMFORT);
+    }
+
+    public void setComfort(float comfort) {
+        this.entityData.set(DATA_COMFORT, Math.max(0.0F, Math.min(100.0F, comfort)));
+    }
+
+    public ComfortTracker.Factor getComfortReason() {
+        int index = this.entityData.get(DATA_COMFORT_REASON);
+        ComfortTracker.Factor[] values = ComfortTracker.Factor.values();
+        return index >= 0 && index < values.length ? values[index] : ComfortTracker.Factor.NONE;
+    }
+
+    public static boolean comfortEnabled() {
+        return ModCommonConfig.CONFIG.comfortEnabled.get();
+    }
+
+    /** Distressed adults may rampage through weak enclosures. */
+    public boolean isDistressed() {
+        return comfortEnabled() && !this.isBaby() && this.getComfort() < DISTRESS_COMFORT;
+    }
+
+    private void tickComfort(ServerLevel level) {
+        if (!comfortEnabled() || (this.tickCount + this.getId()) % ComfortTracker.UPDATE_INTERVAL != 0) {
+            return;
+        }
+        ComfortTracker.Result result = this.comfortTracker.evaluate(level);
+        // calm animals settle more easily than fierce ones
+        float temperament = switch (this.getTemperament()) {
+            case CALM -> 5.0F;
+            case STEADY -> 0.0F;
+            case FIERCE -> -5.0F;
+        };
+        float target = Math.max(0.0F, Math.min(100.0F, result.target() + temperament));
+        this.setComfort(ComfortTracker.drift(this.getComfort(), target));
+        this.entityData.set(DATA_COMFORT_REASON, (byte) result.reason().ordinal());
+        if (this.getComfort() >= CONTENT_COMFORT && this.getHealth() < this.getMaxHealth() && !this.hungerProperties().isHungryAt(this.getHunger())) {
+            this.heal(1.0F);
+        }
+    }
+
+    protected boolean getFlag(int flag) {
+        return (this.entityData.get(DATA_FLAGS) & flag) != 0;
+    }
+
+    protected void setFlag(int flag, boolean value) {
+        byte flags = this.entityData.get(DATA_FLAGS);
+        this.entityData.set(DATA_FLAGS, (byte) (value ? flags | flag : flags & ~flag));
+    }
+
+    /** Whether the creature has an owner, as far as the client knows. The owner's identity stays server-side. */
+    public boolean hasOwnerClientSide() {
+        return this.getFlag(FLAG_OWNED);
+    }
+
+    public boolean isSaddled() {
+        return this.getFlag(FLAG_SADDLED);
+    }
+
+    public boolean isSitting() {
+        return this.getFlag(FLAG_SITTING);
+    }
+
+    @Override
+    protected void onOwnerChanged() {
+        if (!this.level().isClientSide()) {
+            this.setFlag(FLAG_OWNED, this.getOwnerReference() != null);
+        }
+    }
+
+    public CreatureCommand getCommand() {
+        return this.hasOwnerClientSide() || this.getOwnerReference() != null ? this.command : CreatureCommand.ROAM;
+    }
+
+    /**
+     * Applies an owner's command. Roaming anchors the home range at the creature's current position;
+     * the other commands lift it.
+     */
+    public void setCommand(CreatureCommand command) {
+        this.command = command;
+        if (command == CreatureCommand.ROAM) {
+            this.setHomeTo(this.blockPosition(), ROAM_RADIUS);
+        } else {
+            this.clearHome();
+        }
+        if (command == CreatureCommand.STAY) {
+            this.getNavigation().stop();
+            this.setTarget(null);
+        }
+        if (!this.level().isClientSide()) {
+            this.setFlag(FLAG_SITTING, command == CreatureCommand.STAY);
+        }
+    }
+
+    /** Whether the species has any way to attack, so it can be asked to defend its owner. */
+    public boolean canFight() {
+        for (CreatureBehaviorComponent component : this.speciesDefinition().resolvedBehaviors()) {
+            var type = component.config().type();
+            if (type == com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry.MELEE_ATTACK
+                || type == com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry.CHARGE_ATTACK
+                || type == com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry.ROAR_ATTACK
+                || type == com.coolerpromc.ancientcreature.entity.behavior.CreatureBehaviorRegistry.AQUATIC_PREDATOR) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gives the creature a skin from its species' weighted variant list, unless it already has one that
+     * the species knows. Called whenever a creature comes into being: hatching, capsule release,
+     * breeding and commands.
+     */
+    public void rollVariantIfUnset() {
+        if (this.level().isClientSide() || !this.hasResolvedSpecies()) {
+            return;
+        }
+        SpeciesDefinition definition = this.speciesDefinition();
+        if (!definition.variants().isEmpty() && definition.variantIndex(this.getVariant()) < 0) {
+            this.setVariant(definition.rollVariant(this.random));
+        }
     }
 
     public void onSpeciesDataReloaded() {
@@ -222,6 +517,9 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
      * again. Without that gap a predator mid-chase would drop and reacquire its target every tick.
      */
     public boolean wantsToHunt() {
+        if (this.isForcedPassive()) {
+            return false;
+        }
         SpeciesHungerProperties hunger = this.hungerProperties();
         if (hunger.isSatedAt(this.getHunger())) {
             return false;
@@ -370,7 +668,36 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
 
     @Override
     public boolean canBreatheUnderwater() {
-        return this.speciesCategory().isAquatic();
+        return this.speciesDefinition().respiration() != SpeciesRespiration.AIR;
+    }
+
+    /** Ticks a gill-breather survives on land; vanilla fish use the same 300-tick air supply. */
+    @Override
+    public void baseTick() {
+        int air = this.getAirSupply();
+        super.baseTick();
+        if (!this.level().isClientSide() && this.isAlive() && this.hasResolvedSpecies()
+            && this.speciesDefinition().respiration() == SpeciesRespiration.WATER) {
+            if (this.isInWater()) {
+                this.setAirSupply(this.getMaxAirSupply());
+            } else {
+                this.setAirSupply(air - 1);
+                if (this.getAirSupply() <= -20) {
+                    this.setAirSupply(0);
+                    this.hurtServer((ServerLevel) this.level(), this.damageSources().dryOut(), 2.0F);
+                }
+            }
+        }
+    }
+
+    /** A stranded gill-breather thrashes towards water, the way vanilla fish flop. */
+    private void tickStranded() {
+        if (this.speciesDefinition().respiration() == SpeciesRespiration.WATER && !this.isInWater() && this.onGround() && !this.isVehicle()
+            && this.random.nextInt(Math.max(4, (int) (8 * this.getBbWidth()))) == 0) {
+            this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.3F, (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F));
+            this.setOnGround(false);
+            this.needsSync = true;
+        }
     }
 
     @Override
@@ -397,6 +724,16 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
 
     private void rebuildGoals(SpeciesDefinition definition) {
         this.clearGoals();
+
+        // Owner commands sit above the species' own behaviour; they idle for unowned creatures.
+        double travel = definition.category().isAquatic() ? 1.0 : 1.15;
+        this.goalSelector.addGoal(1, new CommandGoals.Stay(this));
+        this.goalSelector.addGoal(4, new CommandGoals.FollowOwner(this, travel));
+        this.goalSelector.addGoal(5, new CommandGoals.ReturnHome(this, 1.0));
+        this.targetSelector.addGoal(1, new CommandGoals.DefendOwner(this));
+        if (this.speciesCategory() == SpeciesEntityCategory.LAND) {
+            this.goalSelector.addGoal(3, new RampageGoal(this));
+        }
 
         for (CreatureBehaviorComponent component : definition.resolvedBehaviors()) {
             Goal goal;
@@ -433,7 +770,73 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     }
 
     private float growthScale() {
-        return this.speciesDefinition().scaleFor(this.isBaby());
+        return this.speciesDefinition().scaleFor(this.isBaby()) * this.entityData.get(DATA_GENOME_SIZE);
+    }
+
+    // ------------------------------------------------------------------ genome
+
+    public CreatureGenome getGenome() {
+        CreatureGenome stored = this.genome;
+        return stored != null && stored.species().equals(this.getSpecies()) ? stored : CreatureGenome.neutral(this.getSpecies());
+    }
+
+    /** Sets the genome and applies its traits. Null gives the neutral genome of the creature's species. */
+    public void setGenome(@Nullable CreatureGenome genome) {
+        this.genome = genome;
+        CreatureGenome applied = this.getGenome();
+        this.entityData.set(DATA_GENOME_SIZE, applied.size());
+        this.entityData.set(DATA_GENOME_INFO, packGenomeInfo(applied));
+        if (!this.level().isClientSide()) {
+            this.applyGenomeModifiers(applied);
+        }
+    }
+
+    private void applyGenomeModifiers(CreatureGenome genome) {
+        setMultiplier(Attributes.MAX_HEALTH, GENOME_VITALITY, genome.vitality() - 1.0F);
+        setMultiplier(Attributes.MOVEMENT_SPEED, GENOME_VIGOR, genome.vigor() - 1.0F);
+        // bigger animals hit harder
+        setMultiplier(Attributes.ATTACK_DAMAGE, GENOME_STRENGTH, (genome.size() - 1.0F) * 0.75F);
+        if (this.getHealth() > this.getMaxHealth()) {
+            this.setHealth(this.getMaxHealth());
+        }
+    }
+
+    private void setMultiplier(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, Identifier id, float amount) {
+        AttributeInstance instance = this.getAttribute(attribute);
+        if (instance == null) {
+            return;
+        }
+        instance.removeModifier(id);
+        if (Math.abs(amount) > 1.0E-4F) {
+            instance.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(id, amount,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        }
+    }
+
+    private static int packGenomeInfo(CreatureGenome genome) {
+        return Math.round(genome.fidelity() * 100.0F)
+            | genome.temperament().ordinal() << 8
+            | (genome.fertile() ? 1 << 10 : 0)
+            | (genome.frail() ? 1 << 11 : 0);
+    }
+
+    /** Client-safe genome readouts, from synced data. */
+    public int getGenomeFidelityPercent() {
+        return this.entityData.get(DATA_GENOME_INFO) & 0xFF;
+    }
+
+    public CreatureGenome.Temperament getTemperament() {
+        int index = this.entityData.get(DATA_GENOME_INFO) >> 8 & 3;
+        CreatureGenome.Temperament[] values = CreatureGenome.Temperament.values();
+        return values[Math.min(index, values.length - 1)];
+    }
+
+    public boolean isFertile() {
+        return (this.entityData.get(DATA_GENOME_INFO) & 1 << 10) != 0;
+    }
+
+    public boolean isFrail() {
+        return (this.entityData.get(DATA_GENOME_INFO) & 1 << 11) != 0;
     }
 
     private void updateDimensionsIfNeeded() {
@@ -518,6 +921,8 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             this.tickActionLoop();
             if (this.hasResolvedSpecies()) {
                 this.tickHunger();
+                this.tickComfort((ServerLevel) this.level());
+                this.tickMountAbility((ServerLevel) this.level());
             }
         }
     }
@@ -527,6 +932,9 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         super.aiStep();
         if (!this.level().isClientSide() && this.hasResolvedSpecies() && !this.goalsBuilt) {
             this.rebuildGoals(this.speciesDefinition());
+        }
+        if (!this.level().isClientSide() && this.hasResolvedSpecies()) {
+            this.tickStranded();
         }
     }
 
@@ -618,15 +1026,28 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         if (result.consumesAction()) {
             if (wasFood) {
                 this.feed(this.hungerProperties().foodValue());
+                this.comfortTracker.onHandFed();
             }
             return result;
         }
 
-        if (!wasFood && this.isOwnedBy(player) && !player.isSecondaryUseActive() && !this.isBaby() && !this.isVehicle()) {
-            if (!this.level().isClientSide()) {
-                player.startRiding(this);
+        if (!wasFood && this.isOwnedBy(player) && !this.isBaby()) {
+            InteractionResult gear = this.interactGear(player, held);
+            if (gear != null) {
+                return gear;
             }
-            return InteractionResult.SUCCESS;
+        }
+
+        if (!wasFood && !player.isSecondaryUseActive() && this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle()) {
+            if (this.canBeRiddenBy(player)) {
+                if (!this.level().isClientSide()) {
+                    player.startRiding(this);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            if (held.isEmpty() && !this.level().isClientSide()) {
+                player.sendOverlayMessage(Component.translatable("message.ancientcreature.needs_saddle", this.getName()));
+            }
         }
 
         if (!wasFood || this.getHunger() >= this.hungerProperties().max()) {
@@ -635,6 +1056,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
 
         if (!this.level().isClientSide()) {
             this.feed(this.hungerProperties().foodValue());
+            this.comfortTracker.onHandFed();
             held.consume(1, player);
         }
         return InteractionResult.SUCCESS;
@@ -698,9 +1120,49 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
     }
 
+    /**
+     * Saddle and barding: using one on your adult creature puts it on; sneaking with an empty hand takes
+     * the barding off first, then the saddle. Returns null when the interaction is not about gear.
+     */
+    private @Nullable InteractionResult interactGear(Player player, ItemStack held) {
+        if (held.getItem() instanceof CreatureSaddleItem && this.saddle.isEmpty()) {
+            if (!this.level().isClientSide()) {
+                this.setSaddle(held);
+                held.consume(1, player);
+                this.level().playSound(null, this, SoundEvents.HORSE_SADDLE.value(), this.getSoundSource(), 1.0F, 0.8F);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (held.getItem() instanceof CreatureArmorItem && this.armor.isEmpty()) {
+            if (!this.level().isClientSide()) {
+                this.setCreatureArmor(held);
+                held.consume(1, player);
+                this.level().playSound(null, this, SoundEvents.HORSE_ARMOR.value(), this.getSoundSource(), 1.0F, 0.8F);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (held.isEmpty() && player.isSecondaryUseActive() && (!this.armor.isEmpty() || !this.saddle.isEmpty())) {
+            if (!this.level().isClientSide()) {
+                ItemStack removed;
+                if (!this.armor.isEmpty()) {
+                    removed = this.armor;
+                    this.setCreatureArmor(ItemStack.EMPTY);
+                } else {
+                    removed = this.saddle;
+                    this.setSaddle(ItemStack.EMPTY);
+                }
+                player.getInventory().placeItemBackInInventory(removed);
+                this.level().playSound(null, this, SoundEvents.ARMOR_EQUIP_LEATHER.value(), this.getSoundSource(), 1.0F, 0.8F);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return null;
+    }
+
     @Override
     public boolean canMate(Animal partner) {
-        return partner instanceof AncientCreatureEntity other && other.getSpecies().equals(this.getSpecies()) && super.canMate(partner);
+        return partner instanceof AncientCreatureEntity other && other.getSpecies().equals(this.getSpecies())
+            && this.isFertile() && other.isFertile() && super.canMate(partner);
     }
 
     @Override
@@ -708,7 +1170,14 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         AncientCreatureEntity offspring = ModEntities.ANCIENT_CREATURE.get().create(level, EntitySpawnReason.BREEDING);
         if (offspring != null) {
             offspring.setSpecies(this.getSpecies());
-            offspring.setVariant(this.getVariant());
+            // Offspring take a parent's skin, with a small chance of a fresh roll from the species list.
+            AncientCreatureEntity other = partner instanceof AncientCreatureEntity creature ? creature : this;
+            if (this.random.nextFloat() < 0.1F) {
+                offspring.setVariant(this.speciesDefinition().rollVariant(this.random));
+            } else {
+                offspring.setVariant(this.random.nextBoolean() ? this.getVariant() : other.getVariant());
+            }
+            offspring.setGenome(CreatureGenome.inherit(this.getGenome(), other.getGenome(), this.random));
         }
         return offspring;
     }
@@ -724,6 +1193,22 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         output.store(SPECIES_TAG, Species.CODEC, this.species);
         output.putString(VARIANT_TAG, this.getVariant());
         output.putFloat(HUNGER_TAG, this.getHunger());
+        output.store(COMMAND_TAG, CreatureCommand.CODEC, this.command);
+        output.putFloat(COMFORT_TAG, this.getComfort());
+        if (!this.saddle.isEmpty()) {
+            output.store(SADDLE_TAG, ItemStack.CODEC, this.saddle);
+        }
+        if (!this.armor.isEmpty()) {
+            output.store(ARMOR_TAG, ItemStack.CODEC, this.armor);
+        }
+        output.storeNullable(GENOME_TAG, CreatureGenome.CODEC, this.genome);
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.rollVariantIfUnset();
+        return data;
     }
 
     @Override
@@ -739,8 +1224,17 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         });
 
         this.setSpecies(stored);
+        // Before super: the vitality modifier has to be in place when the saved health is restored,
+        // or a hardy creature's health would be clamped to the species' base maximum.
+        this.setGenome(input.read(GENOME_TAG, CreatureGenome.CODEC).orElse(null));
 
         super.readAdditionalSaveData(input);
+        this.setFlag(FLAG_OWNED, this.getOwnerReference() != null);
+        this.command = input.read(COMMAND_TAG, CreatureCommand.CODEC).orElse(CreatureCommand.ROAM);
+        this.setComfort(input.getFloatOr(COMFORT_TAG, ComfortTracker.START));
+        this.setSaddle(input.read(SADDLE_TAG, ItemStack.CODEC).orElse(ItemStack.EMPTY));
+        this.setCreatureArmor(input.read(ARMOR_TAG, ItemStack.CODEC).orElse(ItemStack.EMPTY));
+        this.setFlag(FLAG_SITTING, this.command == CreatureCommand.STAY && this.getOwnerReference() != null);
     }
 
     @Override
@@ -755,6 +1249,51 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             return false;
         }
         return super.canAttack(target);
+    }
+
+    /** Ticks since this creature was last shocked by an electric fence; see {@link #onShocked()}. */
+    private int lastShockTick = -100000;
+
+    /** Called by the electric fence. Feeds the comfort system, which makes fences a deterrent. */
+    public void onShocked() {
+        this.lastShockTick = this.tickCount;
+        this.getNavigation().stop();
+    }
+
+    public boolean wasRecentlyShocked(int withinTicks) {
+        return this.tickCount - this.lastShockTick < withinTicks;
+    }
+
+    /** Listed in the {@code Creatures.passiveSpecies} config: may only fight back. */
+    public boolean isForcedPassive() {
+        return ModCommonConfig.isForcedPassive(this.getSpecies().id());
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        if (target != null && !this.level().isClientSide() && this.isForcedPassive() && target != this.getLastHurtByMob()) {
+            target = null;
+        }
+        super.setTarget(target);
+    }
+
+    /**
+     * Whether another revived creature may come into being near {@code pos} under the
+     * {@code Creatures.populationCap} config.
+     */
+    public static boolean hasRoomFor(ServerLevel level, net.minecraft.world.phys.Vec3 pos) {
+        int cap = ModCommonConfig.CONFIG.populationCap.get();
+        if (cap <= 0) {
+            return true;
+        }
+        double r = ModCommonConfig.CONFIG.populationRadius.get();
+        return level.getEntitiesOfClass(AncientCreatureEntity.class, new net.minecraft.world.phys.AABB(pos.subtract(r, r, r), pos.add(r, r, r))).size() < cap;
+    }
+
+    @Override
+    public boolean canFallInLove() {
+        return super.canFallInLove() && this.isFertile() && (!comfortEnabled() || this.getComfort() >= BREEDING_COMFORT)
+            && (!(this.level() instanceof ServerLevel server) || hasRoomFor(server, this.position()));
     }
 
     @Override

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "ancientcreature:woolly_fur",
+    "ancientcreature:woolly_fur"
+  ],
+  "result": {
+    "id": "minecraft:white_wool"
+  }
+}

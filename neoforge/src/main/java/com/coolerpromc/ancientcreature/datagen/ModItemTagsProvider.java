@@ -3,6 +3,8 @@ package com.coolerpromc.ancientcreature.datagen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.tag.ModItemTags;
+import net.minecraft.tags.ItemTags;
+import net.neoforged.neoforge.common.Tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
@@ -28,5 +30,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModItemTags.EXTRACTION_FLUIDS).add(
             ModItems.EXTRACTION_FLUID.key()
         );
+
+        // Wolves, cats and other meat eaters accept prehistoric meat like any other.
+        tag(ItemTags.MEAT).add(ModItems.RAW_PREHISTORIC_MEAT.key(), ModItems.COOKED_PREHISTORIC_MEAT.key());
+        tag(Tags.Items.FOODS_RAW_MEAT).add(ModItems.RAW_PREHISTORIC_MEAT.key());
+        tag(Tags.Items.FOODS_COOKED_MEAT).add(ModItems.COOKED_PREHISTORIC_MEAT.key());
+        tag(Tags.Items.FEATHERS).add(ModItems.PREHISTORIC_FEATHER.key());
+        tag(Tags.Items.LEATHERS).add(ModItems.THICK_HIDE.key());
     }
 }

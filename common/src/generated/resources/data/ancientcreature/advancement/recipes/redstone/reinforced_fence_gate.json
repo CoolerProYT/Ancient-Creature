@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_fence": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:reinforced_fence"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ancientcreature:reinforced_fence_gate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_fence"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ancientcreature:reinforced_fence_gate"
+    ]
+  }
+}

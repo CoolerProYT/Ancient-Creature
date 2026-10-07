@@ -326,7 +326,8 @@ public final class AncientCreatureCommand {
         context.getSource().sendSuccess(() -> Component.literal("  growth: adult_age " + definition.growth().adultAge()
             + ", baby_scale " + definition.growth().babyScale()), false);
         context.getSource().sendSuccess(() -> Component.literal("  incubation: " + definition.spawn().incubationTime()
-            + " ticks, biomes #" + definition.spawn().biomeTag()), false);
+            + " ticks, " + definition.hybrid().map(h -> "hybrid of " + h.first() + " and " + h.second() + " (no fossils)")
+                .orElse("biomes #" + definition.spawn().biomeTag())), false);
         context.getSource().sendSuccess(() -> Component.literal("  hunger: max " + definition.hunger().max()
             + ", hunts at " + definition.hunger().huntThreshold()
             + ", full at " + definition.hunger().fullThreshold()

@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:argentinosaurus",
-  "texture": "ancientcreature:textures/entity/argentinosaurus.png",
-  "animations": "ancientcreature:argentinosaurus",
-  "controller": "ancientcreature:argentinosaurus",
+  "format_version": 2,
   "shadow_radius": 2.3375000000000004,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/argentinosaurus.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/argentinosaurus_mottled.png"
-    }
-  ]
+  }
 }

@@ -13,6 +13,9 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> GENOME_SEQUENCER_PROCESSING = register("block.genome_sequencer.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> EMBRYOGENESIS_CHAMBER_PROCESSING = register("block.embryogenesis_chamber.processing");
     public static final RegistryHandler<SoundEvent, SoundEvent> INCUBATOR_PROCESSING = register("block.incubator.processing");
+    public static final RegistryHandler<SoundEvent, SoundEvent> HORN_WHISTLE_BLOW = register("item.horn_whistle.blow");
+    public static final RegistryHandler<SoundEvent, SoundEvent> ELECTRIC_FENCE_ZAP = register("block.electric_fence.zap");
+    public static final RegistryHandler<SoundEvent, SoundEvent> ELECTRIC_FENCE_HUM = register("block.electric_fence.hum");
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_AMBIENT = register("entity.triceratops.ambient");
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_BELLOW = register("entity.triceratops.bellow");
     public static final RegistryHandler<SoundEvent, SoundEvent> TRICERATOPS_HURT = register("entity.triceratops.hurt");
@@ -54,6 +57,27 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_DEATH = register("entity.brachiosaurus.death");
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_ATTACK = register("entity.brachiosaurus.attack");
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_STEP = register("entity.brachiosaurus.step");
+    /** Species voiced through sounds.json alone (chained to a relative's or a vanilla animal's events). */
+    public static final java.util.List<RegistryHandler<SoundEvent, SoundEvent>> SPECIES_VOICES = registerVoices(
+        "argentinosaurus",
+        "carnotaurus",
+        "dilophosaurus",
+        "dunkleosteus",
+        "mosasaurus",
+        "parasaurolophus",
+        "plesiosaurus",
+        "quetzalcoatlus",
+        "spinosaurus",
+        "stegosaurus",
+        "velociraptor",
+        "arthropleura",
+        "dire_wolf",
+        "smilodon",
+        "woolly_mammoth",
+        "woolly_rhinoceros",
+        "stegoceratops",
+        "tyrannoraptor"
+    );
 
     public static RegistryHandler<SoundEvent, SoundEvent> register(String name){
         return Services.REGISTRY.registerSoundEvent(name);
@@ -61,5 +85,15 @@ public class ModSounds {
 
     public static void init(){
         Constants.LOG.info("Registering sounds.");
+    }
+
+    private static java.util.List<RegistryHandler<SoundEvent, SoundEvent>> registerVoices(String... species) {
+        java.util.List<RegistryHandler<SoundEvent, SoundEvent>> out = new java.util.ArrayList<>();
+        for (String name : species) {
+            for (String role : new String[]{"ambient", "hurt", "death", "step", "attack", "alert"}) {
+                out.add(register("entity." + name + "." + role));
+            }
+        }
+        return java.util.List.copyOf(out);
     }
 }

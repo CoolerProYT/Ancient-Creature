@@ -3,8 +3,12 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.CreatureGenome;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
+import com.coolerpromc.ancientcreature.species.SpeciesHybridProperties;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.EmbryogenesisChamberMenu;
@@ -43,11 +47,19 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
 
     private final AnimationState processingAnimationState = new AnimationState();
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private boolean isProcessing = false;
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.embryogenesisTick.get();
 
     private final SimpleContainer genomeContainer = new SimpleContainer(1){
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack itemStack) {
+            return itemStack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
+        }
+    };
+    /** A second completed genome; with one here the chamber splices the two into their hybrid. */
+    private final SimpleContainer donorContainer = new SimpleContainer(1){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
@@ -97,9 +109,6 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
-            maxProgress = ModCommonConfig.CONFIG.embryogenesisTick.get();
-        });
     }
 
     @Override
@@ -119,7 +128,9 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
             level.removeBlock(placeholderPos, false);
         }
+        upgrades.drop(level, pos);
         Containers.dropContents(level, pos, genomeContainer);
+        Containers.dropContents(level, pos, donorContainer);
         Containers.dropContents(level, pos, eggContainer);
         Containers.dropContents(level, pos, nutrientContainer);
         Containers.dropContents(level, pos, outputContainer);
@@ -131,7 +142,9 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("genome"), genomeContainer.getItems());
+        ContainerHelper.saveAllItems(output.child("donor"), donorContainer.getItems());
         ContainerHelper.saveAllItems(output.child("egg"), eggContainer.getItems());
         ContainerHelper.saveAllItems(output.child("nutrient"), nutrientContainer.getItems());
         ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
@@ -143,7 +156,9 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("genome"), genomeContainer.getItems());
+        ContainerHelper.loadAllItems(input.childOrEmpty("donor"), donorContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("egg"), eggContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("nutrient"), nutrientContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
@@ -152,8 +167,19 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         isProcessing = input.getBooleanOr("isProcessing", false);
     }
 
+    private int baseTicks(ServerLevel level) {
+        return ModCommonConfig.CONFIG.embryogenesisTick.get();
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canProcess()){
             if (progress == 0){
@@ -189,14 +215,47 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     }
 
     private void finishProcessing(ServerLevel serverLevel, BlockPos pos) {
-        ItemStack stack = genomeContainer.removeItem(0, 1);
-        eggContainer.removeItem(0, 1);
-        nutrientContainer.removeItem(0, 1);
-        Species species = stack.get(ModDataComponents.SPECIES.get());
+        Species species = resultSpecies();
         if (species == null) return;
+        ItemStack stack = genomeContainer.removeItem(0, 1);
+        ItemStack donor = donorContainer.removeItem(0, 1);
+        eggContainer.removeItem(0, 1);
+        if (!upgrades.saves(serverLevel.getRandom())) {
+            nutrientContainer.removeItem(0, 1);
+        }
+        // The embryo's traits are decided here, from how faithful the genome is.
+        float fidelity = fidelityOf(stack);
+        if (!donor.isEmpty()) {
+            fidelity = (fidelity + fidelityOf(donor)) * 0.5f * SpeciesHybridProperties.SPLICE_FIDELITY;
+        }
+        CreatureGenome genome = CreatureGenome.roll(species, fidelity, upgrades.precision(), serverLevel.getRandom());
+        if (!donor.isEmpty()) {
+            genome = genome.sterile();
+            // a hybrid has no fossil to identify, so it enters the journal when it is first made
+            var identified = com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData.getIdentifiedSpeciesData(serverLevel.getServer());
+            if (!identified.getIdentifiedSpecies().contains(species)) {
+                identified.addIdentifiedSpecies(species, serverLevel);
+            }
+        }
         ItemStack egg = ModItems.FERTILIZED_ANCIENT_EGG.toStack();
         egg.set(ModDataComponents.SPECIES.get(), species);
+        egg.set(ModDataComponents.GENOME.get(), genome);
         outputContainer.addItem(egg);
+    }
+
+    private static float fidelityOf(ItemStack cartridge) {
+        GenomeData genomeData = cartridge.get(ModDataComponents.GENOME_DATA.get());
+        return genomeData != null ? genomeData.fidelity() : GenomeData.LEGACY_FIDELITY;
+    }
+
+    /** The species the chamber would make now: the cartridge's, or the hybrid of it and the donor. */
+    private @Nullable Species resultSpecies() {
+        Species species = genomeContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        if (species == null) return null;
+        ItemStack donor = donorContainer.getItem(0);
+        if (donor.isEmpty()) return species;
+        Species other = donor.get(ModDataComponents.SPECIES.get());
+        return other == null ? null : Species.hybridOf(species, other).orElse(null);
     }
 
     private boolean canProcess() {
@@ -208,7 +267,7 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     }
 
     private boolean hasValidCartridge() {
-        return genomeContainer.getItem(0).has(ModDataComponents.SPECIES.get());
+        return resultSpecies() != null;
     }
 
     private boolean hasEgg() {
@@ -243,6 +302,10 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
 
     public SimpleContainer getGenomeContainer() {
         return genomeContainer;
+    }
+
+    public SimpleContainer getDonorContainer() {
+        return donorContainer;
     }
 
     public SimpleContainer getEggContainer() {

@@ -1,0 +1,6 @@
+{
+  "parent": "ancientcreature:block/sifter_fill_1",
+  "textures": {
+    "fill": "minecraft:block/sand"
+  }
+}

@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
@@ -46,6 +47,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
 
     private final AnimationState identifyingAnimationState = new AnimationState();
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private boolean isIdentifying = false;
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.unknownIdentifyingTick.get();
@@ -54,13 +56,6 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return isValidInput(itemStack);
-        }
-
-        @Override
-        public void setChanged() {
-            if (!isEmpty() && FossilIdentificationChamberBlockEntity.this.level instanceof ServerLevel level){
-                setMaxProgress(level);
-            }
         }
     };
     private final SimpleContainer outputContainer = new SimpleContainer(1){
@@ -94,11 +89,6 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
-            if (level instanceof ServerLevel serverLevel && !inputContainer.isEmpty()){
-                setMaxProgress(serverLevel);
-            }
-        });
     }
 
     @Override
@@ -118,6 +108,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
             if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
                 level.removeBlock(placeholderPos, false);
             }
+            upgrades.drop(this.level, pos);
             Containers.dropContents(this.level, pos, inputContainer);
             Containers.dropContents(this.level, pos, outputContainer);
             if (progress > 0 && level instanceof ServerLevel serverLevel){
@@ -129,6 +120,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("input"), inputContainer.getItems());
         ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
@@ -139,6 +131,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("input"), inputContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);
@@ -159,8 +152,23 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         return identifyingAnimationState;
     }
 
+    /** Unprocessed time for what is in the chamber: quicker for species already identified. */
+    private int baseTicks(ServerLevel level) {
+        FossilData fossilData = inputContainer.getItem(0).get(ModDataComponents.FOSSIL_DATA.get());
+        Species species = fossilData == null ? null : fossilData.getSpecies();
+        boolean known = species != null && IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer()).getIdentifiedSpecies().contains(species);
+        return known ? ModCommonConfig.CONFIG.knownIdentifyingTick.get() : ModCommonConfig.CONFIG.unknownIdentifyingTick.get();
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canIdentify()){
             if (progress == 0){
@@ -201,7 +209,8 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         Holder<FossilPart> fossilPart = fossilData.fossilPart();
         Species species = fossilData.getSpecies();
         IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
-        float failChance = fossilPart.value().identifyFailChance();
+        // each precision module halves the chance of a failed identification
+        float failChance = fossilPart.value().identifyFailChance() * (float) Math.pow(0.5, upgrades.precision());
         float damageRate = fossilPart.value().fossilDamageRate();
 
         if (species != null){
@@ -223,13 +232,6 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         }
     }
 
-    private void setMaxProgress(ServerLevel level) {
-        IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
-        FossilData fossilData = inputContainer.getItem(0).get(ModDataComponents.FOSSIL_DATA.get());
-        Species species = fossilData.getSpecies();
-        this.maxProgress = data.getIdentifiedSpecies().contains(species) ? ModCommonConfig.CONFIG.knownIdentifyingTick.get() : ModCommonConfig.CONFIG.unknownIdentifyingTick.get();
-    }
-
     private boolean canIdentify() {
         return hasFossil() && hasOutputSlot();
     }
@@ -237,6 +239,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     private boolean hasOutputSlot(){
         ItemStack stack = inputContainer.getItem(0).copy();
         FossilData fossilData = stack.get(ModDataComponents.FOSSIL_DATA.get());
+        if (fossilData == null) return false;
         stack.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.identify());
         return outputContainer.canAddItem(stack);
     }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_prehistoric_horn": {
+      "conditions": {
+        "items": [
+          {
+            "items": "ancientcreature:prehistoric_horn"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "ancientcreature:horn_whistle"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_prehistoric_horn"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ancientcreature:horn_whistle"
+    ]
+  }
+}

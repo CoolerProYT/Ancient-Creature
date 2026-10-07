@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:parasaurolophus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/parasaurolophus",
+        "mottled": "textures/entity/parasaurolophus_mottled",
+        "saddle": "textures/entity/gear/parasaurolophus_saddle",
+        "armor_iron": "textures/entity/gear/parasaurolophus_armor_iron",
+        "armor_golden": "textures/entity/gear/parasaurolophus_armor_golden",
+        "armor_diamond": "textures/entity/gear/parasaurolophus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/parasaurolophus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.parasaurolophus"
+      },
+      "animations": {
+        "idle": "animation.parasaurolophus.idle",
+        "walk": "animation.parasaurolophus.walk",
+        "run": "animation.parasaurolophus.run",
+        "attack": "animation.parasaurolophus.attack",
+        "special": "animation.parasaurolophus.special",
+        "hurt": "animation.parasaurolophus.hurt",
+        "death": "animation.parasaurolophus.death",
+        "main": "controller.animation.parasaurolophus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.parasaurolophus"
+      ]
+    }
+  }
+}

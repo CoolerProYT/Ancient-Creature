@@ -1,0 +1,90 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.tyrannoraptor.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": [
+            "idle"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "roar": "query.action == 'roar'"
+            },
+            {
+              "bite": "query.action == 'attack'"
+            },
+            {
+              "walk": "query.is_moving"
+            }
+          ],
+          "blend_transition": 0.2
+        },
+        "walk": {
+          "animations": [
+            "walk"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "roar": "query.action == 'roar'"
+            },
+            {
+              "bite": "query.action == 'attack'"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.15
+        },
+        "roar": {
+          "animations": [
+            "roar"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "walk": "query.action != 'roar' && query.is_moving"
+            },
+            {
+              "idle": "query.action != 'roar'"
+            }
+          ],
+          "blend_transition": 0.15
+        },
+        "bite": {
+          "animations": [
+            "bite"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "walk": "query.action != 'attack' && query.is_moving"
+            },
+            {
+              "idle": "query.action != 'attack'"
+            }
+          ],
+          "blend_transition": 0.08
+        },
+        "death": {
+          "animations": [
+            "idle"
+          ],
+          "blend_transition": 0.2
+        }
+      }
+    }
+  }
+}

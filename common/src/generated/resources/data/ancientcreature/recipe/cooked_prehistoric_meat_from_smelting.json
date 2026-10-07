@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "experience": 0.35,
+  "ingredient": "ancientcreature:raw_prehistoric_meat",
+  "result": {
+    "id": "ancientcreature:cooked_prehistoric_meat"
+  }
+}

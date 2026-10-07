@@ -1,78 +1,158 @@
 {
-  "format_version": 1,
-  "initial_state": "idle",
-  "states": {
-    "idle": {
-      "animations": ["idle"],
-      "blend_transition": 0.15,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "call": "query.action == 'roar'" },
-        { "attack": "query.action == 'attack'" },
-        { "run": "query.is_moving && query.is_running" },
-        { "walk": "query.is_moving" }
-      ]
-    },
-    "walk": {
-      "animations": ["idle", "walk"],
-      "blend_transition": 0.1,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "call": "query.action == 'roar'" },
-        { "attack": "query.action == 'attack'" },
-        { "run": "query.is_running" },
-        { "idle": "!query.is_moving" }
-      ]
-    },
-    "run": {
-      "animations": ["run"],
-      "blend_transition": 0.08,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "call": "query.action == 'roar'" },
-        { "attack": "query.action == 'attack'" },
-        { "walk": "query.is_moving && !query.is_running" },
-        { "idle": "!query.is_moving" }
-      ]
-    },
-    "attack": {
-      "animations": ["bite"],
-      "blend_transition": 0.04,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "run": "query.action == 'none' && query.is_running" },
-        { "walk": "query.action == 'none' && query.is_moving" },
-        { "idle": "query.action == 'none'" }
-      ]
-    },
-    "call": {
-      "animations": ["call"],
-      "blend_transition": 0.08,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "hurt": "query.is_hurt" },
-        { "run": "query.action != 'roar' && query.is_running" },
-        { "walk": "query.action != 'roar' && query.is_moving" },
-        { "idle": "query.action != 'roar'" }
-      ]
-    },
-    "hurt": {
-      "animations": ["hurt"],
-      "blend_transition": 0.04,
-      "transitions": [
-        { "death": "query.is_dead" },
-        { "run": "!query.is_hurt && query.is_running" },
-        { "walk": "!query.is_hurt && query.is_moving" },
-        { "idle": "!query.is_hurt" }
-      ]
-    },
-    "death": {
-      "animations": ["death"],
-      "blend_transition": 0.08,
-      "transitions": []
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.deinonychus.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": [
+            "idle"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "call": "query.action == 'roar'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "run": "query.is_moving && query.is_running"
+            },
+            {
+              "walk": "query.is_moving"
+            }
+          ],
+          "blend_transition": 0.15
+        },
+        "walk": {
+          "animations": [
+            "idle",
+            "walk"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "call": "query.action == 'roar'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "run": "query.is_running"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.1
+        },
+        "run": {
+          "animations": [
+            "run"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "call": "query.action == 'roar'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "walk": "query.is_moving && !query.is_running"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.08
+        },
+        "attack": {
+          "animations": [
+            "bite"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "run": "query.action == 'none' && query.is_running"
+            },
+            {
+              "walk": "query.action == 'none' && query.is_moving"
+            },
+            {
+              "idle": "query.action == 'none'"
+            }
+          ],
+          "blend_transition": 0.04
+        },
+        "call": {
+          "animations": [
+            "call"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "run": "query.action != 'roar' && query.is_running"
+            },
+            {
+              "walk": "query.action != 'roar' && query.is_moving"
+            },
+            {
+              "idle": "query.action != 'roar'"
+            }
+          ],
+          "blend_transition": 0.08
+        },
+        "hurt": {
+          "animations": [
+            "hurt"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "run": "!query.is_hurt && query.is_running"
+            },
+            {
+              "walk": "!query.is_hurt && query.is_moving"
+            },
+            {
+              "idle": "!query.is_hurt"
+            }
+          ],
+          "blend_transition": 0.04
+        },
+        "death": {
+          "animations": [
+            "death"
+          ],
+          "blend_transition": 0.08
+        }
+      }
     }
   }
 }

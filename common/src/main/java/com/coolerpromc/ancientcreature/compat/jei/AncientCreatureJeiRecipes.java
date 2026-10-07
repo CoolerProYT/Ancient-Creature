@@ -24,6 +24,7 @@ import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.Locale;
 
 public final class AncientCreatureJeiRecipes {
@@ -41,10 +42,15 @@ public final class AncientCreatureJeiRecipes {
 
     public static List<AncientCreatureJeiRecipe> fossilHunting(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
-        List<Holder<FossilPart>> allParts = FossilPart.all(registries);
         HolderLookup.RegistryLookup<FossilPart> fossilParts = registries.lookupOrThrow(ModRegistries.FOSSIL_PART);
+        List<Holder<FossilPart>> allParts = FossilPart.BONE_PARTS.stream().<Holder<FossilPart>>map(fossilParts::getOrThrow).toList();
+        List<Holder<FossilPart>> deepParts = Stream.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.EGG).<Holder<FossilPart>>map(fossilParts::getOrThrow).toList();
+        List<Holder<FossilPart>> frozenParts = Stream.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.LIMB, FossilPart.RIB).<Holder<FossilPart>>map(fossilParts::getOrThrow).toList();
+        List<Holder<FossilPart>> siftingParts = Stream.of(FossilPart.CLAW, FossilPart.TOOTH, FossilPart.RIB, FossilPart.LIMB, FossilPart.VERTEBRA).<Holder<FossilPart>>map(fossilParts::getOrThrow).toList();
+        Holder<FossilPart> amberPart = fossilParts.getOrThrow(FossilPart.AMBER);
+        List<Species> iceAge = Stream.of("woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "smilodon").map(Species::of).toList();
         Holder<FossilPart> eggPart = fossilParts.getOrThrow(FossilPart.EGG);
-        for (Species species : Species.values()) {
+        for (Species species : Species.fossilSpecies()) {
             for (ChiselData chisel : CHISELS) {
                 float min = 0.01f * (1.0f - chisel.damageRate());
                 float max = 0.30f * (1.0f - chisel.damageRate());
@@ -59,6 +65,21 @@ public final class AncientCreatureJeiRecipes {
                     partsNote(allParts),
                     Component.translatable("jei.ancientcreature.completeness_range", percent(min), percent(max)),
                     Component.translatable("jei.ancientcreature.fortune_bonus")
+                ));
+
+                float deepMin = 0.25f * (1.0f - chisel.damageRate());
+                float deepMax = 0.95f * (1.0f - chisel.damageRate());
+                recipes.add(recipe(
+                    "fossil_hunting/deepslate_ore/" + species.getSerializedName() + "/" + chisel.id(),
+                    List.of(slot(ModBlocks.DEEPSLATE_FOSSIL_ORE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
+                    List.of(fossilAlternatives(species, deepParts, deepMin, deepMax)),
+                    20,
+                    Component.translatable("jei.ancientcreature.method.deepslate_ore"),
+                    biomeNote(species, registries),
+                    speciesNote(species),
+                    partsNote(deepParts),
+                    Component.translatable("jei.ancientcreature.completeness_range", percent(deepMin), percent(deepMax)),
+                    Component.translatable("jei.ancientcreature.deep_bonus")
                 ));
 
                 float rockMin = 0.01f * (1.0f - chisel.damageRate());
@@ -94,23 +115,59 @@ public final class AncientCreatureJeiRecipes {
                 ));
             }
 
-            List<Holder<FossilPart>> archaeologyParts = List.of(
-                fossilParts.getOrThrow(FossilPart.CLAW),
-                fossilParts.getOrThrow(FossilPart.TOOTH),
-                fossilParts.getOrThrow(FossilPart.RIB),
-                fossilParts.getOrThrow(FossilPart.LIMB)
-            );
+            List<Holder<FossilPart>> archaeologyParts = new ArrayList<>(allParts);
+            archaeologyParts.add(amberPart);
             recipes.add(recipe(
                 "fossil_hunting/archaeology/" + species.getSerializedName(),
                 List.of(slot(Items.SUSPICIOUS_GRAVEL.getDefaultInstance(), Items.SUSPICIOUS_SAND.getDefaultInstance()), slot(Items.BRUSH.getDefaultInstance())),
-                List.of(fossilAlternatives(species, archaeologyParts, 0.10f, 0.25f)),
+                List.of(fossilAlternatives(species, archaeologyParts, 0.01f, 0.80f)),
                 20,
                 Component.translatable("jei.ancientcreature.method.brushing"),
                 biomeNote(species, registries),
                 speciesNote(species),
                 partsNote(archaeologyParts),
-                Component.translatable("jei.ancientcreature.completeness_range", 10, 25),
+                Component.translatable("jei.ancientcreature.completeness_range", 1, 80),
                 Component.translatable("jei.ancientcreature.archaeology_chance")
+            ));
+
+            recipes.add(recipe(
+                "fossil_hunting/amber/" + species.getSerializedName(),
+                List.of(slot(ModBlocks.AMBER_ORE.getBlock().asItem().getDefaultInstance()), slot(ModItems.NETHERITE_CHISEL.toStack())),
+                List.of(fossilAlternatives(species, List.of(amberPart), 0.45f, 0.75f)),
+                20,
+                Component.translatable("jei.ancientcreature.method.amber"),
+                biomeNote(species, registries),
+                speciesNote(species),
+                Component.translatable("jei.ancientcreature.completeness_range", 45, 75),
+                Component.translatable("jei.ancientcreature.amber_note"),
+                Component.translatable("jei.ancientcreature.fortune_bonus")
+            ));
+
+            if (iceAge.contains(species)) {
+                recipes.add(recipe(
+                    "fossil_hunting/frozen/" + species.getSerializedName(),
+                    List.of(slot(ModBlocks.FROZEN_FOSSIL.getBlock().asItem().getDefaultInstance()), slot(ModItems.NETHERITE_CHISEL.toStack())),
+                    List.of(fossilAlternatives(species, frozenParts, 0.26f, 0.85f)),
+                    20,
+                    Component.translatable("jei.ancientcreature.method.frozen"),
+                    speciesNote(species),
+                    partsNote(frozenParts),
+                    Component.translatable("jei.ancientcreature.completeness_range", 26, 85),
+                    Component.translatable("jei.ancientcreature.frozen_bonus")
+                ));
+            }
+
+            recipes.add(recipe(
+                "fossil_hunting/sifting/" + species.getSerializedName(),
+                List.of(slot(Items.GRAVEL.getDefaultInstance(), Items.SAND.getDefaultInstance(), Items.RED_SAND.getDefaultInstance(), Items.MUD.getDefaultInstance(), Items.DIRT.getDefaultInstance()), slot(ModBlocks.SIFTER.getBlock().asItem().getDefaultInstance())),
+                List.of(fossilAlternatives(species, siftingParts, 0.01f, 0.60f)),
+                20,
+                Component.translatable("jei.ancientcreature.method.sifting"),
+                biomeNote(species, registries),
+                speciesNote(species),
+                partsNote(siftingParts),
+                Component.translatable("jei.ancientcreature.completeness_range", 1, 60),
+                Component.translatable("jei.ancientcreature.sifting_chance")
             ));
         }
         return recipes;
@@ -118,7 +175,7 @@ public final class AncientCreatureJeiRecipes {
 
     public static List<AncientCreatureJeiRecipe> fossilCleaning(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
-        for (Species species : Species.values()) {
+        for (Species species : Species.fossilSpecies()) {
             for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 ItemStack input = fossil(species, part, 0.50f, true, false);
                 ItemStack output = fossil(species, part, 0.50f, false, false);
@@ -133,7 +190,7 @@ public final class AncientCreatureJeiRecipes {
 
     public static List<AncientCreatureJeiRecipe> fossilIdentification(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
-        for (Species species : Species.values()) {
+        for (Species species : Species.fossilSpecies()) {
             for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 ItemStack input = fossil(species, part, 0.50f, false, false);
                 ItemStack success = input.copy();
@@ -150,7 +207,7 @@ public final class AncientCreatureJeiRecipes {
 
     public static List<AncientCreatureJeiRecipe> dnaExtraction(HolderLookup.Provider registries) {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
-        for (Species species : Species.values()) {
+        for (Species species : Species.fossilSpecies()) {
             for (Holder<FossilPart> part : FossilPart.all(registries)) {
                 for (DNAIntegrityLevel integrity : DNAIntegrityLevel.values()) {
                     float completeness = representativeCompleteness(part, integrity);
@@ -170,7 +227,7 @@ public final class AncientCreatureJeiRecipes {
 
     public static List<AncientCreatureJeiRecipe> genomeSequencing() {
         List<AncientCreatureJeiRecipe> recipes = new ArrayList<>();
-        for (Species species : Species.values()) {
+        for (Species species : Species.fossilSpecies()) {
             for (DNAIntegrityLevel integrity : DNAIntegrityLevel.values()) {
                 int[] range = genomeRange(integrity);
                 ItemStack dna = dnaSample(species, integrity);
@@ -202,6 +259,18 @@ public final class AncientCreatureJeiRecipes {
         for (Species species : Species.values()) {
             ItemStack output = ModItems.FERTILIZED_ANCIENT_EGG.toStack();
             output.set(ModDataComponents.SPECIES.get(), species);
+            var hybrid = species.definitionOrFallback().hybrid();
+            if (hybrid.isPresent()) {
+                // a hybrid splices a completed genome of each parent: one in the genome slot, one in the donor slot
+                Species first = new Species(hybrid.get().first());
+                Species second = new Species(hybrid.get().second());
+                recipes.add(recipe("embryogenesis/" + species.getSerializedName(),
+                    List.of(slot(ModItems.NUTRIENT_SOLUTION.toStack()), slot(ModItems.ARTIFICIAL_EGG.toStack()), slot(completedGenome(first)), slot(completedGenome(second))),
+                    List.of(slot(output)), 100,
+                    Component.translatable("jei.ancientcreature.hybrid", first.displayName(), second.displayName()),
+                    Component.translatable("jei.ancientcreature.hybrid_sterile")));
+                continue;
+            }
             recipes.add(recipe("embryogenesis/" + species.getSerializedName(),
                 List.of(slot(ModItems.NUTRIENT_SOLUTION.toStack()), slot(ModItems.ARTIFICIAL_EGG.toStack()), slot(completedGenome(species))),
                 List.of(slot(output)), 100));

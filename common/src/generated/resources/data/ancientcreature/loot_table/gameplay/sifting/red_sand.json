@@ -1,0 +1,57 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:claw",
+                "ancientcreature:limb",
+                "ancientcreature:rib",
+                "ancientcreature:tooth",
+                "ancientcreature:vertebra"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:egg_shell_fragment",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:rock_fragment",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone_meal",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 40
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flint",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_nugget",
+          "weight": 6
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ancientcreature:gameplay/sifting/red_sand"
+}

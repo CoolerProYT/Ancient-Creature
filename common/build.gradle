@@ -38,6 +38,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // Each test class gets a fresh JVM: behavior registries freeze the first time species data is
+    // parsed, exactly as in game, so classes that register addon behaviors must not share a JVM with
+    // classes that parse species first.
+    forkEvery = 1
     testLogging {
         events "passed", "skipped", "failed"
         showStandardStreams = true

@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:woolly_rhinoceros",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/woolly_rhinoceros",
+        "mottled": "textures/entity/woolly_rhinoceros_mottled",
+        "saddle": "textures/entity/gear/woolly_rhinoceros_saddle",
+        "armor_iron": "textures/entity/gear/woolly_rhinoceros_armor_iron",
+        "armor_golden": "textures/entity/gear/woolly_rhinoceros_armor_golden",
+        "armor_diamond": "textures/entity/gear/woolly_rhinoceros_armor_diamond",
+        "armor_netherite": "textures/entity/gear/woolly_rhinoceros_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.woolly_rhinoceros"
+      },
+      "animations": {
+        "idle": "animation.woolly_rhinoceros.idle",
+        "walk": "animation.woolly_rhinoceros.walk",
+        "run": "animation.woolly_rhinoceros.run",
+        "attack": "animation.woolly_rhinoceros.attack",
+        "special": "animation.woolly_rhinoceros.special",
+        "hurt": "animation.woolly_rhinoceros.hurt",
+        "death": "animation.woolly_rhinoceros.death",
+        "main": "controller.animation.woolly_rhinoceros.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.woolly_rhinoceros"
+      ]
+    }
+  }
+}

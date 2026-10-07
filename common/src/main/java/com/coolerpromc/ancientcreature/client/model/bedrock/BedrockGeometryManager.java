@@ -1,37 +1,48 @@
 package com.coolerpromc.ancientcreature.client.model.bedrock;
 
 import com.coolerpromc.ancientcreature.Constants;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
-import net.minecraft.client.model.geom.ModelPart;
+import com.google.gson.JsonParser;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jspecify.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public final class BedrockGeometryManager extends SimplePreparableReloadListener<Map<Identifier, BedrockGeometry>> {
+/**
+ * Loads every Bedrock geometry under {@code assets/<ns>/ancientcreature/geo/}.
+ *
+ * <p>Any {@code .json} file is accepted, so Blockbench's default {@code name.geo.json} works as-is.
+ * Geometries are found by their Bedrock identifier ({@code geometry.triceratops}), as a client entity
+ * refers to them, and also by file id ({@code ancientcreature:triceratops}) for the first geometry in a
+ * file, which is how earlier species files refer to them.
+ */
+public final class BedrockGeometryManager extends SimplePreparableReloadListener<BedrockGeometryManager.Loaded> {
     public static final Identifier ID = Constants.id("bedrock_geometry");
     public static final String DIRECTORY = Constants.MODID + "/geo";
 
     public static final BedrockGeometryManager INSTANCE = new BedrockGeometryManager();
 
-    private static final FileToIdConverter CONVERTER = new FileToIdConverter(DIRECTORY, ".geo.json");
-    private static final Gson GSON = new Gson();
+    private static final FileToIdConverter CONVERTER = new FileToIdConverter(DIRECTORY, ".json");
 
-    private volatile Map<Identifier, BedrockGeometry> geometries = Map.of();
-    private volatile Map<Identifier, ModelPart> baked = new LinkedHashMap<>();
+    record Loaded(Map<String, BedrockGeometry> byIdentifier, Map<Identifier, String> byFile) {
+    }
+
+    /**
+     * Prefix marking a reference to a geometry written for the axes Ancient Creature used before it
+     * followed Bedrock's; such a geometry is converted on bake. Used for format-1 species files.
+     */
+    public static final String LEGACY_PREFIX = "ancientcreature_legacy_axes|";
+
+    private volatile Loaded loaded = new Loaded(Map.of(), Map.of());
+    private final Map<String, Optional<BakedBedrockModel>> baked = new ConcurrentHashMap<>();
     private volatile int generation;
 
     private BedrockGeometryManager() {
@@ -41,89 +52,114 @@ public final class BedrockGeometryManager extends SimplePreparableReloadListener
         return this.generation;
     }
 
-    public @Nullable BedrockGeometry getGeometry(Identifier id) {
-        return this.geometries.get(id);
+    /** By Bedrock identifier ({@code geometry.x}, case-insensitive) or by file id ({@code ns:path}). */
+    public @Nullable BedrockGeometry getGeometry(String reference) {
+        String key = this.resolveKey(reference);
+        return key == null ? null : this.loaded.byIdentifier().get(key);
     }
 
-    public boolean contains(Identifier id) {
-        return this.geometries.containsKey(id);
+    public @Nullable BedrockGeometry getGeometry(Identifier fileId) {
+        return this.getGeometry(fileId.toString());
     }
 
-    public java.util.Set<Identifier> ids() {
-        return this.geometries.keySet();
+    public boolean contains(String reference) {
+        return this.resolveKey(reference) != null;
     }
 
-    public @Nullable ModelPart getBakedModel(Identifier id) {
-        ModelPart cached = this.baked.get(id);
-        if (cached != null) {
-            return cached;
+    public boolean contains(Identifier fileId) {
+        return this.contains(fileId.toString());
+    }
+
+    public Set<String> identifiers() {
+        return this.loaded.byIdentifier().keySet();
+    }
+
+    public Set<Identifier> fileIds() {
+        return this.loaded.byFile().keySet();
+    }
+
+    private @Nullable String resolveKey(String reference) {
+        if (reference.startsWith(LEGACY_PREFIX)) {
+            reference = reference.substring(LEGACY_PREFIX.length());
         }
+        String lower = reference.toLowerCase(Locale.ROOT);
+        if (this.loaded.byIdentifier().containsKey(lower)) {
+            return lower;
+        }
+        Identifier file = Identifier.tryParse(reference);
+        return file == null ? null : this.loaded.byFile().get(file);
+    }
 
-        BedrockGeometry geometry = this.geometries.get(id);
-        if (geometry == null) {
+    /** The baked model, baked on first use and cached until the next reload. */
+    public @Nullable BakedBedrockModel getBaked(String reference) {
+        String key = this.resolveKey(reference);
+        if (key == null) {
             return null;
         }
+        boolean legacy = reference.startsWith(LEGACY_PREFIX);
+        return this.baked.computeIfAbsent(legacy ? LEGACY_PREFIX + key : key, k -> {
+            BedrockGeometry geometry = this.loaded.byIdentifier().get(key);
+            try {
+                return Optional.of(BedrockModelBaker.bake(legacy ? geometry.fromLegacyAxes() : geometry));
+            } catch (RuntimeException e) {
+                Constants.LOG.error("Failed to bake Bedrock geometry '{}'", k, e);
+                return Optional.empty();
+            }
+        }).orElse(null);
+    }
 
-        try {
-            ModelPart part = BedrockModelBaker.bake(geometry);
-            Map<Identifier, ModelPart> updated = new LinkedHashMap<>(this.baked);
-            updated.put(id, part);
-            this.baked = updated;
-            return part;
-        } catch (RuntimeException e) {
-            Constants.LOG.error("Failed to bake Ancient Creature geometry '{}'", id, e);
-            return null;
-        }
+    public @Nullable BakedBedrockModel getBaked(Identifier fileId) {
+        return this.getBaked(fileId.toString());
     }
 
     @Override
-    protected Map<Identifier, BedrockGeometry> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-        Map<Identifier, BedrockGeometry> loaded = new LinkedHashMap<>();
+    protected Loaded prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+        Map<String, BedrockGeometry> byIdentifier = new LinkedHashMap<>();
+        Map<Identifier, String> byFile = new LinkedHashMap<>();
 
         for (Map.Entry<Identifier, Resource> entry : CONVERTER.listMatchingResources(resourceManager).entrySet()) {
             Identifier file = entry.getKey();
-            Identifier geometryId = CONVERTER.fileToId(file);
-
+            Identifier fileId = stripGeoSuffix(CONVERTER.fileToId(file));
             try (BufferedReader reader = entry.getValue().openAsReader()) {
-                JsonElement json = GsonHelper.fromJson(GSON, reader, JsonElement.class);
-                DataResult<List<BedrockGeometry>> parsed = BedrockGeometry.FILE_CODEC.parse(JsonOps.INSTANCE, json);
-
-                parsed.ifSuccess(list -> {
-                    if (list.isEmpty()) {
-                        Constants.LOG.error("Ancient Creature geometry {} ({}) contains no 'minecraft:geometry' entries", geometryId, file);
-                        return;
+                JsonElement json = JsonParser.parseReader(reader);
+                List<BedrockGeometry> geometries = BedrockGeometry.parseFile(json);
+                boolean first = true;
+                for (BedrockGeometry geometry : geometries) {
+                    List<String> problems = geometry.validate();
+                    if (!problems.isEmpty()) {
+                        Constants.LOG.error("Invalid Bedrock geometry '{}' in {}: {}", geometry.identifier(), file, String.join("; ", problems));
+                        continue;
                     }
-
-                    for (int index = 0; index < list.size(); index++) {
-                        BedrockGeometry geometry = list.get(index);
-                        DataResult<BedrockGeometry> validated = geometry.validate();
-                        if (validated.error().isPresent()) {
-                            Constants.LOG.error("Invalid Ancient Creature geometry {} ({}): {}", geometryId, file, validated.error().get().message());
-                            continue;
-                        }
-                        Identifier id = index == 0 ? geometryId : idOf(geometryId, geometry.identifier());
-                        loaded.put(id, geometry);
+                    String key = geometry.identifier().toLowerCase(Locale.ROOT);
+                    if (byIdentifier.put(key, geometry) != null) {
+                        Constants.LOG.warn("Bedrock geometry '{}' is defined more than once; {} wins", geometry.identifier(), file);
                     }
-                }).ifError(error -> Constants.LOG.error("Could not parse Ancient Creature geometry {} ({}): {}", geometryId, file, error.message()));
+                    if (first) {
+                        byFile.put(fileId, key);
+                        first = false;
+                    }
+                }
+            } catch (BedrockFormatException e) {
+                Constants.LOG.error("Could not parse Bedrock geometry {}: {}", file, e.getMessage());
             } catch (IOException | RuntimeException e) {
-                Constants.LOG.error("Could not read Ancient Creature geometry {} ({})", geometryId, file, e);
+                Constants.LOG.error("Could not read Bedrock geometry {}", file, e);
             }
         }
-
-        return loaded;
+        return new Loaded(Map.copyOf(byIdentifier), Map.copyOf(byFile));
     }
 
-    private static Identifier idOf(Identifier fileId, String bedrockIdentifier) {
-        String name = bedrockIdentifier.startsWith("geometry.") ? bedrockIdentifier.substring("geometry.".length()) : bedrockIdentifier;
-        return Identifier.fromNamespaceAndPath(fileId.getNamespace(), name.replace('.', '/'));
+    /** {@code triceratops.geo} → {@code triceratops}, so both naming styles give the same file id. */
+    static Identifier stripGeoSuffix(Identifier id) {
+        String path = id.getPath();
+        return path.endsWith(".geo") ? Identifier.fromNamespaceAndPath(id.getNamespace(), path.substring(0, path.length() - 4)) : id;
     }
 
     @Override
-    protected void apply(Map<Identifier, BedrockGeometry> prepared, ResourceManager resourceManager, ProfilerFiller profiler) {
-        this.geometries = Map.copyOf(prepared);
-        this.baked = new LinkedHashMap<>();
+    protected void apply(Loaded prepared, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.loaded = prepared;
+        this.baked.clear();
         this.generation++;
-        Constants.LOG.info("Loaded {} Bedrock geometries", this.geometries.size());
+        Constants.LOG.info("Loaded {} Bedrock geometries", prepared.byIdentifier().size());
     }
 
     @Override

@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:dire_wolf",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/dire_wolf",
+        "mottled": "textures/entity/dire_wolf_mottled",
+        "saddle": "textures/entity/gear/dire_wolf_saddle",
+        "armor_iron": "textures/entity/gear/dire_wolf_armor_iron",
+        "armor_golden": "textures/entity/gear/dire_wolf_armor_golden",
+        "armor_diamond": "textures/entity/gear/dire_wolf_armor_diamond",
+        "armor_netherite": "textures/entity/gear/dire_wolf_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.dire_wolf"
+      },
+      "animations": {
+        "idle": "animation.dire_wolf.idle",
+        "walk": "animation.dire_wolf.walk",
+        "run": "animation.dire_wolf.run",
+        "attack": "animation.dire_wolf.attack",
+        "special": "animation.dire_wolf.special",
+        "hurt": "animation.dire_wolf.hurt",
+        "death": "animation.dire_wolf.death",
+        "main": "controller.animation.dire_wolf.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.dire_wolf"
+      ]
+    }
+  }
+}

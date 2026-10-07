@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "loot_table": "ancientcreature:entities/mosasaurus",
   "entity_category": "aquatic",
   "physical": {
     "width": 3.25,
@@ -36,5 +36,26 @@
     "attack": "ancientcreature:entity.mosasaurus.attack",
     "alert": "ancientcreature:entity.mosasaurus.alert",
     "ambient_interval": 280
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "respiration": "amphibious",
+  "care": {
+    "climate": "any",
+    "social": "solitary",
+    "space": 1800
+  },
+  "riding": {
+    "ability": "bite",
+    "cooldown": 80,
+    "power": 1.1
   }
 }

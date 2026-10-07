@@ -4,7 +4,16 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "ancientcreature:badlands_dig_site",
-        "processors": "minecraft:empty",
+        "processors": "ancientcreature:dig_site/badlands_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/badlands/abandoned_camp",
+        "processors": "ancientcreature:dig_site/badlands_archaeology",
         "projection": "rigid"
       },
       "weight": 1

@@ -1,0 +1,12 @@
+{
+  "values": [
+    "minecraft:desert",
+    "#minecraft:is_badlands",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:plains",
+    "minecraft:snowy_plains"
+  ]
+}

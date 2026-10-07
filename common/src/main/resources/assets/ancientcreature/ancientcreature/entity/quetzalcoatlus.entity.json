@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:quetzalcoatlus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/quetzalcoatlus",
+        "mottled": "textures/entity/quetzalcoatlus_mottled",
+        "saddle": "textures/entity/gear/quetzalcoatlus_saddle",
+        "armor_iron": "textures/entity/gear/quetzalcoatlus_armor_iron",
+        "armor_golden": "textures/entity/gear/quetzalcoatlus_armor_golden",
+        "armor_diamond": "textures/entity/gear/quetzalcoatlus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/quetzalcoatlus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.quetzalcoatlus"
+      },
+      "animations": {
+        "idle": "animation.quetzalcoatlus.idle",
+        "walk": "animation.quetzalcoatlus.walk",
+        "run": "animation.quetzalcoatlus.run",
+        "attack": "animation.quetzalcoatlus.attack",
+        "special": "animation.quetzalcoatlus.special",
+        "hurt": "animation.quetzalcoatlus.hurt",
+        "death": "animation.quetzalcoatlus.death",
+        "main": "controller.animation.quetzalcoatlus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.quetzalcoatlus"
+      ]
+    }
+  }
+}

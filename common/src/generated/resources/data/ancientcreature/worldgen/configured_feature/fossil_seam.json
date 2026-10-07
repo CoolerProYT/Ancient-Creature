@@ -1,0 +1,33 @@
+{
+  "type": "ancientcreature:fossil_seam",
+  "config": {
+    "length": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 9,
+      "min_inclusive": 4
+    },
+    "max_depth": 24,
+    "min_exposed": 3,
+    "replaceable": "#ancientcreature:fossil_seam_replaceables",
+    "state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "ancientcreature:fossil_ore"
+          },
+          "weight": 5
+        },
+        {
+          "data": {
+            "Name": "minecraft:bone_block",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 1
+        }
+      ]
+    }
+  }
+}

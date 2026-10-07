@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:arthropleura",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/arthropleura",
+        "mottled": "textures/entity/arthropleura_mottled",
+        "saddle": "textures/entity/gear/arthropleura_saddle",
+        "armor_iron": "textures/entity/gear/arthropleura_armor_iron",
+        "armor_golden": "textures/entity/gear/arthropleura_armor_golden",
+        "armor_diamond": "textures/entity/gear/arthropleura_armor_diamond",
+        "armor_netherite": "textures/entity/gear/arthropleura_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.arthropleura"
+      },
+      "animations": {
+        "idle": "animation.arthropleura.idle",
+        "walk": "animation.arthropleura.walk",
+        "run": "animation.arthropleura.run",
+        "attack": "animation.arthropleura.attack",
+        "special": "animation.arthropleura.special",
+        "hurt": "animation.arthropleura.hurt",
+        "death": "animation.arthropleura.death",
+        "main": "controller.animation.arthropleura.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.arthropleura"
+      ]
+    }
+  }
+}

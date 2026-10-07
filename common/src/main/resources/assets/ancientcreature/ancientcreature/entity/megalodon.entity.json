@@ -1,0 +1,37 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:megalodon",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/megalodon",
+        "mottled": "textures/entity/megalodon_mottled",
+        "saddle": "textures/entity/gear/megalodon_saddle",
+        "armor_iron": "textures/entity/gear/megalodon_armor_iron",
+        "armor_golden": "textures/entity/gear/megalodon_armor_golden",
+        "armor_diamond": "textures/entity/gear/megalodon_armor_diamond",
+        "armor_netherite": "textures/entity/gear/megalodon_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.megalodon"
+      },
+      "animations": {
+        "swim": "animation.megalodon.swim",
+        "idle": "animation.megalodon.idle",
+        "bite": "animation.megalodon.bite",
+        "main": "controller.animation.megalodon.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.megalodon"
+      ]
+    }
+  }
+}

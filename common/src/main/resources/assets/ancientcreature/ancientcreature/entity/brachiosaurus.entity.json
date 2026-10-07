@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:brachiosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/brachiosaurus",
+        "mottled": "textures/entity/brachiosaurus_mottled",
+        "saddle": "textures/entity/gear/brachiosaurus_saddle",
+        "armor_iron": "textures/entity/gear/brachiosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/brachiosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/brachiosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/brachiosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.brachiosaurus"
+      },
+      "animations": {
+        "idle": "animation.brachiosaurus.idle",
+        "walk": "animation.brachiosaurus.walk",
+        "browse": "animation.brachiosaurus.browse",
+        "tail_sweep": "animation.brachiosaurus.tail_sweep",
+        "call": "animation.brachiosaurus.call",
+        "hurt": "animation.brachiosaurus.hurt",
+        "death": "animation.brachiosaurus.death",
+        "main": "controller.animation.brachiosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.brachiosaurus"
+      ]
+    }
+  }
+}

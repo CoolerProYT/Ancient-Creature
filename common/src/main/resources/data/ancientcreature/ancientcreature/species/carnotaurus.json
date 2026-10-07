@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_predator",
+  "loot_table": "ancientcreature:entities/carnotaurus",
   "entity_category": "land",
   "physical": {
     "width": 1.15,
@@ -43,5 +43,24 @@
       "minecraft:porkchop",
       "minecraft:chicken"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "solitary"
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 80,
+    "power": 1.0
   }
 }

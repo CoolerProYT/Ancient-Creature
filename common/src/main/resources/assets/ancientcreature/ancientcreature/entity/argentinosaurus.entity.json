@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:argentinosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/argentinosaurus",
+        "mottled": "textures/entity/argentinosaurus_mottled",
+        "saddle": "textures/entity/gear/argentinosaurus_saddle",
+        "armor_iron": "textures/entity/gear/argentinosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/argentinosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/argentinosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/argentinosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.argentinosaurus"
+      },
+      "animations": {
+        "idle": "animation.argentinosaurus.idle",
+        "walk": "animation.argentinosaurus.walk",
+        "run": "animation.argentinosaurus.run",
+        "attack": "animation.argentinosaurus.attack",
+        "special": "animation.argentinosaurus.special",
+        "hurt": "animation.argentinosaurus.hurt",
+        "death": "animation.argentinosaurus.death",
+        "main": "controller.animation.argentinosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.argentinosaurus"
+      ]
+    }
+  }
+}

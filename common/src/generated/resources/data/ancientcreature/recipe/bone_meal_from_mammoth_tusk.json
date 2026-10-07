@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "bonemeal",
+  "ingredients": [
+    "ancientcreature:mammoth_tusk"
+  ],
+  "result": {
+    "count": 9,
+    "id": "minecraft:bone_meal"
+  }
+}

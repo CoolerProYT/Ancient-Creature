@@ -43,6 +43,25 @@ public record Species(Identifier id) implements TooltipProvider, Comparable<Spec
         return manager.ids().stream().map(Species::new).sorted().toList();
     }
 
+    /** Species that can be dug up: every species except hybrids, which only exist by genome splicing. */
+    public static List<Species> fossilSpecies() {
+        return values().stream().filter(s -> !s.isHybrid()).toList();
+    }
+
+    public boolean isHybrid() {
+        return this.definitionOrFallback().isHybrid();
+    }
+
+    /** The hybrid made from these two species' genomes, if a loaded species defines one. */
+    public static Optional<Species> hybridOf(Species a, Species b) {
+        SpeciesManager manager = SpeciesManager.SERVER.isEmpty() ? SpeciesManager.CLIENT : SpeciesManager.SERVER;
+        return manager.all().entrySet().stream()
+            .filter(e -> e.getValue().hybrid().map(h -> h.madeFrom(a.id(), b.id())).orElse(false))
+            .map(e -> new Species(e.getKey()))
+            .sorted()
+            .findFirst();
+    }
+
     public Optional<SpeciesDefinition> definition() {
         Optional<SpeciesDefinition> server = SpeciesManager.SERVER.getOptional(this.id);
         return server.isPresent() ? server : SpeciesManager.CLIENT.getOptional(this.id);
@@ -73,7 +92,8 @@ public record Species(Identifier id) implements TooltipProvider, Comparable<Spec
     }
 
     public boolean isValidBiome(Holder<Biome> holder) {
-        return this.definitionOrFallback().spawn().isValidBiome(holder);
+        SpeciesDefinition definition = this.definitionOrFallback();
+        return !definition.isHybrid() && definition.spawn().isValidBiome(holder);
     }
 
     public int getIncubationTime() {

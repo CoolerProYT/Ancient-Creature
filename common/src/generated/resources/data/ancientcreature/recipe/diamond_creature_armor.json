@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "minecraft:diamond",
+    "H": "ancientcreature:thick_hide",
+    "M": "minecraft:diamond",
+    "O": "ancientcreature:osteoderm"
+  },
+  "pattern": [
+    "MCM",
+    "OHO",
+    "M M"
+  ],
+  "result": {
+    "id": "ancientcreature:diamond_creature_armor"
+  }
+}

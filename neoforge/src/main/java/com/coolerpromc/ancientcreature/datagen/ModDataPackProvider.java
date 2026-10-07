@@ -1,6 +1,9 @@
 package com.coolerpromc.ancientcreature.datagen;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.damage.ModDamageTypes;
+import com.coolerpromc.ancientcreature.trade.ModVillagerTrades;
+import com.coolerpromc.ancientcreature.worldgen.structure.ModProcessorLists;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
 import com.coolerpromc.ancientcreature.worldgen.feature.ModConfiguredFeatures;
@@ -20,13 +23,16 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModDataPackProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+        .add(Registries.PROCESSOR_LIST, ModProcessorLists::bootstrap)
         .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
         .add(Registries.TEMPLATE_POOL, ModStructureTemplatePools::boostrap)
         .add(Registries.STRUCTURE, ModStructures::boostrap)
         .add(Registries.STRUCTURE_SET, ModStructureSets::boostrap)
         .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
-        .add(ModRegistries.FOSSIL_PART, FossilPart::bootstrap);
+        .add(ModRegistries.FOSSIL_PART, FossilPart::bootstrap)
+        .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
+        .add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
 
     public ModDataPackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(Constants.MODID));

@@ -1,0 +1,65 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "name": "ancientcreature:deepslate_fossil_ore"
+            },
+            {
+              "type": "minecraft:loot_table",
+              "value": {
+                "pools": [
+                  {
+                    "entries": [
+                      {
+                        "type": "minecraft:item",
+                        "functions": [
+                          {
+                            "completeness_bonus": 0.15,
+                            "fossilParts": [
+                              "ancientcreature:egg",
+                              "ancientcreature:skull",
+                              "ancientcreature:tooth",
+                              "ancientcreature:vertebra"
+                            ],
+                            "function": "ancientcreature:set_fossil_data"
+                          }
+                        ],
+                        "name": "ancientcreature:fossil_part"
+                      }
+                    ],
+                    "rolls": 1.0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ancientcreature:blocks/deepslate_fossil_ore"
+}

@@ -62,7 +62,8 @@ public final class AncientCreatureClientApi {
      * <p>Cached until the next resource reload. Returns {@code null} if the geometry is not loaded.
      */
     public static @Nullable ModelPart getBakedGeometry(Identifier geometryId) {
-        return BedrockGeometryManager.INSTANCE.getBakedModel(geometryId);
+        var baked = BedrockGeometryManager.INSTANCE.getBaked(geometryId);
+        return baked == null ? null : baked.root();
     }
 
     /** Whether a geometry file is loaded. */

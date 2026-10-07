@@ -3,8 +3,10 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.CreatureGenome;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.menu.custom.IncubatorMenu;
@@ -43,6 +45,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
 
     private final AnimationState processingAnimationState = new AnimationState();
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private int progress;
     private int maxProgress = 100;
     private boolean isProcessing;
@@ -51,11 +54,6 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return stack.is(ModItems.FERTILIZED_ANCIENT_EGG.get());
-        }
-
-        @Override
-        public void setChanged() {
-            setMaxProgress();
         }
     };
 
@@ -91,16 +89,6 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(this::setMaxProgress);
-    }
-
-    private void setMaxProgress(){
-        Species species = inputContainer.getItem(0).get(ModDataComponents.SPECIES.get());
-        if (species == null) {
-            maxProgress = 0;
-            return;
-        }
-        maxProgress = (int) (species.getIncubationTime() * ModCommonConfig.CONFIG.incubationTimeMultiplier.get());
     }
 
     @Override
@@ -113,8 +101,24 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         return new IncubatorMenu(containerId, inventory, player, this, data);
     }
 
+    /** Unprocessed incubation time for the egg inside, or 0 when there is none. */
+    private int baseTicks(ServerLevel level) {
+        Species species = inputContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        if (species == null) {
+            return 0;
+        }
+        return (int) (species.getIncubationTime() * ModCommonConfig.CONFIG.incubationTimeMultiplier.get());
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canProcess()){
             if (progress == 0){
@@ -155,6 +159,14 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         if (species == null) return;
         ItemStack output = ModItems.BABY_CREATURE_CAPSULE.toStack();
         output.set(ModDataComponents.SPECIES.get(), species);
+        CreatureGenome genome = stack.get(ModDataComponents.GENOME.get());
+        if (genome != null) {
+            // each precision module gives a frail embryo a 35% chance to come out healthy
+            if (genome.frail() && serverLevel.getRandom().nextFloat() < 0.35f * upgrades.precision()) {
+                genome = genome.withoutFrailty();
+            }
+            output.set(ModDataComponents.GENOME.get(), genome);
+        }
         outputContainer.addItem(output);
     }
 
@@ -168,6 +180,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         BlockPos placeholderPos = pos.above();
         if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder()))
             level.removeBlock(placeholderPos, false);
+        upgrades.drop(level, pos);
         Containers.dropContents(level, pos, inputContainer);
         Containers.dropContents(level, pos, outputContainer);
         if (isProcessing && level instanceof ServerLevel serverLevel)
@@ -177,6 +190,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("input"), inputContainer.getItems());
         ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
         output.putInt("progress", progress);
@@ -187,6 +201,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("input"), inputContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
         progress = input.getIntOr("progress", 0);

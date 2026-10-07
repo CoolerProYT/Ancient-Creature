@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/giant_herbivore",
+  "loot_table": "ancientcreature:entities/woolly_mammoth",
   "entity_category": "land",
   "physical": {
     "width": 2.35,
@@ -51,5 +51,27 @@
       "minecraft:hay_block",
       "minecraft:apple"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "cold",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 8,
+    "space": 700
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 120,
+    "power": 1.2
   }
 }

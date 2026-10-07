@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
@@ -43,6 +44,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     public static final int DATA_MAX_PROGRESS = 1;
 
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private final SimpleContainer brushContainer = new SimpleContainer(1){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
@@ -91,9 +93,6 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
-            this.maxProgress = ModCommonConfig.CONFIG.cleaningTick.get();
-        });
     }
 
     @Override
@@ -109,6 +108,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("brush"), brushContainer.getItems());
         ContainerHelper.saveAllItems(output.child("fossil"), fossilContainer.getItems());
         ContainerHelper.saveAllItems(output.child("output"), outputContainer.getItems());
@@ -120,6 +120,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     protected void loadAdditional(@NonNull ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("brush"), brushContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("fossil"), fossilContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("output"), outputContainer.getItems());
@@ -146,8 +147,19 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         return fossilData != null && fossilData.isDirty();
     }
 
+    private int baseTicks(ServerLevel level) {
+        return ModCommonConfig.CONFIG.cleaningTick.get();
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos blockPos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canClean()){
             if (progress == 0){
@@ -186,7 +198,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         ItemStack fossil = fossilContainer.removeItem(0, 1);
         FossilData fossilData = fossil.get(ModDataComponents.FOSSIL_DATA.get());
         fossil.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.clean());
-        brushContainer.getItem(0).hurtAndBreak(1, serverLevel, null, _ -> {});
+        if (!upgrades.saves(serverLevel.getRandom())) {
+            brushContainer.getItem(0).hurtAndBreak(1, serverLevel, null, _ -> {});
+        }
         outputContainer.addItem(fossil);
         ItemStack dirtFragment = new ItemStack(ModItems.DIRT_FRAGMENT, serverLevel.getRandom().nextIntBetweenInclusive(0, 2));
         outputContainer.addItem(dirtFragment);
@@ -199,6 +213,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     private boolean hasEnoughOutputSlot() {
         ItemStack cleanFossil = fossilContainer.getItem(0).copy();
         FossilData fossilData = cleanFossil.get(ModDataComponents.FOSSIL_DATA.get());
+        if (fossilData == null) return false;
         cleanFossil.set(ModDataComponents.FOSSIL_DATA.get(), fossilData.clean());
         ItemStack maxDirtFragment = new ItemStack(ModItems.DIRT_FRAGMENT, 2);
 
@@ -258,6 +273,7 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     public void preRemoveSideEffects(@NonNull BlockPos pos, @NonNull BlockState state) {
         assert this.level != null;
+        upgrades.drop(this.level, pos);
         Containers.dropContents(this.level, pos, brushContainer);
         Containers.dropContents(this.level, pos, fossilContainer);
         Containers.dropContents(this.level, pos, outputContainer);

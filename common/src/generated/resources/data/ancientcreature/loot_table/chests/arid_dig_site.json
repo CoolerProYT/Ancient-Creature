@@ -5,10 +5,281 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:claw"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:tooth"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:limb"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:rib"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:skull"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:egg"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
           "name": "ancientcreature:fossil_part"
         }
       ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      }
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "ancientcreature:field_notes"
+            }
+          ],
+          "name": "minecraft:written_book",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 2
+        }
+      ],
       "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "decoration": "minecraft:red_x",
+              "destination": "ancientcreature:dig_sites",
+              "function": "minecraft:exploration_map"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.ancientcreature.dig_site_map"
+              },
+              "target": "item_name"
+            },
+            {
+              "function": "minecraft:filtered",
+              "item_filter": {
+                "items": "minecraft:filled_map",
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
+              },
+              "on_fail": {
+                "function": "minecraft:discard"
+              }
+            }
+          ],
+          "name": "minecraft:map",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 75
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:brush",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:stone_chisel",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:copper_chisel"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:iron_chisel"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "ancientcreature:egg_shell_fragment",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "ancientcreature:sample_vial",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:paper",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:bread",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 6.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:torch",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 4.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:coal",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "minecraft:emerald",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:lantern"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 4.0,
+        "min": 2.0
+      }
     }
   ],
   "random_sequence": "ancientcreature:chests/arid_dig_site"

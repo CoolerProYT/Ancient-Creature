@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#ancientcreature:has_amber_ore",
+  "features": "ancientcreature:amber_ore",
+  "step": "underground_ores"
+}

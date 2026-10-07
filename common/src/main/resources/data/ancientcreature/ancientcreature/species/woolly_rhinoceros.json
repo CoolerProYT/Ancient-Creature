@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_herbivore",
+  "loot_table": "ancientcreature:entities/woolly_rhinoceros",
   "entity_category": "land",
   "physical": {
     "width": 1.7,
@@ -51,5 +51,24 @@
       "minecraft:hay_block",
       "minecraft:fern"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "cold",
+    "social": "solitary"
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 90,
+    "power": 1.0
   }
 }

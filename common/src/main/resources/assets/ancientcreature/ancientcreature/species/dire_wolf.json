@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:dire_wolf",
-  "texture": "ancientcreature:textures/entity/dire_wolf.png",
-  "animations": "ancientcreature:dire_wolf",
-  "controller": "ancientcreature:dire_wolf",
+  "format_version": 2,
   "shadow_radius": 0.5225,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/dire_wolf.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/dire_wolf_mottled.png"
-    }
-  ]
+  }
 }

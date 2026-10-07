@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/flying_predator",
+  "loot_table": "ancientcreature:entities/quetzalcoatlus",
   "entity_category": "flying",
   "physical": {
     "width": 1.45,
@@ -66,5 +66,24 @@
       "minecraft:salmon",
       "minecraft:rabbit"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "solitary"
+  },
+  "riding": {
+    "ability": "dive",
+    "cooldown": 100,
+    "power": 1.0
   }
 }

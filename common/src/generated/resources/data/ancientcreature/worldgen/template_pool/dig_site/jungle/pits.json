@@ -1,0 +1,47 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/jungle/trench",
+        "processors": "ancientcreature:dig_site/jungle_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/jungle/quarry",
+        "processors": "ancientcreature:dig_site/jungle_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/jungle/skeleton",
+        "processors": "ancientcreature:dig_site/jungle_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/jungle/sinkhole",
+        "processors": "ancientcreature:dig_site/jungle_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 3
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

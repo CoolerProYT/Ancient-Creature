@@ -266,6 +266,26 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
+    private final java.util.List<ServerboundPayloadEntry<?>> serverboundPayloads = new java.util.ArrayList<>();
+
+    @Override
+    public <T extends HandledCustomPacketPayload> void registerServerboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        this.serverboundPayloads.add(new ServerboundPayloadEntry<>(type, streamCodec));
+    }
+
+    @Override
+    public void applyServerboundPayloadRegistrations(ServerboundPayloadRegistrar registrar) {
+        for (ServerboundPayloadEntry<?> entry : this.serverboundPayloads) {
+            entry.register(registrar);
+        }
+    }
+
+    private record ServerboundPayloadEntry<T extends HandledCustomPacketPayload>(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        private void register(ServerboundPayloadRegistrar registrar) {
+            registrar.register(this.type, this.streamCodec);
+        }
+    }
+
     private record EntityAttributeEntry(EntityType<? extends LivingEntity> entityType, AttributeSupplier supplier) {
         private void register(EntityAttributeRegistrar registrar) {
             registrar.register(this.entityType, this.supplier);

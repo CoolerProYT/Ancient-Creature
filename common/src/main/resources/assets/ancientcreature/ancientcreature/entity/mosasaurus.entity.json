@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:mosasaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/mosasaurus",
+        "mottled": "textures/entity/mosasaurus_mottled",
+        "saddle": "textures/entity/gear/mosasaurus_saddle",
+        "armor_iron": "textures/entity/gear/mosasaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/mosasaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/mosasaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/mosasaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.mosasaurus"
+      },
+      "animations": {
+        "idle": "animation.mosasaurus.idle",
+        "walk": "animation.mosasaurus.walk",
+        "run": "animation.mosasaurus.run",
+        "attack": "animation.mosasaurus.attack",
+        "special": "animation.mosasaurus.special",
+        "hurt": "animation.mosasaurus.hurt",
+        "death": "animation.mosasaurus.death",
+        "main": "controller.animation.mosasaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.mosasaurus"
+      ]
+    }
+  }
+}

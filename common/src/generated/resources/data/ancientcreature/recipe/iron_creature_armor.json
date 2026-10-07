@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "minecraft:iron_block",
+    "H": "ancientcreature:thick_hide",
+    "M": "minecraft:iron_ingot",
+    "O": "ancientcreature:osteoderm"
+  },
+  "pattern": [
+    "MCM",
+    "OHO",
+    "M M"
+  ],
+  "result": {
+    "id": "ancientcreature:iron_creature_armor"
+  }
+}

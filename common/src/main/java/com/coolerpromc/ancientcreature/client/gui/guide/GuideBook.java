@@ -66,7 +66,9 @@ public final class GuideBook {
         chapters.add(genome(stacks));
         chapters.add(embryogenesis(stacks));
         chapters.add(incubation(stacks));
+        chapters.add(genetics(stacks));
         chapters.add(creatures(stacks));
+        chapters.add(upgrades(stacks));
         chapters.add(automation(stacks));
 
         // Each chapter ends with a link onward, so the guide can be read front to back.
@@ -132,6 +134,19 @@ public final class GuideBook {
             h("fossils.ore"),
             new Showcase(List.of(Slot.of(ModBlocks.FOSSIL_ORE.toStack()), Slot.of(ModItems.STONE_CHISEL.toStack()))),
             p("fossils.ore.1"),
+            h("fossils.deep"),
+            new Showcase(List.of(Slot.of(ModBlocks.DEEPSLATE_FOSSIL_ORE.toStack()), Slot.of(s.fossil(FossilPart.SKULL, true, false)))),
+            p("fossils.deep.1"),
+            h("fossils.amber"),
+            new Showcase(List.of(Slot.of(ModBlocks.AMBER_ORE.toStack()), Slot.of(s.fossil(FossilPart.AMBER, true, false)))),
+            p("fossils.amber.1"),
+            h("fossils.frozen"),
+            new Showcase(List.of(Slot.of(ModBlocks.FROZEN_FOSSIL.toStack()), Slot.of(s.fossil(FossilPart.VERTEBRA, true, false)))),
+            p("fossils.frozen.1"),
+            h("fossils.seam"),
+            new Showcase(List.of(Slot.of(ModBlocks.FOSSIL_ORE.toStack()), Slot.of(stack(Items.BONE_BLOCK)))),
+            p("fossils.seam.1"),
+            p("fossils.seam.2"),
             h("fossils.rock_pile"),
             new Showcase(List.of(Slot.of(ModBlocks.ROCK_PILE.toStack()), Slot.of(ModItems.ROCK_FRAGMENT.toStack()), Slot.of(s.fossil(FossilPart.EGG, true, false)))),
             p("fossils.rock_pile.1"),
@@ -139,6 +154,23 @@ public final class GuideBook {
             h("fossils.dig_site"),
             new Showcase(List.of(Slot.of(new ItemStack(Items.SUSPICIOUS_SAND)), Slot.of(new ItemStack(Items.SUSPICIOUS_GRAVEL)), Slot.of(new ItemStack(Items.BRUSH)), Slot.of(ModItems.EGG_SHELL_FRAGMENT.toStack()))),
             p("fossils.dig_site.1"),
+            p("fossils.dig_site.2"),
+            p("fossils.dig_site.3"),
+            h("fossils.sifter"),
+            s.shaped(ModBlocks.SIFTER.toStack(), new String[]{"P P", "###", "S S"},
+                'P', tag(ItemTags.PLANKS), '#', slot(Items.STRING), 'S', slot(Items.STICK)),
+            new MachineStep(
+                List.of(Slot.of(stack(Items.GRAVEL))),
+                Slot.of(ModBlocks.SIFTER.toStack()),
+                List.of(Slot.of(s.fossil(FossilPart.CLAW, true, false)), Slot.of(stack(Items.FLINT)), Slot.of(ModItems.ROCK_FRAGMENT.toStack()))
+            ),
+            p("fossils.sifter.1"),
+            h("fossils.elsewhere"),
+            new Showcase(List.of(Slot.of(stack(Items.SUSPICIOUS_SAND)), Slot.of(stack(Items.FISHING_ROD)), Slot.of(stack(Items.HUSK_SPAWN_EGG)), Slot.of(stack(Items.EMERALD)), Slot.of(stack(Items.MAP)))),
+            p("fossils.elsewhere.1"),
+            h("fossils.reassembly"),
+            new Crafting(List.of(Slot.of(s.fossil(FossilPart.RIB, false, true)), Slot.of(s.fossil(FossilPart.RIB, false, true)), Slot.of(s.fossil(FossilPart.CLAW, false, true))), Slot.of(s.fossil(FossilPart.RIB, false, true)), true),
+            p("fossils.reassembly.1"),
             h("fossils.parts"),
             p("fossils.parts.1"),
             new Table(parts),
@@ -280,10 +312,56 @@ public final class GuideBook {
                 List.of(Slot.of(s.withSpecies(ModItems.FERTILIZED_ANCIENT_EGG.toStack())))
             ),
             p("embryogenesis.2"),
+            p("embryogenesis.donor"),
             h("embryogenesis.supplies"),
             new Crafting(List.of(Slot.of(ModItems.EGG_SHELL_FRAGMENT.toStack()), Slot.of(ModItems.EGG_SHELL_FRAGMENT.toStack()), Slot.of(ModItems.NUTRIENT_SOLUTION.toStack())), Slot.of(ModItems.ARTIFICIAL_EGG.toStack()), true),
             s.shaped(new ItemStack(ModItems.NUTRIENT_SOLUTION.get(), 4), new String[]{" F ", "FPF", " F "}, 'F', s.waterBottle(), 'P', slot(Items.BONE_MEAL)),
             p("embryogenesis.3")
+        ));
+    }
+
+    private static Chapter genetics(Stacks s) {
+        ItemStack stegosaurus = completed("stegosaurus");
+        ItemStack triceratops = completed("triceratops");
+        ItemStack hybridEgg = ModItems.FERTILIZED_ANCIENT_EGG.toStack();
+        hybridEgg.set(ModDataComponents.SPECIES.get(), com.coolerpromc.ancientcreature.entity.Species.of("stegoceratops"));
+        return new Chapter("genetics", ModItems.GENOME_CARTRIDGE_COMPLETED.toStack(), List.of(
+            p("genetics.1"),
+            p("genetics.2"),
+            h("genetics.traits"),
+            p("genetics.3"),
+            p("genetics.4"),
+            tip("genetics.tip"),
+            h("genetics.hybrids"),
+            p("genetics.5"),
+            new MachineStep(
+                List.of(Slot.of(stegosaurus), Slot.of(triceratops), Slot.of(ModItems.ARTIFICIAL_EGG.toStack()), Slot.of(ModItems.NUTRIENT_SOLUTION.toStack())),
+                Slot.of(ModBlocks.EMBRYOGENESIS_CHAMBER.toStack()),
+                List.of(Slot.of(hybridEgg))
+            ),
+            p("genetics.6")
+        ));
+    }
+
+    private static ItemStack completed(String species) {
+        ItemStack stack = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
+        stack.set(ModDataComponents.SPECIES.get(), com.coolerpromc.ancientcreature.entity.Species.of(species));
+        return stack;
+    }
+
+    private static Chapter upgrades(Stacks s) {
+        return new Chapter("upgrades", ModItems.SPEED_UPGRADE_MODULE.toStack(), List.of(
+            p("upgrades.1"),
+            s.shaped(ModItems.SPEED_UPGRADE_MODULE.toStack(), new String[]{"IRI", "RGR", "IRI"},
+                'I', slot(Items.IRON_INGOT), 'R', slot(Items.REDSTONE), 'G', slot(Items.GOLD_INGOT)),
+            p("upgrades.speed"),
+            s.shaped(ModItems.PRECISION_UPGRADE_MODULE.toStack(), new String[]{"IQI", "RDR", "IQI"},
+                'I', slot(Items.IRON_INGOT), 'Q', slot(Items.QUARTZ), 'R', slot(Items.REDSTONE), 'D', slot(Items.DIAMOND)),
+            p("upgrades.precision"),
+            s.shaped(ModItems.EFFICIENCY_UPGRADE_MODULE.toStack(), new String[]{"ICI", "RER", "ICI"},
+                'I', slot(Items.IRON_INGOT), 'C', slot(Items.COPPER_INGOT), 'R', slot(Items.REDSTONE), 'E', slot(Items.EMERALD)),
+            p("upgrades.efficiency"),
+            tip("upgrades.tip")
         ));
     }
 

@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.035,
+            "per_level_above_first": 0.01
+          },
+          "enchantment": "minecraft:looting",
+          "unenchanted_chance": 0.025
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "fossilParts": [
+                "ancientcreature:rib",
+                "ancientcreature:tooth",
+                "ancientcreature:vertebra"
+              ],
+              "function": "ancientcreature:set_fossil_data"
+            }
+          ],
+          "name": "ancientcreature:fossil_part"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ancientcreature:inject/entities/drowned"
+}

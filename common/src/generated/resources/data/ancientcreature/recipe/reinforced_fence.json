@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "IBI",
+    "IBI"
+  ],
+  "result": {
+    "count": 6,
+    "id": "ancientcreature:reinforced_fence"
+  }
+}
