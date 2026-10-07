@@ -26,7 +26,7 @@
   - Mount abilities on R: roar, charge, bite, tail sweep, stomp, pounce or dive, depending on the species
 - Genetics
   - DNA samples now have a quality and genome cartridges a fidelity. The fidelity decides a new creature's size, health, speed and temperament, and whether it is sterile or frail. Bred babies inherit their parents' traits
-  - Hybrids: splice the genomes of two species in the Embryogenesis Chamber's new donor slot. Added the Stegoceratops (Stegosaurus × Triceratops) and the Tyrannoraptor (Tyrannosaurus Rex × Velociraptor). Hybrids are always sterile
+  - Hybrids: splice the genomes of two species in the Embryogenesis Chamber's new donor slot. Added the Stegoceratops (Stegosaurus Ã— Triceratops) and the Tyrannoraptor (Tyrannosaurus Rex Ã— Velociraptor). Hybrids are always sterile
   - Every species now has a rarer mottled skin
 - Lab upgrades: Speed, Precision and Efficiency modules fit two to a machine
 - Creatures now drop meat and materials: Raw Prehistoric Meat, Thick Hide, Osteoderm, Prehistoric Horn, Predator Tooth, Sickle Claw, Prehistoric Feather, Woolly Fur, Mammoth Tusk, Megalodon Tooth and Arthropleura Chitin, used for saddles, armor, the Horn Whistle, leather, wool, feathers and bone meal
