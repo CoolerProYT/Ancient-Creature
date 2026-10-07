@@ -6,7 +6,7 @@ We will add a Stegosaurus to a pack called `mypack`. Nothing here needs a mod bu
 
 Open Blockbench and start a **Bedrock Entity** project. Build the model, then:
 
-* keep **box UV** (Blockbench's per-face UV is only approximated — see [Geometry](/species/geometry#per-face-uv))
+* box UV and per-face UV both work
 * name the bones something you will recognise; animations target them by name
 * set the geometry identifier to `geometry.stegosaurus`
 
@@ -22,8 +22,7 @@ Then animate it and export as **Bedrock Animation** to:
 assets/mypack/ancientcreature/animations/stegosaurus.animation.json
 ```
 
-Name the animations `animation.stegosaurus.idle`, `animation.stegosaurus.walk`, and so on. The
-controller can refer to them by the short name (`idle`, `walk`).
+Name the animations `animation.stegosaurus.idle`, `animation.stegosaurus.walk`, and so on.
 
 ## 2. Gameplay
 
@@ -66,41 +65,69 @@ controller can refer to them by the short name (`idle`, `walk`).
     "death": "minecraft:entity.ravager.death",
     "step": "minecraft:entity.ravager.step",
     "ambient_interval": 260
+  },
+  "loot_table": "ancientcreature:entities/large_herbivore",
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 6
+  },
+  "riding": {
+    "ability": "tail_sweep",
+    "cooldown": 80
   }
 }
 ```
 
-Full field list: [Species JSON](/species/species-json).
+`loot_table`, `care` and `riding` are optional: what it drops, what keeps it comfortable, and its mount
+ability. Full field list: [Species JSON](/species/species-json).
 
 ## 3. Appearance
 
-`assets/mypack/ancientcreature/species/stegosaurus.json`
+`assets/mypack/ancientcreature/entity/stegosaurus.entity.json`
 
 ```json
 {
-  "format_version": 1,
-  "geometry": "mypack:stegosaurus",
-  "texture": "mypack:textures/entity/stegosaurus.png",
-  "animations": "mypack:stegosaurus",
-  "controller": "mypack:stegosaurus",
-  "shadow_radius": 1.0,
-  "gui": {
-    "scale": 11.0,
-    "rotation": [0.0, 215.0, 0.0]
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "mypack:stegosaurus",
+      "materials": { "default": "entity_alphatest" },
+      "textures": { "default": "textures/entity/stegosaurus" },
+      "geometry": { "default": "geometry.stegosaurus" },
+      "animations": {
+        "idle": "animation.stegosaurus.idle",
+        "walk": "animation.stegosaurus.walk",
+        "attack": "animation.stegosaurus.attack",
+        "main": "controller.animation.stegosaurus.main"
+      },
+      "scripts": { "animate": ["main"] }
+    }
   }
 }
 ```
 
-::: tip
-`geometry`, `animations` and `controller` are *file* ids, not the `geometry.stegosaurus` identifier
-inside the model. `mypack:stegosaurus` means the file
-`assets/mypack/ancientcreature/geo/stegosaurus.geo.json`.
-:::
-
-Drop the texture at `assets/mypack/textures/entity/stegosaurus.png`.
+This is a standard Bedrock client entity, the kind Blockbench can export. Its `identifier` is the species
+id. Texture paths are relative to the pack root and leave out `.png`, so drop the texture at
+`assets/mypack/textures/entity/stegosaurus.png`.
 
 The texture does not have to be 16×16. Set the Blockbench project's texture resolution to the PNG's
 real dimensions before export; the resulting `texture_width` and `texture_height` are read directly.
+
+Optionally, add `assets/mypack/ancientcreature/species/stegosaurus.json` to set the shadow and how the
+creature is framed in GUIs:
+
+```json
+{
+  "format_version": 2,
+  "shadow_radius": 1.0,
+  "gui": { "scale": 11.0, "rotation": [0.0, 215.0, 0.0] }
+}
+```
+
+To show saddles, armor and skin variants, add a render controller. See
+[Species (resource pack)](/species/client-species#render-controllers).
 
 ## 4. Decide when animations play
 
@@ -108,39 +135,43 @@ real dimensions before export; the resulting `texture_width` and `texture_height
 
 ```json
 {
-  "format_version": 1,
-  "initial_state": "idle",
-  "states": {
-    "idle": {
-      "animations": ["idle"],
-      "blend_transition": 0.2,
-      "transitions": [
-        { "attack": "query.action == 'attack'" },
-        { "walk": "query.is_moving" }
-      ]
-    },
-    "walk": {
-      "animations": ["walk"],
-      "blend_transition": 0.15,
-      "transitions": [
-        { "attack": "query.action == 'attack'" },
-        { "idle": "!query.is_moving" }
-      ]
-    },
-    "attack": {
-      "animations": ["attack"],
-      "blend_transition": 0.08,
-      "transitions": [
-        { "walk": "query.action != 'attack' && query.is_moving" },
-        { "idle": "query.action != 'attack'" }
-      ]
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.stegosaurus.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": ["idle"],
+          "blend_transition": 0.2,
+          "transitions": [
+            { "attack": "query.action == 'attack'" },
+            { "walk": "query.is_moving" }
+          ]
+        },
+        "walk": {
+          "animations": ["walk"],
+          "blend_transition": 0.15,
+          "transitions": [
+            { "attack": "query.action == 'attack'" },
+            { "idle": "!query.is_moving" }
+          ]
+        },
+        "attack": {
+          "animations": ["attack"],
+          "blend_transition": 0.08,
+          "transitions": [
+            { "walk": "query.action != 'attack' && query.is_moving" },
+            { "idle": "query.action != 'attack'" }
+          ]
+        }
+      }
     }
   }
 }
 ```
 
-The controller is optional. Without one the creature renders in its rest pose, which is a perfectly
-good way to check the model before animating it.
+The controller is optional. Without one (drop `main` from `scripts.animate`) the creature renders in its
+rest pose, which is a perfectly good way to check the model before animating it.
 
 ## 5. Name it
 

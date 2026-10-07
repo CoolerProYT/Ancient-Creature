@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/aquatic_predator",
+  "loot_table": "ancientcreature:entities/dunkleosteus",
   "entity_category": "aquatic",
   "physical": {
     "width": 2.15,
@@ -36,5 +36,25 @@
     "attack": "ancientcreature:entity.dunkleosteus.attack",
     "alert": "ancientcreature:entity.dunkleosteus.alert",
     "ambient_interval": 280
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "any",
+    "social": "solitary",
+    "space": 600
+  },
+  "riding": {
+    "ability": "bite",
+    "cooldown": 60,
+    "power": 1.2
   }
 }

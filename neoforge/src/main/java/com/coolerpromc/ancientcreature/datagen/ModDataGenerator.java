@@ -23,5 +23,7 @@ public class ModDataGenerator {
         event.createProvider(ModItemTagsProvider::new);
         event.createProvider(ModBlockTagsProvider::new);
         event.createProvider(ModBiomeTagsProvider::new);
+        event.createProvider(ModStructureTagsProvider::new);
+        event.createProvider(ModVillagerTradeTagsProvider::new);
     }
 }

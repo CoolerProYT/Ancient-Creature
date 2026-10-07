@@ -3,18 +3,17 @@ package com.coolerpromc.ancientcreature.client.gui.screen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.menu.custom.FossilIdentificationChamberMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-public class FossilIdentificationChamberScreen extends AbstractContainerScreen<FossilIdentificationChamberMenu> {
+public class FossilIdentificationChamberScreen extends MachineScreen<FossilIdentificationChamberMenu> {
     public static final Identifier TEXTURE = Constants.id("textures/gui/screen/fossil_identification_chamber.png");
     public static final Identifier ARROW = Constants.id("container/progress_arrow");
 
     public FossilIdentificationChamberScreen(FossilIdentificationChamberMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, 176, 166);
+        super(menu, inventory, title);
     }
 
     @Override

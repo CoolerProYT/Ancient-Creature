@@ -3,9 +3,11 @@ package com.coolerpromc.ancientcreature.species;
 import com.coolerpromc.ancientcreature.client.animation.bedrock.BedrockAnimation;
 import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockGeometry;
 import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockModelBaker;
+import com.coolerpromc.ancientcreature.client.model.bedrock.BakedBedrockModel;
+import com.coolerpromc.ancientcreature.molang.MolangContext;
+import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.server.Bootstrap;
@@ -35,10 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * is looking down. A jaw hangs below its pivot and extends forward, so it must swing positive to open
  * and negative closes it into the skull.
  *
- * <p>Bedrock animation keyframes are authored with the opposite X handedness to Bedrock geometry bone
- * rotations, so the applier negates X for the rest pose but must not for keyframes. Getting that
- * backwards is invisible in a diff and silently inverts every clip: heads pitch down where they should
- * rise, and mouths clamp shut where they should gape. These assertions are the guard.
+ * <p>Getting a sign convention backwards is invisible in a diff and silently inverts every clip: heads
+ * pitch down where they should rise, and mouths clamp shut where they should gape. These assertions are
+ * the guard.
  */
 class AnimationPoseTest {
     @BeforeAll
@@ -92,9 +93,9 @@ class AnimationPoseTest {
             "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura"}) {
             Map<String, BedrockAnimation> animations = loadAnimations(species);
             for (Map.Entry<String, BedrockAnimation> entry : animations.entrySet()) {
-                ModelPart root = BedrockModelBaker.bake(loadGeometry(species));
+                BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry(species));
                 Set<String> missing = new HashSet<>();
-                entry.getValue().withName(entry.getKey()).apply(root, 0.1F, 1.0F, missing);
+                entry.getValue().apply(root, 0.1F, 1.0F, new MolangContext(), missing, new java.util.ArrayList<>());
                 assertTrue(missing.isEmpty(),
                     () -> entry.getKey() + " targets bones the geometry does not have: " + missing);
             }
@@ -104,10 +105,8 @@ class AnimationPoseTest {
     /**
      * A flap has to drive the two wings in opposite directions.
      *
-     * <p>{@code wing_left} extends along Bedrock +X and {@code wing_right} along -X, and the baker
-     * mirrors X into model space, so the two sides end up on opposite local axes. The same {@code zRot}
-     * therefore raises one wing and lowers the other, and every flight clip has to carry equal and
-     * opposite z between them. Getting that wrong renders as both wings swinging the same way, which
+     * <p>The two wings extend along opposite local X axes, so the same {@code zRot} raises one wing and
+     * lowers the other, and every flight clip has to carry equal and opposite z between them. Getting that wrong renders as both wings swinging the same way, which
      * reads as the model tearing itself in half — and it is invisible in a diff, because the numbers
      * differ only in sign.
      */
@@ -126,16 +125,9 @@ class AnimationPoseTest {
     /**
      * The flap itself has to go up then down, not just wobble.
      *
-     * <p>Which sign raises a wing is worth spelling out, because it is easy to derive backwards. The
-     * baker negates X and Y relative to each pivot, and the entity renderer then scales by
-     * {@code (-1, -1, 1)}, so the two negations cancel and rendered world space is simply Bedrock
-     * coordinates. {@code wing_left} lies at positive Bedrock X, and rotating a point at +X about +Z by
-     * a positive angle carries it toward +Y, which is up. So a positive z keyframe raises the left wing
-     * in game.
-     *
-     * <p>Note that Blockbench's viewport stores Bedrock X mirrored, so its preview shows this flap
-     * left-right reversed and the stroke therefore looks phase-inverted there. That is cosmetic for a
-     * symmetric model, but it means the preview is not the authority for these signs — this test is.
+     * <p>The assertions are on the baked vanilla part rotations, which is exactly what is drawn, so they
+     * hold however the file chose to express them. The shipped files follow Bedrock/Blockbench axes, so
+     * Blockbench's preview shows the same stroke.
      */
     @Test
     void theFlapRaisesThenLowersTheWings() throws IOException {
@@ -157,13 +149,13 @@ class AnimationPoseTest {
     /** A perched Pteranodon has to fold its wings in, not leave them spread as if still gliding. */
     @Test
     void perchedIdleFoldsTheWingsBack() throws IOException {
-        ModelPart root = BedrockModelBaker.bake(loadGeometry("pteranodon"));
+        BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry("pteranodon"));
         String key = "animation.pteranodon.idle";
-        loadAnimations("pteranodon").get(key).withName(key).apply(root, 1.0F, 1.0F, new HashSet<>());
+        loadAnimations("pteranodon").get(key).apply(root, 1.0F, 1.0F, new MolangContext(), new HashSet<>(), new java.util.ArrayList<>());
 
-        // Sweep is yaw, and the applier negates the keyframe, so a folded left wing ends up positive.
-        float left = find(root, "wing_left").yRot;
-        float right = find(root, "wing_right").yRot;
+        // Sweep is yaw; a folded left wing ends up with positive yRot.
+        float left = find(root.root(), "wing_left").yRot;
+        float right = find(root.root(), "wing_right").yRot;
         assertTrue(left > Math.toRadians(45.0),
             () -> "pteranodon idle only sweeps wing_left back " + degrees(left) + "; perched wings must fold in.");
         assertEquals(-left, right, 1.0E-4F,
@@ -181,9 +173,9 @@ class AnimationPoseTest {
         BedrockAnimation animation = loadAnimations(species).get(key);
         assertTrue(animation != null, () -> "no animation named " + key);
 
-        ModelPart root = BedrockModelBaker.bake(loadGeometry(species));
-        animation.withName(key).apply(root, time, 1.0F, new HashSet<>());
-        return new Wings(find(root, "wing_left").zRot, find(root, "wing_right").zRot);
+        BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry(species));
+        animation.apply(root, time, 1.0F, new MolangContext(), new HashSet<>(), new java.util.ArrayList<>());
+        return new Wings(find(root.root(), "wing_left").zRot, find(root.root(), "wing_right").zRot);
     }
 
     private static Pose poseAt(String species, String anim, float time) throws IOException {
@@ -191,9 +183,9 @@ class AnimationPoseTest {
         BedrockAnimation animation = loadAnimations(species).get(key);
         assertTrue(animation != null, () -> "no animation named " + key);
 
-        ModelPart root = BedrockModelBaker.bake(loadGeometry(species));
-        animation.withName(key).apply(root, time, 1.0F, new HashSet<>());
-        return new Pose(find(root, "head").xRot, find(root, "jaw").xRot);
+        BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry(species));
+        animation.apply(root, time, 1.0F, new MolangContext(), new HashSet<>(), new java.util.ArrayList<>());
+        return new Pose(find(root.root(), "head").xRot, find(root.root(), "jaw").xRot);
     }
 
     private static String degrees(float radians) {
@@ -216,8 +208,11 @@ class AnimationPoseTest {
         Path path = Path.of("src/main/resources/assets/ancientcreature/ancientcreature/animations/" + species + ".animation.json");
         try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             JsonElement json = new Gson().fromJson(reader, JsonElement.class);
-            return BedrockAnimation.FILE_CODEC.parse(JsonOps.INSTANCE, json)
-                .getOrThrow(message -> new AssertionError(path + ": " + message));
+            try {
+                return BedrockAnimation.parseFile(json);
+            } catch (com.coolerpromc.ancientcreature.client.model.bedrock.BedrockFormatException e) {
+                throw new AssertionError(path + ": " + e.getMessage());
+            }
         }
     }
 
@@ -225,8 +220,11 @@ class AnimationPoseTest {
         Path path = Path.of("src/main/resources/assets/ancientcreature/ancientcreature/geo/" + species + ".geo.json");
         try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             JsonElement json = new Gson().fromJson(reader, JsonElement.class);
-            return BedrockGeometry.FILE_CODEC.parse(JsonOps.INSTANCE, json)
-                .getOrThrow(message -> new AssertionError(path + ": " + message)).getFirst();
+            try {
+                return BedrockGeometry.parseFile(json).getFirst();
+            } catch (com.coolerpromc.ancientcreature.client.model.bedrock.BedrockFormatException e) {
+                throw new AssertionError(path + ": " + e.getMessage());
+            }
         }
     }
 }

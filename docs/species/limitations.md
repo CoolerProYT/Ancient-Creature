@@ -2,31 +2,16 @@
 
 Honest list of what does not work yet, and why.
 
-## Per-face UV is approximated
+## Bedrock features with no Java counterpart
 
-Minecraft's cube builder has no per-face UV entry point. A cube using the per-face form is accepted but
-its UV is guessed from the smallest face corner, with a warning. The texture will very likely be wrong.
+The resource-pack side reads real Bedrock files, but a few things only exist in Bedrock:
 
-**Workaround:** export with box UV. In Blockbench, *File → Project → UV Mode → Box UV*.
-
-## No Molang
-
-Keyframe values must be literal numbers or vectors — there is no expression evaluator for them.
-
-Animation *controller* conditions do support a
-[documented subset](/species/animation-controllers#expression-grammar) of Molang-style syntax, but not
-functions (`math.sin`), variables (`variable.x`) or arithmetic. Anything outside the grammar is a
-load-time error rather than a silently dead transition.
-
-## Texture variants are not rolled on spawn
-
-Variants are fully plumbed — parsed, stored on the entity, synchronised, persisted, and used when
-choosing the texture — but nothing currently assigns one at spawn time. Every creature uses `default`
-unless a variant is set explicitly:
-
-```
-/ancientcreature summon mypack:stegosaurus ~ ~ ~ false albino
-```
+* **Materials** are not Bedrock's shader materials. A material name only picks how a layer is drawn:
+  translucent if it contains `alphablend`, `translucent` or `blend`, full-bright if it contains
+  `emissive`, cutout otherwise.
+* **Particle effects** play a Java particle with no options, or one of a handful of Bedrock built-ins
+  mapped to their Java equivalents. Bedrock particle effect files are not read.
+* **Entity references** (`->`) parse but give 0, and `query.is_first_person` is always 0.
 
 ## `clientTrackingRange` and `updateInterval` cannot be data-driven
 
@@ -38,12 +23,6 @@ uses a tracking range of 12 chunks, generous enough for large species.
 `spawn.biomes` controls where a species' **fossils** generate, not where live creatures spawn. Creatures
 come from the fossil → DNA → embryo → egg chain. There is no natural spawn weight or spawn rule in the
 species format.
-
-## Aquatic creatures do not suffocate on land
-
-The old Megalodon was a `WaterAnimal`, which takes damage out of water. The generic creature does not
-replicate that. An aquatic species will flop on land indefinitely rather than dying. The
-`ancientcreature:find_water` component makes it head back to water.
 
 ## Flying has no aerodynamic simulation
 
@@ -61,7 +40,7 @@ are not modelled, and landing is not a separate navigation phase.
 `ancientcreature:triceratops`, `:tyrannosaurus_rex` and `:megalodon` remain registered so existing
 worlds keep their creatures. They are data-driven now and nothing spawns them, but the registrations
 cannot be removed without deleting those creatures from old worlds. See
-[Migration](/species/migration#why-the-old-entity-ids-still-exist).
+[Migration](/species/migration#why-the-old-entity-ids-remain).
 
 ## Creative tab and JEI before joining a world
 
@@ -70,6 +49,6 @@ none. Both are rebuilt on join, so this is not visible in normal play.
 
 ## Not verified in-game by automated tests
 
-Automated tests cover the JSON formats, the codecs, the geometry conversion, the behaviour registry and
-the expression parser. They do **not** launch Minecraft. Anything involving actual rendering, pathing or
+Automated tests cover the JSON formats, the codecs, the geometry baker, animation sampling, Molang, the
+behaviour registry, genetics and every shipped species file. They do **not** launch Minecraft. Anything involving actual rendering, pathing or
 gameplay needs the manual pass in [Testing a species](/species/testing).

@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:velociraptor",
-  "texture": "ancientcreature:textures/entity/velociraptor.png",
-  "animations": "ancientcreature:velociraptor",
-  "controller": "ancientcreature:velociraptor",
+  "format_version": 2,
   "shadow_radius": 0.45,
   "render_scale": 0.85,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/velociraptor.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/velociraptor_mottled.png"
-    }
-  ]
+  }
 }

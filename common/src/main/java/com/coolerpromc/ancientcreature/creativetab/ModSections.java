@@ -36,39 +36,73 @@ public class ModSections {
             ModItems.NETHERITE_CHISEL.toStack()
         );
         List<ItemStack> machines = List.of(
+            ModBlocks.SIFTER.toStack(),
             ModBlocks.FOSSIL_CLEANING_TABLE.toStack(),
             ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.toStack(),
             ModBlocks.DNA_EXTRACTOR.toStack(),
             ModBlocks.GENOME_SEQUENCER.toStack(),
             ModBlocks.EMBRYOGENESIS_CHAMBER.toStack(),
-            ModBlocks.INCUBATOR.toStack()
+            ModBlocks.INCUBATOR.toStack(),
+            ModBlocks.REINFORCED_FENCE.toStack(),
+            ModBlocks.REINFORCED_FENCE_GATE.toStack(),
+            ModBlocks.ELECTRIC_FENCE.toStack()
         );
         List<ItemStack> misc = List.of(
             ModItems.FIELD_GUIDE.toStack(),
+            ModItems.HORN_WHISTLE.toStack(),
+            ModItems.CREATURE_SADDLE.toStack(),
+            ModItems.IRON_CREATURE_ARMOR.toStack(),
+            ModItems.GOLDEN_CREATURE_ARMOR.toStack(),
+            ModItems.DIAMOND_CREATURE_ARMOR.toStack(),
+            ModItems.NETHERITE_CREATURE_ARMOR.toStack(),
             ModBlocks.FOSSIL_ORE.toStack(),
+            ModBlocks.DEEPSLATE_FOSSIL_ORE.toStack(),
+            ModBlocks.AMBER_ORE.toStack(),
+            ModBlocks.FROZEN_FOSSIL.toStack(),
             ModBlocks.ROCK_PILE.toStack(),
             ModItems.ROCK_FRAGMENT.toStack(),
             ModItems.DIRT_FRAGMENT.toStack(),
             ModItems.SAMPLE_VIAL.toStack(),
             ModItems.EXTRACTION_FLUID.toStack(),
             ModItems.ARTIFICIAL_EGG.toStack(),
-            ModItems.NUTRIENT_SOLUTION.toStack()
+            ModItems.NUTRIENT_SOLUTION.toStack(),
+            ModItems.SPEED_UPGRADE_MODULE.toStack(),
+            ModItems.PRECISION_UPGRADE_MODULE.toStack(),
+            ModItems.EFFICIENCY_UPGRADE_MODULE.toStack()
+        );
+
+        List<ItemStack> creatureMaterials = List.of(
+            ModItems.RAW_PREHISTORIC_MEAT.toStack(),
+            ModItems.COOKED_PREHISTORIC_MEAT.toStack(),
+            ModItems.THICK_HIDE.toStack(),
+            ModItems.WOOLLY_FUR.toStack(),
+            ModItems.PREDATOR_TOOTH.toStack(),
+            ModItems.SICKLE_CLAW.toStack(),
+            ModItems.MEGALODON_TOOTH.toStack(),
+            ModItems.PREHISTORIC_HORN.toStack(),
+            ModItems.OSTEODERM.toStack(),
+            ModItems.MAMMOTH_TUSK.toStack(),
+            ModItems.PREHISTORIC_FEATHER.toStack(),
+            ModItems.ARTHROPLEURA_CHITIN.toStack()
         );
 
         for (Species species : Species.values()) {
-            for (DNAIntegrityLevel value : DNAIntegrityLevel.values()) {
+            // hybrids have no fossils, so no DNA or genome of their own
+            if (!species.isHybrid()) for (DNAIntegrityLevel value : DNAIntegrityLevel.values()) {
                 ItemStack dnaSample = ModItems.DNA_SAMPLE.toStack();
                 dnaSample.set(ModDataComponents.DNA_DATA.get(), new DNAData(value, species));
                 dnaSamples.add(dnaSample);
             }
 
-            ItemStack filledGenome = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
-            filledGenome.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(0.5f, species));
-            genomes.add(filledGenome);
+            if (!species.isHybrid()) {
+                ItemStack filledGenome = ModItems.GENOME_CARTRIDGE_FILLED.toStack();
+                filledGenome.set(ModDataComponents.GENOME_DATA.get(), new GenomeData(0.5f, species));
+                genomes.add(filledGenome);
 
-            ItemStack completedGenome = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
-            completedGenome.set(ModDataComponents.SPECIES.get(), species);
-            genomes.add(completedGenome);
+                ItemStack completedGenome = ModItems.GENOME_CARTRIDGE_COMPLETED.toStack();
+                completedGenome.set(ModDataComponents.SPECIES.get(), species);
+                genomes.add(completedGenome);
+            }
 
             ItemStack fertilizedAncientEgg = ModItems.FERTILIZED_ANCIENT_EGG.toStack();
             fertilizedAncientEgg.set(ModDataComponents.SPECIES.get(), species);
@@ -125,6 +159,12 @@ public class ModSections {
                 Component.translatable("tab.ancientcreature.processed_items"),
                 0xFFFFFFFF,
                 fertilizedAncientEggs
+            ),
+            SectionTextured.of(
+                "creature_materials",
+                Component.translatable("tab.ancientcreature.creature_materials"),
+                0xFFFFFFFF,
+                creatureMaterials
             ),
             SectionTextured.of(
                 "misc",

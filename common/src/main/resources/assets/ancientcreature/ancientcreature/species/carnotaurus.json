@@ -1,9 +1,5 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:carnotaurus",
-  "texture": "ancientcreature:textures/entity/carnotaurus.png",
-  "animations": "ancientcreature:carnotaurus",
-  "controller": "ancientcreature:carnotaurus",
+  "format_version": 2,
   "shadow_radius": 0.6325,
   "render_scale": 1.0,
   "gui": {
@@ -18,17 +14,5 @@
       215,
       0
     ]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 82,
-      "texture": "ancientcreature:textures/entity/carnotaurus.png"
-    },
-    {
-      "id": "mottled",
-      "weight": 18,
-      "texture": "ancientcreature:textures/entity/carnotaurus_mottled.png"
-    }
-  ]
+  }
 }

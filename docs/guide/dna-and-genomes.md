@@ -34,6 +34,9 @@ Teeth, skulls and egg fossils carry a bonus; claws carry a penalty. See the bonu
 
 If the score is too low, the extraction still uses the fossil and a point of Extraction Fluid, but gives no sample and keeps the vial. The [calculator](./fossils#try-it) shows which sample a fossil will give before you spend it.
 
+Each sample also remembers its exact score as its **quality**, shown in its tooltip. Quality matters later: it decides how faithful the genome is.
+
+
 ## Genome Sequencer
 
 <RecipeCard id="genome_sequencer" />
@@ -61,6 +64,22 @@ The sequencer writes DNA onto a Genome Cartridge. Each sample adds a random amou
 />
 
 The cartridge stays in its slot between samples, so a hopper feeding DNA from the side can fill it hands-free.
+
+### Genome fidelity
+
+Every cartridge has a **fidelity**: the average quality of the samples that went into it, weighted by how much genome each one added. A few excellent samples make a better genome than many poor ones. The cartridge's tooltip shows its fidelity.
+
+Fidelity decides what kind of animal hatches from the genome: see [Genome traits](./reviving#genome-traits).
+
+## Upgrades
+
+Every machine has two upgrade slots. In these two machines:
+
+- **Precision**: the DNA Extractor gets +5% integrity per module. The Genome Sequencer reads 15% more genome and +5% fidelity from every sample per module.
+- **Efficiency**: in the DNA Extractor, each module gives a 25% chance to keep the Extraction Fluid use, and separately the Sample Vial.
+- **Speed**: each module cuts processing time by a third.
+
+See [Upgrade modules](./items#upgrade-modules).
 
 ## Automation
 

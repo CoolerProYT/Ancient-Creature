@@ -6,7 +6,7 @@ Ancient Creature is a path from a buried bone to a living creature. You dig up a
 
 1. Install [Fabric](https://fabricmc.net/) with Fabric API, or [NeoForge](https://neoforged.net/), for Minecraft **26.1** or newer.
 2. Put the Ancient Creature jar in your `mods` folder.
-3. Optional: add [JEI](https://modrinth.com/mod/jei) to see every machine step in game, and [Jade](https://modrinth.com/mod/jade) to check eggs and creature hunger by looking at them.
+3. Optional: add [JEI](https://modrinth.com/mod/jei) to see every machine step in game, and [Jade](https://modrinth.com/mod/jade) to check eggs and creatures by looking at them.
 
 ## The whole journey
 
@@ -20,7 +20,7 @@ Each machine does one job and passes its result to the next. Every machine accep
 
 <RecipeCard id="stone_chisel" />
 
-**2. Find a fossil.** Look for **Fossil Ore** in stone between Y -64 and 50, or for **rock piles** on the surface with bones or an egg sticking out. Mine them with the chisel. See [Finding fossils](./fossils).
+**2. Find a fossil.** Look for **Fossil Ore** in stone between Y -64 and 50, or for **rock piles** on the surface with bones or an egg sticking out, and mine them with the chisel. Better still, find a **dig site**: an expedition camp with excavation pits full of suspicious sand and gravel to brush. Fossils also hide in amber, in old ice, on cliff faces and in vanilla ruins, and a Sifter slowly turns gravel into fragments. See [Finding fossils](./fossils).
 
 **3. Clean it** in a [Fossil Cleaning Table](./cleaning-and-identifying#cleaning) with a brush.
 
@@ -32,10 +32,10 @@ Each machine does one job and passes its result to the next. Every machine accep
 
 **7. Grow an embryo.** Put the completed cartridge, an Artificial Egg and Nutrient Solution into the [Embryogenesis Chamber](./reviving#embryogenesis-chamber).
 
-**8. Incubate the egg** in the [Incubator](./reviving#incubator), then use the **Baby Creature Capsule** on the ground to release your baby. It's yours: it grows up, and once it's an adult you can [ride it](./riding).
+**8. Incubate the egg** in the [Incubator](./reviving#incubator), then use the **Baby Creature Capsule** on the ground to release your baby. It's yours: it grows up, and once it's an adult you can [saddle and ride it](./riding). Give it orders with a Horn Whistle and keep it [comfortable](./keeping-creatures) so it stays put and breeds.
 
 ::: tip Plan ahead
-Better fossils make better DNA, and better DNA fills a genome in fewer samples. Teeth, skulls and egg fossils are the best finds. A Diamond or Netherite Chisel keeps most or all of their quality.
+Better fossils make better DNA, and better DNA fills a genome in fewer samples and gives healthier animals. Teeth, skulls and egg fossils are the best finds. A Diamond or Netherite Chisel keeps most or all of their quality.
 :::
 
 ## Field Guide

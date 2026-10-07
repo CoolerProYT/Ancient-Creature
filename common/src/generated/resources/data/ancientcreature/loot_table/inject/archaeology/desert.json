@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.08
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:claw",
+              "ancientcreature:limb",
+              "ancientcreature:rib",
+              "ancientcreature:skull",
+              "ancientcreature:tooth"
+            ]
+          },
+          "name": "ancientcreature:fossil_part"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "ancientcreature:inject/archaeology/desert"
+}

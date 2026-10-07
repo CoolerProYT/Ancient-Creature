@@ -78,20 +78,21 @@ is dropped with a warning naming the animation and the bone.
 | Symptom | Likely cause |
 | --- | --- |
 | Not in `species list` | Datapack half missing, or the file failed to parse — check the log |
-| Listed but invisible | `geometry` or `texture` id wrong in the client definition; log says which |
-| Renders but in T-pose | No `controller`, or its states play animations that do not exist |
-| Texture scrambled | Model exported with per-face UV — re-export with box UV |
+| Listed but invisible | No client entity with the species id as its `identifier`, or a wrong geometry or texture in it; the log says which |
+| Renders but in T-pose | No controller in `scripts.animate`, or its states play animations missing from the client entity's `animations` map |
+| Saddle or armor doesn't show | The client entity has no render controller drawing the gear layers; see [render controllers](/species/client-species#render-controllers) |
+| Texture scrambled | `texture_width`/`texture_height` in the geometry don't match the PNG |
 | Hitbox wrong size | `physical` in the *datapack*, not `render_scale` in the resource pack |
-| Too big/small in the GUI | Tune `gui.scale` in the client definition |
+| Too big/small in the GUI | Tune `gui.scale` in the species settings file |
 | Ignores you entirely | No behaviour components, the ones chosen do not target players, or the creature is simply **fed** — check `/ancientcreature hunger` |
-| Falls through the world on spawn | Aquatic species spawned on land — it needs water, or `find_water` |
+| Dies on land | An aquatic species breathes water by default and dries out on land; give it water, or set [`respiration`](/species/species-json#respiration) |
 | Flying creature walks | `entity_category` is not `"flying"`, so the flight components skip themselves |
 
 ## Automated tests
 
-The mod's own tests parse every shipped species, geometry, animation and controller through the real
-codecs, and verify the migrated models are geometrically identical to the hand-written ones they
-replaced:
+The mod's own tests parse every shipped species, client entity, render controller, geometry, animation
+and controller through the real loaders, check the geometry baker against vanilla models and Blockbench's
+UV rules, and exercise Molang, animation sampling and genetics:
 
 ```bash
 ./gradlew :common:test

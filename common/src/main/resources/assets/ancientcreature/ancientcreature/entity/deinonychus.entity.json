@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:deinonychus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/deinonychus",
+        "mottled": "textures/entity/deinonychus_mottled",
+        "saddle": "textures/entity/gear/deinonychus_saddle",
+        "armor_iron": "textures/entity/gear/deinonychus_armor_iron",
+        "armor_golden": "textures/entity/gear/deinonychus_armor_golden",
+        "armor_diamond": "textures/entity/gear/deinonychus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/deinonychus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.deinonychus"
+      },
+      "animations": {
+        "idle": "animation.deinonychus.idle",
+        "walk": "animation.deinonychus.walk",
+        "run": "animation.deinonychus.run",
+        "bite": "animation.deinonychus.bite",
+        "call": "animation.deinonychus.call",
+        "hurt": "animation.deinonychus.hurt",
+        "death": "animation.deinonychus.death",
+        "main": "controller.animation.deinonychus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.deinonychus"
+      ]
+    }
+  }
+}

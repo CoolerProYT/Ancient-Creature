@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/arthropod",
+  "loot_table": "ancientcreature:entities/arthropleura",
   "entity_category": "land",
   "physical": {
     "width": 1.25,
@@ -43,5 +43,24 @@
       "minecraft:red_mushroom",
       "minecraft:fern"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "solitary"
+  },
+  "riding": {
+    "ability": "none",
+    "cooldown": 100,
+    "power": 1.0
   }
 }

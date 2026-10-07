@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "E": "minecraft:emerald",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "ICI",
+    "RER",
+    "ICI"
+  ],
+  "result": {
+    "id": "ancientcreature:efficiency_upgrade_module"
+  }
+}

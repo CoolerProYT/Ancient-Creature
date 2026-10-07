@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "#minecraft:netherite_tool_materials",
+  "base": "ancientcreature:diamond_creature_armor",
+  "result": {
+    "id": "ancientcreature:netherite_creature_armor"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

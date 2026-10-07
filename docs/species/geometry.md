@@ -6,13 +6,23 @@ A standard Blockbench **Bedrock Entity** export. No conversion step.
 
 ## Supported
 
-* `format_version` and the `minecraft:geometry` list
+* both file layouts Bedrock accepts: `1.12.0`+ (`"minecraft:geometry": [...]`) and the legacy `1.8.0` /
+  `1.10.0` layout (`"geometry.name": {...}`), including `"geometry.child:geometry.parent"` inheritance
+  within a file
+* several geometries per file. A client entity refers to them by identifier (`geometry.triceratops`);
+  the first geometry in a file can also be referred to by file id (`ancientcreature:triceratops`), which
+  is how format-1 species files did it
 * `description.identifier` (must start with `geometry.`), `texture_width`, `texture_height`
-* several geometries in one file — the first takes the file's id, the rest are addressed by their own
-  identifier with dots turned into slashes
-* bones: `name`, `parent`, `pivot`, `rotation`, `neverRender`
-* cubes: `origin`, `size`, `uv` (box form), `inflate`, `mirror`
-* per-cube `pivot` + `rotation`
+* bones: `name`, `parent`, `pivot`, `rotation`, `bind_pose_rotation`, `mirror`, `inflate`,
+  `never_render` (or `neverRender`), `reset`, `locators`, `poly_mesh`
+* cubes: `origin`, `size`, `inflate`, `mirror`, `pivot` + `rotation`, box `uv`, per-face `uv` with
+  `uv_size` and `uv_rotation`
+* `poly_mesh`: explicit polygons, or `"tri_list"` / `"quad_list"`
+* locators, as `[x, y, z]` or `{ "offset": [...], "rotation": [...] }`. Animation sound and particle
+  effects can play at them
+* numbers written as strings, as Bedrock allows
+
+Bone and locator names are matched case-insensitively, as in Bedrock.
 
 Nothing is parsed per frame. Geometry is read and baked once per resource reload and cached; the cache
 is dropped wholesale on the next reload, so no stale model survives an F3+T.
@@ -32,15 +42,14 @@ Rejected at load, naming the file and every problem it found:
 | Bad identifier | `"identifier": "my_model"` — must start with `geometry.` |
 | Non-positive texture size | `"texture_width": 0` |
 
-## Per-face UV
+## UV
 
-::: warning Approximated, not reproduced
-Minecraft's cube builder has no per-face UV entry point. A cube using the per-face form is accepted,
-but its UV is approximated from the smallest face corner and a warning is logged naming the geometry
-and bone. The texture will very likely be wrong.
+Box UV, per-face UV and `uv_rotation` all go through one path and match Blockbench texel for texel. Box
+UV is expanded to per-face rectangles the way Bedrock does it: cube sizes floored to whole texels, and
+`mirror` flipping each face and swapping east and west.
 
-**Export with box UV.** In Blockbench: *File → Project*, set UV mode to **Box UV**.
-:::
+Bedrock's `east` face is the cube's **negative-X** side and `west` the positive side. This is how
+Blockbench reads and writes them, so it only matters if you write geometry by hand.
 
 ## Texture resolution
 
@@ -51,34 +60,31 @@ Deinonychus and Ankylosaurus use 256×256, while the much larger Brachiosaurus U
 
 ## Rotated cubes
 
-Minecraft models rotate *bones*, not individual cubes. A cube with its own `rotation` is turned into a
-child bone named `<bone>_r1`, `<bone>_r2`, and so on — exactly the trick Blockbench itself uses when it
-exports a Java model. This means a model that originally came from a Java export round-trips exactly.
+A cube with its own `pivot` and `rotation` is baked straight into its bone's vertices, rotated about its
+own pivot. The baked model has exactly one part per bone, so animations address bones by their real names.
 
 ## Coordinate conversion
 
-Bedrock and Java model space are related by the rigid map:
-
-```
-M(x, y, z) = (-x, 24 - y, z)
-```
-
-a 180° rotation about Z plus a translation putting the origin at the model's feet. Under it:
+The baker uses the same mapping as Blockbench's Bedrock importer and Java exporter together, so a model
+renders in game exactly as it does in Blockbench and in Bedrock:
 
 | Quantity | Conversion |
 | --- | --- |
-| Bone pivot | `(-px, 24 - py, pz)` |
-| Cube corner | `(-(ox + w), 24 - (oy + h), oz)` |
-| Rotation (degrees) | `(-rx, -ry, rz)` |
+| Bone offset | `(px - parent.px, -(py - parent.py), pz - parent.pz)`, plus 24 on Y for root bones |
+| Bone and cube rotation | The file's `[x, y, z]` degrees, as written |
+| Cube box | `(ox - px, py - oy - height, oz - pz)` relative to the bone pivot |
 
-The loader implements exactly this, so a model converted from a hand-written Java `LayerDefinition`
-renders identically.
+Animation keyframes are applied the way Blockbench's Java exporter applies them: rotation added as-is,
+position as `(x, -y, z)`, scale multiplied.
 
-::: tip This is checked, not assumed
-`BedrockModelBakerTest` bakes each shipped `.geo.json` and walks it with `ModelPart#visit`, comparing
-every cube's fully composed rest-pose vertices and UVs against the original Java model. All three
-migrated creatures match exactly. Tyrannosaurus Rex is the interesting case: it has bones that are both
-rotated *and* parents, which is where a naive conversion breaks.
+::: tip Checked, not assumed
+`BedrockGeometryTest` bakes a Bedrock cow and compares every vertex and UV against the vanilla Java cow,
+and checks per-face UV against box UV, `uv_rotation`, rotated cubes, legacy inheritance and poly meshes.
+:::
+
+::: info Packs from earlier releases
+Format-1 species files were authored for the earlier axis handling. Their geometry and animations are
+converted on load so they look exactly as they did; `LegacyAxesTest` checks this against the old baker.
 :::
 
 ## Not used

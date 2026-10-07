@@ -1,0 +1,68 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/tyrannoraptor",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.1,
+    "height": 2.0,
+    "eye_height": 1.75
+  },
+  "attributes": {
+    "max_health": 85.0,
+    "movement_speed": 0.29,
+    "attack_damage": 14.0,
+    "attack_knockback": 1.4,
+    "follow_range": 36.0,
+    "knockback_resistance": 0.6,
+    "armor": 4.0
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.42,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:apex_predator"
+  },
+  "diet": {
+    "items": "#minecraft:meat"
+  },
+  "spawn": {
+    "incubation_time": 1800
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.tyrannoraptor.ambient",
+    "hurt": "ancientcreature:entity.tyrannoraptor.hurt",
+    "death": "ancientcreature:entity.tyrannoraptor.death",
+    "step": "ancientcreature:entity.tyrannoraptor.step",
+    "attack": "ancientcreature:entity.tyrannoraptor.attack",
+    "alert": "ancientcreature:entity.tyrannoraptor.alert",
+    "ambient_interval": 300
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "solitary",
+    "space": 360
+  },
+  "riding": {
+    "ability": "pounce",
+    "cooldown": 90,
+    "power": 1.2
+  },
+  "hybrid": {
+    "parents": [
+      "ancientcreature:tyrannosaurus_rex",
+      "ancientcreature:velociraptor"
+    ]
+  }
+}

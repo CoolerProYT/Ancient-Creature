@@ -1,21 +1,18 @@
 {
-  "format_version": 1,
-  "geometry": "ancientcreature:triceratops",
-  "texture": "ancientcreature:textures/entity/triceratops.png",
-  "animations": "ancientcreature:triceratops",
-  "controller": "ancientcreature:triceratops",
+  "format_version": 2,
   "shadow_radius": 0.9,
   "render_scale": 1.0,
   "gui": {
     "scale": 12.72,
-    "translation": [0.0, 0.0, 0.0],
-    "rotation": [0.0, 215.0, 0.0]
-  },
-  "variants": [
-    {
-      "id": "default",
-      "weight": 100,
-      "texture": "ancientcreature:textures/entity/triceratops.png"
-    }
-  ]
+    "translation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation": [
+      0.0,
+      215.0,
+      0.0
+    ]
+  }
 }

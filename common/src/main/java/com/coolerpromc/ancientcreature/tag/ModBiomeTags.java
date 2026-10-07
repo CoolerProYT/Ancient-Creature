@@ -15,6 +15,10 @@ public class ModBiomeTags {
     public static final TagKey<Biome> HAS_SWAMP_DIG_SITE = create("has_structure/swamp_dig_site");
     public static final TagKey<Biome> HAS_HIGHLAND_DIG_SITE = create("has_structure/highland_dig_site");
     public static final TagKey<Biome> HAS_COASTAL_DIG_SITE = create("has_structure/coastal_dig_site");
+    public static final TagKey<Biome> HAS_AMBER_ORE = create("has_amber_ore");
+    public static final TagKey<Biome> HAS_FROZEN_FOSSIL = create("has_frozen_fossil");
+    public static final TagKey<Biome> HAS_FOSSIL_SEAM = create("has_fossil_seam");
+    public static final TagKey<Biome> HAS_FOSSIL_BED = create("has_fossil_bed");
     public static final TagKey<Biome> SPAWNS_ANKYLOSAURUS = create("spawns_ankylosaurus");
     public static final TagKey<Biome> SPAWNS_ARGENTINOSAURUS = create("spawns_argentinosaurus");
     public static final TagKey<Biome> SPAWNS_ARTHROPLEURA = create("spawns_arthropleura");

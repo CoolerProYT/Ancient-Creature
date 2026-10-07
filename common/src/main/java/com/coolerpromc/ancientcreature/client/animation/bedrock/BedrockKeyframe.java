@@ -1,68 +1,105 @@
 package com.coolerpromc.ancientcreature.client.animation.bedrock;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.ExtraCodecs;
+import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockFormatException;
+import com.coolerpromc.ancientcreature.client.model.bedrock.BedrockJson;
+import com.coolerpromc.ancientcreature.molang.Molang;
+import com.coolerpromc.ancientcreature.molang.MolangContext;
+import com.coolerpromc.ancientcreature.molang.MolangExpression;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 
-public record BedrockKeyframe(float time, Vector3fc pre, Vector3fc post, Interpolation interpolation) {
+/**
+ * One keyframe of a bone channel. Each axis is a Molang expression — usually a folded constant.
+ *
+ * <p>{@code pre} is the value arriving at the keyframe and {@code post} the value leaving it; they
+ * differ only for keyframes Blockbench exports with a discontinuity (and for its step keyframes).
+ */
+public record BedrockKeyframe(float time, MolangExpression[] pre, MolangExpression[] post, Interpolation interpolation) {
     public enum Interpolation {
-        LINEAR,
-        CATMULL_ROM;
+        LINEAR, CATMULL_ROM, STEP;
 
-        public static Interpolation parse(String name) {
-            return switch (name.toLowerCase(java.util.Locale.ROOT)) {
-                case "catmullrom", "catmull_rom", "smooth", "bezier" -> CATMULL_ROM;
+        static Interpolation parse(String name) {
+            return switch (name.toLowerCase(Locale.ROOT)) {
+                case "catmullrom", "catmull_rom", "smooth" -> CATMULL_ROM;
+                case "step" -> STEP;
                 default -> LINEAR;
             };
         }
     }
 
-    private static final Codec<Vector3fc> SCALAR_OR_VECTOR = Codec.either(Codec.FLOAT, ExtraCodecs.VECTOR3F)
-        .xmap(
-            either -> either.map(scalar -> new Vector3f(scalar, scalar, scalar), vector -> vector),
-            vector -> Either.right(vector)
-        );
+    public boolean hasSplitValue() {
+        return this.pre != this.post;
+    }
 
-    private record Complex(Optional<Vector3fc> pre, Optional<Vector3fc> post, String lerpMode) {
-        private static final Codec<Complex> CODEC = RecordCodecBuilder.create(i -> i.group(
-            listOrValue().optionalFieldOf("pre").forGetter(Complex::pre),
-            listOrValue().optionalFieldOf("post").forGetter(Complex::post),
-            Codec.STRING.optionalFieldOf("lerp_mode", "linear").forGetter(Complex::lerpMode)
-        ).apply(i, Complex::new));
+    public void pre(MolangContext ctx, Vector3f out) {
+        out.set(this.pre[0].evaluate(ctx), this.pre[1].evaluate(ctx), this.pre[2].evaluate(ctx));
+    }
 
-        private static Codec<Vector3fc> listOrValue() {
-            return Codec.either(SCALAR_OR_VECTOR, SCALAR_OR_VECTOR.listOf()).xmap(
-                either -> either.map(v -> v, list -> list.isEmpty() ? new Vector3f() : list.getFirst()),
-                Either::left
-            );
+    public void post(MolangContext ctx, Vector3f out) {
+        out.set(this.post[0].evaluate(ctx), this.post[1].evaluate(ctx), this.post[2].evaluate(ctx));
+    }
+
+    public boolean isConstant() {
+        for (int i = 0; i < 3; i++) {
+            if (!this.pre[i].isConstant() || !this.post[i].isConstant()) {
+                return false;
+            }
         }
+        return true;
     }
 
-    public static final Codec<ValueAtTime> VALUE_CODEC = Codec.either(SCALAR_OR_VECTOR, Complex.CODEC).xmap(
-        either -> either.map(
-            vector -> new ValueAtTime(vector, vector, Interpolation.LINEAR),
-            complex -> {
-                Vector3fc post = complex.post().orElseGet(() -> complex.pre().orElseGet(Vector3f::new));
-                Vector3fc pre = complex.pre().orElse(post);
-                return new ValueAtTime(pre, post, Interpolation.parse(complex.lerpMode()));
-            }),
-        value -> Either.left(value.post())
-    );
-
-    public record ValueAtTime(Vector3fc pre, Vector3fc post, Interpolation interpolation) {
+    /** A keyframe value: a number, a Molang string, a 1- or 3-element array, or {pre, post, lerp_mode}. */
+    static BedrockKeyframe parse(float time, JsonElement element, boolean uniformDefault, String path) throws BedrockFormatException {
+        if (element.isJsonObject()) {
+            JsonObject json = element.getAsJsonObject();
+            JsonElement preJson = BedrockJson.get(json, "pre");
+            JsonElement postJson = BedrockJson.get(json, "post");
+            if (preJson == null && postJson == null) {
+                throw new BedrockFormatException(path + " needs 'pre' and/or 'post'");
+            }
+            MolangExpression[] post = postJson != null ? vector(postJson, uniformDefault, path + ".post") : null;
+            MolangExpression[] pre = preJson != null ? vector(preJson, uniformDefault, path + ".pre") : post;
+            if (post == null) {
+                post = pre;
+            }
+            Interpolation lerp = Interpolation.parse(BedrockJson.string(json, "lerp_mode", "linear"));
+            return new BedrockKeyframe(time, pre, post, lerp);
+        }
+        MolangExpression[] value = vector(element, uniformDefault, path);
+        return new BedrockKeyframe(time, value, value, Interpolation.LINEAR);
     }
 
-    public static BedrockKeyframe of(float time, ValueAtTime value) {
-        return new BedrockKeyframe(time, value.pre(), value.post(), value.interpolation());
+    /**
+     * Three axis expressions. A lone value applies to all axes for scale (Bedrock's uniform scale) and
+     * also for rotation and position, which is what Bedrock does with a scalar.
+     */
+    static MolangExpression[] vector(JsonElement element, boolean uniformDefault, String path) throws BedrockFormatException {
+        if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            if (array.size() == 1) {
+                MolangExpression e = axis(array.get(0), path + "[0]");
+                return new MolangExpression[]{e, e, e};
+            }
+            if (array.size() != 3) {
+                throw new BedrockFormatException(path + " must have 1 or 3 components, got " + array.size());
+            }
+            return new MolangExpression[]{axis(array.get(0), path + "[0]"), axis(array.get(1), path + "[1]"), axis(array.get(2), path + "[2]")};
+        }
+        if (element.isJsonPrimitive()) {
+            MolangExpression e = axis(element, path);
+            return new MolangExpression[]{e, e, e};
+        }
+        throw new BedrockFormatException(path + " must be a number, a Molang string or an array");
     }
 
-    public static List<BedrockKeyframe> sorted(List<BedrockKeyframe> frames) {
-        return frames.stream().sorted(java.util.Comparator.comparingDouble(BedrockKeyframe::time)).toList();
+    private static MolangExpression axis(JsonElement element, String path) throws BedrockFormatException {
+        if (!element.isJsonPrimitive()) {
+            throw new BedrockFormatException(path + " must be a number or a Molang string");
+        }
+        return Molang.of(BedrockJson.molangSource(element), path);
     }
 }

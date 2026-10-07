@@ -3,13 +3,12 @@ package com.coolerpromc.ancientcreature.client.gui.screen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.menu.custom.IncubatorMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-public class IncubatorScreen extends AbstractContainerScreen<IncubatorMenu> {
+public class IncubatorScreen extends MachineScreen<IncubatorMenu> {
     private static final Identifier TEXTURE = Constants.id("textures/gui/screen/incubator.png");
     private static final Identifier ARROW = Constants.id("container/progress_arrow");
 

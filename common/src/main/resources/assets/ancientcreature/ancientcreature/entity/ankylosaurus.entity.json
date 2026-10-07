@@ -1,0 +1,40 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:ankylosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/ankylosaurus",
+        "mottled": "textures/entity/ankylosaurus_mottled",
+        "saddle": "textures/entity/gear/ankylosaurus_saddle",
+        "armor_iron": "textures/entity/gear/ankylosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/ankylosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/ankylosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/ankylosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.ankylosaurus"
+      },
+      "animations": {
+        "idle": "animation.ankylosaurus.idle",
+        "walk": "animation.ankylosaurus.walk",
+        "graze": "animation.ankylosaurus.graze",
+        "tail_swing": "animation.ankylosaurus.tail_swing",
+        "hurt": "animation.ankylosaurus.hurt",
+        "death": "animation.ankylosaurus.death",
+        "main": "controller.animation.ankylosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.ankylosaurus"
+      ]
+    }
+  }
+}

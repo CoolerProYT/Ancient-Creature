@@ -1,5 +1,8 @@
 package com.coolerpromc.ancientcreature.datagen;
 
+import com.coolerpromc.ancientcreature.trade.ModVillagerTrades;
+import com.coolerpromc.ancientcreature.worldgen.structure.ModProcessorLists;
+import com.coolerpromc.ancientcreature.damage.ModDamageTypes;
 import com.coolerpromc.ancientcreature.datagen.advancement.ModProgressAdvancement;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
@@ -19,13 +22,16 @@ import java.util.List;
 public final class ModDataPackProvider {
     // World-layer registries: worldgen content resolved once at world creation.
     public static final RegistrySetBuilder WORLD_BUILDER = new RegistrySetBuilder()
+        .add(Registries.PROCESSOR_LIST, ModProcessorLists::bootstrap)
         .add(Registries.FEATURE, ModConfiguredFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
         .add(Registries.TEMPLATE_POOL, ModStructureTemplatePools::boostrap)
         .add(Registries.STRUCTURE, ModStructures::boostrap)
         .add(Registries.STRUCTURE_SET, ModStructureSets::boostrap)
         .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
-        .add(ModRegistries.FOSSIL_PART, FossilPart::bootstrap);
+        .add(ModRegistries.FOSSIL_PART, FossilPart::bootstrap)
+        .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
+        .add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
 
     // Reloadable-layer registries: refreshed on datapack reload, built on top of the world layer.
     public static final RegistrySetBuilder RELOADABLE_BUILDER = new RegistrySetBuilder()

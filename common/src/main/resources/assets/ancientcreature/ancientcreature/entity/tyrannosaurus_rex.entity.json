@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:tyrannosaurus_rex",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/tyrannosaurus_rex",
+        "mottled": "textures/entity/tyrannosaurus_rex_mottled",
+        "saddle": "textures/entity/gear/tyrannosaurus_rex_saddle",
+        "armor_iron": "textures/entity/gear/tyrannosaurus_rex_armor_iron",
+        "armor_golden": "textures/entity/gear/tyrannosaurus_rex_armor_golden",
+        "armor_diamond": "textures/entity/gear/tyrannosaurus_rex_armor_diamond",
+        "armor_netherite": "textures/entity/gear/tyrannosaurus_rex_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.tyrannosaurus_rex"
+      },
+      "animations": {
+        "walk": "animation.tyrannosaurus_rex.walk",
+        "idle": "animation.tyrannosaurus_rex.idle",
+        "roar": "animation.tyrannosaurus_rex.roar",
+        "bite": "animation.tyrannosaurus_rex.bite",
+        "main": "controller.animation.tyrannosaurus_rex.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.tyrannosaurus_rex"
+      ]
+    }
+  }
+}

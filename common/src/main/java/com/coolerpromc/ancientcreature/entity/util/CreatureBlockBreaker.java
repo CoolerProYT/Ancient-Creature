@@ -1,5 +1,6 @@
 package com.coolerpromc.ancientcreature.entity.util;
 
+import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -14,8 +15,24 @@ public final class CreatureBlockBreaker {
     private CreatureBlockBreaker() {
     }
 
+    /**
+     * Smashes {@code #creature_destroyable} blocks ahead of a charging creature, and also
+     * {@code #enclosure_breakable} ones when the creature is large ({@link #canBreakEnclosures}).
+     */
     public static void destroyChargeObstacles(ServerLevel level, Mob creature, double extraReach) {
-        if (!level.getGameRules().get(GameRules.MOB_GRIEFING)) {
+        destroyAhead(level, creature, extraReach, canBreakEnclosures(creature));
+    }
+
+    /** Large creatures (at least {@value #ENCLOSURE_BREAKER_WIDTH} blocks wide) can force weak barriers. */
+    public static final float ENCLOSURE_BREAKER_WIDTH = 1.2F;
+
+    public static boolean canBreakEnclosures(Mob creature) {
+        return creature.getBbWidth() >= ENCLOSURE_BREAKER_WIDTH && !creature.isBaby();
+    }
+
+    /** Breaks the blocks ahead of a creature: destroyable ones always, enclosure ones when asked. */
+    public static void destroyAhead(ServerLevel level, Mob creature, double extraReach, boolean enclosures) {
+        if (!level.getGameRules().get(GameRules.MOB_GRIEFING) || !ModCommonConfig.CONFIG.creaturesBreakBlocks.get()) {
             return;
         }
 
@@ -43,7 +60,7 @@ public final class CreatureBlockBreaker {
                 Mth.floor(breakingBox.minX), Mth.floor(breakingBox.minY), Mth.floor(breakingBox.minZ),
                 Mth.floor(breakingBox.maxX), Mth.floor(breakingBox.maxY), Mth.floor(breakingBox.maxZ))) {
             BlockState state = level.getBlockState(pos);
-            if (state.is(ModBlockTags.CREATURE_DESTROYABLE)
+            if ((state.is(ModBlockTags.CREATURE_DESTROYABLE) || (enclosures && state.is(ModBlockTags.ENCLOSURE_BREAKABLE)))
                     && state.getDestroySpeed(level, pos) >= 0.0F
                     && level.getBlockEntity(pos) == null) {
                 level.destroyBlock(pos, true, creature);

@@ -1,8 +1,8 @@
 # Finding fossils
 
-Every fossil belongs to a species, and the species is decided by **the biome you are standing in** when the fossil drops. A fossil dug in a snowy plains could be a Woolly Mammoth or a Woolly Rhinoceros; the same find in a warm ocean could be a Megalodon. The [Creatures](./creatures) page lists the biomes for each species.
+Every fossil belongs to a species, and the species is decided by **the biome where the fossil is found**. A fossil dug in a snowy plains could be a Woolly Mammoth or a Woolly Rhinoceros; the same find in a warm ocean could be a Megalodon. The [Creatures](./creatures) page lists the biomes for each species.
 
-If no species lives in that biome, nothing drops.
+Underground, or in a biome no species calls home, a fossil takes the species of the land above it, and failing that it can be any species at all.
 
 Fresh fossils are always **dirty** and **unidentified**. Their tooltip shows `???` for the species until you [identify](./cleaning-and-identifying#identification) them.
 
@@ -12,7 +12,31 @@ Fresh fossils are always **dirty** and **unidentified**. Their tooltip shows `??
 
 <ItemSlot id="ancientcreature:fossil_ore" label size="lg" />
 
-Single blocks of fossil ore generate in stone in every Overworld biome, between Y -64 and Y 50, in about one chunk out of 64. Mining one with a [chisel](#chisels) drops a single dirty fossil of any part, including egg fossils. A pickaxe won't drop anything.
+Small veins of fossil ore generate in stone in every Overworld biome, between Y -64 and Y 50, in about one chunk out of 64. Mining one with a [chisel](#chisels) drops a single dirty fossil of any bone part, including egg fossils. A pickaxe won't drop anything.
+
+### Deepslate Fossil Ore
+
+<ItemSlot id="ancientcreature:deepslate_fossil_ore" label size="lg" />
+
+Below Y 0, in about one chunk out of 12. Only skulls, vertebrae, teeth and egg fossils, and the deep rock keeps them **15% more complete**.
+
+### Amber
+
+<ItemSlot id="ancientcreature:amber_ore" label size="lg" />
+
+Amber ore forms in the stone under jungles, dark forests and mangrove swamps, and in lush caves, between Y 8 and Y 96. Chisel it for **Amber with Insect**, a fossil part that is cleaned, identified and extracted like any other. The insect's last blood meal gives it the best DNA bonus of any part, and it almost never fails identification.
+
+### Frozen fossils
+
+<ItemSlot id="ancientcreature:frozen_fossil" label size="lg" />
+
+Found in the packed and blue ice of ice spikes, icebergs, frozen peaks and snowy slopes. Ice keeps a carcass almost whole, so these come out **25% more complete**, and they are always ice-age animals: Woolly Mammoth, Woolly Rhinoceros, Dire Wolf or Smilodon.
+
+### Fossil seams and beds
+
+On bare cliff faces in badlands, stony shores, stony peaks, windswept hills and savanna plateaus, look for pale bands of fossil ore and bone. Seams only form where they can be seen.
+
+In deserts, badlands, savannas, plains, snowy plains and swamps, whole skeletons lie buried 15 to 25 blocks down. They look like vanilla fossils, but with fossil ore where vanilla puts coal and in some of the bones.
 
 ### Rock piles
 
@@ -31,13 +55,36 @@ Rock piles also need a chisel to drop anything.
 
 ### Dig sites
 
-Dig sites are small excavations with suspicious sand or gravel. Brush the suspicious blocks with a vanilla brush. Brushing never damages a fossil, but it only turns up claws, teeth, ribs and limbs, and it's the only natural source of **Egg Shell Fragments**, which you need for [Artificial Eggs](./reviving#artificial-egg).
+Dig sites are expedition camps with up to three excavation pits around them: trenches, stepped quarries, half-uncovered skeletons and collapsed sinkholes. Brush the suspicious sand and gravel with a vanilla brush; the deeper layers also hold fossil ore. Brushing never damages a fossil, and a site has around 30 to 40 brushable blocks. Dig sites are also the main source of **Egg Shell Fragments**, which you need for [Artificial Eggs](./reviving#artificial-egg).
+
+Each biome's site turns up its own mix of parts: badland and highland sites give more skulls, savannas more limbs and vertebrae, jungle sites hide amber, cold sites keep their bones 10% more complete, and coastal sites give sea creatures. Pick a site below to see its loot.
+
+The camp chest holds fossils, tools, the expedition's **Field Notes** (a book listing the species recorded in that region, with a few tips), and sometimes a **Dig Site Map** to another site. About one camp in eight was overrun long ago. Its undead crew still guards the main pit from a spawner, but its chest holds rarer, better-preserved finds.
 
 <DigSites />
 
+### Sifting
+
+<ItemSlot id="ancientcreature:sifter" label size="lg" />
+
+<RecipeCard id="sifter" />
+
+Use gravel, sand, red sand, mud or dirt on a Sifter, then use the Sifter four times to shake out what was in it. About one load in 30 gives a fossil; the rest is flint, rock fragments, egg shell and the odd nugget. Slow, but it never runs out.
+
+### Everywhere else
+
+- **Vanilla ruins:** brushing desert pyramids and desert wells (8%), trail ruins (5%, 12% for the rare loot) and ocean ruins (6%, sea creatures only) can turn up a fossil instead of the usual find.
+- **Fishing:** about one catch in a hundred is a fossil or a piece of amber.
+- **Mobs:** husks and drowned killed by a player have a 2.5% chance to drop a fossil (+1% per level of Looting).
+- **Trading:** wandering traders sometimes sell an uncleaned fossil (12 emeralds) or amber (20 emeralds). Journeyman cartographers sell Dig Site Maps.
+
+### Reassembling fragments
+
+Two to four **identified** fossils of the same species can be combined on a crafting table. The most complete piece is kept, and every other piece adds half of its own completeness to it, up to 100%.
+
 ## Fossil parts
 
-Seven kinds of fossil can turn up. They differ in how much of the animal survived (**completeness**), how likely they are to fail [identification](./cleaning-and-identifying#identification), and how much they help when [extracting DNA](./dna-and-genomes#dna-extractor).
+Eight kinds of fossil can turn up. They differ in how much of the animal survived (**completeness**), how likely they are to fail [identification](./cleaning-and-identifying#identification), and how much they help when [extracting DNA](./dna-and-genomes#dna-extractor).
 
 <FossilPartTable />
 

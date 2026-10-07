@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:velociraptor",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/velociraptor",
+        "mottled": "textures/entity/velociraptor_mottled",
+        "saddle": "textures/entity/gear/velociraptor_saddle",
+        "armor_iron": "textures/entity/gear/velociraptor_armor_iron",
+        "armor_golden": "textures/entity/gear/velociraptor_armor_golden",
+        "armor_diamond": "textures/entity/gear/velociraptor_armor_diamond",
+        "armor_netherite": "textures/entity/gear/velociraptor_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.velociraptor"
+      },
+      "animations": {
+        "idle": "animation.velociraptor.idle",
+        "walk": "animation.velociraptor.walk",
+        "run": "animation.velociraptor.run",
+        "attack": "animation.velociraptor.attack",
+        "special": "animation.velociraptor.special",
+        "hurt": "animation.velociraptor.hurt",
+        "death": "animation.velociraptor.death",
+        "main": "controller.animation.velociraptor.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.velociraptor"
+      ]
+    }
+  }
+}

@@ -3,7 +3,9 @@ package com.coolerpromc.ancientcreature.datagen.loot;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.custom.RockPileBlock;
+import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.FossilPart;
+import net.minecraft.resources.ResourceKey;
 import com.coolerpromc.ancientcreature.item.ModItems;
 import com.coolerpromc.ancientcreature.loot.custom.SetFossilDataFunction;
 import com.coolerpromc.ancientcreature.registry.ModRegistries;
@@ -33,7 +35,13 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.add(ModBlocks.FOSSIL_ORE.getBlock(), this::createFossilDrop);
+        this.add(ModBlocks.FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, FossilPart.BONE_PARTS, List.of(), 0.0f));
+        // Deep, undisturbed rock: the rarer parts, and better preserved.
+        this.add(ModBlocks.DEEPSLATE_FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.EGG), List.of(), 0.15f));
+        this.add(ModBlocks.AMBER_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.AMBER), List.of(), 0.0f));
+        // Ice keeps a carcass almost whole; the ice-age animals are the ones it caught.
+        this.add(ModBlocks.FROZEN_FOSSIL.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.LIMB, FossilPart.RIB), FossilLoot.ICE_AGE, 0.25f));
+        this.dropSelf(ModBlocks.SIFTER.getBlock());
         this.add(ModBlocks.ROCK_PILE.getBlock(), this::createRockPileDrop);
         this.dropSelf(ModBlocks.FOSSIL_CLEANING_TABLE.getBlock());
         this.dropSelf(ModBlocks.FOSSIL_IDENTIFICATION_CHAMBER.getBlock());
@@ -41,12 +49,15 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.GENOME_SEQUENCER.getBlock());
         this.dropSelf(ModBlocks.EMBRYOGENESIS_CHAMBER.getBlock());
         this.dropSelf(ModBlocks.INCUBATOR.getBlock());
+        this.dropSelf(ModBlocks.REINFORCED_FENCE.getBlock());
+        this.dropSelf(ModBlocks.REINFORCED_FENCE_GATE.getBlock());
+        this.dropSelf(ModBlocks.ELECTRIC_FENCE.getBlock());
     }
 
-    private LootTable.Builder createFossilDrop(Block block) {
+    private LootTable.Builder createFossilDrop(Block block, List<ResourceKey<FossilPart>> parts, List<Species> species, float bonus) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
             LootPool.lootPool().setRolls(ContextIntProviders.exactly(1))
-                .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(allFossilParts())))
+                .add(FossilLoot.fossil(output.lookup(ModRegistries.FOSSIL_PART), parts, species, bonus))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
@@ -68,12 +79,8 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(MatchBlock.blockMatches(this.blocks, block, StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(allFossilParts())))
+                    .add(FossilLoot.fossil(fossilParts, FossilPart.BONE_PARTS))
             );
-    }
-
-    private List<Holder<FossilPart>> allFossilParts() {
-        return output.listContextElements(ModRegistries.FOSSIL_PART).<Holder<FossilPart>>map(h -> h).toList();
     }
 
     @Override

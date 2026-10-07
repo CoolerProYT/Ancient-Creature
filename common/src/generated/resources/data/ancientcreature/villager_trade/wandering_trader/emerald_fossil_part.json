@@ -1,0 +1,22 @@
+{
+  "given_item_modifier": {
+    "type": "ancientcreature:set_fossil_data",
+    "fossilParts": [
+      "ancientcreature:claw",
+      "ancientcreature:limb",
+      "ancientcreature:rib",
+      "ancientcreature:skull",
+      "ancientcreature:tooth",
+      "ancientcreature:vertebra"
+    ]
+  },
+  "gives": {
+    "id": "ancientcreature:fossil_part"
+  },
+  "max_uses": 2,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 12,
+    "id": "minecraft:emerald"
+  }
+}

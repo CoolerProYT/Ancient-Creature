@@ -1,37 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { data, fossilItem, itemName, percent, prettify } from '../ancientcreature'
 import ItemSlot from './ItemSlot.vue'
 
-// Every dig site uses the same brushing loot, so one table covers both sand and gravel.
-const tables = Object.entries(data.archaeology)
+// Each biome's dig site brushes its own loot table; pick a site to see what it turns up.
+const selected = ref(data.digSites[0]?.id ?? '')
 const loot = computed(() => {
-  const entries = tables[0]?.[1] ?? []
+  const entries = data.archaeology[selected.value] ?? []
   const total = entries.reduce((sum, entry) => sum + entry.weight, 0)
   return entries.map((entry) => ({ ...entry, chance: entry.weight / total }))
 })
-const sameEverywhere = computed(() => tables.every(([, entries]) => JSON.stringify(entries) === JSON.stringify(tables[0][1])))
+const fossilChance = computed(() => loot.value.filter((entry) => entry.parts).reduce((sum, entry) => sum + entry.chance, 0))
+const selectedName = computed(() => data.digSites.find((site) => site.id === selected.value)?.name ?? '')
 </script>
 
 <template>
   <div class="ac-digsites">
     <div class="sites">
-      <div v-for="site in data.digSites" :key="site.id" class="site">
+      <button v-for="site in data.digSites" :key="site.id" class="site" :class="{ active: site.id === selected }" type="button" @click="selected = site.id">
         <div class="name">{{ site.name }}</div>
         <div class="biomes">
           <span v-for="biome in site.biomes" :key="biome" class="biome">{{ prettify(biome) }}</span>
         </div>
-      </div>
+      </button>
     </div>
 
-    <h4>Brushing suspicious {{ sameEverywhere ? 'sand and gravel' : 'blocks' }}</h4>
+    <h4>Brushing at the {{ selectedName }} <span class="ac-muted">({{ percent(fossilChance, 1) }} fossils)</span></h4>
     <ul class="loot">
-      <li v-for="entry in loot" :key="entry.item ?? 'nothing'">
+      <li v-for="(entry, index) in loot" :key="index">
         <template v-if="entry.parts">
           <span class="parts">
             <ItemSlot v-for="part in entry.parts" :id="fossilItem(part, true)" :key="part" size="sm" />
           </span>
-          <span class="what">Fossil fragment <span class="ac-muted">({{ entry.parts.map((p) => itemName(fossilItem(p)).replace(' Fossil Fragment', '').toLowerCase()).join(', ') }})</span></span>
+          <span class="what">{{ entry.parts.map((p) => itemName(fossilItem(p))).join(', ') }}</span>
         </template>
         <template v-else-if="entry.item">
           <ItemSlot :id="entry.item" size="sm" />
@@ -57,6 +58,10 @@ const sameEverywhere = computed(() => tables.every(([, entries]) => JSON.stringi
 }
 
 .site {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
   padding: 10px 12px;
   border: 1px solid var(--vp-c-divider);
   border-left: 3px solid var(--vp-c-brand-1);
@@ -128,5 +133,9 @@ const sameEverywhere = computed(() => tables.every(([, entries]) => JSON.stringi
 .pct {
   font: 600 13px var(--vp-font-family-mono);
   text-align: right;
+}
+.site.active {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 1px var(--vp-c-brand-1);
 }
 </style>

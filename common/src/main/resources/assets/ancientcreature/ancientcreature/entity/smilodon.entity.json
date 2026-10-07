@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:smilodon",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/smilodon",
+        "mottled": "textures/entity/smilodon_mottled",
+        "saddle": "textures/entity/gear/smilodon_saddle",
+        "armor_iron": "textures/entity/gear/smilodon_armor_iron",
+        "armor_golden": "textures/entity/gear/smilodon_armor_golden",
+        "armor_diamond": "textures/entity/gear/smilodon_armor_diamond",
+        "armor_netherite": "textures/entity/gear/smilodon_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.smilodon"
+      },
+      "animations": {
+        "idle": "animation.smilodon.idle",
+        "walk": "animation.smilodon.walk",
+        "run": "animation.smilodon.run",
+        "attack": "animation.smilodon.attack",
+        "special": "animation.smilodon.special",
+        "hurt": "animation.smilodon.hurt",
+        "death": "animation.smilodon.death",
+        "main": "controller.animation.smilodon.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.smilodon"
+      ]
+    }
+  }
+}

@@ -1,5 +1,7 @@
 package com.coolerpromc.ancientcreature;
 
+import com.coolerpromc.ancientcreature.loot.FossilLootInjections;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import com.coolerpromc.ancientcreature.event.ItemEvents;
 import com.coolerpromc.ancientcreature.event.PlayerEvents;
 import com.coolerpromc.ancientcreature.platform.Services;
@@ -36,6 +38,8 @@ public class FabricAncientCreature implements ModInitializer {
         Services.REGISTRY.applyBiomeModifierRegistrations((biomeTagKey, step, placedFeatureKey) -> BiomeModifications.addFeature(BiomeSelectors.tag(biomeTagKey), step, placedFeatureKey));
 
         ItemTooltipCallback.EVENT.register(ItemEvents::onItemTooltip);
+        LootTableEvents.MODIFY_DROPS.register((holder, context, drops) ->
+            holder.unwrapKey().ifPresent(key -> FossilLootInjections.apply(key.identifier(), context, drops)));
         ServerPlayerEvents.JOIN.register(PlayerEvents::onPlayerJoin);
         Services.CAPABILITIES.applyRegistrations(null);
 
@@ -44,6 +48,13 @@ public class FabricAncientCreature implements ModInitializer {
         Services.REGISTRY.applyDatapackRegistryRegistrations(DynamicRegistries::registerSynced);
 
         Services.REGISTRY.applyClientboundPayloadRegistrations(PayloadTypeRegistry.clientboundPlay()::register);
+        Services.REGISTRY.applyServerboundPayloadRegistrations(new com.coolerpromc.ancientcreature.platform.services.IRegistryHelper.ServerboundPayloadRegistrar() {
+            @Override
+            public <T extends com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload> void register(net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type<T> type, net.minecraft.network.codec.StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, T> codec) {
+                PayloadTypeRegistry.serverboundPlay().register(type, codec);
+                net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.registerGlobalReceiver(type, (payload, context) -> payload.handle(new com.coolerpromc.ancientcreature.platform.util.FabricServerPayloadContext(context)));
+            }
+        });
 
         Services.REGISTRY.applyServerReloadListenerRegistrations(ResourceLoader.get(PackType.SERVER_DATA)::registerReloadListener);
         CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) ->

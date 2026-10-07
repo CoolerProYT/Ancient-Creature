@@ -94,6 +94,8 @@ public interface IRegistryHelper {
 
     <T extends HandledCustomPacketPayload> void registerClientboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     void applyClientboundPayloadRegistrations(ClientboundPayloadRegistrar registrar);
+    <T extends HandledCustomPacketPayload> void registerServerboundPayload(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
+    void applyServerboundPayloadRegistrations(ServerboundPayloadRegistrar registrar);
 
     void registerServerReloadListener(Identifier id, PreparableReloadListener listener);
     void applyServerReloadListenerRegistrations(ReloadListenerRegistrar registrar);
@@ -114,6 +116,10 @@ public interface IRegistryHelper {
         <T> void register(ResourceKey<Registry<T>> key, Codec<T> serverCodec, Codec<T> clientCodec);
     }
     interface ClientboundPayloadRegistrar {
+        <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
+    }
+    /** Registers a client-to-server payload whose {@code handle} runs on the server. */
+    interface ServerboundPayloadRegistrar {
         <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     }
     interface ReloadListenerRegistrar {

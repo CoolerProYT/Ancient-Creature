@@ -3,9 +3,11 @@ package com.coolerpromc.ancientcreature.item.custom;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
+import com.coolerpromc.ancientcreature.entity.custom.CreatureCommand;
 import com.coolerpromc.ancientcreature.entity.custom.OwnableAncientCreature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
@@ -43,6 +45,12 @@ public class BabyCreatureCapsule extends Item {
                 spawnPos = pos.relative(clickedFace);
             }
 
+            if (!AncientCreatureEntity.hasRoomFor(serverLevel, net.minecraft.world.phys.Vec3.atCenterOf(spawnPos))) {
+                if (context.getPlayer() != null) {
+                    context.getPlayer().sendOverlayMessage(Component.translatable("message.ancientcreature.population_cap"));
+                }
+                return InteractionResult.FAIL;
+            }
             return spawnMob(context.getPlayer(), stack, serverLevel, spawnPos, true, !Objects.equals(pos, spawnPos) && clickedFace == Direction.UP, entityType, species);
         }
         return InteractionResult.SUCCESS;
@@ -59,6 +67,7 @@ public class BabyCreatureCapsule extends Item {
                 // dimensions, so setting it later would place it using the wrong bounding box.
                 if (entity instanceof AncientCreatureEntity creature) {
                     creature.setSpecies(species);
+                    creature.setGenome(itemStack.get(ModDataComponents.GENOME.get()));
                 }
                 if (entity instanceof AgeableMob ageable) {
                     ageable.setBaby(true);
@@ -67,6 +76,10 @@ public class BabyCreatureCapsule extends Item {
             if (spawned != null) {
                 if (spawned instanceof OwnableAncientCreature creature && user != null) {
                     creature.setOwner(user);
+                }
+                if (spawned instanceof AncientCreatureEntity creature && user != null) {
+                    // a newly released creature roams around where it was let out
+                    creature.setCommand(CreatureCommand.ROAM);
                 }
                 level.addFreshEntity(spawned);
                 itemStack.consume(1, user);

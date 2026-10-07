@@ -6,21 +6,23 @@ import { data } from '../.vitepress/theme/ancientcreature'
 
 Every creature in Ancient Creature, including all {{ data.species.length }} that ship with the mod, runs on one data-driven species system. A datapack and a resource pack can add a new one. There is no Java involved.
 
-A species is identified by a resource id, like `ancientcreature:triceratops` or `mypack:stegosaurus`, and defined by five files:
+A species is identified by a resource id, like `ancientcreature:triceratops` or `mypack:stegosaurus`, and defined by a handful of files:
 
 ```
-data/<namespace>/ancientcreature/species/<name>.json                     gameplay
-assets/<namespace>/ancientcreature/species/<name>.json                   appearance
-assets/<namespace>/ancientcreature/geo/<name>.geo.json                   model
-assets/<namespace>/ancientcreature/animations/<name>.animation.json      animations
+data/<namespace>/ancientcreature/species/<name>.json                              gameplay
+assets/<namespace>/ancientcreature/entity/<name>.entity.json                      appearance (Bedrock client entity)
+assets/<namespace>/ancientcreature/geo/<name>.geo.json                            model
+assets/<namespace>/ancientcreature/animations/<name>.animation.json               animations
 assets/<namespace>/ancientcreature/animation_controllers/<name>.controller.json   when to play what
+assets/<namespace>/ancientcreature/render_controllers/<name>.render_controllers.json   skins and gear (optional)
+assets/<namespace>/ancientcreature/species/<name>.json                            shadow and GUI framing (optional)
 ```
 
-Five files. That is a creature.
+Everything under `assets/` is a standard Bedrock file Blockbench can export.
 
 
 - **One entity, any creature.** Every species runs on a single generic entity. Size, attributes, AI, sounds and growth all come from JSON.
-- **Blockbench in, creature out.** Export a Bedrock model and animation straight from Blockbench. Geometry and animations load from the resource pack and reload with F3+T.
+- **Blockbench in, creature out.** Export a Bedrock model, animations, controllers and client entity straight from Blockbench, with full Molang. They load from the resource pack and reload with F3+T.
 - **Safe by construction.** JSON can only pick from a fixed set of behaviour components. A broken file is reported with the reason and skipped; it never takes the world down.
 - **Reloadable.** Edit a species, run `/reload`, and loaded creatures pick up new attributes, size and AI in place.
 
@@ -35,8 +37,10 @@ The species format is still in beta. `format_version` is validated on load, so a
 
 | Concern | Location | Reloads with |
 | --- | --- | --- |
-| Gameplay: size, attributes, AI, sounds, growth, diet, hunger, fossil biome | `data/<ns>/ancientcreature/species/<name>.json` | `/reload` |
-| Appearance: geometry, texture, variants, GUI framing | `assets/<ns>/ancientcreature/species/<name>.json` | F3+T |
+| Gameplay: size, attributes, AI, sounds, growth, diet, hunger, fossil biome, drops, skin variants, care, mount ability, hybrid parents | `data/<ns>/ancientcreature/species/<name>.json` | `/reload` |
+| Appearance: geometry, textures, animations, scripts | `assets/<ns>/ancientcreature/entity/<name>.entity.json` | F3+T |
+| Skin and gear layers | `assets/<ns>/ancientcreature/render_controllers/<name>.render_controllers.json` | F3+T |
+| Shadow, GUI framing | `assets/<ns>/ancientcreature/species/<name>.json` | F3+T |
 | Model | `assets/<ns>/ancientcreature/geo/<name>.geo.json` | F3+T |
 | Animations | `assets/<ns>/ancientcreature/animations/<name>.animation.json` | F3+T |
 | Animation controller | `assets/<ns>/ancientcreature/animation_controllers/<name>.controller.json` | F3+T |
@@ -77,8 +81,9 @@ are never gated, so a well-fed creature still defends itself.
 ## What a pack cannot do
 
 Behaviour is chosen from a [closed set of components](/species/behaviors). A pack picks and configures
-them; it cannot introduce new Java behaviour. Animation controller conditions use a small documented
-[expression grammar](/species/animation-controllers#expression-grammar), not arbitrary code.
+them; it cannot introduce new Java behaviour. Molang in the resource pack is
+[purely presentational](/species/animation-controllers#the-server-stays-authoritative): it picks
+animations and layers, and can never change gameplay.
 
 Anything a pack gets wrong is reported in the log with the file and the reason, and that one file is
 skipped. Other species keep loading.

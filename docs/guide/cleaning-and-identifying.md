@@ -21,6 +21,8 @@ Put a brush in the top slot and a dirty fossil in the fossil slot. The table bru
 
 ## Identification
 
+Once fossils of a species are identified, two to four of them can be [reassembled](./fossils#reassembling-fragments) on a crafting table into one more complete fossil before extracting DNA.
+
 <RecipeCard id="fossil_identification_chamber" />
 
 Put a clean fossil into the chamber. It scans the fossil and reveals its species, which shows in the tooltip from then on.
@@ -48,6 +50,16 @@ Once any player succeeds, the species is **known** for everyone on the server. K
 ::: tip
 Use a tooth or skull to unlock a new species. Once it is known, even claws identify every time.
 :::
+
+## Upgrades
+
+Every machine has two upgrade slots, on the panel to the right of its screen:
+
+- **Speed**: each module cuts processing time by a third.
+- **Efficiency**: on the Fossil Cleaning Table, each module gives a 25% chance to keep the brush use.
+- **Precision**: on the Fossil Identification Chamber, each module halves the chance that identification fails.
+
+See [Upgrade modules](./items#upgrade-modules).
 
 ## Automation
 

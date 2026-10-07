@@ -15,10 +15,24 @@ public final class SpeciesJournalKeyHandler {
         CATEGORY
     );
 
+    /** While riding one of your creatures: use its mount ability. */
+    public static final KeyMapping MOUNT_ABILITY = new KeyMapping(
+        "key.ancientcreature.mount_ability",
+        InputConstants.Type.KEYBOARD,
+        InputConstants.KEY_R,
+        CATEGORY
+    );
+
     private SpeciesJournalKeyHandler() {
     }
 
     public static void clientTick(Minecraft minecraft) {
+        while (MOUNT_ABILITY.consumeClick()) {
+            if (minecraft.player != null && minecraft.gui.screen() == null
+                && minecraft.player.getVehicle() instanceof com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity) {
+                com.coolerpromc.ancientcreature.platform.Services.NETWORK.sendToServer(com.coolerpromc.ancientcreature.network.ServerboundMountAbilityPacket.INSTANCE);
+            }
+        }
         while (OPEN_JOURNAL.consumeClick()) {
             if (minecraft.level != null && minecraft.player != null && minecraft.gui.screen() == null) {
                 minecraft.gui.setScreen(new SpeciesJournalScreen());

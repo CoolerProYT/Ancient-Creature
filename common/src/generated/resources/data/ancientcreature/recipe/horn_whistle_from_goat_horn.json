@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "minecraft:goat_horn",
+    "G": "minecraft:gold_nugget",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "  S",
+    " G ",
+    "B  "
+  ],
+  "result": {
+    "id": "ancientcreature:horn_whistle"
+  }
+}

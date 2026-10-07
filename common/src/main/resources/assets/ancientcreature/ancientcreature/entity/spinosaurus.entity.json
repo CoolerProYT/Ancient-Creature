@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:spinosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/spinosaurus",
+        "mottled": "textures/entity/spinosaurus_mottled",
+        "saddle": "textures/entity/gear/spinosaurus_saddle",
+        "armor_iron": "textures/entity/gear/spinosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/spinosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/spinosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/spinosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.spinosaurus"
+      },
+      "animations": {
+        "idle": "animation.spinosaurus.idle",
+        "walk": "animation.spinosaurus.walk",
+        "run": "animation.spinosaurus.run",
+        "attack": "animation.spinosaurus.attack",
+        "special": "animation.spinosaurus.special",
+        "hurt": "animation.spinosaurus.hurt",
+        "death": "animation.spinosaurus.death",
+        "main": "controller.animation.spinosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.spinosaurus"
+      ]
+    }
+  }
+}

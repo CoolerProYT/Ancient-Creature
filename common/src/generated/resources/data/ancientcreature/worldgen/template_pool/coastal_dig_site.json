@@ -4,7 +4,16 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "ancientcreature:coastal_dig_site",
-        "processors": "minecraft:empty",
+        "processors": "ancientcreature:dig_site/coastal_archaeology",
+        "projection": "rigid"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "ancientcreature:dig_site/coastal/abandoned_camp",
+        "processors": "ancientcreature:dig_site/coastal_archaeology",
         "projection": "rigid"
       },
       "weight": 1

@@ -1,0 +1,17 @@
+{
+  "given_item_modifier": {
+    "type": "ancientcreature:set_fossil_data",
+    "fossilParts": [
+      "ancientcreature:amber"
+    ]
+  },
+  "gives": {
+    "id": "ancientcreature:fossil_part"
+  },
+  "max_uses": 1,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": 20,
+    "id": "minecraft:emerald"
+  }
+}

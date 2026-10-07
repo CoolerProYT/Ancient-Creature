@@ -3,13 +3,12 @@ package com.coolerpromc.ancientcreature.client.gui.screen;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.menu.custom.DNAExtractorMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
-public class DNAExtractorScreen extends AbstractContainerScreen<DNAExtractorMenu> {
+public class DNAExtractorScreen extends MachineScreen<DNAExtractorMenu> {
     public static final Identifier TEXTURE = Constants.id("textures/gui/screen/dna_extractor.png");
     public static final Identifier ARROW = Constants.id("container/progress_arrow");
 

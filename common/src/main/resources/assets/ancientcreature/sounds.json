@@ -326,9 +326,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/ambient",
-        "pitch": 0.72,
-        "volume": 1.0
+        "name": "ancientcreature:entity.ankylosaurus.ambient",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -336,9 +336,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/hurt",
-        "pitch": 0.72,
-        "volume": 1.0
+        "name": "ancientcreature:entity.ankylosaurus.hurt",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -346,9 +346,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/death",
-        "pitch": 0.72,
-        "volume": 1.0
+        "name": "ancientcreature:entity.ankylosaurus.death",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -356,9 +356,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/step",
-        "pitch": 0.84,
-        "volume": 0.9
+        "name": "ancientcreature:entity.ankylosaurus.step",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -366,9 +366,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/attack",
-        "pitch": 0.72,
-        "volume": 1.0
+        "name": "ancientcreature:entity.ankylosaurus.attack",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -376,9 +376,9 @@
     "subtitle": "subtitles.ancientcreature.entity.stegosaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/call",
-        "pitch": 0.72,
-        "volume": 1.0
+        "name": "ancientcreature:entity.ankylosaurus.alert",
+        "type": "event",
+        "pitch": 0.9
       }
     ]
   },
@@ -386,9 +386,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/ambient",
-        "pitch": 0.755,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.ambient",
+        "type": "event",
+        "pitch": 1.35
       }
     ]
   },
@@ -396,9 +396,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/hurt",
-        "pitch": 0.755,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.hurt",
+        "type": "event",
+        "pitch": 1.35
       }
     ]
   },
@@ -406,9 +406,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/death",
-        "pitch": 0.755,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.death",
+        "type": "event",
+        "pitch": 1.35
       }
     ]
   },
@@ -416,8 +416,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/step",
-        "pitch": 0.875,
+        "name": "ancientcreature:entity.triceratops.step",
+        "type": "event",
+        "pitch": 1.1,
         "volume": 0.9
       }
     ]
@@ -426,9 +427,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/attack",
-        "pitch": 0.755,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.attack",
+        "type": "event",
+        "pitch": 1.35
       }
     ]
   },
@@ -436,9 +437,9 @@
     "subtitle": "subtitles.ancientcreature.entity.parasaurolophus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/call",
-        "pitch": 0.755,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.call",
+        "type": "event",
+        "pitch": 1.35
       }
     ]
   },
@@ -446,9 +447,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 0.79,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.ambient",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -456,9 +458,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 0.79,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.hurt",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -466,9 +469,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 0.79,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.death",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -476,9 +480,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 0.91,
-        "volume": 0.9
+        "name": "ancientcreature:entity.tyrannosaurus_rex.step",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -486,9 +491,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 0.79,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.bite",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -496,9 +502,10 @@
     "subtitle": "subtitles.ancientcreature.entity.spinosaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 0.79,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.roar",
+        "type": "event",
+        "pitch": 0.88,
+        "volume": 1.1
       }
     ]
   },
@@ -506,9 +513,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 0.825,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.ambient",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -516,9 +523,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 0.825,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.hurt",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -526,9 +533,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 0.825,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.death",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -536,9 +543,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 0.945,
-        "volume": 0.9
+        "name": "ancientcreature:entity.tyrannosaurus_rex.step",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -546,9 +553,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 0.825,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.bite",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -556,9 +563,9 @@
     "subtitle": "subtitles.ancientcreature.entity.carnotaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 0.825,
-        "volume": 1.0
+        "name": "ancientcreature:entity.tyrannosaurus_rex.roar",
+        "type": "event",
+        "pitch": 1.18
       }
     ]
   },
@@ -566,9 +573,10 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 0.86,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.ambient",
+        "type": "event",
+        "pitch": 1.22,
+        "volume": 0.9
       }
     ]
   },
@@ -576,9 +584,10 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 0.86,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.hurt",
+        "type": "event",
+        "pitch": 1.22,
+        "volume": 0.9
       }
     ]
   },
@@ -586,9 +595,10 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 0.86,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.death",
+        "type": "event",
+        "pitch": 1.22,
+        "volume": 0.9
       }
     ]
   },
@@ -596,8 +606,9 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 0.98,
+        "name": "ancientcreature:entity.deinonychus.step",
+        "type": "event",
+        "pitch": 1.22,
         "volume": 0.9
       }
     ]
@@ -606,9 +617,10 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 0.86,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.attack",
+        "type": "event",
+        "pitch": 1.22,
+        "volume": 0.9
       }
     ]
   },
@@ -616,9 +628,10 @@
     "subtitle": "subtitles.ancientcreature.entity.velociraptor.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 0.86,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.call",
+        "type": "event",
+        "pitch": 1.22,
+        "volume": 0.9
       }
     ]
   },
@@ -626,9 +639,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 0.895,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.ambient",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -636,9 +649,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 0.895,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.hurt",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -646,9 +659,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 0.895,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.death",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -656,9 +669,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 1.0150000000000001,
-        "volume": 0.9
+        "name": "ancientcreature:entity.deinonychus.step",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -666,9 +679,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 0.895,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.attack",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -676,9 +689,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dilophosaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 0.895,
-        "volume": 1.0
+        "name": "ancientcreature:entity.deinonychus.call",
+        "type": "event",
+        "pitch": 0.82
       }
     ]
   },
@@ -686,9 +699,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/ambient",
-        "pitch": 0.93,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.ambient",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -696,9 +710,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/hurt",
-        "pitch": 0.93,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.hurt",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -706,9 +721,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/death",
-        "pitch": 0.93,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.death",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -716,9 +732,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/step",
-        "pitch": 1.05,
-        "volume": 0.9
+        "name": "ancientcreature:entity.brachiosaurus.step",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -726,9 +743,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/attack",
-        "pitch": 0.93,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.attack",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -736,9 +754,10 @@
     "subtitle": "subtitles.ancientcreature.entity.argentinosaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/call",
-        "pitch": 0.93,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.call",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.2
       }
     ]
   },
@@ -746,9 +765,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/ambient",
-        "pitch": 0.965,
-        "volume": 1.0
+        "name": "ancientcreature:entity.pteranodon.ambient",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -756,9 +776,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/hurt",
-        "pitch": 0.965,
-        "volume": 1.0
+        "name": "ancientcreature:entity.pteranodon.hurt",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -766,9 +787,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/death",
-        "pitch": 0.965,
-        "volume": 1.0
+        "name": "ancientcreature:entity.pteranodon.death",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -776,9 +798,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/step",
-        "pitch": 1.085,
-        "volume": 0.9
+        "name": "ancientcreature:entity.pteranodon.step",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -786,9 +809,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/attack",
-        "pitch": 0.965,
-        "volume": 1.0
+        "name": "ancientcreature:entity.pteranodon.attack",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -796,9 +820,10 @@
     "subtitle": "subtitles.ancientcreature.entity.quetzalcoatlus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/pteranodon/alert",
-        "pitch": 0.965,
-        "volume": 1.0
+        "name": "ancientcreature:entity.pteranodon.alert",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.1
       }
     ]
   },
@@ -806,9 +831,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.0,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.ambient",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -816,9 +842,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/hurt",
-        "pitch": 1.0,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.hurt",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -826,9 +853,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/death",
-        "pitch": 1.0,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.death",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -836,9 +864,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/step",
-        "pitch": 1.12,
-        "volume": 0.9
+        "name": "ancientcreature:entity.megalodon.step",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -846,9 +875,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/bite",
-        "pitch": 1.0,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.bite",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -856,9 +886,10 @@
     "subtitle": "subtitles.ancientcreature.entity.mosasaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.0,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.ambient",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -866,9 +897,10 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.035,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.ambient",
+        "type": "event",
+        "pitch": 1.5,
+        "volume": 0.9
       }
     ]
   },
@@ -876,9 +908,10 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/hurt",
-        "pitch": 1.035,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.hurt",
+        "type": "event",
+        "pitch": 1.5,
+        "volume": 0.9
       }
     ]
   },
@@ -886,9 +919,10 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/death",
-        "pitch": 1.035,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.death",
+        "type": "event",
+        "pitch": 1.5,
+        "volume": 0.9
       }
     ]
   },
@@ -896,9 +930,9 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/step",
-        "pitch": 1.1549999999999998,
-        "volume": 0.9
+        "name": "ancientcreature:entity.megalodon.step",
+        "type": "event",
+        "pitch": 1.1
       }
     ]
   },
@@ -906,9 +940,10 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/bite",
-        "pitch": 1.035,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.attack",
+        "type": "event",
+        "pitch": 1.5,
+        "volume": 0.9
       }
     ]
   },
@@ -916,9 +951,10 @@
     "subtitle": "subtitles.ancientcreature.entity.plesiosaurus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.035,
-        "volume": 1.0
+        "name": "ancientcreature:entity.brachiosaurus.call",
+        "type": "event",
+        "pitch": 1.5,
+        "volume": 0.9
       }
     ]
   },
@@ -926,9 +962,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.07,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.ambient",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -936,9 +972,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/hurt",
-        "pitch": 1.07,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.hurt",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -946,9 +982,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/death",
-        "pitch": 1.07,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.death",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -956,9 +992,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/step",
-        "pitch": 1.19,
-        "volume": 0.9
+        "name": "ancientcreature:entity.megalodon.step",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -966,9 +1002,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/bite",
-        "pitch": 1.07,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.bite",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -976,9 +1012,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dunkleosteus.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/megalodon/ambient",
-        "pitch": 1.07,
-        "volume": 1.0
+        "name": "ancientcreature:entity.megalodon.ambient",
+        "type": "event",
+        "pitch": 0.88
       }
     ]
   },
@@ -986,9 +1022,9 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 1.105,
-        "volume": 1.0
+        "name": "minecraft:entity.ocelot.ambient",
+        "type": "event",
+        "pitch": 0.5
       }
     ]
   },
@@ -996,9 +1032,9 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 1.105,
-        "volume": 1.0
+        "name": "minecraft:entity.cat.hurt",
+        "type": "event",
+        "pitch": 0.55
       }
     ]
   },
@@ -1006,9 +1042,9 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 1.105,
-        "volume": 1.0
+        "name": "minecraft:entity.cat.death",
+        "type": "event",
+        "pitch": 0.5
       }
     ]
   },
@@ -1016,9 +1052,10 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 1.225,
-        "volume": 0.9
+        "name": "minecraft:entity.polar_bear.step",
+        "type": "event",
+        "pitch": 1.1,
+        "volume": 0.8
       }
     ]
   },
@@ -1026,9 +1063,10 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 1.105,
-        "volume": 1.0
+        "name": "minecraft:entity.cat.hiss",
+        "type": "event",
+        "pitch": 0.5,
+        "volume": 1.2
       }
     ]
   },
@@ -1036,9 +1074,9 @@
     "subtitle": "subtitles.ancientcreature.entity.smilodon.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 1.105,
-        "volume": 1.0
+        "name": "minecraft:entity.polar_bear.warning",
+        "type": "event",
+        "pitch": 0.8
       }
     ]
   },
@@ -1046,9 +1084,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/ambient",
-        "pitch": 1.14,
-        "volume": 1.0
+        "name": "minecraft:entity.ravager.ambient",
+        "type": "event",
+        "pitch": 0.72
       }
     ]
   },
@@ -1056,9 +1094,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/hurt",
-        "pitch": 1.14,
-        "volume": 1.0
+        "name": "minecraft:entity.ravager.hurt",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1066,9 +1104,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/death",
-        "pitch": 1.14,
-        "volume": 1.0
+        "name": "minecraft:entity.ravager.death",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1076,9 +1114,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/step",
-        "pitch": 1.2599999999999998,
-        "volume": 0.9
+        "name": "minecraft:entity.ravager.step",
+        "type": "event",
+        "pitch": 0.8
       }
     ]
   },
@@ -1086,9 +1124,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/attack",
-        "pitch": 1.14,
-        "volume": 1.0
+        "name": "minecraft:entity.ravager.attack",
+        "type": "event",
+        "pitch": 0.75
       }
     ]
   },
@@ -1096,9 +1134,10 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_mammoth.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/call",
-        "pitch": 1.14,
-        "volume": 1.0
+        "name": "minecraft:entity.ravager.roar",
+        "type": "event",
+        "pitch": 0.65,
+        "volume": 1.2
       }
     ]
   },
@@ -1106,9 +1145,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/ambient",
-        "pitch": 1.175,
-        "volume": 1.0
+        "name": "minecraft:entity.hoglin.ambient",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1116,9 +1155,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/hurt",
-        "pitch": 1.175,
-        "volume": 1.0
+        "name": "minecraft:entity.hoglin.hurt",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1126,9 +1165,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/death",
-        "pitch": 1.175,
-        "volume": 1.0
+        "name": "minecraft:entity.hoglin.death",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1136,9 +1175,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/step",
-        "pitch": 1.295,
-        "volume": 0.9
+        "name": "minecraft:entity.hoglin.step",
+        "type": "event",
+        "pitch": 0.75
       }
     ]
   },
@@ -1146,9 +1185,9 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/attack",
-        "pitch": 1.175,
-        "volume": 1.0
+        "name": "minecraft:entity.hoglin.attack",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },
@@ -1156,9 +1195,10 @@
     "subtitle": "subtitles.ancientcreature.entity.woolly_rhinoceros.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/brachiosaurus/call",
-        "pitch": 1.175,
-        "volume": 1.0
+        "name": "minecraft:entity.hoglin.angry",
+        "type": "event",
+        "pitch": 0.65,
+        "volume": 1.1
       }
     ]
   },
@@ -1166,9 +1206,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 1.21,
-        "volume": 1.0
+        "name": "minecraft:entity.wolf_big.ambient",
+        "type": "event",
+        "pitch": 0.8
       }
     ]
   },
@@ -1176,9 +1216,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 1.21,
-        "volume": 1.0
+        "name": "minecraft:entity.wolf_big.hurt",
+        "type": "event",
+        "pitch": 0.78
       }
     ]
   },
@@ -1186,9 +1226,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 1.21,
-        "volume": 1.0
+        "name": "minecraft:entity.wolf_big.death",
+        "type": "event",
+        "pitch": 0.78
       }
     ]
   },
@@ -1196,9 +1236,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 1.33,
-        "volume": 0.9
+        "name": "minecraft:entity.wolf.step",
+        "type": "event",
+        "pitch": 0.8
       }
     ]
   },
@@ -1206,9 +1246,9 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 1.21,
-        "volume": 1.0
+        "name": "minecraft:entity.wolf_angry.growl",
+        "type": "event",
+        "pitch": 0.75
       }
     ]
   },
@@ -1216,9 +1256,10 @@
     "subtitle": "subtitles.ancientcreature.entity.dire_wolf.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 1.21,
-        "volume": 1.0
+        "name": "minecraft:entity.wolf_big.growl",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.2
       }
     ]
   },
@@ -1226,9 +1267,9 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.ambient",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/ambient",
-        "pitch": 1.245,
-        "volume": 1.0
+        "name": "minecraft:entity.silverfish.ambient",
+        "type": "event",
+        "pitch": 0.45
       }
     ]
   },
@@ -1236,9 +1277,9 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.hurt",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/hurt",
-        "pitch": 1.245,
-        "volume": 1.0
+        "name": "minecraft:entity.silverfish.hurt",
+        "type": "event",
+        "pitch": 0.5
       }
     ]
   },
@@ -1246,9 +1287,9 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.death",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/death",
-        "pitch": 1.245,
-        "volume": 1.0
+        "name": "minecraft:entity.silverfish.death",
+        "type": "event",
+        "pitch": 0.5
       }
     ]
   },
@@ -1256,9 +1297,9 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.step",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/step",
-        "pitch": 1.3650000000000002,
-        "volume": 0.9
+        "name": "minecraft:entity.spider.step",
+        "type": "event",
+        "pitch": 0.6
       }
     ]
   },
@@ -1266,9 +1307,9 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.attack",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/attack",
-        "pitch": 1.245,
-        "volume": 1.0
+        "name": "minecraft:entity.spider.ambient",
+        "type": "event",
+        "pitch": 0.55
       }
     ]
   },
@@ -1276,9 +1317,219 @@
     "subtitle": "subtitles.ancientcreature.entity.arthropleura.alert",
     "sounds": [
       {
-        "name": "ancientcreature:entity/deinonychus/call",
-        "pitch": 1.245,
-        "volume": 1.0
+        "name": "minecraft:entity.silverfish.ambient",
+        "type": "event",
+        "pitch": 0.35,
+        "volume": 1.2
+      }
+    ]
+  },
+  "item.horn_whistle.blow": {
+    "subtitle": "subtitles.ancientcreature.item.horn_whistle.blow",
+    "sounds": [
+      "ancientcreature:item/horn_whistle"
+    ]
+  },
+  "block.electric_fence.zap": {
+    "subtitle": "subtitles.ancientcreature.block.electric_fence.zap",
+    "sounds": [
+      "ancientcreature:block/electric_fence_zap"
+    ]
+  },
+  "block.electric_fence.hum": {
+    "subtitle": "subtitles.ancientcreature.block.electric_fence.hum",
+    "sounds": [
+      {
+        "name": "ancientcreature:block/electric_fence_hum",
+        "volume": 0.6,
+        "attenuation_distance": 8
+      }
+    ]
+  },
+  "entity.stegoceratops.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.ambient",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.ambient",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.ankylosaurus.ambient",
+        "type": "event",
+        "pitch": 0.82
+      }
+    ]
+  },
+  "entity.stegoceratops.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.hurt",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.hurt",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.ankylosaurus.hurt",
+        "type": "event",
+        "pitch": 0.82
+      }
+    ]
+  },
+  "entity.stegoceratops.death": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.death",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.death",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.ankylosaurus.death",
+        "type": "event",
+        "pitch": 0.82
+      }
+    ]
+  },
+  "entity.stegoceratops.step": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.step",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.step",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.triceratops.step",
+        "type": "event",
+        "pitch": 0.85,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.stegoceratops.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.attack",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.attack",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.ankylosaurus.attack",
+        "type": "event",
+        "pitch": 0.82
+      }
+    ]
+  },
+  "entity.stegoceratops.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.stegoceratops.alert",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.triceratops.bellow",
+        "type": "event",
+        "pitch": 0.9
+      },
+      {
+        "name": "ancientcreature:entity.ankylosaurus.alert",
+        "type": "event",
+        "pitch": 0.82
+      }
+    ]
+  },
+  "entity.tyrannoraptor.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.ambient",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.ambient",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.ambient",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.tyrannoraptor.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.hurt",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.hurt",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.hurt",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.tyrannoraptor.death": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.death",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.death",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.death",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.tyrannoraptor.step": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.step",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.step",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.step",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.tyrannoraptor.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.attack",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.bite",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.attack",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
+      }
+    ]
+  },
+  "entity.tyrannoraptor.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.tyrannoraptor.alert",
+    "sounds": [
+      {
+        "name": "ancientcreature:entity.tyrannosaurus_rex.roar",
+        "type": "event",
+        "pitch": 1.1
+      },
+      {
+        "name": "ancientcreature:entity.deinonychus.call",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.1
       }
     ]
   }

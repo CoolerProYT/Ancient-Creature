@@ -33,6 +33,7 @@ export default defineConfig({
           { text: 'DNA & genomes', link: '/guide/dna-and-genomes' },
           { text: 'Reviving a creature', link: '/guide/reviving' },
           { text: 'Creatures', link: '/guide/creatures' },
+          { text: 'Keeping creatures', link: '/guide/keeping-creatures' },
           { text: 'Riding creatures', link: '/guide/riding' },
           { text: 'Items & recipes', link: '/guide/items' },
           { text: 'Advancements', link: '/guide/advancements' },

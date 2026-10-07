@@ -1,4 +1,11 @@
-// 26.3	2026-09-29T22:09:01.482237	Tags for minecraft:block mod id ancientcreature
+// 26.3	2026-10-02T12:03:48.9591935	Tags for minecraft:block mod id ancientcreature
 e26dbf99570c1b361b1cdffd3d73c1cc1bdf9d47 data/ancientcreature/tags/block/creature_destroyable.json
-e830c2c71a67772b159fbd38444f2f668968e583 data/ancientcreature/tags/block/mineable_with_chisel.json
-bc0f9b1e4759a741a941ec9d01d949c5399e9ee8 data/minecraft/tags/block/mineable/pickaxe.json
+e1226771382eaa90e2b9b7792ec703eae03d57ce data/ancientcreature/tags/block/enclosure_breakable.json
+96da61a00a440cccc53cfcd6c1a229bda0421a1a data/ancientcreature/tags/block/fossil_seam_replaceables.json
+d0430910a9a94a235cf4313c2b9ee008d6504044 data/ancientcreature/tags/block/frozen_fossil_replaceables.json
+77abbdf06539b5c521645f9fe6745fec6997b90b data/ancientcreature/tags/block/mineable_with_chisel.json
+6057bea64cb3b67e4f9ccd8a658c0f447f6d66d4 data/minecraft/tags/block/fences.json
+1bdfb279cb7d24f46dedd734494367f40bc1e4c8 data/minecraft/tags/block/fence_gates.json
+2723aa34029e4f28d637abd21586232efbc69d86 data/minecraft/tags/block/mineable/axe.json
+629812ecca5ef939ccbc8eaccaa1e90446c82653 data/minecraft/tags/block/mineable/pickaxe.json
+b4c906dfd2b0af19004b9f918bdfec059b062124 data/minecraft/tags/block/needs_iron_tool.json

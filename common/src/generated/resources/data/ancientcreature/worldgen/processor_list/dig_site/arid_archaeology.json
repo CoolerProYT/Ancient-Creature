@@ -1,0 +1,31 @@
+{
+  "processors": [
+    {
+      "delegate": {
+        "processor_type": "minecraft:rule",
+        "rules": [
+          {
+            "block_entity_modifier": {
+              "type": "minecraft:append_loot",
+              "loot_table": "ancientcreature:archaeology/arid_dig_site"
+            },
+            "input_predicate": {
+              "block": "minecraft:sand",
+              "predicate_type": "minecraft:block_match"
+            },
+            "location_predicate": {
+              "predicate_type": "minecraft:always_true"
+            },
+            "output_state": "minecraft:suspicious_sand"
+          }
+        ]
+      },
+      "limit": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 8,
+        "min_inclusive": 4
+      },
+      "processor_type": "minecraft:capped"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:stegosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/stegosaurus",
+        "mottled": "textures/entity/stegosaurus_mottled",
+        "saddle": "textures/entity/gear/stegosaurus_saddle",
+        "armor_iron": "textures/entity/gear/stegosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/stegosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/stegosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/stegosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.stegosaurus"
+      },
+      "animations": {
+        "idle": "animation.stegosaurus.idle",
+        "walk": "animation.stegosaurus.walk",
+        "run": "animation.stegosaurus.run",
+        "attack": "animation.stegosaurus.attack",
+        "special": "animation.stegosaurus.special",
+        "hurt": "animation.stegosaurus.hurt",
+        "death": "animation.stegosaurus.death",
+        "main": "controller.animation.stegosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.stegosaurus"
+      ]
+    }
+  }
+}

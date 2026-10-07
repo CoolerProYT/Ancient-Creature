@@ -50,6 +50,33 @@ public class CreatureHungerComponentProvider implements IEntityComponentProvider
             tooltip.add(Component.translatable("jade.ancientcreature.fed")
                 .withStyle(ChatFormatting.GREEN));
         }
+
+        if (AncientCreatureEntity.comfortEnabled()) {
+            float comfort = creature.getComfort();
+            ChatFormatting colour = comfort >= AncientCreatureEntity.CONTENT_COMFORT ? ChatFormatting.GREEN
+                : comfort >= AncientCreatureEntity.BREEDING_COMFORT ? ChatFormatting.YELLOW
+                : comfort >= AncientCreatureEntity.DISTRESS_COMFORT ? ChatFormatting.GOLD : ChatFormatting.RED;
+            String mood = comfort >= AncientCreatureEntity.CONTENT_COMFORT ? "content"
+                : comfort >= AncientCreatureEntity.BREEDING_COMFORT ? "settled"
+                : comfort >= AncientCreatureEntity.DISTRESS_COMFORT ? "uneasy" : "distressed";
+            tooltip.add(Component.translatable("jade.ancientcreature.comfort", Math.round(comfort),
+                Component.translatable("comfort.ancientcreature." + mood)).withStyle(colour));
+            if (creature.getComfortReason() != com.coolerpromc.ancientcreature.entity.comfort.ComfortTracker.Factor.NONE) {
+                tooltip.add(Component.translatable(creature.getComfortReason().key()).withStyle(ChatFormatting.GRAY));
+            }
+        }
+        tooltip.add(Component.translatable("jade.ancientcreature.genome", creature.getGenomeFidelityPercent(),
+            Component.translatable("temperament.ancientcreature." + creature.getTemperament().getSerializedName())).withStyle(ChatFormatting.GRAY));
+        if (!creature.isFertile()) {
+            tooltip.add(Component.translatable("jade.ancientcreature.sterile").withStyle(ChatFormatting.RED));
+        }
+        if (creature.isFrail()) {
+            tooltip.add(Component.translatable("jade.ancientcreature.frail").withStyle(ChatFormatting.RED));
+        }
+        if (creature.hasOwnerClientSide()) {
+            tooltip.add(Component.translatable("jade.ancientcreature.command", creature.isSitting()
+                ? Component.translatable("command.ancientcreature.stay") : Component.translatable("jade.ancientcreature.owned")).withStyle(ChatFormatting.GRAY));
+        }
     }
 
     /** Trims the trailing {@code .0} that hunger values almost always have, since decay is by whole points. */

@@ -23,7 +23,7 @@ Item icons load from `https://storage.googleapis.com/coolerpromc/textures/`, not
 - vanilla items from `minecraft/<item>.png`,
 - mod items from `ancientcreature/<name>.png`, uploaded at 1024×1024 (nearest-neighbour). Textures in sub folders are uploaded flat as `<folder>_<name>`, for example `fossil_part_skull`.
 
-Upload a new texture there before syncing, or the wiki shows the item's initials instead. Machines and the rock pile have no flat texture, so their icons are rendered from the in-game models and committed in `public/icons/` (upload those too).
+Upload a new texture there before syncing, or the wiki shows the item's initials instead. Machines, the rock pile and the sifter have no flat texture, so their icons are rendered from the in-game models and committed in `public/icons/` (upload those too). Block textures with a flat cube texture (the fossil, amber and frozen fossil ores) are listed by name in `scripts/sync-data.mjs`.
 
 ## Layout
 

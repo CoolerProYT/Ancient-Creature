@@ -1,6 +1,9 @@
 {
   "values": [
     "ancientcreature:rock_pile",
-    "ancientcreature:fossil_ore"
+    "ancientcreature:fossil_ore",
+    "ancientcreature:deepslate_fossil_ore",
+    "ancientcreature:amber_ore",
+    "ancientcreature:frozen_fossil"
   ]
 }

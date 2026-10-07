@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#minecraft:is_badlands",
+    "minecraft:stony_shore",
+    "minecraft:stony_peaks",
+    "minecraft:windswept_hills",
+    "minecraft:windswept_gravelly_hills",
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_savanna"
+  ]
+}

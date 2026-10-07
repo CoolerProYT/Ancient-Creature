@@ -113,7 +113,8 @@ set — that is the animation's own loop mode, not a bug.
 ```
 
 Tab-completes loaded species ids, and fails with a clear message if the id has no definition rather
-than spawning an inert creature.
+than spawning an inert creature. Without a variant, one is rolled from the species'
+[`variants`](/species/species-json#variants) list, as it would be for a hatched creature.
 
 The species is applied before the creature is placed, so it is positioned using its own bounding box
 and spawns at its own maximum health — not the generic 20.

@@ -1,4 +1,8 @@
-// 26.3	2026-09-29T22:09:01.482237	Tags for minecraft:worldgen/biome mod id ancientcreature
+// 26.3	2026-10-02T12:03:48.9596929	Tags for minecraft:worldgen/biome mod id ancientcreature
+7a4194421902f0476c7a892b64fd6339e4824b0c data/ancientcreature/tags/worldgen/biome/has_amber_ore.json
+9af1c27e3fac28b36de4c8253b73ee624aa4727d data/ancientcreature/tags/worldgen/biome/has_fossil_bed.json
+0b7f5b529ef5476a12327d1aa2269a9757534b24 data/ancientcreature/tags/worldgen/biome/has_fossil_seam.json
+7dc07ae1571343efa93da9ba8c72285992862ea5 data/ancientcreature/tags/worldgen/biome/has_frozen_fossil.json
 f3ef2895c49e29111297e950661e5bc71a79989e data/ancientcreature/tags/worldgen/biome/has_structure/arid_dig_site.json
 9969cac31cf25c85f5211798e3596888907790f9 data/ancientcreature/tags/worldgen/biome/has_structure/badlands_dig_site.json
 208ad58db65540373e309e41d4444b16f2e8a713 data/ancientcreature/tags/worldgen/biome/has_structure/coastal_dig_site.json

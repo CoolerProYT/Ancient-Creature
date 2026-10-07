@@ -20,14 +20,22 @@ a fine way to check a model before animating it.
 }
 ```
 
-### `assets/examplepack/ancientcreature/species/dodo.json`
+### `assets/examplepack/ancientcreature/entity/dodo.entity.json`
 
 ```json
 {
-  "geometry": "examplepack:dodo",
-  "texture": "examplepack:textures/entity/dodo.png"
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "examplepack:dodo",
+      "textures": { "default": "textures/entity/dodo" },
+      "geometry": { "default": "geometry.dodo" }
+    }
+  }
 }
 ```
+
+The texture goes at `assets/examplepack/textures/entity/dodo.png`.
 
 ### `assets/examplepack/ancientcreature/geo/dodo.geo.json`
 
@@ -122,34 +130,52 @@ Plus a 32×32 texture at `assets/examplepack/textures/entity/dodo.png`.
 
 ```json
 {
-  "format_version": 1,
-  "initial_state": "idle",
-  "states": {
-    "idle": {
-      "animations": ["idle"],
-      "blend_transition": 0.2,
-      "transitions": [{ "walk": "query.is_moving" }]
-    },
-    "walk": {
-      "animations": ["walk"],
-      "blend_transition": 0.15,
-      "transitions": [{ "idle": "!query.is_moving" }]
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.dodo.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": ["idle"],
+          "blend_transition": 0.2,
+          "transitions": [{ "walk": "query.is_moving" }]
+        },
+        "walk": {
+          "animations": ["walk"],
+          "blend_transition": 0.15,
+          "transitions": [{ "idle": "!query.is_moving" }]
+        }
+      }
     }
   }
 }
 ```
 
-Then point the client definition at them:
+Then list them in the client entity and run the controller:
 
 ```json
 {
-  "geometry": "examplepack:dodo",
-  "texture": "examplepack:textures/entity/dodo.png",
-  "animations": "examplepack:dodo",
-  "controller": "examplepack:dodo",
-  "shadow_radius": 0.4,
-  "gui": { "scale": 24.0, "rotation": [0.0, 215.0, 0.0] }
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "examplepack:dodo",
+      "textures": { "default": "textures/entity/dodo" },
+      "geometry": { "default": "geometry.dodo" },
+      "animations": {
+        "idle": "animation.dodo.idle",
+        "walk": "animation.dodo.walk",
+        "main": "controller.animation.dodo.main"
+      },
+      "scripts": { "animate": ["main"] }
+    }
+  }
 }
+```
+
+And, optionally, frame it for GUIs in `assets/examplepack/ancientcreature/species/dodo.json`:
+
+```json
+{ "format_version": 2, "shadow_radius": 0.4, "gui": { "scale": 24.0, "rotation": [0.0, 215.0, 0.0] } }
 ```
 
 ## A flying example
@@ -219,15 +245,17 @@ See [hunger](/species/species-json#hunger).
 
 ## Shipped examples
 
-Four complete, working species live in the mod itself:
+Every species the mod ships is a complete, working example:
 
 ```
 common/src/main/resources/data/ancientcreature/ancientcreature/species/
 common/src/main/resources/assets/ancientcreature/ancientcreature/
 ```
 
-Triceratops (land, defensive), Tyrannosaurus Rex (land, apex predator), Megalodon (aquatic) and Pteranodon
-(flying) — worth reading alongside this page.
+Triceratops (land, defensive), Tyrannosaurus Rex (land, apex predator), Megalodon (aquatic), Pteranodon
+(flying) and the Tyrannoraptor [hybrid](/species/species-json#hybrid) are worth reading alongside this
+page. Each has a client entity under `entity/` and a render controller under `render_controllers/` showing
+skin variants, armor and saddle layers.
 
 The Pteranodon is the most useful complete example: it was built entirely on this pipeline and shows
 flying behavior, altitude configuration, a grounded/airborne controller, six custom sounds and a

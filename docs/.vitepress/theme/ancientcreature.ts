@@ -53,8 +53,8 @@ export interface DnaLevel {
 
 export interface ConfigValue {
   key: string
-  type: 'int' | 'float'
-  default: number
+  type: 'ticks' | 'int' | 'multiplier' | 'double' | 'boolean' | 'list'
+  default: number | boolean | string[]
   comment: string
 }
 
@@ -73,6 +73,11 @@ export interface Species {
   incubationTime: number
   diet: string[]
   biomes: string[]
+  care: { climate: string; social: string; group_min: number; group_max: number; space: number }
+  riding: { ability: string; cooldown: number; power: number }
+  /** The two parent species of a hybrid, which has no fossils; null otherwise. */
+  hybrid: string[] | null
+  variants: string[]
 }
 
 export interface DigSite {
@@ -110,6 +115,7 @@ const TAG_NAMES: Record<string, string> = {
   '#minecraft:iron_tool_materials': 'Iron Ingot',
   '#minecraft:gold_tool_materials': 'Gold Ingot',
   '#minecraft:diamond_tool_materials': 'Diamond',
+  '#minecraft:netherite_tool_materials': 'Netherite Ingot',
   'minecraft:potion': 'Potion (any, e.g. Water Bottle)',
 }
 
@@ -123,6 +129,7 @@ const ICON_ALIASES: Record<string, string> = {
   '#minecraft:iron_tool_materials': 'minecraft:iron_ingot',
   '#minecraft:gold_tool_materials': 'minecraft:gold_ingot',
   '#minecraft:diamond_tool_materials': 'minecraft:diamond',
+  '#minecraft:netherite_tool_materials': 'minecraft:netherite_ingot',
   'minecraft:potion': 'minecraft:potion/water',
 }
 

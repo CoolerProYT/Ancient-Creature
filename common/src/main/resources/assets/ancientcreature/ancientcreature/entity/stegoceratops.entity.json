@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:stegoceratops",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/stegoceratops",
+        "mottled": "textures/entity/stegoceratops_mottled",
+        "saddle": "textures/entity/gear/stegoceratops_saddle",
+        "armor_iron": "textures/entity/gear/stegoceratops_armor_iron",
+        "armor_golden": "textures/entity/gear/stegoceratops_armor_golden",
+        "armor_diamond": "textures/entity/gear/stegoceratops_armor_diamond",
+        "armor_netherite": "textures/entity/gear/stegoceratops_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.stegoceratops"
+      },
+      "animations": {
+        "idle": "animation.stegoceratops.idle",
+        "walk": "animation.stegoceratops.walk",
+        "charge": "animation.stegoceratops.charge",
+        "graze": "animation.stegoceratops.graze",
+        "bellow": "animation.stegoceratops.bellow",
+        "main": "controller.animation.stegoceratops.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.stegoceratops"
+      ]
+    }
+  }
+}

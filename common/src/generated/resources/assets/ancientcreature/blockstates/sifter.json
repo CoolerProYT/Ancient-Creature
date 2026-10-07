@@ -1,0 +1,189 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_0_gravel"
+      },
+      "when": {
+        "content": "gravel",
+        "sift_stage": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_1_gravel"
+      },
+      "when": {
+        "content": "gravel",
+        "sift_stage": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_2_gravel"
+      },
+      "when": {
+        "content": "gravel",
+        "sift_stage": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_3_gravel"
+      },
+      "when": {
+        "content": "gravel",
+        "sift_stage": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_0_sand"
+      },
+      "when": {
+        "content": "sand",
+        "sift_stage": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_1_sand"
+      },
+      "when": {
+        "content": "sand",
+        "sift_stage": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_2_sand"
+      },
+      "when": {
+        "content": "sand",
+        "sift_stage": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_3_sand"
+      },
+      "when": {
+        "content": "sand",
+        "sift_stage": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_0_red_sand"
+      },
+      "when": {
+        "content": "red_sand",
+        "sift_stage": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_1_red_sand"
+      },
+      "when": {
+        "content": "red_sand",
+        "sift_stage": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_2_red_sand"
+      },
+      "when": {
+        "content": "red_sand",
+        "sift_stage": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_3_red_sand"
+      },
+      "when": {
+        "content": "red_sand",
+        "sift_stage": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_0_mud"
+      },
+      "when": {
+        "content": "mud",
+        "sift_stage": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_1_mud"
+      },
+      "when": {
+        "content": "mud",
+        "sift_stage": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_2_mud"
+      },
+      "when": {
+        "content": "mud",
+        "sift_stage": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_3_mud"
+      },
+      "when": {
+        "content": "mud",
+        "sift_stage": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_0_dirt"
+      },
+      "when": {
+        "content": "dirt",
+        "sift_stage": "0"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_1_dirt"
+      },
+      "when": {
+        "content": "dirt",
+        "sift_stage": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_2_dirt"
+      },
+      "when": {
+        "content": "dirt",
+        "sift_stage": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "ancientcreature:block/sifter_fill_3_dirt"
+      },
+      "when": {
+        "content": "dirt",
+        "sift_stage": "3"
+      }
+    }
+  ]
+}

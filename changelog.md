@@ -1,7 +1,41 @@
-## 26.3.0.1
-- Added the Paleontologist's Field Guide, given to players the first time they join a world (can be turned off with `FieldGuide.giveOnFirstJoin` in the common config)
-- Remade the models, textures and animations of every machine: DNA Extractor, Embryogenesis Chamber, Fossil Cleaning Table, Fossil Identification Chamber, Genome Sequencer and Incubator
-  - Higher resolution textures with readable labels and screens
-  - Glass and fluids are now see-through
-  - Screens and light strips glow in the dark, and extra lights (heater coils, lasers, lamps, status LEDs) turn on while a machine is running
-  - New, more detailed processing animations, plus small idle animations
+## 26.3.0.2
+- Reworked dig sites
+  - Camps now open up to three excavation pits around them: trenches, stepped quarries, half-uncovered skeletons and collapsed sinkholes, with brushable layers above fossil ore
+  - Each biome's site has its own brushing loot: different mixes of parts, amber in jungles, better-preserved bones in cold sites and sea creatures at coastal sites; roughly one brushed block in six holds a fossil, and skulls, vertebrae and egg fossils can now be brushed
+  - Camp chests now hold fossils, tools, the expedition's Field Notes (species recorded in the region and excavation tips) and sometimes a Dig Site Map to another site
+  - Some camps were overrun: their undead crew still guards the main pit, but their chests hold the best finds
+- New ways to find fossils
+  - Deepslate Fossil Ore below Y 0: rarer parts, 15% more complete
+  - Amber Ore in jungles, dark forests, mangrove swamps and lush caves, dropping Amber with Insect, a new fossil part with the best DNA bonus
+  - Frozen Fossils in the packed ice of frozen biomes: 25% more complete, always ice-age species
+  - Fossil seams on exposed cliff faces in badlands and other rocky biomes, and buried fossil beds in deserts, badlands, savannas, plains and swamps
+  - Sifter: a craftable sieve that turns gravel, sand, red sand, mud or dirt into the odd fossil fragment
+  - Fossils can turn up when brushing desert pyramids, desert wells, trail ruins and ocean ruins, when fishing, and from husks and drowned killed by a player
+  - Wandering traders sometimes sell fossils and amber; cartographers sell Dig Site Maps
+  - Two to four identified fossils of one species can be reassembled on a crafting table into one more complete fossil
+- Creature care
+  - Creatures now have a comfort level based on hunger, space, company, climate, recent pain and hand-feeding (shown in Jade). Content creatures slowly heal, only settled ones breed, and distressed large ones smash through wooden fences, walls and glass (can be turned off with `Creatures.comfort`)
+  - Each species has its own needs: solitary, pairs or herds of a given size, and a cold, temperate or warm climate
+  - New Reinforced Fence and Reinforced Fence Gate that no creature can break, and a redstone-powered Electric Fence that shocks and throws back anything that touches it
+  - Horn Whistle: tell your creatures to roam, follow or stay, call every creature within 48 blocks, or make them all stay. Following creatures defend you
+  - A population limit stops breeding, hatching and capsule releases once 64 creatures live within 64 blocks (configurable)
+  - Species listed in the new `Creatures.passiveSpecies` config never start fights
+- Riding
+  - Creatures now need a Creature Saddle before they can be ridden (can be turned off with `Riding.requireSaddle`)
+  - Iron, golden, diamond and netherite creature armor, shown on the creature
+  - Mount abilities on R: roar, charge, bite, tail sweep, stomp, pounce or dive, depending on the species
+- Genetics
+  - DNA samples now have a quality and genome cartridges a fidelity. The fidelity decides a new creature's size, health, speed and temperament, and whether it is sterile or frail. Bred babies inherit their parents' traits
+  - Hybrids: splice the genomes of two species in the Embryogenesis Chamber's new donor slot. Added the Stegoceratops (Stegosaurus × Triceratops) and the Tyrannoraptor (Tyrannosaurus Rex × Velociraptor). Hybrids are always sterile
+  - Every species now has a rarer mottled skin
+- Lab upgrades: Speed, Precision and Efficiency modules fit two to a machine
+- Creatures now drop meat and materials: Raw Prehistoric Meat, Thick Hide, Osteoderm, Prehistoric Horn, Predator Tooth, Sickle Claw, Prehistoric Feather, Woolly Fur, Mammoth Tusk, Megalodon Tooth and Arthropleura Chitin, used for saddles, armor, the Horn Whistle, leather, wool, feathers and bone meal
+- Gill-breathing sea creatures now dry out on land
+- Custom species
+  - Resource packs now use standard Bedrock client entities and render controllers, with full Molang in animations, controllers and scripts, per-face UV, poly meshes and locators. Packs in the earlier format still load and look the same
+  - New species fields: `care`, `riding`, `variants`, `respiration` and `hybrid`
+- Fixed the netherite chisel smithing recipe missing since the 26.3 port
+- Fixed dig site chests giving empty fossils
+- Fixed a crash when fossil loot was generated with no player around (e.g. a hopper emptying a dig site chest)
+- Fixed fossil ore almost never generating underground
+- Fossils found underground or in a biome no species lives in now take the species of the land above, instead of dropping nothing

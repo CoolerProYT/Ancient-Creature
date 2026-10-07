@@ -2,6 +2,7 @@ package com.coolerpromc.ancientcreature;
 
 import com.coolerpromc.ancientcreature.event.ItemEvents;
 import com.coolerpromc.ancientcreature.event.PlayerEvents;
+import com.coolerpromc.ancientcreature.loot.FossilInjectionLootModifier;
 import com.coolerpromc.ancientcreature.platform.NeoForgeRegistryHelper;
 import com.coolerpromc.ancientcreature.platform.Services;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +29,7 @@ public class NeoForgeAncientCreature {
     public NeoForgeAncientCreature(IEventBus eventBus) {
         AncientCreature.init();
         NeoForgeRegistryHelper.register(eventBus);
+        FossilInjectionLootModifier.register(eventBus);
     }
 
     @SubscribeEvent
@@ -58,6 +60,12 @@ public class NeoForgeAncientCreature {
         AncientCreature.initPayloadType();
         PayloadRegistrar registrar = event.registrar("1");
         Services.REGISTRY.applyClientboundPayloadRegistrations(registrar::playToClient);
+        Services.REGISTRY.applyServerboundPayloadRegistrations(new com.coolerpromc.ancientcreature.platform.services.IRegistryHelper.ServerboundPayloadRegistrar() {
+            @Override
+            public <T extends com.coolerpromc.ancientcreature.network.HandledCustomPacketPayload> void register(net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type<T> type, net.minecraft.network.codec.StreamCodec<? super net.minecraft.network.RegistryFriendlyByteBuf, T> codec) {
+                registrar.playToServer(type, codec, (payload, context) -> payload.handle(new com.coolerpromc.ancientcreature.platform.util.NeoForgePayloadContext(context)));
+            }
+        });
     }
 
     @SubscribeEvent

@@ -6,15 +6,16 @@ Everything the **server** needs. Loaded on every `/reload` and synchronised to c
 
 ## Complete example
 
-This is the shipped Triceratops, unabridged.
+This is the shipped Triceratops, with the default `hunger` block written out.
 
 ```json
 {
   "format_version": 1,
+  "loot_table": "ancientcreature:entities/triceratops",
   "entity_category": "land",
   "physical": {
-    "width": 1.2,
-    "height": 1.8,
+    "width": 1.8,
+    "height": 2.2,
     "eye_height": 1.4
   },
   "attributes": {
@@ -57,6 +58,21 @@ This is the shipped Triceratops, unabridged.
     "attack": "ancientcreature:entity.triceratops.attack",
     "alert": "ancientcreature:entity.triceratops.bellow",
     "ambient_interval": 240
+  },
+  "variants": [
+    { "id": "default", "weight": 82 },
+    { "id": "mottled", "weight": 18 }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 8
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 100,
+    "power": 1.0
   }
 }
 ```
@@ -83,7 +99,7 @@ Selects the navigation, movement control and look control.
 | Category | Gets |
 | --- | --- |
 | `land` | Ground pathfinding, normal movement |
-| `aquatic` | Water pathfinding, smooth swimming, underwater breathing, not pushed by currents |
+| `aquatic` | Water pathfinding, smooth swimming, not pushed by currents, breathes water (see [`respiration`](#respiration)) |
 | `flying` | Flight pathfinding, hovering movement control, no fall damage |
 
 ::: tip Pair it with the right components
@@ -280,6 +296,136 @@ To watch it in game, use [`/ancientcreature hunger`](/species/commands#hunger). 
 is installed, looking at a creature also shows its hunger and whether it is hungry enough to hunt — see
 [Testing a species](/species/testing#hunger-in-jade).
 
+## loot_table
+
+| | |
+| --- | --- |
+| Type | loot table id |
+| Default | none: the creature drops nothing |
+
+What the creature drops when it dies, run through the normal entity loot pipeline, so looting,
+`furnace_smelt` on fire and killer conditions all work. The shipped species each have their own table
+under `data/ancientcreature/loot_table/entities/`, and the generic `large_herbivore`, `large_predator`,
+`small_predator`, `giant_herbivore`, `aquatic_predator`, `flying_predator` and `arthropod` tables are
+there for packs to reuse.
+
+## variants
+
+Weighted skins. One is rolled whenever a creature comes into being — hatching, capsule release,
+breeding and `/ancientcreature summon` — and saved on the creature for good.
+
+```json
+"variants": [
+  { "id": "default", "weight": 82 },
+  { "id": "mottled", "weight": 18 }
+]
+```
+
+| Field | Type | Required | Default |
+| --- | --- | --- | --- |
+| `id` | string | **yes** | — |
+| `weight` | int ≥ 0 | no | `1` |
+
+Bred babies take one parent's variant, with a 10% chance of a fresh roll. Without `variants`, every
+creature is `default`.
+
+This only picks the *id*. The resource pack decides what each id looks like: by a client-entity texture
+of the same name, or through a render controller reading `query.variant` (the variant's position in this
+list) or `query.variant_name`. See [Species (resource pack)](/species/client-species#variants).
+
+## respiration
+
+| | |
+| --- | --- |
+| Type | `"air"` \| `"water"` \| `"amphibious"` |
+| Default | `"water"` for `aquatic`, otherwise `"air"` |
+
+| Value | Behaviour |
+| --- | --- |
+| `air` | Drowns underwater like any land animal |
+| `water` | Breathes through gills. On land it thrashes towards water, dries out and suffocates, like vanilla fish |
+| `amphibious` | Never runs out of air in either |
+
+Marine reptiles that surface to breathe (the shipped Mosasaurus and Plesiosaurus) use `amphibious`,
+because creature AI does not surface on its own.
+
+## care
+
+What the species needs to be comfortable. Comfort decides whether a creature heals, breeds or — if it is
+large and distressed — smashes its way out of its pen. See
+[Keeping creatures](/guide/keeping-creatures#comfort) for the full effect.
+
+```json
+"care": { "climate": "cold", "social": "herd", "group_min": 3, "group_max": 10, "space": 400 }
+```
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `climate` | `"any"` \| `"cold"` \| `"temperate"` \| `"warm"` | `"any"` | Judged from the base temperature of the biome the creature stands in |
+| `social` | `"solitary"` \| `"pair"` \| `"herd"` | `"solitary"` | Solitary creatures dislike their own kind nearby; pairs want exactly one companion; herds want `group_min`–`group_max` of their kind within 24 blocks, counting themselves |
+| `group_min` | int 1–64 | `1` | Herds only |
+| `group_max` | int 1–64 | `1` | Herds only. Must not be below `group_min` |
+| `space` | int 0–8192 | `0` | Walkable floor, in blocks, the creature wants to reach. `0` works it out from the width: about a 6×6 pen per square block of body, at least 24. Aquatic species count water volume; flyers are never cramped |
+
+Climate bands, by biome base temperature:
+
+| `climate` | Unhappy | Mildly unhappy | Happy |
+| --- | --- | --- | --- |
+| `cold` | above 1.0 | 0.5–1.0 | 0.5 or below |
+| `warm` | below 0.3 | 0.3–0.7 | 0.7 or above |
+| `temperate` | below 0.0 or above 1.5 | | everywhere else |
+
+## riding
+
+What happens when the rider presses the mount ability key (<kbd>R</kbd> by default).
+
+```json
+"riding": { "ability": "tail_sweep", "cooldown": 80, "power": 1.0 }
+```
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `ability` | see below | `"none"` | |
+| `cooldown` | int 10–12000 | `100` | Ticks between uses |
+| `power` | float 0.1–10 | `1.0` | Scales damage, reach and launch speed |
+
+| `ability` | Effect |
+| --- | --- |
+| `none` | Nothing; the rider is told the creature has no ability |
+| `roar` | Hostile mobs within `10 × power` blocks are weakened, slowed and flee |
+| `charge` | Lunges forward, hitting and throwing everything ahead, and smashes `#ancientcreature:creature_destroyable` blocks |
+| `bite` | Bites the closest target ahead for 1.6× attack damage and slows it |
+| `tail_sweep` | Hits everything behind and beside for 1.2× attack damage, with strong knockback |
+| `stomp` | Hits and slows everything on the ground close by |
+| `pounce` | Leaps forward and strikes whatever it lands on |
+| `dive` | Flyers swoop down and strike on contact; swimmers get a burst of speed that rams what's ahead |
+
+Damage is based on the creature's `attack_damage` (at least 2), times `power`. Abilities never hit the
+rider, the rider's other creatures, or anything the rider could not attack. Riding itself works for
+every species whether or not it has an ability; see [Riding creatures](/guide/riding).
+
+## hybrid
+
+Marks the species as a hybrid of two others.
+
+```json
+"hybrid": { "parents": ["ancientcreature:stegosaurus", "ancientcreature:triceratops"] }
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `parents` | two species ids | Must name two different species |
+
+A hybrid:
+
+* never appears as fossils, whatever `spawn.biomes` says, and has no DNA or cartridge items of its own,
+* is made in the Embryogenesis Chamber from a completed genome of each parent, one in the genome slot and
+  one in the donor slot, in either order,
+* keeps 85% of the parents' average genome fidelity, and is always sterile,
+* is added to the Species Journal the first time one is made.
+
+The shipped Stegoceratops and Tyrannoraptor are hybrids.
+
 ## Validation
 
 Rejected at load, with the file named in the log:
@@ -289,6 +435,9 @@ Rejected at load, with the file named in the log:
 * an unknown `behavior.profile`
 * an unknown behavior component `type` (the error lists every valid one)
 * a `hunt_threshold` above `max`, or a `full_threshold` below `hunt_threshold`
+* a `care.group_max` below `care.group_min`
+* `hybrid.parents` that is not two different species ids
+* an unknown `respiration`, `care.climate`, `care.social` or `riding.ability`, or a number outside its range
 * an unsupported `format_version`
 * a malformed resource id anywhere
 * no behaviour at all

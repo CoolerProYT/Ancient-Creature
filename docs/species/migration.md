@@ -18,9 +18,30 @@ Species values are now written fully qualified (`ancientcreature:triceratops`). 
 mod cannot read those. Downgrading after loading a world will lose species data.
 :::
 
+Creatures from before genetics existed load as an ordinary, fertile animal with a neutral genome, and
+keep the skin they had. Existing creatures have no saddle, so in a world with riding creatures, saddle
+them (or turn off `Riding.requireSaddle`) before riding again.
+
 ## For pack authors
 
-Nothing to migrate — the species system is new. Start at [Add a species](/species/quick-start).
+Packs written for earlier releases keep working unchanged:
+
+* Resource-pack species files with `"format_version": 1` (naming `geometry`, `texture`, `animations`
+  and `controller` directly) are converted on load to an equivalent client entity, and their geometry and
+  animations are adjusted for the old axis handling so they look exactly as they did.
+* Animation controllers with `"format_version": 1` still load as one controller, keeping their 0.2 s
+  default blend.
+* Variant weights in a format-1 resource-pack file are no longer used. Variants are rolled on the server
+  from the datapack's [`variants`](/species/species-json#variants) list, so add that list to the gameplay
+  file to get skins rolled.
+
+New fields in the gameplay file are all optional: [`care`](/species/species-json#care),
+[`riding`](/species/species-json#riding), [`respiration`](/species/species-json#respiration),
+[`variants`](/species/species-json#variants) and [`hybrid`](/species/species-json#hybrid). A species
+without `care` is solitary, has no climate preference and works its space out from its size.
+
+To move to the current resource-pack format, write a client entity and, for gear and skins, a render
+controller. See [Species (resource pack)](/species/client-species).
 
 ## For mod developers
 

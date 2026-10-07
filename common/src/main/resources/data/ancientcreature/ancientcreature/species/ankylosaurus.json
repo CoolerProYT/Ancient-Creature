@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/large_herbivore",
+  "loot_table": "ancientcreature:entities/ankylosaurus",
   "entity_category": "land",
   "physical": {
     "width": 1.9,
@@ -25,7 +25,11 @@
     "profile": "ancientcreature:armored_herbivore"
   },
   "diet": {
-    "items": ["minecraft:wheat", "minecraft:hay_block", "minecraft:fern"]
+    "items": [
+      "minecraft:wheat",
+      "minecraft:hay_block",
+      "minecraft:fern"
+    ]
   },
   "spawn": {
     "biomes": "#ancientcreature:spawns_ankylosaurus",
@@ -39,5 +43,24 @@
     "attack": "ancientcreature:entity.ankylosaurus.attack",
     "alert": "ancientcreature:entity.ankylosaurus.alert",
     "ambient_interval": 280
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "solitary"
+  },
+  "riding": {
+    "ability": "tail_sweep",
+    "cooldown": 80,
+    "power": 1.1
   }
 }

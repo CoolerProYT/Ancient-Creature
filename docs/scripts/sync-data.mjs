@@ -55,7 +55,9 @@ for (const name of pngNames(join(assets, 'textures/item'))) {
 for (const name of pngNames(join(assets, 'textures/item/fossil_part'))) {
   textures[`ancientcreature:fossil_part/${name}`] = `${HOSTED_TEXTURES}/fossil_part_${name}.png`
 }
-textures['ancientcreature:fossil_ore'] = `${HOSTED_TEXTURES}/fossil_ore.png`
+for (const block of ['fossil_ore', 'deepslate_fossil_ore', 'amber_ore', 'frozen_fossil']) {
+  textures[`ancientcreature:${block}`] = `${HOSTED_TEXTURES}/${block}.png`
+}
 for (const name of pngNames(join(docs, 'public/icons'))) {
   textures[`ancientcreature:${name}`] = `${HOSTED_TEXTURES}/${name}.png`
 }
@@ -138,9 +140,14 @@ const dnaLevels = [...integritySource.matchAll(/([A-Z_]+)\("([^"]+)", UniformInt
   scoreMax: integrityThresholds[index + 1] ?? 1,
 }))
 
+// Every define* call: ints ending in "Tick" are durations, floats are multipliers, the rest are shown as is.
 const config = [...readText(join(java, 'config/ModCommonConfig.java')).matchAll(
-  /define(Int|Float)\("([^"]+)", ([\d.]+)f?, [^,]+, [^,]+, "([^"]*)"\)/g,
-)].map(([, type, key, value, comment]) => ({ key, type: type.toLowerCase(), default: Number(value), comment: comment.replace(/\s*\[\]$/, '') }))
+  /define(Int|Float|Double|Boolean|List)\("([^"]+)", (List\.of\(\)|true|false|[\d.]+)f?, (?:[^,"\n]+, [^,"\n]+, )?"((?:[^"\\]|\\.)*)"\)/g,
+)].map(([, kind, key, value, comment]) => {
+  const type = kind === 'Int' ? (key.endsWith('Tick') ? 'ticks' : 'int') : kind === 'Float' ? 'multiplier' : kind.toLowerCase()
+  const parsed = kind === 'Boolean' ? value === 'true' : kind === 'List' ? [] : Number(value)
+  return { key, type, default: parsed, comment: comment.replace(/\\"/g, '"').replace(/\s*\[\]$/, '') }
+})
 
 const biomeTag = (tag) => {
   const [namespace, path] = tag.replace(/^#/, '').split(':')
@@ -168,6 +175,10 @@ const species = jsonFiles(speciesDir).map((file) => {
     incubationTime: json.spawn?.incubation_time ?? 0,
     diet: [json.diet?.items ?? []].flat(),
     biomes,
+    care: { climate: 'any', social: 'solitary', group_min: 1, group_max: 1, space: 0, ...json.care },
+    riding: { ability: 'none', cooldown: 100, power: 1, ...json.riding },
+    hybrid: json.hybrid?.parents ?? null,
+    variants: (json.variants ?? []).map((variant) => variant.id),
   }
 })
 

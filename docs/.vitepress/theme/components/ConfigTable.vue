@@ -15,8 +15,10 @@ import { data, seconds } from '../ancientcreature'
       <tr v-for="value in data.config" :key="value.key">
         <td><code>{{ value.key }}</code></td>
         <td>
-          <template v-if="value.type === 'int'">{{ value.default }} <span class="ac-muted">({{ seconds(value.default) }})</span></template>
-          <template v-else>{{ value.default }}×</template>
+          <template v-if="value.type === 'ticks'">{{ value.default }} <span class="ac-muted">({{ seconds(value.default as number) }})</span></template>
+          <template v-else-if="value.type === 'multiplier'">{{ value.default }}×</template>
+          <template v-else-if="value.type === 'list'"><code>[]</code></template>
+          <template v-else><code v-if="value.type === 'boolean'">{{ value.default }}</code><template v-else>{{ value.default }}</template></template>
         </td>
         <td>{{ value.comment }}</td>
       </tr>

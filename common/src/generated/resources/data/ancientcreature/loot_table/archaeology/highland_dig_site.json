@@ -1,0 +1,119 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:skull"
+            ]
+          },
+          "name": "ancientcreature:fossil_part",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:vertebra"
+            ]
+          },
+          "name": "ancientcreature:fossil_part",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:tooth"
+            ]
+          },
+          "name": "ancientcreature:fossil_part",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:rib"
+            ]
+          },
+          "name": "ancientcreature:fossil_part",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:limb"
+            ]
+          },
+          "name": "ancientcreature:fossil_part",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "ancientcreature:set_fossil_data",
+            "fossilParts": [
+              "ancientcreature:egg"
+            ]
+          },
+          "name": "ancientcreature:fossil_part"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:egg_shell_fragment",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:rock_fragment",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ancientcreature:dirt_fragment",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:coal",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flint",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "ancientcreature:archaeology/highland_dig_site"
+}

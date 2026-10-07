@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "loot_table": "ancientcreature:entities/giant_herbivore",
+  "loot_table": "ancientcreature:entities/argentinosaurus",
   "entity_category": "land",
   "physical": {
     "width": 4.25,
@@ -44,5 +44,27 @@
       "minecraft:fern",
       "minecraft:wheat"
     ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 5,
+    "space": 1400
+  },
+  "riding": {
+    "ability": "stomp",
+    "cooldown": 160,
+    "power": 1.4
   }
 }

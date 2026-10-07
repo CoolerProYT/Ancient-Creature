@@ -21,6 +21,12 @@ const maxHealth = Math.max(...species.map((s) => s.health))
 const maxAttack = Math.max(...species.map((s) => s.attack))
 
 const count = (name: string) => species.filter((s) => name === 'all' || s.category === name).length
+
+const nameOf = (id: string) => data.species.find((s) => s.id === id)?.name ?? prettify(id)
+const social = (care: (typeof species)[number]['care']) =>
+  care.social === 'herd' ? `Herd of ${care.group_min}–${care.group_max}` : care.social === 'pair' ? 'Pair' : 'Solitary'
+const climate = (value: string) => (value === 'any' ? 'Any' : prettify(value))
+const ability = (value: string) => (value === 'none' ? 'None' : prettify(value))
 </script>
 
 <template>
@@ -69,6 +75,12 @@ const count = (name: string) => species.filter((s) => name === 'all' || s.catego
           <div v-if="s.armor"><dt>Armor</dt><dd>{{ s.armor }}</dd></div>
         </dl>
 
+        <dl class="facts">
+          <div><dt>Social</dt><dd>{{ social(s.care) }}</dd></div>
+          <div><dt>Climate</dt><dd>{{ climate(s.care.climate) }}</dd></div>
+          <div><dt>Mount ability</dt><dd>{{ ability(s.riding.ability) }}</dd></div>
+        </dl>
+
         <div class="row">
           <span class="row-label">Eats</span>
           <span v-if="s.diet.length" class="diet">
@@ -76,7 +88,13 @@ const count = (name: string) => species.filter((s) => name === 'all' || s.catego
           </span>
           <span v-else class="ac-muted">Nothing — can't be tempted or bred</span>
         </div>
-        <div class="row">
+        <div v-if="s.hybrid" class="row">
+          <span class="row-label">Hybrid of</span>
+          <span class="biomes">
+            <a v-for="parent in s.hybrid" :key="parent" class="biome" :href="`#${parent.split(':')[1]}`">{{ nameOf(parent) }}</a>
+          </span>
+        </div>
+        <div v-else class="row">
           <span class="row-label">Fossils in</span>
           <span class="biomes">
             <span v-for="biome in s.biomes" :key="biome" class="biome">{{ prettify(biome) }}</span>
@@ -289,6 +307,10 @@ dd {
   font-size: 12px;
   background: var(--vp-c-default-soft);
   color: var(--vp-c-text-2);
+}
+
+.biomes a.biome {
+  text-decoration: none;
 }
 
 .empty {

@@ -16,7 +16,7 @@ const parse = (slot: string) => {
 const inputSlots = computed(() => props.inputs.map(parse))
 const outputSlots = computed(() => props.outputs.map(parse))
 // A config key wins over a fixed time, so the card shows the default the mod actually ships.
-const ticks = computed(() => (props.config ? data.config.find((c) => c.key === props.config)?.default : undefined) ?? props.time)
+const ticks = computed(() => (props.config ? (data.config.find((c) => c.key === props.config)?.default as number | undefined) : undefined) ?? props.time)
 </script>
 
 <template>

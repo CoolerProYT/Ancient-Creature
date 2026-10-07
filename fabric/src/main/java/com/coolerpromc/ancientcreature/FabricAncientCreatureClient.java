@@ -37,6 +37,7 @@ public class FabricAncientCreatureClient implements ClientModInitializer {
         ServicesClient.REGISTRY.applyClientPayloadReceiverRegistrations(FabricAncientCreatureClient::registerPayloadReceiver);
         ServicesClient.REGISTRY.applyClientReloadListenerRegistrations(ResourceLoader.get(PackType.CLIENT_RESOURCES)::registerReloadListener);
         KeyMappingHelper.registerKeyMapping(SpeciesJournalKeyHandler.OPEN_JOURNAL);
+        KeyMappingHelper.registerKeyMapping(SpeciesJournalKeyHandler.MOUNT_ABILITY);
         ClientTickEvents.END_CLIENT_TICK.register(SpeciesJournalKeyHandler::clientTick);
     }
 

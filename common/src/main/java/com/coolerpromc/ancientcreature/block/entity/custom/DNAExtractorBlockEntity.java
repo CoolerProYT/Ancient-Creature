@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.block.entity.custom;
 import com.coolerpromc.ancientcreature.Constants;
 import com.coolerpromc.ancientcreature.block.ModBlocks;
 import com.coolerpromc.ancientcreature.block.entity.ModBlockEntities;
+import com.coolerpromc.ancientcreature.block.entity.upgrade.MachineUpgrades;
 import com.coolerpromc.ancientcreature.config.ModCommonConfig;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
@@ -49,6 +50,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private final AnimationState extractingAnimationState = new AnimationState();
     private final ContainerData data;
+    private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
     private boolean isExtracting = false;
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.extractingTick.get();
@@ -68,6 +70,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
         private boolean isValidFossil(ItemStack itemStack) {
             FossilData fossilData = itemStack.get(ModDataComponents.FOSSIL_DATA.get());
+            if (fossilData == null) return false;
             boolean isIdentified = fossilData.identified();
             boolean isDirty = fossilData.isDirty();
             return isIdentified && !isDirty && fossilData.getSpecies() != null;
@@ -113,9 +116,6 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
                 return 2;
             }
         };
-        ModCommonConfig.CONFIG_SPEC.addReloadListener(() -> {
-            maxProgress = ModCommonConfig.CONFIG.extractingTick.get();
-        });
     }
 
     @Override
@@ -135,6 +135,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
             if (level.getBlockState(placeholderPos).is(ModBlocks.PLACEHOLDER.blockHolder())) {
                 level.removeBlock(placeholderPos, false);
             }
+            upgrades.drop(this.level, pos);
             Containers.dropContents(this.level, pos, extractionFluidContainer);
             Containers.dropContents(this.level, pos, sampleVialContainer);
             Containers.dropContents(this.level, pos, fossilContainer);
@@ -148,6 +149,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
+        upgrades.save(output);
         ContainerHelper.saveAllItems(output.child("extractionFluid"), extractionFluidContainer.getItems());
         ContainerHelper.saveAllItems(output.child("fossil"), fossilContainer.getItems());
         ContainerHelper.saveAllItems(output.child("sampleVial"), sampleVialContainer.getItems());
@@ -160,6 +162,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        upgrades.load(input);
         ContainerHelper.loadAllItems(input.childOrEmpty("extractionFluid"), extractionFluidContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("fossil"), fossilContainer.getItems());
         ContainerHelper.loadAllItems(input.childOrEmpty("sampleVial"), sampleVialContainer.getItems());
@@ -169,8 +172,19 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         isExtracting = input.getBooleanOr("isExtracting", false);
     }
 
+    private int baseTicks(ServerLevel level) {
+        return ModCommonConfig.CONFIG.extractingTick.get();
+    }
+
+    public MachineUpgrades getUpgrades() {
+        return upgrades;
+    }
+
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (!(level instanceof ServerLevel serverLevel)) return;
+
+        int baseTicks = baseTicks(serverLevel);
+        maxProgress = baseTicks <= 0 ? 0 : upgrades.scaleTime(baseTicks);
 
         if (canExtract()){
             if (progress == 0){
@@ -207,8 +221,10 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private void finishExtracting(ServerLevel serverLevel, BlockPos pos) {
         ItemStack output = calculateOutputStack();
-        extractionFluidContainer.getItem(0).hurtAndBreak(1, serverLevel, null, _ -> {});
-        if (!output.isEmpty()){
+        if (!upgrades.saves(serverLevel.getRandom())) {
+            extractionFluidContainer.getItem(0).hurtAndBreak(1, serverLevel, null, _ -> {});
+        }
+        if (!output.isEmpty() && !upgrades.saves(serverLevel.getRandom())){
             sampleVialContainer.getItem(0).shrink(1);
         }
         fossilContainer.getItem(0).shrink(1);
@@ -231,12 +247,13 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         Species species = fossilData.getSpecies();
         float completeness = fossilData.completeness();
         ItemStack output = ModItems.DNA_SAMPLE.toStack();
-        float integrityScore = Math.max(0.01f, completeness + part.value().dnaExtractingBonus());
+        // each precision module recovers a little more of what the fossil still holds
+        float integrityScore = Math.max(0.01f, completeness + part.value().dnaExtractingBonus() + 0.05f * upgrades.precision());
         DNAIntegrityLevel integrityLevel = DNAIntegrityLevel.byScore(integrityScore);
         if (integrityLevel == null){
             return ItemStack.EMPTY;
         }
-        output.set(ModDataComponents.DNA_DATA.get(), new DNAData(integrityLevel, species));
+        output.set(ModDataComponents.DNA_DATA.get(), new DNAData(integrityLevel, species, Math.min(1.0f, integrityScore)));
         return output;
     }
 

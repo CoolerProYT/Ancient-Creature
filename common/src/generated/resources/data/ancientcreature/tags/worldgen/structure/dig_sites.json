@@ -1,0 +1,13 @@
+{
+  "values": [
+    "ancientcreature:plains_dig_site",
+    "ancientcreature:arid_dig_site",
+    "ancientcreature:savanna_dig_site",
+    "ancientcreature:badlands_dig_site",
+    "ancientcreature:jungle_dig_site",
+    "ancientcreature:cold_dig_site",
+    "ancientcreature:swamp_dig_site",
+    "ancientcreature:highland_dig_site",
+    "ancientcreature:coastal_dig_site"
+  ]
+}

@@ -1,3 +1,8 @@
-// 26.3	2026-09-29T22:09:01.4782373	Tags for minecraft:item mod id ancientcreature
+// 26.3	2026-10-02T03:26:11.404756	Tags for minecraft:item mod id ancientcreature
 aa435e606bba005f0e224981920dd399275a4b7a data/ancientcreature/tags/item/chisels.json
 9c03151187e7365418db07c65daf0674e3628d49 data/ancientcreature/tags/item/extraction_fluids.json
+8b33b6803d321e0dd3996527c9c09c7670d04b9d data/c/tags/item/feathers.json
+e6954dc4a049bd9a9766011a46ab9b4e710ee6ca data/c/tags/item/foods/cooked_meat.json
+2c1b95b7a8b14bafa61df12712a75cb74ab9a1e3 data/c/tags/item/foods/raw_meat.json
+a1d1f8142570cce2c57fa2a404edc4197cb42351 data/c/tags/item/leathers.json
+7a026a1b2fba8c2c17f102e30eadf641abb7f8a3 data/minecraft/tags/item/meat.json
