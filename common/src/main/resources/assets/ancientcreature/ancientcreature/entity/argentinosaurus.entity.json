@@ -26,6 +26,7 @@
         "special": "animation.argentinosaurus.special",
         "hurt": "animation.argentinosaurus.hurt",
         "death": "animation.argentinosaurus.death",
+        "roar": "animation.argentinosaurus.roar",
         "main": "controller.animation.argentinosaurus.main"
       },
       "scripts": {

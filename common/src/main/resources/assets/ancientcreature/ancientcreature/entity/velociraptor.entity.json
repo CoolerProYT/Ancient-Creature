@@ -26,6 +26,7 @@
         "special": "animation.velociraptor.special",
         "hurt": "animation.velociraptor.hurt",
         "death": "animation.velociraptor.death",
+        "roar": "animation.velociraptor.roar",
         "main": "controller.animation.velociraptor.main"
       },
       "scripts": {

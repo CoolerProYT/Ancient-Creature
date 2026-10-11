@@ -27,6 +27,7 @@ public final class ModCommonConfig {
     public final ConfigValue<Integer> populationRadius;
     public final ConfigValue<Double> electricFenceDamage;
     public final ConfigValue<Boolean> comfortEnabled;
+    public final ConfigValue<Boolean> hungerEnabled;
     public final ConfigValue<Boolean> ridingRequiresSaddle;
 
     private ModCommonConfig(ConfigBuilder builder){
@@ -44,7 +45,8 @@ public final class ModCommonConfig {
         populationCap = builder.defineInt("Creatures.populationCap", 64, 0, 4096, "Maximum revived creatures within populationRadius of a new one. Breeding, hatching and capsule releases wait or fail beyond it. 0 disables the cap.");
         ridingRequiresSaddle = builder.defineBoolean("Riding.requireSaddle", true, "Whether a creature needs a Creature Saddle before its owner can ride it.");
         comfortEnabled = builder.defineBoolean("Creatures.comfort", true, "Track creature comfort (space, company, climate, hunger, pain). Comfortable creatures heal and breed; distressed large ones smash weak enclosures.");
-        electricFenceDamage = builder.defineDouble("Containment.electricFenceDamage", 4.0, 0.0, 100.0, "Damage a fully charged electric fence deals per shock. Weaker charge deals down to half of this.");
+        hungerEnabled = builder.defineBoolean("Creatures.hunger", true, "Whether creatures get hungry. When false every creature stays full: it never starves, never loses comfort to hunger and never hunts animals for food. Food is still used for breeding.");
+        electricFenceDamage =builder.defineDouble("Containment.electricFenceDamage", 4.0, 0.0, 100.0, "Damage a fully charged electric fence deals per shock. Weaker charge deals down to half of this.");
         populationRadius = builder.defineInt("Creatures.populationRadius", 64, 8, 256, "Radius in blocks used to count creatures for populationCap.");
     }
 

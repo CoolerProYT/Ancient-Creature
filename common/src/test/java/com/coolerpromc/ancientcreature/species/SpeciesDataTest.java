@@ -108,8 +108,9 @@ class SpeciesDataTest {
         // Every attribute id must resolve against the real registry.
         assertTrue(definition.attributes().resolve().result().isPresent());
 
-        // The profile must expand into the goal list the old entity hard-coded.
-        assertEquals(11, definition.resolvedBehaviors().size());
+        // The profile must expand into the goal list the old entity hard-coded, plus grazing so it can
+        // feed itself (it ships a graze clip but the profile never used it).
+        assertEquals(12, definition.resolvedBehaviors().size());
     }
 
     @Test

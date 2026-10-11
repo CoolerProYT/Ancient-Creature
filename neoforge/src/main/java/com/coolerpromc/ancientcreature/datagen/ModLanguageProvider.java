@@ -104,6 +104,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add(ModItems.PRECISION_UPGRADE_MODULE.get(), "Precision Upgrade Module");
         add(ModItems.EFFICIENCY_UPGRADE_MODULE.get(), "Efficiency Upgrade Module");
         add("gui.ancientcreature.upgrades", "Upgrades");
+        add("gui.ancientcreature.time_left", "%s left");
+        add("gui.ancientcreature.genome_completeness", "Genome %s%%");
+        add("gui.ancientcreature.too_degraded", "Too degraded for DNA");
+        add("gui.ancientcreature.donor_slot", "Donor genome (optional): put a second completed cartridge here to splice a hybrid of the two species.");
         add("tooltip.ancientcreature.upgrade.speed", "Each module cuts processing time by a third");
         add("tooltip.ancientcreature.upgrade.precision", "Each module improves the machine's result:");
         add("tooltip.ancientcreature.upgrade.precision.identification", " Identification: halves the chance to fail");
@@ -155,6 +159,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         add("name.ancientcreature.dirty", "Dirty");
         add("name.ancientcreature.unidentified", "Unidentified");
+        add("name.ancientcreature.fossil_name", "%s %s");
 
         add("screen.ancientcreature.field_guide", "Field Guide");
         add("guide.ancientcreature.next", "Next: %s");

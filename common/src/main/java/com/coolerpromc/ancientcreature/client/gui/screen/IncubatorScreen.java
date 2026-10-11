@@ -26,5 +26,8 @@ public class IncubatorScreen extends MachineScreen<IncubatorMenu> {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, leftPos + 77, topPos + 34, menu.getProgressWidth(), 16);
+        if (menu.getProgress() > 0) {
+            statusLine(graphics, Component.translatable("gui.ancientcreature.time_left", duration(menu.getMaxProgress() - menu.getProgress())), STATUS_COLOR);
+        }
     }
 }

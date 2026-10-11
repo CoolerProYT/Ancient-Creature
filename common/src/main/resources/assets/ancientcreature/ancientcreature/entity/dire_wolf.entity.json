@@ -26,6 +26,7 @@
         "special": "animation.dire_wolf.special",
         "hurt": "animation.dire_wolf.hurt",
         "death": "animation.dire_wolf.death",
+        "roar": "animation.dire_wolf.roar",
         "main": "controller.animation.dire_wolf.main"
       },
       "scripts": {

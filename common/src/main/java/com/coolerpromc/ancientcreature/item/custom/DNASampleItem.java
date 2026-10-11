@@ -15,9 +15,10 @@ public class DNASampleItem extends Item {
 
     @Override
     public Component getName(ItemStack itemStack) {
-        MutableComponent component = Component.literal(super.getName(itemStack).getString());
+        // copy, not getString(): the name must stay translatable for each client's language
+        MutableComponent component = super.getName(itemStack).copy();
         DNAData dnaData = itemStack.get(ModDataComponents.DNA_DATA.get());
-        DNAIntegrityLevel level = dnaData.integrityLevel();
+        DNAIntegrityLevel level = dnaData == null ? null : dnaData.integrityLevel();
         if (level != null){
             component.append(" (").append(Component.translatable("dna.ancientcreature." + level.getSerializedName())).append(")");
         }

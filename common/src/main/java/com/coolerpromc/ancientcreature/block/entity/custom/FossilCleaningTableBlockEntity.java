@@ -45,19 +45,19 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
 
     private final ContainerData data;
     private final MachineUpgrades upgrades = new MachineUpgrades(this::setChanged);
-    private final SimpleContainer brushContainer = new SimpleContainer(1){
+    private final SimpleContainer brushContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(Services.PLATFORM.brushToolTag());
         }
     };
-    private final SimpleContainer fossilContainer = new SimpleContainer(1){
+    private final SimpleContainer fossilContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, @NonNull ItemStack itemStack) {
             return isValidFossil(itemStack);
         }
     };
-    private final SimpleContainer outputContainer = new SimpleContainer(2){
+    private final SimpleContainer outputContainer = new MachineContainer(2, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, @NonNull ItemStack itemStack) {
             return false;
@@ -185,9 +185,9 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
         else {
             boolean wasWorking = progress != 0;
             progress = 0;
-            setChanged();
             this.isCleaning = false;
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, blockPos, ModSounds.CLEANING_TABLE_BRUSH);
                 level.sendBlockUpdated(blockPos, state, state, 3);
             }
@@ -303,5 +303,10 @@ public class FossilCleaningTableBlockEntity extends BlockEntity implements MenuP
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getBrushContainer(), getFossilContainer(), getOutputContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.outputContainer;
     }
 }

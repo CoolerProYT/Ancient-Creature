@@ -26,6 +26,7 @@
         "special": "animation.dunkleosteus.special",
         "hurt": "animation.dunkleosteus.hurt",
         "death": "animation.dunkleosteus.death",
+        "roar": "animation.dunkleosteus.roar",
         "main": "controller.animation.dunkleosteus.main"
       },
       "scripts": {
