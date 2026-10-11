@@ -18,6 +18,7 @@ public class GenomeSequencerMenu extends MachineMenu {
     private final Level level;
     private final BlockPos pos;
     private final ContainerData data;
+    private final Slot cartridgeSlot;
 
     public GenomeSequencerMenu(int containerId, Inventory inventory, BlockPos pos) {
         this(containerId, inventory, inventory.player, (GenomeSequencerBlockEntity) inventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
@@ -33,7 +34,7 @@ public class GenomeSequencerMenu extends MachineMenu {
         addPlayerInventory(inventory);
 
         addSlot(new ContainerSlot(blockEntity.getDnaSampleContainer(), 0, 34, 34));
-        addSlot(new ContainerSlot(blockEntity.getCartridgeContainer(), 0, 124, 34));
+        this.cartridgeSlot = addSlot(new ContainerSlot(blockEntity.getCartridgeContainer(), 0, 124, 34));
         beginOutputs();
         addUpgradeSlots(blockEntity.getUpgrades());
     }
@@ -49,6 +50,10 @@ public class GenomeSequencerMenu extends MachineMenu {
 
     public int getMaxProgress(){
         return this.data.get(DNAExtractorBlockEntity.DATA_MAX_PROGRESS);
+    }
+
+    public ItemStack getCartridge() {
+        return this.cartridgeSlot.getItem();
     }
 
     public int getProgressWidth(){

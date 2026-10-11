@@ -16,7 +16,7 @@
               "hurt": "query.is_hurt"
             },
             {
-              "graze": "query.action == 'graze'"
+              "graze": "query.action == 'graze' || query.action == 'eat'"
             },
             {
               "attack": "query.action == 'attack' || query.action == 'roar'"

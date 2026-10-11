@@ -38,6 +38,7 @@ import java.util.Locale;
 
 public final class SpeciesJournalScreen extends Screen {
     private static final Identifier TEXTURE = Constants.id("textures/gui/screen/species_journal.png");
+    private static final int PREVIEW_ENTITY_ID = -1;
     private static final int TEXTURE_WIDTH = 470;
     private static final int TEXTURE_HEIGHT = 258;
     private static final int DISPLAY_WIDTH = 420;
@@ -152,6 +153,8 @@ public final class SpeciesJournalScreen extends Screen {
             return;
         }
         if (this.selected.getEntityType().create(this.minecraft.level, EntitySpawnReason.LOAD) instanceof AncientCreatureEntity creature) {
+            // never added to the level, but rendering reads the entity id; a negative one matches no real entity
+            creature.setId(PREVIEW_ENTITY_ID);
             creature.setSpecies(this.selected);
             creature.setYRot(0.0F);
             creature.yRotO = 0.0F;

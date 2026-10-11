@@ -7,6 +7,7 @@ import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -40,6 +41,21 @@ public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly, boolea
         return new NearestAttackableTargetGoal<>(entity, Animal.class, this.randomInterval, true, false,
             (target, level) -> (!this.adultsOnly || !entity.isBaby())
                 && (!this.requiresHunger || entity.wantsToHunt())
-                && target instanceof Animal);
+                && target instanceof Animal
+                && isFairPrey(entity, target));
+    }
+
+    /**
+     * Another revived creature is only prey if it is no stronger than the hunter, and a flyer is not prey
+     * while it is in the air: two flyers hunting each other would chase upward without end.
+     */
+    private static boolean isFairPrey(AncientCreatureEntity hunter, LivingEntity target) {
+        if (!(target instanceof AncientCreatureEntity prey)) {
+            return true;
+        }
+        if (prey.speciesCategory().isFlying() && !prey.onGround()) {
+            return false;
+        }
+        return prey.getMaxHealth() <= hunter.getMaxHealth();
     }
 }

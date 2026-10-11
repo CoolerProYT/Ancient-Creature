@@ -48,6 +48,7 @@ public final class BehaviorProfiles {
         component(new BreedBehavior(1.0)),
         component(new TemptBehavior(1.15, false)),
         component(new FollowParentBehavior(1.1)),
+        component(new GrazeBehavior(90, 360, 5.0F)),
         component(new WanderBehavior(0.9, true, 120)),
         component(new LookAtPlayerBehavior(8.0F, 0.02F)),
         component(RandomLookBehavior.INSTANCE),

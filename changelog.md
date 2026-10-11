@@ -1,3 +1,27 @@
+## 26.1.2.11
+- Machine screens now show more
+  - The Incubator shows the time left on the current egg
+  - The Genome Sequencer shows how complete the cartridge is
+  - Hovering the empty donor slot in the Embryogenesis Chamber explains hybrid splicing
+  - The DNA Extractor warns when a fossil is too degraded for DNA, and no longer uses up the fossil, Extraction Fluid or vial on it
+- Hoppers and pipes can now only take finished products out of the lab machines, so they no longer drain input slots
+- JEI no longer covers the upgrade panel beside the machine screens
+- Creatures
+  - Added a roar animation to the 16 creatures that lowered their head as if eating when they roared
+  - Creatures now play their eating or grazing animation when hand-fed
+  - Dying creatures with their own death animation no longer flip upside down into the ground
+  - Released creatures now start at full health, including the extra health from their genome
+  - Triceratops now grazes to feed itself
+  - Fixed Parasaurolophus, Stegosaurus, Stegoceratops, Woolly Mammoth and Woolly Rhinoceros ignoring their own grazing settings
+  - Pteranodon and Quetzalcoatlus no longer climb endlessly into the sky, and now dive on their prey after circling it
+  - Predators no longer hunt revived creatures stronger than themselves, or flyers in the air
+  - New `Creatures.hunger` config: set it to false and creatures stay full, so they never need feeding
+- Fixed a crash when opening the Species Journal
+- Fixed creatures from completed cartridges, eggs and capsules turning into a Triceratops when the item had no species set
+- Fixed fossil names ending in a stray space, and fossil and DNA sample names not being translated on servers
+- Machines no longer save every tick while idle
+- Datapacks: misspelt behavior component options are now reported in the log instead of being silently ignored
+
 ## 26.1.2.10
 - Reworked dig sites
   - Camps now open up to three excavation pits around them: trenches, stepped quarries, half-uncovered skeletons and collapsed sinkholes, with brushable layers above fossil ore

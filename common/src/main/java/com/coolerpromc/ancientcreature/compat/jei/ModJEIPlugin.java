@@ -8,6 +8,7 @@ import com.coolerpromc.ancientcreature.client.gui.screen.FossilCleaningTableScre
 import com.coolerpromc.ancientcreature.client.gui.screen.FossilIdentificationChamberScreen;
 import com.coolerpromc.ancientcreature.client.gui.screen.GenomeSequenceScreen;
 import com.coolerpromc.ancientcreature.client.gui.screen.IncubatorScreen;
+import com.coolerpromc.ancientcreature.client.gui.screen.MachineScreen;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
 import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
@@ -15,6 +16,7 @@ import com.coolerpromc.ancientcreature.item.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.types.IRecipeType;
@@ -23,11 +25,14 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
+
+import java.util.List;
 
 @JeiPlugin
 public class ModJEIPlugin implements IModPlugin {
@@ -99,6 +104,13 @@ public class ModJEIPlugin implements IModPlugin {
         registration.addRecipeClickArea(GenomeSequenceScreen.class, 77, 34, 24, 16, GENOME_SEQUENCING);
         registration.addRecipeClickArea(EmbryogenesisChamberScreen.class, 93, 34, 24, 16, EMBRYOGENESIS);
         registration.addRecipeClickArea(IncubatorScreen.class, 77, 34, 24, 16, INCUBATION);
+        // keep JEI's ingredient list off the upgrade panel to the right of every machine screen
+        registration.addGenericGuiContainerHandler(MachineScreen.class, new IGuiContainerHandler<MachineScreen<?>>() {
+            @Override
+            public List<Rect2i> getGuiExtraAreas(MachineScreen<?> screen) {
+                return List.of(screen.getUpgradePanelArea());
+            }
+        });
     }
 
     private static IRecipeType<AncientCreatureJeiRecipe> type(String path) {

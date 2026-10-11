@@ -26,6 +26,7 @@
         "special": "animation.carnotaurus.special",
         "hurt": "animation.carnotaurus.hurt",
         "death": "animation.carnotaurus.death",
+        "roar": "animation.carnotaurus.roar",
         "main": "controller.animation.carnotaurus.main"
       },
       "scripts": {

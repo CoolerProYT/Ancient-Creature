@@ -18,6 +18,7 @@ public class EmbryogenesisChamberMenu extends MachineMenu {
     private final Level level;
     private final BlockPos pos;
     private final ContainerData data;
+    private final Slot donorSlot;
 
     public EmbryogenesisChamberMenu(int containerId, Inventory inventory, BlockPos pos) {
         this(containerId, inventory, inventory.player, (EmbryogenesisChamberBlockEntity) inventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
@@ -33,12 +34,16 @@ public class EmbryogenesisChamberMenu extends MachineMenu {
         addPlayerInventory(inventory);
 
         addSlot(new ContainerSlot(blockEntity.getGenomeContainer(), 0, 34, 34));
-        addSlot(new ContainerSlot(blockEntity.getDonorContainer(), 0, 34, 52));
+        this.donorSlot = addSlot(new ContainerSlot(blockEntity.getDonorContainer(), 0, 34, 52));
         addSlot(new ContainerSlot(blockEntity.getEggContainer(), 0, 52, 34));
         addSlot(new ContainerSlot(blockEntity.getNutrientContainer(), 0, 70, 34));
         beginOutputs();
         addSlot(new ContainerSlot(blockEntity.getOutputContainer(), 0, 124, 34));
         addUpgradeSlots(blockEntity.getUpgrades());
+    }
+
+    public Slot getDonorSlot() {
+        return this.donorSlot;
     }
 
     @Override

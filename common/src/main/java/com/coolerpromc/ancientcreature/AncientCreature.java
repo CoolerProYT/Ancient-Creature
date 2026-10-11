@@ -71,13 +71,13 @@ public class AncientCreature {
     }
 
     public static void initCapability(){
-        registerCapability(ModBlockEntities.FOSSIL_CLEANING_TABLE, FossilCleaningTableBlockEntity::getContainerBySide, FossilCleaningTableBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER, FossilIdentificationChamberBlockEntity::getContainerBySide, FossilIdentificationChamberBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getContainerBySide, DNAExtractorBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.GENOME_SEQUENCER, GenomeSequencerBlockEntity::getContainerBySide, GenomeSequencerBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberBlockEntity::getContainerBySide, EmbryogenesisChamberBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.INCUBATOR, IncubatorBlockEntity::getContainerBySide, IncubatorBlockEntity::getAllContainers);
-        registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getContainerBySide, PlaceholderBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.FOSSIL_CLEANING_TABLE, FossilCleaningTableBlockEntity::getAutomationContainer, FossilCleaningTableBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.FOSSIL_IDENTIFICATION_CHAMBER, FossilIdentificationChamberBlockEntity::getAutomationContainer, FossilIdentificationChamberBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.DNA_EXTRACTOR, DNAExtractorBlockEntity::getAutomationContainer, DNAExtractorBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.GENOME_SEQUENCER, GenomeSequencerBlockEntity::getAutomationContainer, GenomeSequencerBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.EMBRYOGENESIS_CHAMBER, EmbryogenesisChamberBlockEntity::getAutomationContainer, EmbryogenesisChamberBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.INCUBATOR, IncubatorBlockEntity::getAutomationContainer, IncubatorBlockEntity::getAllContainers);
+        registerCapability(ModBlockEntities.PLACEHOLDER, PlaceholderBlockEntity::getAutomationContainer, PlaceholderBlockEntity::getAllContainers);
     }
 
     public static void initEntityAttribute(){

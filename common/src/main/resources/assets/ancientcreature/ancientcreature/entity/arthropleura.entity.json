@@ -26,6 +26,7 @@
         "special": "animation.arthropleura.special",
         "hurt": "animation.arthropleura.hurt",
         "death": "animation.arthropleura.death",
+        "roar": "animation.arthropleura.roar",
         "main": "controller.animation.arthropleura.main"
       },
       "scripts": {

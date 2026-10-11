@@ -26,6 +26,7 @@
         "special": "animation.quetzalcoatlus.special",
         "hurt": "animation.quetzalcoatlus.hurt",
         "death": "animation.quetzalcoatlus.death",
+        "roar": "animation.quetzalcoatlus.roar",
         "main": "controller.animation.quetzalcoatlus.main"
       },
       "scripts": {

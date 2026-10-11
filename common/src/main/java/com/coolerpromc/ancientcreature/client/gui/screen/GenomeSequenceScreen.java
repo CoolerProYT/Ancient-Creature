@@ -1,6 +1,8 @@
 package com.coolerpromc.ancientcreature.client.gui.screen;
 
 import com.coolerpromc.ancientcreature.Constants;
+import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
+import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.menu.custom.GenomeSequencerMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -26,5 +28,10 @@ public class GenomeSequenceScreen extends MachineScreen<GenomeSequencerMenu> {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, this.leftPos + 77, this.topPos + 34, this.menu.getProgressWidth(), 16);
+        GenomeData genome = this.menu.getCartridge().get(ModDataComponents.GENOME_DATA.get());
+        if (genome != null) {
+            int percent = Math.round(genome.completeness() * 100);
+            statusLine(graphics, Component.translatable("gui.ancientcreature.genome_completeness", percent), STATUS_COLOR);
+        }
     }
 }

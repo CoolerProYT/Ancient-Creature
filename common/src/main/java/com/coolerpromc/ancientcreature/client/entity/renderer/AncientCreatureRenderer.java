@@ -99,9 +99,11 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
             state.textures = List.of();
             state.renderScale = 1.0F;
             state.shadowRadius = 0.5F;
+            state.hasDeathAnimation = false;
             return;
         }
         state.renderScale = appearance.settings().renderScale();
+        state.hasDeathAnimation = appearance.entity().animations().containsKey("death");
         state.shadowRadius = appearance.settings().shadowRadius();
 
         CreatureAnimator animator = this.animators.computeIfAbsent(entity, e -> new CreatureAnimator());
@@ -241,6 +243,18 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
     @Override
     protected float getShadowRadius(AncientCreatureRenderState state) {
         return state.shadowRadius * state.ageScale;
+    }
+
+    @Override
+    protected void setupRotations(AncientCreatureRenderState state, PoseStack poseStack, float bodyRot, float entityScale) {
+        // A death clip already rolls the body onto its side; vanilla's roll on top would turn it upside down
+        // into the ground.
+        float deathTime = state.deathTime;
+        if (state.hasDeathAnimation) {
+            state.deathTime = 0.0F;
+        }
+        super.setupRotations(state, poseStack, bodyRot, entityScale);
+        state.deathTime = deathTime;
     }
 
     @Override

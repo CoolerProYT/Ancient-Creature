@@ -52,32 +52,32 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.embryogenesisTick.get();
 
-    private final SimpleContainer genomeContainer = new SimpleContainer(1){
+    private final SimpleContainer genomeContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
         }
     };
     /** A second completed genome; with one here the chamber splices the two into their hybrid. */
-    private final SimpleContainer donorContainer = new SimpleContainer(1){
+    private final SimpleContainer donorContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
         }
     };
-    private final SimpleContainer eggContainer = new SimpleContainer(1){
+    private final SimpleContainer eggContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.ARTIFICIAL_EGG.get());
         }
     };
-    private final SimpleContainer nutrientContainer = new SimpleContainer(1){
+    private final SimpleContainer nutrientContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.NUTRIENT_SOLUTION.get());
         }
     };
-    private final SimpleContainer outputContainer = new SimpleContainer(1) {
+    private final SimpleContainer outputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return false;
@@ -206,8 +206,8 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
             boolean wasWorking = progress != 0;
             progress = 0;
             this.isProcessing = false;
-            setChanged();
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, pos, ModSounds.EMBRYOGENESIS_CHAMBER_PROCESSING);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -250,11 +250,11 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
 
     /** The species the chamber would make now: the cartridge's, or the hybrid of it and the donor. */
     private @Nullable Species resultSpecies() {
-        Species species = genomeContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        Species species = ModDataComponents.speciesOf(genomeContainer.getItem(0));
         if (species == null) return null;
         ItemStack donor = donorContainer.getItem(0);
         if (donor.isEmpty()) return species;
-        Species other = donor.get(ModDataComponents.SPECIES.get());
+        Species other = ModDataComponents.speciesOf(donor);
         return other == null ? null : Species.hybridOf(species, other).orElse(null);
     }
 
@@ -331,5 +331,10 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getGenomeContainer(), getEggContainer(), getNutrientContainer(), getOutputContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.outputContainer;
     }
 }

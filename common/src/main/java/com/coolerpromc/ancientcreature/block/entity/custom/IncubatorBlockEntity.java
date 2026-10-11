@@ -50,14 +50,14 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     private int maxProgress = 100;
     private boolean isProcessing;
 
-    private final SimpleContainer inputContainer = new SimpleContainer(1) {
+    private final SimpleContainer inputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return stack.is(ModItems.FERTILIZED_ANCIENT_EGG.get());
         }
     };
 
-    private final SimpleContainer outputContainer = new SimpleContainer(1) {
+    private final SimpleContainer outputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
             return false;
@@ -103,7 +103,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
 
     /** Unprocessed incubation time for the egg inside, or 0 when there is none. */
     private int baseTicks(ServerLevel level) {
-        Species species = inputContainer.getItem(0).get(ModDataComponents.SPECIES.get());
+        Species species = ModDataComponents.speciesOf(inputContainer.getItem(0));
         if (species == null) {
             return 0;
         }
@@ -145,8 +145,8 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
             boolean wasWorking = progress != 0;
             progress = 0;
             this.isProcessing = false;
-            setChanged();
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, pos, ModSounds.INCUBATOR_PROCESSING);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -155,7 +155,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
 
     private void finishExtracting(ServerLevel serverLevel, BlockPos pos) {
         ItemStack stack = inputContainer.removeItem(0, 1);
-        Species species = stack.get(ModDataComponents.SPECIES.get());
+        Species species = ModDataComponents.speciesOf(stack);
         if (species == null) return;
         ItemStack output = ModItems.BABY_CREATURE_CAPSULE.toStack();
         output.set(ModDataComponents.SPECIES.get(), species);
@@ -255,5 +255,10 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getInputContainer(), getOutputContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.outputContainer;
     }
 }

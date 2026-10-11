@@ -544,6 +544,16 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private void tickHunger() {
         SpeciesHungerProperties hunger = this.hungerProperties();
 
+        // Pinning the meter at max, rather than skipping the tick, keeps comfort and hunting reading a full creature.
+        if (!ModCommonConfig.CONFIG.hungerEnabled.get()) {
+            this.hungerTicks = 0;
+            this.starveTicks = 0;
+            if (this.getHunger() != hunger.max()) {
+                this.entityData.set(DATA_HUNGER, hunger.max());
+            }
+            return;
+        }
+
         if (++this.hungerTicks >= hunger.decayInterval()) {
             this.hungerTicks = 0;
             float next = hunger.clamp(this.getHunger() - 1.0F);
@@ -792,12 +802,14 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     }
 
     private void applyGenomeModifiers(CreatureGenome genome) {
+        // keep the same share of health, so a hardy newborn starts at its full, raised maximum
+        float healthFraction = this.getMaxHealth() > 0 ? this.getHealth() / this.getMaxHealth() : 1.0F;
         setMultiplier(Attributes.MAX_HEALTH, GENOME_VITALITY, genome.vitality() - 1.0F);
         setMultiplier(Attributes.MOVEMENT_SPEED, GENOME_VIGOR, genome.vigor() - 1.0F);
         // bigger animals hit harder
         setMultiplier(Attributes.ATTACK_DAMAGE, GENOME_STRENGTH, (genome.size() - 1.0F) * 0.75F);
-        if (this.getHealth() > this.getMaxHealth()) {
-            this.setHealth(this.getMaxHealth());
+        if (this.getHealth() > 0.0F) {
+            this.setHealth(healthFraction * this.getMaxHealth());
         }
     }
 
