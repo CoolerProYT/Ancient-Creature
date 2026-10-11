@@ -26,6 +26,7 @@
         "special": "animation.dilophosaurus.special",
         "hurt": "animation.dilophosaurus.hurt",
         "death": "animation.dilophosaurus.death",
+        "roar": "animation.dilophosaurus.roar",
         "main": "controller.animation.dilophosaurus.main"
       },
       "scripts": {

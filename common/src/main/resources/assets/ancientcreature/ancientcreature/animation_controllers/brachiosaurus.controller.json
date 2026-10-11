@@ -22,7 +22,7 @@
               "attack": "query.action == 'attack'"
             },
             {
-              "browse": "query.action == 'graze'"
+              "browse": "query.action == 'graze' || query.action == 'eat'"
             },
             {
               "walk": "query.is_moving"
@@ -49,7 +49,7 @@
               "attack": "query.action == 'attack'"
             },
             {
-              "browse": "query.action == 'graze'"
+              "browse": "query.action == 'graze' || query.action == 'eat'"
             },
             {
               "idle": "!query.is_moving"

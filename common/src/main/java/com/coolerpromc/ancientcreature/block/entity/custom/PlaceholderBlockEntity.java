@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -147,5 +148,10 @@ public class PlaceholderBlockEntity extends BlockEntity implements ICapabilityPr
             return exposure.getAllContainers();
         }
         return new Container[0];
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return level != null && level.getBlockEntity(this.getActualPos()) instanceof ICapabilityProvider exposure && exposure.canExtract(container, stack);
     }
 }

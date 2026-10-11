@@ -31,7 +31,7 @@ public class BabyCreatureCapsule extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         ItemStack stack = context.getItemInHand();
-        Species species = stack.get(ModDataComponents.SPECIES.get());
+        Species species = ModDataComponents.speciesOf(stack);
         if (level instanceof ServerLevel serverLevel && species != null){
             BlockPos pos = context.getClickedPos();
             Direction clickedFace = context.getClickedFace();

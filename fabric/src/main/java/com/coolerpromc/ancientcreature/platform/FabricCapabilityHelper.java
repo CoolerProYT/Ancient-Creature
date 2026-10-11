@@ -3,6 +3,8 @@ package com.coolerpromc.ancientcreature.platform;
 import com.coolerpromc.ancientcreature.platform.services.ICapabilityHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedSlottedStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -33,7 +35,12 @@ public class FabricCapabilityHelper implements ICapabilityHelper {
     }
 
     private static <T extends BlockEntity> void register(Entry<T> entry) {
-        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> direction == null ? new CombinedSlottedStorage<>(Arrays.stream(entry.containers.apply(blockEntity)).map(c -> ContainerStorage.of(c, null)).toList()) : ContainerStorage.of(entry.provider.apply(blockEntity, direction), direction), entry.type.get());
+        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> direction == null ? new CombinedSlottedStorage<>(Arrays.stream(entry.containers.apply(blockEntity)).map(c -> ContainerStorage.of(c, null)).toList()) : sided(entry.provider.apply(blockEntity, direction), direction), entry.type.get());
+    }
+
+    private static @Nullable Storage<ItemVariant> sided(@Nullable Container container, Direction direction) {
+        // a WorldlyContainer is wrapped with its side rules
+        return container == null ? null : ContainerStorage.of(container, direction);
     }
 
     private record Entry<T extends BlockEntity>(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider,  Function<T, Container[]>  containers){

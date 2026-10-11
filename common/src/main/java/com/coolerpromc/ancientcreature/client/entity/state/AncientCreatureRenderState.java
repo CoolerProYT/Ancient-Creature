@@ -29,6 +29,8 @@ public class AncientCreatureRenderState extends LivingEntityRenderState {
     public boolean isSaddled;
     public int armorTier;
     public boolean isSitting;
+    /** The species falls over in its own death clip, so the vanilla death roll must be skipped. */
+    public boolean hasDeathAnimation;
 
     public @Nullable SpeciesAppearance appearance;
     /** The geometry chosen this frame, already posed into {@link #bonePose}. */

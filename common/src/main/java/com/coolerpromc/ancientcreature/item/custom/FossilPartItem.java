@@ -21,18 +21,24 @@ public class FossilPartItem extends Item {
         boolean identified = fossilData.identified();
         Holder<FossilPart> part = fossilData.fossilPart();
 
-        MutableComponent component = Component.empty();
-
+        // the state words ("Dirty Unidentified") and the part name are combined through a translation,
+        // so other languages can put them in their own order
+        MutableComponent state = Component.empty();
         if (isDirty){
-            component.append(Component.translatable("name.ancientcreature.dirty")).append(" ");
+            append(state, Component.translatable("name.ancientcreature.dirty"));
         }
         if (!identified){
-            component.append(Component.translatable("name.ancientcreature.unidentified")).append(" ");
+            append(state, Component.translatable("name.ancientcreature.unidentified"));
         }
-        if (part != null){
-            component.append(Component.translatable("fossilPart.ancientcreature." + part.unwrapKey().orElse(FossilPart.key("empty")).identifier().getPath())).append(" ");
-        }
+        Component partName = Component.translatable("fossilPart.ancientcreature." + (part == null ? "empty" : part.unwrapKey().orElse(FossilPart.key("empty")).identifier().getPath()));
+        return state.getSiblings().isEmpty() ? partName : Component.translatable("name.ancientcreature.fossil_name", state, partName);
+    }
 
-        return component;
+    /** Joins words with single spaces, so there is no stray trailing space. */
+    private static void append(MutableComponent text, Component word) {
+        if (!text.getSiblings().isEmpty()) {
+            text.append(" ");
+        }
+        text.append(word);
     }
 }

@@ -26,5 +26,8 @@ public class DNAExtractorScreen extends MachineScreen<DNAExtractorMenu> {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, this.leftPos + 93, this.topPos + 34, this.menu.getProgressWidth(), 16);
+        if (this.menu.isTooDegraded()) {
+            statusLine(graphics, Component.translatable("gui.ancientcreature.too_degraded"), WARNING_COLOR);
+        }
     }
 }

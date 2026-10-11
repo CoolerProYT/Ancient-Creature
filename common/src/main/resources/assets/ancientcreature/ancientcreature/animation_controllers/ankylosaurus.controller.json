@@ -19,7 +19,7 @@
               "attack": "query.action == 'attack'"
             },
             {
-              "graze": "query.action == 'graze'"
+              "graze": "query.action == 'graze' || query.action == 'eat'"
             },
             {
               "walk": "query.is_moving"

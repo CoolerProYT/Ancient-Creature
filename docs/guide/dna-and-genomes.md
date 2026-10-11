@@ -32,7 +32,7 @@ Teeth, skulls and egg fossils carry a bonus; claws carry a penalty. See the bonu
 
 <DnaTable />
 
-If the score is too low, the extraction still uses the fossil and a point of Extraction Fluid, but gives no sample and keeps the vial. The [calculator](./fossils#try-it) shows which sample a fossil will give before you spend it.
+If the score is too low (under 5%), the extractor refuses the fossil and its screen reads **Too degraded for DNA**; nothing is used up, so take the fossil back out. The [calculator](./fossils#try-it) shows which sample a fossil will give before you spend it.
 
 Each sample also remembers its exact score as its **quality**, shown in its tooltip. Quality matters later: it decides how faithful the genome is.
 

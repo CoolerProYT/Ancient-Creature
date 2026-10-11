@@ -52,13 +52,13 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.unknownIdentifyingTick.get();
 
-    private final SimpleContainer inputContainer = new SimpleContainer(1){
+    private final SimpleContainer inputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return isValidInput(itemStack);
         }
     };
-    private final SimpleContainer outputContainer = new SimpleContainer(1){
+    private final SimpleContainer outputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return false;
@@ -195,8 +195,8 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
             boolean wasWorking = progress != 0;
             progress = 0;
             this.isIdentifying = false;
-            setChanged();
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, pos, ModSounds.IDENTIFICATION_CHAMBER_SCAN);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -281,5 +281,10 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getInputContainer(), getOutputContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.outputContainer;
     }
 }

@@ -47,6 +47,8 @@ import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopSound;
 public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider, ICapabilityProvider {
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_MAX_PROGRESS = 1;
+    /** 1 while the fossil inside holds too little DNA to extract, so the machine refuses it. */
+    public static final int DATA_TOO_DEGRADED = 2;
 
     private final AnimationState extractingAnimationState = new AnimationState();
     private final ContainerData data;
@@ -55,14 +57,14 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.extractingTick.get();
 
-    private final SimpleContainer extractionFluidContainer = new SimpleContainer(1){
+    private final SimpleContainer extractionFluidContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItemTags.EXTRACTION_FLUIDS);
         }
     };
 
-    private final SimpleContainer fossilContainer = new SimpleContainer(1){
+    private final SimpleContainer fossilContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return isValidFossil(itemStack);
@@ -77,14 +79,14 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
     };
 
-    private final SimpleContainer sampleVialContainer = new SimpleContainer(1){
+    private final SimpleContainer sampleVialContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.SAMPLE_VIAL.get());
         }
     };
 
-    private final SimpleContainer outputContainer = new SimpleContainer(1){
+    private final SimpleContainer outputContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return false;
@@ -99,6 +101,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
                 return switch (dataId){
                     case DATA_PROGRESS -> progress;
                     case DATA_MAX_PROGRESS -> maxProgress;
+                    case DATA_TOO_DEGRADED -> hasFossil() && calculateOutputStack().isEmpty() ? 1 : 0;
                     default -> 0;
                 };
             }
@@ -113,7 +116,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -211,8 +214,8 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
             boolean wasWorking = progress != 0;
             progress = 0;
             this.isExtracting = false;
-            setChanged();
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, pos, ModSounds.DNA_EXTRACTOR_PROCESSING);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -237,7 +240,8 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private boolean hasEnoughOutputSlot() {
         ItemStack outputStack = calculateOutputStack();
-        return outputContainer.canAddItem(outputStack);
+        // a fossil too degraded to yield a sample is left alone instead of being used up for nothing
+        return !outputStack.isEmpty() && outputContainer.canAddItem(outputStack);
     }
 
     private ItemStack calculateOutputStack(){
@@ -324,5 +328,10 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getExtractionFluidContainer(), getSampleVialContainer(), getFossilContainer(), getOutputContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.outputContainer;
     }
 }

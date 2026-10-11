@@ -14,7 +14,7 @@ Most creatures need only a profile — a named bundle of components.
 | Profile | Shape | Used by |
 | --- | --- | --- |
 | `ancientcreature:passive` | Wanders, panics when hurt, breeds, is tempted by food, follows a parent | — |
-| `ancientcreature:defensive_herbivore` | Passive until threatened, then bellows and charges. Attacks armed players who come close, and hostile mobs | Triceratops |
+| `ancientcreature:defensive_herbivore` | Wanders and grazes; passive until threatened, then bellows and charges. Attacks armed players who come close, and hostile mobs | Triceratops |
 | `ancientcreature:armored_herbivore` | Slow grazer that herds and stands its ground. Retaliates with melee, alerts its herd, and never charges | Ankylosaurus |
 | `ancientcreature:pack_predator` | Fast social predator that stays near its kind, calls before chasing and hunts only when hungry. Adults only | Deinonychus |
 | `ancientcreature:sauropod_browser` | Towering herd herbivore that seeks canopy leaves, browses without breaking them and retaliates with melee | Brachiosaurus |
@@ -274,7 +274,7 @@ players on sight — and without the gate the creature charges anyone who walks 
 shipped `apex_predator` and `flying_predator` profiles do exactly this.
 
 ### `ancientcreature:hunt_animals` <Badge type="info" text="priority 3" />
-Preys on ordinary animals. Never the hunter's own species.
+Preys on ordinary animals. Never the hunter's own species, never another revived creature with more health than the hunter, and never a flying creature while it is in the air.
 
 | Option | Default | Notes |
 | --- | --- | --- |

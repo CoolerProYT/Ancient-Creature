@@ -17,7 +17,7 @@ import java.util.List;
 public final class FieldGuideScreen extends Screen {
     private static final int MAX_WIDTH = 400;
     private static final int MAX_HEIGHT = 240;
-    private static final int SIDEBAR_WIDTH = 118;
+    private static final int SIDEBAR_WIDTH = 128;
     private static final int HEADER_HEIGHT = 24;
     private static final int PADDING = 8;
     private static final int CHAPTER_ROW_HEIGHT = 18;

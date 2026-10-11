@@ -26,5 +26,9 @@ public class EmbryogenesisChamberScreen extends MachineScreen<EmbryogenesisChamb
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ARROW, 24, 16, 0, 0, this.leftPos + 93, this.topPos + 34, this.menu.getProgressWidth(), 16);
+        // the donor slot is easy to miss: explain it while it is empty
+        if (this.hoveredSlot == this.menu.getDonorSlot() && !this.hoveredSlot.hasItem() && this.menu.getCarried().isEmpty()) {
+            graphics.setTooltipForNextFrame(this.font, this.font.split(Component.translatable("gui.ancientcreature.donor_slot"), 160), mouseX, mouseY);
+        }
     }
 }

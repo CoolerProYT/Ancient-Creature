@@ -3,6 +3,10 @@ package com.coolerpromc.ancientcreature.platform;
 import com.coolerpromc.ancientcreature.platform.services.ICapabilityHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -36,7 +40,12 @@ public class NeoForgeCapabilityHelper implements ICapabilityHelper {
     }
 
     private static <T extends BlockEntity> void register(RegisterCapabilitiesEvent event, Entry<T> entry) {
-        event.registerBlockEntity(Capabilities.Item.BLOCK, entry.type().get(), (blockEntity, direction) -> direction == null ? new CombinedResourceHandler<>(Arrays.stream(entry.containers.apply(blockEntity)).map(VanillaContainerWrapper::of).toList()) : VanillaContainerWrapper.of(entry.provider().apply(blockEntity, direction)));
+        event.registerBlockEntity(Capabilities.Item.BLOCK, entry.type().get(), (blockEntity, direction) -> direction == null ? new CombinedResourceHandler<>(Arrays.stream(entry.containers.apply(blockEntity)).map(VanillaContainerWrapper::of).toList()) : sided(entry.provider().apply(blockEntity, direction), direction));
+    }
+
+    private static @Nullable ResourceHandler<ItemResource> sided(@Nullable Container container, Direction direction) {
+        if (container == null) return null;
+        return container instanceof WorldlyContainer worldly ? new WorldlyContainerWrapper(worldly, direction) : VanillaContainerWrapper.of(container);
     }
 
     private record Entry<T extends BlockEntity>(Supplier<BlockEntityType<T>> type, BiFunction<T, @Nullable Direction, Container> provider,  Function<T, Container[]>  containers){

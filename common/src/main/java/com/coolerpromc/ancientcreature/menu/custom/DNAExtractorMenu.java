@@ -19,7 +19,7 @@ public class DNAExtractorMenu extends MachineMenu {
     private final ContainerData data;
 
     public DNAExtractorMenu(int containerId, Inventory inventory, BlockPos pos) {
-        this(containerId, inventory, inventory.player, (DNAExtractorBlockEntity) inventory.player.level().getBlockEntity(pos), new SimpleContainerData(2));
+        this(containerId, inventory, inventory.player, (DNAExtractorBlockEntity) inventory.player.level().getBlockEntity(pos), new SimpleContainerData(3));
     }
 
     public DNAExtractorMenu(int containerId, Inventory inventory, Player player, DNAExtractorBlockEntity blockEntity, ContainerData data) {
@@ -50,6 +50,10 @@ public class DNAExtractorMenu extends MachineMenu {
 
     public int getMaxProgress(){
         return this.data.get(DNAExtractorBlockEntity.DATA_MAX_PROGRESS);
+    }
+
+    public boolean isTooDegraded() {
+        return this.data.get(DNAExtractorBlockEntity.DATA_TOO_DEGRADED) != 0;
     }
 
     public int getProgressWidth(){

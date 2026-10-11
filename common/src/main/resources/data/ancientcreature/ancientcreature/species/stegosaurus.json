@@ -26,8 +26,8 @@
     "components": [
       {
         "type": "ancientcreature:graze",
-        "min_duration": 90,
-        "max_duration": 320,
+        "duration": 90,
+        "chance": 320,
         "hunger_value": 6.0
       }
     ]

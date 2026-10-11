@@ -26,6 +26,7 @@
         "special": "animation.plesiosaurus.special",
         "hurt": "animation.plesiosaurus.hurt",
         "death": "animation.plesiosaurus.death",
+        "roar": "animation.plesiosaurus.roar",
         "main": "controller.animation.plesiosaurus.main"
       },
       "scripts": {

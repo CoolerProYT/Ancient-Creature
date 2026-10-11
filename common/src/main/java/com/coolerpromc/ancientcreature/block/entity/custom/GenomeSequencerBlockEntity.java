@@ -52,14 +52,14 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     private int progress = 0;
     private int maxProgress = ModCommonConfig.CONFIG.sequencingTick.get();
 
-    private final SimpleContainer dnaSampleContainer = new SimpleContainer(1){
+    private final SimpleContainer dnaSampleContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.DNA_SAMPLE.get());
         }
     };
 
-    private final SimpleContainer cartridgeContainer = new SimpleContainer(1){
+    private final SimpleContainer cartridgeContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
             return itemStack.is(ModItems.GENOME_CARTRIDGE_BLANK.get()) || itemStack.is(ModItems.GENOME_CARTRIDGE_FILLED.get());
@@ -180,8 +180,8 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
             boolean wasWorking = progress != 0;
             progress = 0;
             this.isProcessing = false;
-            setChanged();
             if (wasWorking){
+                setChanged();
                 stopSound(serverLevel, pos, ModSounds.GENOME_SEQUENCER_PROCESSING);
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -285,5 +285,10 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public Container[] getAllContainers() {
         return new SimpleContainer[]{getDnaSampleContainer(), getCartridgeContainer()};
+    }
+
+    @Override
+    public boolean canExtract(Container container, ItemStack stack) {
+        return container == this.cartridgeContainer && stack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
     }
 }
