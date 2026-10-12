@@ -120,12 +120,12 @@ const fossilParts = jsonFiles(join(data, 'ancientcreature/fossil_part')).map((fi
   }
 })
 
-// Chisel stats are code, not data: ModItems registers each chisel with its tool material and the share of
-// completeness it knocks off every fossil it digs up.
+// Chisel stats are code, not data: ModItems registers each chisel with its tool material, the share of
+// completeness it knocks off most fossils, and the completeness it adds on plain fossil ore and rock piles.
 const DURABILITY = { WOOD: 59, STONE: 131, COPPER: 190, IRON: 250, GOLD: 32, DIAMOND: 1561, NETHERITE: 2031 }
 const chisels = [...readText(join(java, 'item/ModItems.java')).matchAll(
-  /registerItem\("([a-z_]+_chisel)".*?chisel\(p, ToolMaterial\.([A-Z]+), [-\d.f]+, [-\d.f]+, ([\d.]+)f?\)/g,
-)].map(([, id, material, damage]) => ({ id: `ancientcreature:${id}`, material: material.toLowerCase(), durability: DURABILITY[material], damageRate: Number(damage) }))
+  /registerItem\("([a-z_]+_chisel)".*?chisel\(p, ToolMaterial\.([A-Z]+), [-\d.f]+, [-\d.f]+, ([\d.]+)f?, ([\d.]+)f?\)/g,
+)].map(([, id, material, damage, oreBonus]) => ({ id: `ancientcreature:${id}`, material: material.toLowerCase(), durability: DURABILITY[material], damageRate: Number(damage), oreBonus: Number(oreBonus) }))
 
 // DNA integrity: the genome completeness each level adds, and the score thresholds that pick the level.
 const integritySource = readText(join(java, 'item/DNAIntegrityLevel.java'))

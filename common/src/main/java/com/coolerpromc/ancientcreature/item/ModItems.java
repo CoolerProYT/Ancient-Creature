@@ -27,12 +27,12 @@ import java.util.function.Function;
 public class ModItems {
     public static final RegistryHandler.Items<FieldGuideItem> FIELD_GUIDE = registerItem("field_guide", p -> new FieldGuideItem(p.stacksTo(1)));
 
-    public static final RegistryHandler.Items<Item> STONE_CHISEL = registerItem("stone_chisel", p -> new Item(chisel(p, ToolMaterial.STONE, -1, -2, 0.4f).repairable(ItemTags.STONE_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> COPPER_CHISEL = registerItem("copper_chisel", p -> new Item(chisel(p, ToolMaterial.COPPER, -1, -2, 0.35f).repairable(ItemTags.COPPER_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> IRON_CHISEL = registerItem("iron_chisel", p -> new Item(chisel(p, ToolMaterial.IRON, -2, -1, 0.25f).repairable(ItemTags.IRON_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> GOLDEN_CHISEL = registerItem("golden_chisel", p -> new Item(chisel(p, ToolMaterial.GOLD, 0, -3, 0.5f).repairable(ItemTags.GOLD_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
-    public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> STONE_CHISEL = registerItem("stone_chisel", p -> new Item(chisel(p, ToolMaterial.STONE, -1, -2, 0.4f, 0.06f).repairable(ItemTags.STONE_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> COPPER_CHISEL = registerItem("copper_chisel", p -> new Item(chisel(p, ToolMaterial.COPPER, -1, -2, 0.35f, 0.09f).repairable(ItemTags.COPPER_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> IRON_CHISEL = registerItem("iron_chisel", p -> new Item(chisel(p, ToolMaterial.IRON, -2, -1, 0.25f, 0.16f).repairable(ItemTags.IRON_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> GOLDEN_CHISEL = registerItem("golden_chisel", p -> new Item(chisel(p, ToolMaterial.GOLD, 0, -3, 0.5f, 0f).repairable(ItemTags.GOLD_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> DIAMOND_CHISEL = registerItem("diamond_chisel", p -> new Item(chisel(p, ToolMaterial.DIAMOND, -3, 0, 0.1f, 0.25f).repairable(ItemTags.DIAMOND_TOOL_MATERIALS)));
+    public static final RegistryHandler.Items<Item> NETHERITE_CHISEL = registerItem("netherite_chisel", p -> new Item(chisel(p, ToolMaterial.NETHERITE, -4, 0, 0, 0.31f).repairable(ItemTags.NETHERITE_TOOL_MATERIALS)));
 
     public static final RegistryHandler.Items<FossilPartItem> FOSSIL_PART = registerItem("fossil_part", p -> new FossilPartItem(p.stacksTo(1).component(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY)));
     public static final RegistryHandler.Items<Item> EGG_SHELL_FRAGMENT = registerItem("egg_shell_fragment", Item::new);
@@ -84,8 +84,8 @@ public class ModItems {
         return Services.REGISTRY.registerItem(name, func);
     }
 
-    public static Item.Properties chisel(Item.Properties properties, ToolMaterial material, float attackDamageBaseline, float attackSpeedBaseline, float damageToFossil){
-        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0).component(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(damageToFossil)).stacksTo(1);
+    public static Item.Properties chisel(Item.Properties properties, ToolMaterial material, float attackDamageBaseline, float attackSpeedBaseline, float damageToFossil, float fossilOreBonus){
+        return properties.tool(material, ModBlockTags.MINEABLE_WITH_CHISEL, attackDamageBaseline, attackSpeedBaseline, 0).component(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(damageToFossil)).component(ModDataComponents.FOSSIL_ORE_BONUS.get(), new FossilOreBonus(fossilOreBonus)).stacksTo(1);
     }
 
     public static void init(){

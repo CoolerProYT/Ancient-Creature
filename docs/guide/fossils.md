@@ -88,11 +88,16 @@ Eight kinds of fossil can turn up. They differ in how much of the animal survive
 
 <FossilPartTable />
 
-The left icon is the dirty fossil as dug up, the right is the cleaned one. Completeness is rolled when the fossil drops, then reduced by the chisel.
+The left icon is the dirty fossil as dug up, the right is the cleaned one. Completeness is rolled when the fossil drops, then adjusted by the chisel.
 
 ## Chisels
 
-Chisels mine fossil ore and rock piles. Each chisel chips off a share of the completeness of every fossil it digs up, so a better chisel means better fossils.
+Chisels mine fossil ore and rock piles. How a chisel changes a fossil depends on where it came from:
+
+- **Plain fossil ore and the bones in rock piles** roll low, so the chisel adds its **ore bonus** on top of the roll and takes nothing off.
+- **Everything else** (deepslate fossil ore, amber, frozen fossils, egg fossils from rock piles) loses a share of its completeness to the chisel.
+
+Either way, a better chisel means better fossils.
 
 <ChiselTable />
 
@@ -106,9 +111,9 @@ All chisels share one recipe shape, a stick and two of the material:
 <RecipeCard id="diamond_chisel" />
 </div>
 
-The <ItemSlot id="ancientcreature:netherite_chisel" size="sm" /> Netherite Chisel is the only one that does no damage. It has no crafting recipe yet.
+The <ItemSlot id="ancientcreature:netherite_chisel" size="sm" /> Netherite Chisel has the biggest ore bonus and is the only one that does no damage. It has no crafting recipe yet.
 
-Chisels can be repaired in an anvil with their material, like vanilla tools. A chisel with **Fortune** adds 10% completeness per level before the chisel's damage is taken off, but chisels can't be enchanted in survival yet.
+Chisels can be repaired in an anvil with their material, like vanilla tools. A chisel with **Fortune** adds 10% completeness per level, on top of any ore bonus and before the chisel's damage is taken off, but chisels can't be enchanted in survival yet.
 
 ## Try it
 

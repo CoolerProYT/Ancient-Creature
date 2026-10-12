@@ -10,17 +10,21 @@ const selectedPart = ref(parts.find((p) => p.id === 'skull')?.id ?? parts[0].id)
 const selectedChisel = ref(chisels.find((c) => c.id.endsWith('iron_chisel'))?.id ?? chisels[0].id)
 const fortune = ref(0)
 const brushed = ref(false)
+const fromOre = ref(true)
 
 const part = computed(() => parts.find((p) => p.id === selectedPart.value)!)
 const chisel = computed(() => chisels.find((c) => c.id === selectedChisel.value)!)
 // Brushing a dig site uses no chisel, so nothing is lost; only claws, teeth, ribs and limbs turn up that way.
 const brushParts = computed(() => new Set(Object.values(data.archaeology).flat().flatMap((entry) => entry.parts ?? [])))
 const canBrush = computed(() => brushParts.value.has(part.value.id))
-const damage = computed(() => (brushed.value && canBrush.value ? 0 : chisel.value.damageRate))
+const chiseled = computed(() => !(brushed.value && canBrush.value))
+// Plain fossil ore and rock pile bones get the chisel's ore bonus instead of its damage.
+const damage = computed(() => (chiseled.value && !fromOre.value ? chisel.value.damageRate : 0))
+const oreBonus = computed(() => (chiseled.value && fromOre.value ? chisel.value.oreBonus : 0))
 const fortuneLevel = computed(() => (brushed.value && canBrush.value ? 0 : fortune.value))
 
-const low = computed(() => dugCompleteness(part.value.completenessMin, damage.value, fortuneLevel.value))
-const high = computed(() => dugCompleteness(part.value.completenessMax, damage.value, fortuneLevel.value))
+const low = computed(() => dugCompleteness(part.value.completenessMin, damage.value, fortuneLevel.value, oreBonus.value))
+const high = computed(() => dugCompleteness(part.value.completenessMax, damage.value, fortuneLevel.value, oreBonus.value))
 // A failed identification knocks the part's damage rate off again; it only happens for a species nobody has identified yet.
 const lowAfterFail = computed(() => low.value * (1 - part.value.damageRate))
 
@@ -61,6 +65,10 @@ const clamp = (value: number) => Math.min(1, Math.max(0, value))
       <label class="check" :class="{ disabled: !canBrush }" :title="canBrush ? '' : 'Only claw, tooth, rib and limb fossils come from brushing'">
         <input v-model="brushed" type="checkbox" :disabled="!canBrush" />
         Brushed at a dig site
+      </label>
+      <label class="check" :class="{ disabled: !chiseled }">
+        <input v-model="fromOre" type="checkbox" :disabled="!chiseled" />
+        From plain fossil ore or a rock pile
       </label>
     </div>
 

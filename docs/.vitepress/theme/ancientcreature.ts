@@ -40,6 +40,8 @@ export interface Chisel {
   material: string
   durability: number
   damageRate: number
+  /** Completeness added, instead of the damage rate, on plain fossil ore and rock pile bones. */
+  oreBonus: number
 }
 
 export interface DnaLevel {
@@ -199,11 +201,12 @@ export function fossilItem(part: string, dirty = false): string {
 }
 
 /**
- * Completeness of a freshly dug fossil: the part's roll plus 10% per Fortune level (capped at 100%),
- * then reduced by the chisel's damage rate.
+ * Completeness of a freshly dug fossil: the part's roll plus 10% per Fortune level and the chisel's ore
+ * bonus (capped at 100%), then reduced by the chisel's damage rate. Plain fossil ore and rock pile bones
+ * use the ore bonus and no damage rate; every other source the other way round.
  */
-export function dugCompleteness(value: number, damageRate: number, fortune = 0): number {
-  return Math.min(1, value + fortune * 0.1) * (1 - damageRate)
+export function dugCompleteness(value: number, damageRate: number, fortune = 0, oreBonus = 0): number {
+  return Math.min(1, value + fortune * 0.1 + oreBonus) * (1 - damageRate)
 }
 
 /** The DNA level a fossil of this completeness and part yields, or null when it is too far gone. */

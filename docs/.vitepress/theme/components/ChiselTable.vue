@@ -13,14 +13,16 @@ const chisels = computed(() => [...data.chisels].sort((a, b) => a.damageRate - b
       <tr>
         <th>Chisel</th>
         <th>Durability</th>
+        <th>Ore bonus</th>
         <th>Completeness lost</th>
         <th>Completeness kept</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="chisel in chisels" :key="chisel.id">
-        <td><ItemSlot :id="chisel.id" label :lore="`-${percent(chisel.damageRate)} Completeness`" /></td>
+        <td><ItemSlot :id="chisel.id" label :lore="[`+${percent(chisel.oreBonus)} Completeness from Fossil Ore and rock pile bones`, `-${percent(chisel.damageRate)} Completeness from other fossils`]" /></td>
         <td>{{ chisel.durability }}</td>
+        <td :class="{ good: chisel.oreBonus >= 0.25 }">{{ chisel.oreBonus === 0 ? 'None' : `+${percent(chisel.oreBonus)}` }}</td>
         <td :class="{ bad: chisel.damageRate >= 0.4, good: chisel.damageRate === 0 }">{{ chisel.damageRate === 0 ? 'None' : `-${percent(chisel.damageRate)}` }}</td>
         <td>
           <div class="keep">

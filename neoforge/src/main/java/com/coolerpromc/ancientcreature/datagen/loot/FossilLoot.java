@@ -30,7 +30,12 @@ final class FossilLoot {
 
     /** A fossil part of any of the given kinds, chosen evenly. */
     static UniformContainerBase.Builder<?> fossil(HolderGetter<FossilPart> parts, List<ResourceKey<FossilPart>> kinds, List<Species> species, float bonus) {
-        return LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(holders(parts, kinds), species, bonus));
+        return fossil(parts, kinds, species, bonus, false);
+    }
+
+    /** With {@code chiselOreBonus}, the chisel adds its fossil ore bonus instead of taking off its damage rate. */
+    static UniformContainerBase.Builder<?> fossil(HolderGetter<FossilPart> parts, List<ResourceKey<FossilPart>> kinds, List<Species> species, float bonus, boolean chiselOreBonus) {
+        return LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(holders(parts, kinds), species, bonus, chiselOreBonus));
     }
 
     static UniformContainerBase.Builder<?> fossil(HolderGetter<FossilPart> parts, List<ResourceKey<FossilPart>> kinds) {

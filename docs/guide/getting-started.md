@@ -16,7 +16,7 @@ Each machine does one job and passes its result to the next. Every machine accep
 
 ## Your first creature
 
-**1. Make a chisel.** Fossils only drop when mined with a chisel. A stone one works, but it chips off 40% of every fossil's quality. See [Chisels](./fossils#chisels).
+**1. Make a chisel.** Fossils only drop when mined with a chisel. A stone one works, but it adds only 6% to fossils from plain fossil ore and chips 40% off everything else. See [Chisels](./fossils#chisels).
 
 <RecipeCard id="stone_chisel" />
 

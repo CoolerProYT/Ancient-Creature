@@ -3,6 +3,7 @@ package com.coolerpromc.ancientcreature.loot.custom;
 import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilOreBonus;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.FossilPart;
 import com.coolerpromc.ancientcreature.tag.ModItemTags;
@@ -39,6 +40,10 @@ import java.util.Optional;
  * <p>The species is chosen from those living in the biome where the loot is generated. Loot can
  * also name its own species pool (e.g. marine species for coastal sites) and grant a completeness
  * bonus for well-preserved sources such as ice or deep rock.
+ *
+ * <p>Most sources lose a share of the roll to the chisel's damage rate. Shallow sources that roll low
+ * (plain fossil ore, rock pile bones) set {@code chisel_ore_bonus} instead: the chisel adds its
+ * {@link FossilOreBonus} on top of the roll and takes nothing off, so a better chisel lifts the floor.
  */
 public class SetFossilDataFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetFossilDataFunction> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -46,17 +51,20 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
             .and(Codec.list(FossilPart.CODEC).fieldOf("fossilParts").forGetter(s -> s.validParts))
             .and(Codec.list(Species.CODEC).optionalFieldOf("species", List.of()).forGetter(s -> s.speciesPool))
             .and(Codec.floatRange(-1.0f, 1.0f).optionalFieldOf("completeness_bonus", 0.0f).forGetter(s -> s.completenessBonus))
+            .and(Codec.BOOL.optionalFieldOf("chisel_ore_bonus", false).forGetter(s -> s.chiselOreBonus))
             .apply(instance, SetFossilDataFunction::new));
 
     private final List<Holder<FossilPart>> validParts;
     private final List<Species> speciesPool;
     private final float completenessBonus;
+    private final boolean chiselOreBonus;
 
-    public SetFossilDataFunction(Optional<Holder<LootItemCondition>> condition, List<Holder<FossilPart>> fossilParts, List<Species> speciesPool, float completenessBonus) {
+    public SetFossilDataFunction(Optional<Holder<LootItemCondition>> condition, List<Holder<FossilPart>> fossilParts, List<Species> speciesPool, float completenessBonus, boolean chiselOreBonus) {
         super(condition);
         this.validParts = fossilParts.stream().sorted(Comparator.comparing(h -> h.unwrapKey().orElse(FossilPart.key("empty")).identifier())).toList();
         this.speciesPool = speciesPool;
         this.completenessBonus = completenessBonus;
+        this.chiselOreBonus = chiselOreBonus;
     }
 
     @Override
@@ -79,8 +87,13 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
         ItemInstance tool = context.getOptional(LootContextParams.TOOL);
         int fortuneLevel = 0;
         float damageRate = 0f;
+        float oreBonus = 0f;
         if (tool != null && tool.is(ModItemTags.CHISELS)) {
-            damageRate = tool.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(0f)).value();
+            if (this.chiselOreBonus) {
+                oreBonus = tool.getOrDefault(ModDataComponents.FOSSIL_ORE_BONUS.get(), new FossilOreBonus(0f)).value();
+            } else {
+                damageRate = tool.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(0f)).value();
+            }
             Holder<Enchantment> fortune = context.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
             ItemEnchantments enchantments = tool.get(DataComponents.ENCHANTMENTS);
             if (enchantments != null) {
@@ -90,7 +103,7 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
         Holder<FossilPart> fossilPart = this.validParts.get(random.nextInt(this.validParts.size()));
 
         float base = fossilPart.value().completeness().getFloat(context);
-        float bonus = fortuneLevel * 0.1F + this.completenessBonus;
+        float bonus = fortuneLevel * 0.1F + this.completenessBonus + oreBonus;
         float value = Math.clamp(base + bonus, 0.0F, 1.0F) * (1f - damageRate);
 
         itemStack.set(ModDataComponents.FOSSIL_DATA.get(), FossilData.ofDefault(fossilPart, species, value));
@@ -146,6 +159,10 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
     }
 
     public static LootItemConditionalFunction.Builder<?> setData(List<Holder<FossilPart>> validParts, List<Species> speciesPool, float completenessBonus) {
-        return simpleBuilder(l -> new SetFossilDataFunction(l, validParts, speciesPool, completenessBonus));
+        return setData(validParts, speciesPool, completenessBonus, false);
+    }
+
+    public static LootItemConditionalFunction.Builder<?> setData(List<Holder<FossilPart>> validParts, List<Species> speciesPool, float completenessBonus, boolean chiselOreBonus) {
+        return simpleBuilder(l -> new SetFossilDataFunction(l, validParts, speciesPool, completenessBonus, chiselOreBonus));
     }
 }

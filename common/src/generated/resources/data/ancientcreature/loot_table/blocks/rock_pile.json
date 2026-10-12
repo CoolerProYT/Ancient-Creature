@@ -53,6 +53,7 @@
           "type": "minecraft:item",
           "modifier": {
             "type": "ancientcreature:set_fossil_data",
+            "chisel_ore_bonus": true,
             "fossilParts": [
               "ancientcreature:claw",
               "ancientcreature:egg",

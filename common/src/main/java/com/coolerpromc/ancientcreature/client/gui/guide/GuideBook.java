@@ -8,6 +8,7 @@ import com.coolerpromc.ancientcreature.data.component.ModDataComponents;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilOreBonus;
 import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import com.coolerpromc.ancientcreature.item.DNAIntegrityLevel;
@@ -187,7 +188,9 @@ public final class GuideBook {
         for (ItemStack chisel : chiselStacks) {
             FossilDamageRate rate = chisel.get(ModDataComponents.FOSSIL_DAMAGE_RATE.get());
             float damage = rate == null ? 0 : rate.value();
-            rows.add(new Table.Row(Slot.of(chisel), chisel.getHoverName(), Component.translatable("guide.ancientcreature.chisels.damage", percent(damage))));
+            FossilOreBonus oreBonus = chisel.get(ModDataComponents.FOSSIL_ORE_BONUS.get());
+            float bonus = oreBonus == null ? 0 : oreBonus.value();
+            rows.add(new Table.Row(Slot.of(chisel), chisel.getHoverName(), Component.translatable("guide.ancientcreature.chisels.damage", percent(bonus), percent(damage))));
         }
 
         // One grid cycling through every material; the material and result lists line up so they
