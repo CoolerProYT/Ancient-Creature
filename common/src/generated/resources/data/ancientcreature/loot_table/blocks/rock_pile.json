@@ -65,6 +65,7 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "chisel_ore_bonus": true,
               "fossilParts": [
                 "ancientcreature:claw",
                 "ancientcreature:egg",

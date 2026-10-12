@@ -29,12 +29,12 @@ import java.util.Locale;
 
 public final class AncientCreatureJeiRecipes {
     private static final List<ChiselData> CHISELS = List.of(
-        new ChiselData(ModItems.STONE_CHISEL.get(), 0.40f, "stone"),
-        new ChiselData(ModItems.COPPER_CHISEL.get(), 0.35f, "copper"),
-        new ChiselData(ModItems.IRON_CHISEL.get(), 0.25f, "iron"),
-        new ChiselData(ModItems.GOLDEN_CHISEL.get(), 0.50f, "golden"),
-        new ChiselData(ModItems.DIAMOND_CHISEL.get(), 0.10f, "diamond"),
-        new ChiselData(ModItems.NETHERITE_CHISEL.get(), 0.0f, "netherite")
+        new ChiselData(ModItems.STONE_CHISEL.get(), 0.40f, 0.06f, "stone"),
+        new ChiselData(ModItems.COPPER_CHISEL.get(), 0.35f, 0.09f, "copper"),
+        new ChiselData(ModItems.IRON_CHISEL.get(), 0.25f, 0.16f, "iron"),
+        new ChiselData(ModItems.GOLDEN_CHISEL.get(), 0.50f, 0.0f, "golden"),
+        new ChiselData(ModItems.DIAMOND_CHISEL.get(), 0.10f, 0.25f, "diamond"),
+        new ChiselData(ModItems.NETHERITE_CHISEL.get(), 0.0f, 0.31f, "netherite")
     );
 
     private AncientCreatureJeiRecipes() {
@@ -52,8 +52,8 @@ public final class AncientCreatureJeiRecipes {
         Holder<FossilPart> eggPart = fossilParts.getOrThrow(FossilPart.EGG);
         for (Species species : Species.fossilSpecies()) {
             for (ChiselData chisel : CHISELS) {
-                float min = 0.01f * (1.0f - chisel.damageRate());
-                float max = 0.30f * (1.0f - chisel.damageRate());
+                float min = 0.01f + chisel.oreBonus();
+                float max = 0.30f + chisel.oreBonus();
                 recipes.add(recipe(
                     "fossil_hunting/ore/" + species.getSerializedName() + "/" + chisel.id(),
                     List.of(slot(ModBlocks.FOSSIL_ORE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
@@ -82,8 +82,8 @@ public final class AncientCreatureJeiRecipes {
                     Component.translatable("jei.ancientcreature.deep_bonus")
                 ));
 
-                float rockMin = 0.01f * (1.0f - chisel.damageRate());
-                float rockMax = 0.20f * (1.0f - chisel.damageRate());
+                float rockMin = 0.01f + chisel.oreBonus();
+                float rockMax = 0.20f + chisel.oreBonus();
                 recipes.add(recipe(
                     "fossil_hunting/rock_pile/fragment/" + species.getSerializedName() + "/" + chisel.id(),
                     List.of(slot(ModBlocks.ROCK_PILE.getBlock().asItem().getDefaultInstance()), slot(chisel.item().getDefaultInstance())),
@@ -411,6 +411,6 @@ public final class AncientCreatureJeiRecipes {
         return String.format(Locale.ROOT, "%.1f", ticks / 20f);
     }
 
-    private record ChiselData(Item item, float damageRate, String id) {
+    private record ChiselData(Item item, float damageRate, float oreBonus, String id) {
     }
 }
