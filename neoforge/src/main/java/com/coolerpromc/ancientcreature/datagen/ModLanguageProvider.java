@@ -29,7 +29,8 @@ public class ModLanguageProvider extends LanguageProvider {
         add("book.ancientcreature.field_notes.tip.6", "Scraps of the same animal can be pieced together on a crafting table once they are identified.");
         add("book.ancientcreature.field_notes.tip.7", "Deep down, where stone turns to deepslate, the fossils are rarer but far better kept.");
         add("tooltip.ancientcreature.genome_completeness", "§7Completeness: %s");
-        add("tooltip.ancientcreature.fossil_damage_rate", "-%s%% Completeness");
+        add("tooltip.ancientcreature.fossil_ore_bonus", "+%s%% Completeness from Fossil Ore and rock pile bones");
+        add("tooltip.ancientcreature.fossil_damage_rate", "-%s%% Completeness from other fossils");
         add("tooltip.ancientcreature.species", "§7Species: %s");
         add("tooltip.ancientcreature.dna_integrity_level", "§7Integrity Level: %s");
 
@@ -210,10 +211,10 @@ public class ModLanguageProvider extends LanguageProvider {
         add("guide.ancientcreature.fossils.part_stats", "Identify fail: %s  DNA bonus: %s");
         add("guide.ancientcreature.fossils.tip", "Egg fossils and teeth keep the most completeness. Claws keep the least.");
         add("guide.ancientcreature.chisels.title", "Chisels");
-        add("guide.ancientcreature.chisels.1", "Chisels mine Fossil Ore and rock piles. Each one chips away part of the completeness of every fossil it digs up, so a better chisel means better fossils.");
-        add("guide.ancientcreature.chisels.damage", "Removes %s completeness");
+        add("guide.ancientcreature.chisels.1", "Chisels mine Fossil Ore and rock piles. On Fossil Ore and the bones in rock piles, which roll low, a chisel adds completeness on top of the roll. Everywhere else it chips away part of the completeness of every fossil it digs up. Either way, a better chisel means better fossils.");
+        add("guide.ancientcreature.chisels.damage", "+%s ore, -%s other");
         add("guide.ancientcreature.chisels.crafting", "Crafting");
-        add("guide.ancientcreature.chisels.netherite", "The Netherite Chisel does no damage at all. Upgrade a Diamond Chisel at a Smithing Table.");
+        add("guide.ancientcreature.chisels.netherite", "The Netherite Chisel adds the most to ore fossils and does no damage at all. Upgrade a Diamond Chisel at a Smithing Table.");
         add("guide.ancientcreature.chisels.2", "Chisels can be repaired in an anvil with their material. A chisel with Fortune adds 10%% completeness per level before the chisel's damage is taken off.");
         add("guide.ancientcreature.cleaning.title", "Cleaning");
         add("guide.ancientcreature.cleaning.1", "A fossil fresh out of the ground is caked in dirt. The Fossil Cleaning Table brushes it clean.");

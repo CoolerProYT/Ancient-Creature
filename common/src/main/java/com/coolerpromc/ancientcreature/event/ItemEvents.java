@@ -5,6 +5,7 @@ import com.coolerpromc.ancientcreature.data.component.custom.CreatureGenome;
 import com.coolerpromc.ancientcreature.data.component.custom.DNAData;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilDamageRate;
 import com.coolerpromc.ancientcreature.data.component.custom.FossilData;
+import com.coolerpromc.ancientcreature.data.component.custom.FossilOreBonus;
 import com.coolerpromc.ancientcreature.data.component.custom.GenomeData;
 import com.coolerpromc.ancientcreature.entity.Species;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,10 @@ public class ItemEvents {
         GenomeData genomeData = stack.get(ModDataComponents.GENOME_DATA.get());
         if (genomeData != null){
             genomeData.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
+        }
+        FossilOreBonus oreBonus = stack.get(ModDataComponents.FOSSIL_ORE_BONUS.get());
+        if (oreBonus != null){
+            oreBonus.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
         }
         FossilDamageRate damageRate = stack.get(ModDataComponents.FOSSIL_DAMAGE_RATE.get());
         if (damageRate != null){

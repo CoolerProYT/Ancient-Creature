@@ -38,7 +38,8 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        this.add(ModBlocks.FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, FossilPart.BONE_PARTS, List.of(), 0.0f));
+        // Shallow rock rolls low, so the chisel lifts the roll rather than chipping at it.
+        this.add(ModBlocks.FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, FossilPart.BONE_PARTS, List.of(), 0.0f, true));
         // Deep, undisturbed rock: the rarer parts, and better preserved.
         this.add(ModBlocks.DEEPSLATE_FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.EGG), List.of(), 0.15f));
         this.add(ModBlocks.AMBER_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.AMBER), List.of(), 0.0f));
@@ -58,9 +59,13 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
     }
 
     private LootTable.Builder createFossilDrop(Block block, List<ResourceKey<FossilPart>> parts, List<Species> species, float bonus) {
+        return this.createFossilDrop(block, parts, species, bonus, false);
+    }
+
+    private LootTable.Builder createFossilDrop(Block block, List<ResourceKey<FossilPart>> parts, List<Species> species, float bonus, boolean chiselOreBonus) {
         LootTable.Builder fossilTable = LootTable.lootTable().withPool(
             LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                .add(FossilLoot.fossil(this.registries.lookupOrThrow(ModRegistries.FOSSIL_PART), parts, species, bonus))
+                .add(FossilLoot.fossil(this.registries.lookupOrThrow(ModRegistries.FOSSIL_PART), parts, species, bonus, chiselOreBonus))
         );
 
         return this.createSilkTouchDispatchTable(block, NestedLootTable.inlineLootTable(fossilTable.build()));
@@ -82,7 +87,7 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
             .withPool(
                 LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(RockPileBlock.HAS_FOSSIL, true)))
-                    .add(FossilLoot.fossil(fossilParts, FossilPart.BONE_PARTS))
+                    .add(FossilLoot.fossil(fossilParts, FossilPart.BONE_PARTS, List.of(), 0.0f, true))
             );
     }
 
