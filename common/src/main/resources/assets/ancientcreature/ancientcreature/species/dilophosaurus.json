@@ -1,9 +1,9 @@
 {
   "format_version": 2,
-  "shadow_radius": 0.55,
-  "render_scale": 1.0,
+  "shadow_radius": 0.451,
+  "render_scale": 0.82,
   "gui": {
-    "scale": 8.7,
+    "scale": 10.61,
     "translation": [
       0,
       -0.2,

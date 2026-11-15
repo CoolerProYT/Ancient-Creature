@@ -15,10 +15,6 @@ import net.minecraft.world.item.component.TooltipProvider;
 
 import java.util.function.Consumer;
 
-/**
- * A genome being assembled. {@code fidelity} is the completeness-weighted average quality of the DNA that
- * went into it, so a few excellent samples make a better genome than many poor ones.
- */
 public record GenomeData(float completeness, Species species, float fidelity) implements TooltipProvider {
     public static final float LEGACY_FIDELITY = 0.5F;
     public static final GenomeData EMPTY = new GenomeData(0f, Species.TRICERATOPS);
@@ -47,7 +43,6 @@ public record GenomeData(float completeness, Species species, float fidelity) im
         return new GenomeData(completeness, species, fidelity);
     }
 
-    /** Adds {@code added} completeness of DNA with {@code quality}, re-weighting fidelity by contribution. */
     public GenomeData withSample(float added, float quality) {
         float next = Math.min(1.0F, this.completeness + added);
         float used = next - this.completeness;

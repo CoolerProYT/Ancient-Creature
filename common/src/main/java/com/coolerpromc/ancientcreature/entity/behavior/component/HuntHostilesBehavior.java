@@ -12,14 +12,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 
-/** Attacks nearby hostile mobs. */
 public record HuntHostilesBehavior(int randomInterval, boolean adultsOnly, boolean requiresHunger) implements CreatureBehaviorConfig {
     public static final MapCodec<HuntHostilesBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.CHANCE.optionalFieldOf("random_interval", 5).forGetter(HuntHostilesBehavior::randomInterval),
         Codec.BOOL.optionalFieldOf("adults_only", false).forGetter(HuntHostilesBehavior::adultsOnly),
         Codec.BOOL.optionalFieldOf("requires_hunger", false).forGetter(HuntHostilesBehavior::requiresHunger)
     ).apply(i, HuntHostilesBehavior::new));
-
 
     @Override
     public CreatureBehaviorType<?> type() {

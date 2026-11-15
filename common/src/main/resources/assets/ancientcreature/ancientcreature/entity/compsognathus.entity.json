@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:compsognathus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/compsognathus",
+        "mottled": "textures/entity/compsognathus_mottled",
+        "saddle": "textures/entity/gear/compsognathus_saddle",
+        "armor_iron": "textures/entity/gear/compsognathus_armor_iron",
+        "armor_golden": "textures/entity/gear/compsognathus_armor_golden",
+        "armor_diamond": "textures/entity/gear/compsognathus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/compsognathus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.compsognathus"
+      },
+      "animations": {
+        "idle": "animation.compsognathus.idle",
+        "walk": "animation.compsognathus.walk",
+        "run": "animation.compsognathus.run",
+        "attack": "animation.compsognathus.attack",
+        "special": "animation.compsognathus.special",
+        "hurt": "animation.compsognathus.hurt",
+        "death": "animation.compsognathus.death",
+        "roar": "animation.compsognathus.roar",
+        "sit": "animation.compsognathus.sit",
+        "main": "controller.animation.compsognathus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.compsognathus"
+      ]
+    }
+  }
+}

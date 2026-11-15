@@ -27,6 +27,7 @@
         "hurt": "animation.spinosaurus.hurt",
         "death": "animation.spinosaurus.death",
         "roar": "animation.spinosaurus.roar",
+        "sit": "animation.spinosaurus.sit",
         "main": "controller.animation.spinosaurus.main"
       },
       "scripts": {

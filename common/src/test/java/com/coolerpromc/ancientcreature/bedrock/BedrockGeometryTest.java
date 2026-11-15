@@ -3,30 +3,25 @@ package com.coolerpromc.ancientcreature.bedrock;
 import com.coolerpromc.ancientcreature.client.model.bedrock.*;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.core.Direction;
 import net.minecraft.server.Bootstrap;
 import org.joml.Vector3f;
+import org.joml.Quaternionf;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.*;
+import java.lang.reflect.Proxy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Pins the geometry loader to real Bedrock behaviour.
- *
- * <p>The anchor is ground truth from the game itself: Mojang's legacy Bedrock cow geometry and Java
- * Edition's cow model are the same model, so baking the former must give exactly the latter, vertex
- * for vertex and UV for UV. That single comparison fixes the axis conventions, the legacy file format,
- * {@code bind_pose_rotation}, bone hierarchy offsets, box UV and {@code mirror}. The remaining tests
- * check the parts the cow does not use against equivalences Blockbench guarantees.
- */
 class BedrockGeometryTest {
     private static final float EPS = 1.0E-4F;
 
@@ -36,7 +31,6 @@ class BedrockGeometryTest {
         Bootstrap.bootStrap();
     }
 
-    /** The cow as Bedrock ships it (legacy 1.8 format, values from Mojang's bedrock-samples). */
     private static final String BEDROCK_COW = """
         { "format_version": "1.8.0", "geometry.cow.v1.8": {
           "texturewidth": 64, "textureheight": 32,
@@ -55,7 +49,6 @@ class BedrockGeometryTest {
           ] } }
         """;
 
-    /** Java Edition's cow, as vanilla builds it, with the same cube data as the Bedrock file. */
     private static ModelPart javaCow() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
@@ -88,6 +81,7 @@ class BedrockGeometryTest {
     void bedrockCowBakesExactlyIntoJavaCow() throws Exception {
         BakedBedrockModel baked = BedrockModelBaker.bake(parse(BEDROCK_COW));
         assertSamePolygons(polygons(javaCow()), polygons(baked.root()), "cow");
+        assertCustomCubeRendering(baked.root());
         assertNotNull(baked.locator("lead"), "locators are kept");
         assertNotNull(baked.bone("LEG0"), "bone lookup is case-insensitive");
     }
@@ -109,10 +103,6 @@ class BedrockGeometryTest {
         }
     }
 
-    /**
-     * A cube written with per-face UV the way Blockbench exports a box-UV cube must look identical to
-     * the box-UV cube, for fractional sizes too (where Bedrock floors the box layout).
-     */
     @Test
     void perFaceUvEquivalentToBoxUv() throws Exception {
         float w = 4, h = 3, d = 2;
@@ -144,11 +134,12 @@ class BedrockGeometryTest {
         String quarter = cube(0, 0, 0, 4, 4, 4, "{ \"north\": {\"uv\": [0, 0], \"uv_size\": [4, 4], \"uv_rotation\": 90} }", false);
         String twice = cube(0, 0, 0, 4, 4, 4, "{ \"north\": {\"uv\": [0, 0], \"uv_size\": [4, 4], \"uv_rotation\": 450} }", false);
         assertSamePolygons(polygons(BedrockModelBaker.bake(parse(quarter)).root()), polygons(BedrockModelBaker.bake(parse(twice)).root()), "rot90 == rot450");
+        assertCustomCubeRendering(BedrockModelBaker.bake(parse(quarter)).root());
     }
 
     @Test
     void rotatedCubesRotateAboutTheirPivotInsideTheBone() throws Exception {
-        // A 2x2x2 cube centred on its pivot, turned 90° about Y, occupies the same box.
+
         String turned = """
             { "format_version": "1.12.0", "minecraft:geometry": [ { "description": { "identifier": "geometry.t", "texture_width": 16, "texture_height": 16 },
               "bones": [ { "name": "b", "pivot": [0, 0, 0], "cubes": [ { "origin": [-1, 0, -1], "size": [2, 2, 2], "pivot": [0, 1, 0], "rotation": [0, 90, 0], "uv": [0, 0] } ] } ] } ] }""";
@@ -156,6 +147,7 @@ class BedrockGeometryTest {
         assertEquals(1, model.root().getAllParts().size() - 1, "rotated cubes are baked into their bone, not extra parts");
         float[] bounds = bounds(polygons(model.root()));
         assertArrayEquals(new float[]{-1 / 16F, 22 / 16F, -1 / 16F, 1 / 16F, 24 / 16F, 1 / 16F}, bounds, EPS);
+        assertCustomCubeRendering(model.root());
     }
 
     @Test
@@ -185,9 +177,11 @@ class BedrockGeometryTest {
               "bones": [ { "name": "b", "pivot": [0, 0, 0], "poly_mesh": { "normalized_uvs": true,
                 "positions": [[0,0,0],[1,0,0],[1,1,0],[0,1,0]], "normals": [[0,0,-1]], "uvs": [[0,0],[1,0],[1,1],[0,1]],
                 "polys": [ [[0,0,0],[1,0,1],[2,0,2],[3,0,3]], [[0,0,0],[1,0,1],[2,0,2]] ] } } ] } ] }""";
-        List<float[][]> polygons = polygons(BedrockModelBaker.bake(parse(json)).root());
+        ModelPart root = BedrockModelBaker.bake(parse(json)).root();
+        List<float[][]> polygons = polygons(root);
         assertEquals(2, polygons.size(), "a quad and a triangle");
         assertEquals(4, polygons.get(1).length, "triangles draw as degenerate quads");
+        assertCustomCubeRendering(root);
     }
 
     @Test
@@ -209,7 +203,44 @@ class BedrockGeometryTest {
         assertEquals(2.0F, parse(json).bones().getFirst().cubes().getFirst().size().x());
     }
 
-    // ------------------------------------------------------------------ helpers
+    private static void assertCustomCubeRendering(ModelPart root) {
+        PoseStack stack = new PoseStack();
+        stack.translate(1.25F, -0.5F, 3.0F);
+        stack.mulPose(new Quaternionf().rotationXYZ(0.3F, -0.7F, 0.2F));
+        stack.scale(-1.5F, 0.75F, 2.0F);
+        root.visit(stack, (pose, path, index, cube) -> {
+            try {
+                assertNotEquals(ModelPart.Cube.class, cube.getClass().getMethod("compile", PoseStack.Pose.class,
+                    VertexConsumer.class, int.class, int.class, int.class).getDeclaringClass(),
+                    "Bedrock faces must bypass Sodium's constructor-cached Cube.compile path");
+            } catch (NoSuchMethodException e) {
+                throw new AssertionError(e);
+            }
+            Set<Direction> faces = EnumSet.noneOf(Direction.class);
+            faces.addAll(Arrays.asList(Direction.values()).subList(0, cube.polygons.length));
+            ModelPart.Cube vanilla = new ModelPart.Cube(0, 0, cube.minX, cube.minY, cube.minZ,
+                cube.maxX - cube.minX, cube.maxY - cube.minY, cube.maxZ - cube.minZ, 0, 0, 0, false, 1, 1, faces);
+            System.arraycopy(cube.polygons, 0, vanilla.polygons, 0, cube.polygons.length);
+            List<List<Object>> expected = emittedVertices(vanilla, pose);
+            List<List<Object>> actual = emittedVertices(cube, pose);
+            assertEquals(cube.polygons.length * 4, actual.size());
+            assertEquals(expected, actual, path + "/" + index);
+        });
+    }
+
+    private static List<List<Object>> emittedVertices(ModelPart.Cube cube, PoseStack.Pose pose) {
+        List<List<Object>> vertices = new ArrayList<>();
+        VertexConsumer consumer = (VertexConsumer) Proxy.newProxyInstance(VertexConsumer.class.getClassLoader(),
+            new Class<?>[]{VertexConsumer.class}, (proxy, method, args) -> {
+                if (method.getName().equals("addVertex") && args.length == 11) {
+                    vertices.add(List.of(args));
+                    return null;
+                }
+                throw new AssertionError("Unexpected vertex call: " + method);
+            });
+        cube.compile(pose, consumer, 0x00D000A0, 0x00030007, 0xA17BC34D);
+        return vertices;
+    }
 
     private static String cube(float ox, float oy, float oz, float w, float h, float d, String uv, boolean mirror) {
         return String.format(Locale.ROOT, """
@@ -247,7 +278,6 @@ class BedrockGeometryTest {
         return b;
     }
 
-    /** Same corners in the same cyclic order, ignoring which corner each polygon lists first. */
     static boolean samePolygon(float[][] a, float[][] b) {
         if (a.length != b.length) {
             return false;

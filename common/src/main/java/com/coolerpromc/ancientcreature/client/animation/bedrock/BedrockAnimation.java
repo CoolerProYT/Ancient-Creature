@@ -15,19 +15,6 @@ import org.joml.Vector3f;
 
 import java.util.*;
 
-/**
- * A Bedrock animation ({@code "animation.name": {...}} in an {@code .animation.json} file).
- *
- * <p>Supports {@code animation_length}, {@code loop} ({@code true}, {@code false} or
- * {@code "hold_on_last_frame"}), {@code start_delay}, {@code loop_delay}, {@code anim_time_update},
- * {@code blend_weight}, {@code override_previous_animation}, bone rotation/position/scale channels with
- * Molang keyframes, {@code relative_to: {rotation: "entity"}}, and the {@code sound_effects},
- * {@code particle_effects} and {@code timeline} event tracks. Per-instance timing (delays, time update,
- * event firing) lives in {@link AnimationPlayer}; this class is immutable and shared.
- *
- * <p>Keyframe values are applied to vanilla model parts as Blockbench's Java exporter does: rotation is
- * added as-is (degrees), position as {@code (x, -y, z)} and scale multiplies.
- */
 public final class BedrockAnimation {
     public enum LoopMode { ONCE, LOOP, HOLD_ON_LAST_FRAME }
 
@@ -50,7 +37,6 @@ public final class BedrockAnimation {
         }
     }
 
-    /** A sound or particle event: {@code effect} is a short name resolved through the client entity. */
     public record TimedEffect(float time, String effect, Optional<String> locator, Optional<MolangExpression> preEffectScript) {
     }
 
@@ -91,7 +77,6 @@ public final class BedrockAnimation {
         return this.name;
     }
 
-    /** {@code animation_length}, or the time of the last keyframe/event when it is absent. */
     public float length() {
         return this.length;
     }
@@ -136,13 +121,6 @@ public final class BedrockAnimation {
         return this.timeline;
     }
 
-    // ------------------------------------------------------------------ applying
-
-    /**
-     * Poses {@code model} at {@code time} seconds with {@code weight}. Bones the geometry lacks are
-     * reported once through {@code missingBones}. Bones animated relative to the entity are queued in
-     * {@code entityRelative} so the caller can resolve them after every animation has posed the parents.
-     */
     public void apply(BakedBedrockModel model, float time, float weight, MolangContext ctx, Set<String> missingBones, List<EntityRelativeRotation> entityRelative) {
         if (weight <= 0.0F) {
             return;
@@ -188,11 +166,6 @@ public final class BedrockAnimation {
         }
     }
 
-    /**
-     * This animation as it must be written today for a species pack made before Ancient Creature
-     * followed Bedrock's axes: rotation Y and position X keyframes are negated, which reproduces exactly
-     * how such a file used to play. See {@code BedrockGeometry#fromLegacyAxes()}.
-     */
     public BedrockAnimation fromLegacyAxes() {
         Map<String, BoneAnimation> converted = new LinkedHashMap<>();
         this.bones.forEach((name, bone) -> converted.put(name, new BoneAnimation(
@@ -220,13 +193,9 @@ public final class BedrockAnimation {
         return out;
     }
 
-    /** A bone whose rotation is given in entity space rather than relative to its parent. */
     public record EntityRelativeRotation(String bone, Vector3f degrees, float weight) {
     }
 
-    // ------------------------------------------------------------------ parsing
-
-    /** Parses an {@code .animation.json} file into its animations, keyed by full name. */
     public static Map<String, BedrockAnimation> parseFile(JsonElement json) throws BedrockFormatException {
         JsonObject root = BedrockJson.object(json, "$");
         JsonElement animations = BedrockJson.get(root, "animations");

@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:diplodocus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/diplodocus",
+        "mottled": "textures/entity/diplodocus_mottled",
+        "saddle": "textures/entity/gear/diplodocus_saddle",
+        "armor_iron": "textures/entity/gear/diplodocus_armor_iron",
+        "armor_golden": "textures/entity/gear/diplodocus_armor_golden",
+        "armor_diamond": "textures/entity/gear/diplodocus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/diplodocus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.diplodocus"
+      },
+      "animations": {
+        "idle": "animation.diplodocus.idle",
+        "walk": "animation.diplodocus.walk",
+        "run": "animation.diplodocus.run",
+        "attack": "animation.diplodocus.attack",
+        "special": "animation.diplodocus.special",
+        "hurt": "animation.diplodocus.hurt",
+        "death": "animation.diplodocus.death",
+        "roar": "animation.diplodocus.roar",
+        "sit": "animation.diplodocus.sit",
+        "main": "controller.animation.diplodocus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.diplodocus"
+      ]
+    }
+  }
+}

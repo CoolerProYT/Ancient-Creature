@@ -9,18 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Answers {@code query.*} for a creature while it is being animated.
- *
- * <p>Bedrock's own query names are supported with Bedrock's meaning — {@code modified_distance_moved}
- * and {@code modified_move_speed} drive walk cycles exactly like vanilla Bedrock animations expect,
- * {@code ground_speed} is blocks per second, {@code target_x_rotation} is the head's pitch, and so on —
- * so animations written for Bedrock entities work unchanged. Ancient Creature's own queries
- * ({@code action}, {@code hunger}, {@code is_hungry}, ...) and any registered through
- * {@link CreatureQueryRegistry} are available alongside.
- *
- * <p>Every value is read from the client-side entity at render time; nothing here can change gameplay.
- */
 public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer.AnimClock {
     private AncientCreatureEntity entity;
     private AncientCreatureRenderState state;
@@ -36,7 +24,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
         this.animator = animator;
     }
 
-    /** Drops the entity reference so a cached animator does not keep a removed entity alive. */
     public void unbind() {
         this.entity = null;
         this.state = null;
@@ -69,7 +56,7 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
             return Double.NaN;
         }
         return switch (name) {
-            // time
+
             case "anim_time" -> this.animTime;
             case "delta_time" -> this.deltaTime;
             case "life_time" -> s.ageInTicks / 20.0;
@@ -78,7 +65,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
             case "moon_phase" -> Math.floorMod(e.level().getOverworldClockTime() / 24000L, 8L);
             case "time_stamp" -> e.level().getGameTime();
 
-            // movement
             case "modified_distance_moved", "limb_swing" -> s.walkAnimationPos;
             case "modified_move_speed", "limb_swing_amount" -> s.walkAnimationSpeed;
             case "ground_speed" -> {
@@ -98,7 +84,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
             case "is_jumping" -> flag(!e.onGround() && !e.isInWater() && e.getDeltaMovement().y > 0.05);
             case "is_gliding", "is_flying" -> flag(e.speciesCategory().isFlying() && !e.onGround());
 
-            // body and head
             case "body_y_rotation" -> s.bodyRot;
             case "head_y_rotation", "target_y_rotation", "head_yaw" -> s.yRot;
             case "head_x_rotation", "target_x_rotation", "head_pitch" -> s.xRot;
@@ -118,7 +103,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
                 yield camera == null ? 0.0 : camera.position().distanceTo(e.getPosition(this.partialTick));
             }
 
-            // vitals
             case "health" -> e.getHealth();
             case "max_health" -> e.getMaxHealth();
             case "is_alive" -> flag(e.isAlive());
@@ -130,7 +114,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
             case "is_invisible" -> flag(e.isInvisible());
             case "is_leashed" -> flag(e.isLeashed());
 
-            // behaviour
             case "has_target", "is_attacking", "is_angry" -> flag(e.isAggressive());
             case "is_eating", "is_grazing" -> flag(s.action == AncientCreatureAction.EAT || s.action == AncientCreatureAction.GRAZE);
             case "is_roaring" -> flag(s.action == AncientCreatureAction.ROAR);
@@ -147,7 +130,6 @@ public final class CreatureQueryHost implements MolangQueryHost, AnimationPlayer
             case "variant" -> s.variantIndex;
             case "mark_variant", "skin_id" -> s.variantIndex;
 
-            // animation state
             case "all_animations_finished" -> flag(this.animator != null && this.animator.allAnimationsFinished());
             case "any_animation_finished" -> flag(this.animator != null && this.animator.anyAnimationFinished());
             case "is_first_person" -> 0.0;

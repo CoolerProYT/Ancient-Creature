@@ -104,7 +104,7 @@ public class ModJEIPlugin implements IModPlugin {
         registration.addRecipeClickArea(GenomeSequenceScreen.class, 77, 34, 24, 16, GENOME_SEQUENCING);
         registration.addRecipeClickArea(EmbryogenesisChamberScreen.class, 93, 34, 24, 16, EMBRYOGENESIS);
         registration.addRecipeClickArea(IncubatorScreen.class, 77, 34, 24, 16, INCUBATION);
-        // keep JEI's ingredient list off the upgrade panel to the right of every machine screen
+
         registration.addGenericGuiContainerHandler(MachineScreen.class, new IGuiContainerHandler<MachineScreen<?>>() {
             @Override
             public List<Rect2i> getGuiExtraAreas(MachineScreen<?> screen) {
@@ -118,8 +118,7 @@ public class ModJEIPlugin implements IModPlugin {
     }
 
     private static Object getFossilSubtype(ItemStack stack, UidContext context) {
-        // Recipe lookups must be broad: the generic JEI-list stack has FossilData.EMPTY,
-        // and completeness is continuous, while recipe pages use representative values.
+
         if (context == UidContext.Recipe) return null;
 
         FossilData data = stack.getOrDefault(ModDataComponents.FOSSIL_DATA.get(), FossilData.EMPTY);
@@ -132,7 +131,7 @@ public class ModJEIPlugin implements IModPlugin {
 
     private static Object getGenomeSubtype(ItemStack stack, UidContext context) {
         GenomeData data = stack.getOrDefault(ModDataComponents.GENOME_DATA.get(), GenomeData.EMPTY);
-        // Completeness is intentionally excluded so every percentage can find sequencing recipes.
+
         return data.species();
     }
 

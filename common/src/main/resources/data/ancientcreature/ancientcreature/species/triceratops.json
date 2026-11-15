@@ -8,12 +8,13 @@
     "eye_height": 1.4
   },
   "attributes": {
-    "max_health": 45.0,
+    "max_health": 95.0,
     "movement_speed": 0.22,
-    "attack_damage": 8.0,
+    "attack_damage": 14.0,
     "attack_knockback": 1.5,
     "follow_range": 20.0,
-    "knockback_resistance": 0.65
+    "knockback_resistance": 0.65,
+    "armor": 6.0
   },
   "growth": {
     "adult_age": 24000,
@@ -30,7 +31,7 @@
   },
   "spawn": {
     "biomes": "#ancientcreature:spawns_triceratops",
-    "incubation_time": 1000
+    "incubation_time": 1500
   },
   "sounds": {
     "ambient": "ancientcreature:entity.triceratops.ambient",

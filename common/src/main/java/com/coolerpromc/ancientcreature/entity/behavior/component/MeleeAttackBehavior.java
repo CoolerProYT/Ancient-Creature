@@ -10,7 +10,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
-/** Plain chase-and-bite. */
 public record MeleeAttackBehavior(double speedModifier, boolean followWithoutSight, boolean adultsOnly) implements CreatureBehaviorConfig {
     public static final MapCodec<MeleeAttackBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.SPEED.optionalFieldOf("speed_modifier", 1.2).forGetter(MeleeAttackBehavior::speedModifier),

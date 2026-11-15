@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 
-/** Turns the head toward a nearby player. */
 public record LookAtPlayerBehavior(float lookDistance, float probability) implements CreatureBehaviorConfig {
     public static final MapCodec<LookAtPlayerBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.DISTANCE_F.optionalFieldOf("look_distance", 8.0F).forGetter(LookAtPlayerBehavior::lookDistance),

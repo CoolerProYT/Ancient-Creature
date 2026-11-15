@@ -13,16 +13,6 @@ import com.google.gson.JsonObject;
 import java.util.*;
 import java.util.regex.Pattern;
 
-/**
- * A Bedrock render controller: which geometry, texture layers and material to render, which bones are
- * visible, and colour tinting — each chosen by Molang at render time.
- *
- * <p>Reads {@code arrays} ({@code textures}, {@code geometries}, {@code materials}), {@code geometry},
- * {@code textures} (several entries render as stacked layers), {@code materials},
- * {@code part_visibility}, {@code color}, {@code overlay_color}, {@code is_hurt_color},
- * {@code on_fire_color} and {@code ignore_lighting}. Bone patterns accept {@code *} wildcards and are
- * applied in order, later rules winning, as in Bedrock.
- */
 public record BedrockRenderController(
     String name,
     Map<String, Object[]> arrays,
@@ -43,7 +33,7 @@ public record BedrockRenderController(
     }
 
     public record Color(MolangExpression r, MolangExpression g, MolangExpression b, MolangExpression a) {
-        /** ARGB, each channel clamped to [0, 1]. */
+
         public int argb(MolangContext ctx) {
             return channel(this.a, ctx) << 24 | channel(this.r, ctx) << 16 | channel(this.g, ctx) << 8 | channel(this.b, ctx);
         }

@@ -21,8 +21,6 @@ public class FossilPartItem extends Item {
         boolean identified = fossilData.identified();
         Holder<FossilPart> part = fossilData.fossilPart();
 
-        // the state words ("Dirty Unidentified") and the part name are combined through a translation,
-        // so other languages can put them in their own order
         MutableComponent state = Component.empty();
         if (isDirty){
             append(state, Component.translatable("name.ancientcreature.dirty"));
@@ -34,7 +32,6 @@ public class FossilPartItem extends Item {
         return state.getSiblings().isEmpty() ? partName : Component.translatable("name.ancientcreature.fossil_name", state, partName);
     }
 
-    /** Joins words with single spaces, so there is no stray trailing space. */
     private static void append(MutableComponent text, Component word) {
         if (!text.getSiblings().isEmpty()) {
             text.append(" ");

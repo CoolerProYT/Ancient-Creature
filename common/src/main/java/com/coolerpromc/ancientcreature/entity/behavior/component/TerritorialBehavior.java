@@ -14,18 +14,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-/**
- * Attacks players who come close carrying a weapon.
- *
- * <p>The owner is always excluded, so a tamed creature never turns on the player who hatched it. This
- * reproduces the {@code isArmedPlayerThreat} check that used to be hard-coded in {@code Triceratops},
- * but without any species check inside the AI.
- *
- * <p>With {@code require_weapon: false} this stops being self-defence and becomes hunting players on
- * sight, which is why {@code requires_hunger} exists. It defaults to {@code false} so the defensive
- * reading is unchanged; an apex predator that treats players as prey should set it to {@code true} so it
- * only stalks them when it actually needs to eat.
- */
 public record TerritorialBehavior(double range, int randomInterval, boolean requireWeapon, boolean adultsOnly,
     boolean requiresHunger) implements CreatureBehaviorConfig {
 

@@ -7,20 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Compiles Molang, the expression language Bedrock uses in animations, animation controllers, render
- * controllers and client entity scripts.
- *
- * <p>Supported: numbers, {@code 'strings'}, {@code query.}/{@code q.}, {@code variable.}/{@code v.},
- * {@code temp.}/{@code t.}, {@code context.}/{@code c.}, {@code math.*}, {@code this},
- * {@code Array.}/{@code Geometry.}/{@code Texture.}/{@code Material.} references, unary {@code ! -},
- * {@code * / + -}, comparisons, {@code == !=}, {@code && ||}, {@code a ? b : c}, {@code a ? b},
- * {@code ??}, assignment, {@code ;}-separated statements with {@code return}, {@code {}} blocks,
- * {@code loop}, {@code for_each}, {@code break} and {@code continue}. Everything is case-insensitive.
- *
- * <p>The {@code ->} entity-reference operator parses but evaluates to 0, because there are no entity
- * references outside Bedrock.
- */
 public final class Molang {
     static final Logger LOG = LoggerFactory.getLogger("AncientCreature/Molang");
 
@@ -33,7 +19,6 @@ public final class Molang {
         return parser.parseProgram();
     }
 
-    /** Compiles, or logs the problem and returns {@code fallback}. {@code where} names the file and field. */
     public static MolangExpression compileOr(String source, MolangExpression fallback, String where) {
         try {
             return compile(source);
@@ -43,7 +28,6 @@ public final class Molang {
         }
     }
 
-    /** Compiles a number or a Molang string from JSON-ish input. */
     public static MolangExpression of(Object numberOrString, String where) {
         if (numberOrString instanceof Number number) {
             return MolangExpression.constant(number.doubleValue());
@@ -54,7 +38,6 @@ public final class Molang {
         return compileOr(String.valueOf(numberOrString), MolangExpression.ZERO, where);
     }
 
-    /** {@code -(expression)}, folded when constant. */
     public static MolangExpression negate(MolangExpression expression) {
         if (expression.isConstant()) {
             return MolangExpression.constant(-expression.constantValue());
@@ -64,8 +47,6 @@ public final class Molang {
 
     private Molang() {
     }
-
-    // ===================================================================== lexer
 
     enum Kind { NUMBER, STRING, NAME, OP, END }
 
@@ -104,7 +85,7 @@ public final class Molang {
                         }
                     }
                     String text = source.substring(start, i);
-                    // Tolerate a trailing float suffix ("0.5f"), which some exporters emit.
+
                     if (i < n && (source.charAt(i) == 'f' || source.charAt(i) == 'F')
                         && (i + 1 >= n || !Character.isLetterOrDigit(source.charAt(i + 1)) && source.charAt(i + 1) != '_')) {
                         i++;
@@ -157,8 +138,6 @@ public final class Molang {
             return tokens;
         }
     }
-
-    // ===================================================================== parser
 
     static final class Parser {
         private final List<Token> tokens;

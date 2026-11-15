@@ -15,20 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Fossils hidden in vanilla loot: brushing vanilla ruins, fishing, and some mob drops.
- *
- * <p>Each injection rolls one of this mod's own loot tables (under {@code ancientcreature:inject/})
- * alongside a vanilla table, so the chances live in datapack JSON and can be tuned or emptied there.
- * Both loaders feed generated drops through {@link #apply}: NeoForge from a global loot modifier,
- * Fabric from its drop-modification event.
- */
 public final class FossilLootInjections {
-    /** What to do with the vanilla drops when the injected table yields something. */
+
     public enum Mode {
-        /** Swap the drop out entirely: brushing and fishing hand out exactly one item. */
+
         REPLACE,
-        /** Drop the fossil on top of the usual loot. */
+
         APPEND
     }
 
@@ -64,7 +56,7 @@ public final class FossilLootInjections {
         return tableId != null && INJECTIONS.containsKey(tableId);
     }
 
-    @SuppressWarnings("deprecation") // The raw roll is deliberate: the injected table must not run the loot modifiers again.
+    @SuppressWarnings("deprecation")
     public static void apply(@Nullable Identifier tableId, LootContext context, List<ItemStack> drops) {
         if (tableId == null) {
             return;

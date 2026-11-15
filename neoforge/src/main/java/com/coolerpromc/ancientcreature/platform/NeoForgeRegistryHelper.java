@@ -322,10 +322,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
         FEATURES.register(eventBus);
     }
 
-    /**
-     * Keyed by id, because NeoForge throws if two listeners share one and the registrations are
-     * collected from an event that fires again on every world load.
-     */
     @Override
     public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
         this.serverReloadListeners.put(id, listener);

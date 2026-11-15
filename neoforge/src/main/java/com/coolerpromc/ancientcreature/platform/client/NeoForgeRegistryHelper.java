@@ -44,7 +44,6 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     private final List<SpecialModelRendererEntry> specialModelRenderers = new ArrayList<>();
     private final List<ClientPayloadReceiverEntry<?>> clientPayloadReceivers = new ArrayList<>();
 
-
     @Override
     public <T extends Entity> void registerEntityRenderer(EntityType<T> entityType, EntityRendererProvider<T> provider) {
         this.entityRenderers.add(new EntityRendererEntry<>(entityType, provider));

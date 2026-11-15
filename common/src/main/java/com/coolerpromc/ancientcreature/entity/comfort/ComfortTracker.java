@@ -16,24 +16,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Works out how comfortable a creature is, from 0 to 100.
- *
- * <p>Every few seconds the tracker scores the creature's situation — hunger, room to move, company,
- * climate, recent pain and recent care — into a target, and comfort drifts towards it, so a single bad
- * moment does not swing it and a lasting problem always shows. The single biggest problem is reported as
- * the {@link Factor} players see.
- *
- * <p>Space is the only expensive part: a bounded flood fill over the floor the creature can stand on (or
- * the water it can swim in), refreshed every half minute and stopping as soon as it has found enough.
- */
 public final class ComfortTracker {
     public static final float START = 70.0F;
     public static final int UPDATE_INTERVAL = 100;
     private static final int SPACE_INTERVAL = 600;
     private static final float DRIFT = 3.0F;
 
-    /** The reasons comfort can fall, in the order they are synchronised. {@code NONE} means content. */
     public enum Factor {
         NONE, HUNGER, SPACE, LONELY, CROWDED, CLIMATE, PAIN, STRANDED;
 
@@ -55,14 +43,12 @@ public final class ComfortTracker {
         this.lastFedTick = this.creature.tickCount;
     }
 
-    /** Recomputes and returns the target comfort and the main problem. Server side only. */
     public Result evaluate(ServerLevel level) {
         Map<Factor, Float> penalties = new EnumMap<>(Factor.class);
         float bonus = 0.0F;
         AncientCreatureEntity c = this.creature;
         SpeciesCareProperties care = c.speciesDefinition().care();
 
-        // hunger
         SpeciesHungerProperties hunger = c.hungerProperties();
         if (c.getHunger() <= 0.0F) {
             penalties.put(Factor.HUNGER, 30.0F);
@@ -72,12 +58,10 @@ public final class ComfortTracker {
             bonus += 5.0F;
         }
 
-        // stranded aquatic animal
         if (c.speciesCategory().isAquatic() && !c.isInWater()) {
             penalties.put(Factor.STRANDED, 40.0F);
         }
 
-        // space
         if (c.tickCount >= this.nextSpaceCheck) {
             this.nextSpaceCheck = c.tickCount + SPACE_INTERVAL;
             this.spaceRatio = this.measureSpace(level, care.spaceFor(c.getBbWidth()));
@@ -86,7 +70,6 @@ public final class ComfortTracker {
             penalties.put(Factor.SPACE, 40.0F * (1.0F - this.spaceRatio));
         }
 
-        // company
         int kin = level.getEntitiesOfClass(AncientCreatureEntity.class, new AABB(c.blockPosition()).inflate(24.0, 8.0, 24.0),
             other -> other != c && other.isAlive() && other.getSpecies().equals(c.getSpecies())).size();
         int group = kin + 1;
@@ -116,7 +99,6 @@ public final class ComfortTracker {
             }
         }
 
-        // climate
         float temperature = level.getBiome(c.blockPosition()).value().getBaseTemperature();
         float climate = switch (care.climate()) {
             case ANY -> 0.0F;
@@ -130,7 +112,6 @@ public final class ComfortTracker {
             bonus -= climate;
         }
 
-        // pain: fresh fence shocks and wounds
         float pain = 0.0F;
         if (c.wasRecentlyShocked(2400)) {
             pain += 25.0F;
@@ -142,7 +123,6 @@ public final class ComfortTracker {
             penalties.put(Factor.PAIN, pain);
         }
 
-        // care
         if (c.tickCount - this.lastFedTick < 6000) {
             bonus += 10.0F;
         }
@@ -167,7 +147,6 @@ public final class ComfortTracker {
     public record Result(float target, Factor reason) {
     }
 
-    /** Moves {@code current} one step towards {@code target}. */
     public static float drift(float current, float target) {
         if (Math.abs(target - current) <= DRIFT) {
             return target;
@@ -175,7 +154,6 @@ public final class ComfortTracker {
         return current + Math.signum(target - current) * DRIFT;
     }
 
-    /** Fraction of the wanted space the creature actually has, 0..1. Flyers always have enough. */
     float measureSpace(ServerLevel level, int wanted) {
         AncientCreatureEntity c = this.creature;
         if (c.speciesCategory().isFlying()) {
@@ -232,7 +210,6 @@ public final class ComfortTracker {
         queue.add(pos);
     }
 
-    /** The standable spot at {@code pos}, stepping up or down one block like a walking mob. */
     private BlockPos groundNear(ServerLevel level, BlockPos pos) {
         for (int dy : new int[]{0, 1, -1}) {
             BlockPos p = pos.offset(0, dy, 0);

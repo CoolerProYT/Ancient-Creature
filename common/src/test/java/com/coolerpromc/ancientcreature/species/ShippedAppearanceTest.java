@@ -34,12 +34,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Every shipped species must have a complete, self-consistent Bedrock resource set: a client entity,
- * geometry that bakes, render controllers whose texture arrays line up with the server's variants,
- * textures that exist at the declared resolution, and animations and controllers that only refer to
- * things that exist.
- */
 class ShippedAppearanceTest {
     private static final Path RESOURCES = Path.of("src/main/resources");
     private static final Path ASSETS = RESOURCES.resolve("assets/ancientcreature/ancientcreature");
@@ -120,14 +114,12 @@ class ShippedAppearanceTest {
         BedrockClientEntity entity = ENTITIES.get(settings.clientEntity().orElse(id));
         assertNotNull(entity, species + " has no client entity");
 
-        // geometry
         String geometryId = entity.geometry().get("default");
         assertNotNull(geometryId, species + " has no default geometry");
         BedrockGeometry geometry = GEOMETRY.get(geometryId.toLowerCase(Locale.ROOT));
         assertNotNull(geometry, species + " geometry " + geometryId + " is not loaded");
         BakedBedrockModel baked = BedrockModelBaker.bake(geometry);
 
-        // textures exist and match the geometry's UV space
         for (Map.Entry<String, Identifier> texture : entity.textures().entrySet()) {
             Path png = RESOURCES.resolve("assets/" + texture.getValue().getNamespace() + "/" + texture.getValue().getPath());
             assertTrue(Files.exists(png), species + " texture " + texture.getKey() + " missing at " + png);
@@ -137,7 +129,6 @@ class ShippedAppearanceTest {
             assertEquals(0, image.getWidth() % geometry.textureWidth(), species + " texture " + texture.getKey() + " is not a whole multiple of the UV size");
         }
 
-        // render controllers line up with the server's variant order
         assertFalse(entity.renderControllers().isEmpty(), species + " has no render controller");
         for (BedrockClientEntity.ControllerRef ref : entity.renderControllers()) {
             BedrockRenderController rc = RENDER_CONTROLLERS.get(ref.name().toLowerCase(Locale.ROOT));
@@ -150,7 +141,7 @@ class ShippedAppearanceTest {
                 assertEquals(server.variants().get(i).id(), ref2.name(), species + " skin " + i + " is out of order with the server variants");
                 assertTrue(entity.textures().containsKey(ref2.name()), species + " has no texture '" + ref2.name() + "'");
             }
-            // gear layers follow query.armor_tier and query.is_saddled
+
             assertEquals(List.of("default"), layers(rc, 0, 0, 0), species + " bare");
             assertEquals(List.of("default", "armor_diamond", "saddle"), layers(rc, 0, 3, 1), species + " geared");
             assertEquals(List.of("default", "armor_iron"), layers(rc, 0, 1, 0), species + " barded");
@@ -162,7 +153,6 @@ class ShippedAppearanceTest {
             assertTrue(entity.geometry().containsKey(((MolangResources.ResourceRef) geometryRef).name()));
         }
 
-        // animations and controllers resolve, and only target bones that exist
         for (BedrockClientEntity.AnimateEntry entry : entity.scripts().animate()) {
             String target = entity.animations().getOrDefault(entry.name().toLowerCase(Locale.ROOT), entry.name()).toLowerCase(Locale.ROOT);
             assertTrue(CONTROLLERS.containsKey(target) || ANIMATIONS.containsKey(target), species + " animates unknown '" + entry.name() + "'");
@@ -205,10 +195,6 @@ class ShippedAppearanceTest {
         return out;
     }
 
-    /**
-     * The eye must be somewhere on the creature: line-of-sight and {@code isEyeInFluid} start there,
-     * so an eye above the model sees over blocks the creature is standing behind.
-     */
     @ParameterizedTest(name = "{0}")
     @MethodSource("species")
     void hitboxesFitTheirModel(String species) throws Exception {
@@ -223,9 +209,12 @@ class ShippedAppearanceTest {
                 highest = Math.max(highest, (cube.origin().y() + cube.size().y()) / 16.0F);
             }
         }
+
+        float scale = ClientSpeciesDefinition.CODEC.parse(JsonOps.INSTANCE, json(ASSETS.resolve("species/" + species + ".json")))
+            .getOrThrow(message -> new AssertionError(species + " appearance: " + message)).renderScale();
         float eye = definition.physical().resolvedEyeHeight();
-        float top = highest;
-        float bottom = lowest;
+        float top = highest * scale;
+        float bottom = lowest * scale;
         assertTrue(eye <= top, () -> species + " eye " + eye + " is above its model top " + top);
         assertTrue(eye >= bottom, () -> species + " eye " + eye + " is below its model bottom " + bottom);
         assertTrue(eye <= definition.physical().height(), () -> species + " eye " + eye + " is outside its hitbox");

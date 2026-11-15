@@ -22,13 +22,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Species packs written for releases before Ancient Creature followed Bedrock's axes (species
- * {@code format_version} 1) are converted on load. The conversion must reproduce exactly what the old
- * renderer drew. The old renderer is reproduced here verbatim and compared on random models that
- * exercise everything it handled: nested and rotated bones, rotated cubes with and without their own
- * pivot, fractional sizes, mirroring and inflation.
- */
 class LegacyAxesTest {
     @BeforeAll
     static void boot() {
@@ -62,20 +55,18 @@ class LegacyAxesTest {
         for (float t = 0; t <= 1.0F; t += 0.1F) {
             Vector3f o = original.bones().get("b").rotation().sample(t, ctx, new Vector3f());
             Vector3f n = converted.bones().get("b").rotation().sample(t, ctx, new Vector3f());
-            // old applier added (x, -y, z); the new one adds (x, y, z)
+
             assertEquals(o.x, n.x, 1e-4);
             assertEquals(-o.y, n.y, 1e-4);
             assertEquals(o.z, n.z, 1e-4);
         }
         Vector3f o = original.bones().get("b").position().sample(0, ctx, new Vector3f());
         Vector3f n = converted.bones().get("b").position().sample(0, ctx, new Vector3f());
-        // old applier added (-x, -y, z); the new one adds (x, -y, z)
+
         assertEquals(-o.x, n.x, 1e-4);
         assertEquals(o.y, n.y, 1e-4);
         assertEquals(o.z, n.z, 1e-4);
     }
-
-    // ------------------------------------------------------------------ random models
 
     private static float r(Random random, float lo, float hi, boolean whole) {
         float v = lo + random.nextFloat() * (hi - lo);
@@ -136,8 +127,6 @@ class LegacyAxesTest {
         geometry.add("bones", bones);
         return geometry;
     }
-
-    // ------------------------------------------------------------------ the old baker, as it shipped
 
     private static ModelPart legacyBake(JsonObject geometry) {
         JsonObject description = geometry.getAsJsonObject("description");

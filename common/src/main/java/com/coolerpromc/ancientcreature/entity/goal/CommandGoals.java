@@ -14,15 +14,10 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
 
-/**
- * The goals behind {@link CreatureCommand}. They are added to every species automatically, ahead of
- * the species' own behaviour, and do nothing for creatures without an owner.
- */
 public final class CommandGoals {
     private CommandGoals() {
     }
 
-    /** {@link CreatureCommand#STAY}: holds position. Swimming and floating still run. */
     public static final class Stay extends Goal {
         private final AncientCreatureEntity creature;
 
@@ -52,14 +47,13 @@ public final class CommandGoals {
         public void tick() {
             this.creature.getNavigation().stop();
             if (this.creature.speciesCategory().isFlying() && !this.creature.onGround()) {
-                // a flyer told to stay settles down rather than hovering in place forever
+
                 Vec3 v = this.creature.getDeltaMovement();
                 this.creature.setDeltaMovement(v.x * 0.6, Math.min(v.y, -0.08), v.z * 0.6);
             }
         }
     }
 
-    /** {@link CreatureCommand#FOLLOW}: walks, swims or flies after the owner; teleports to catch up. */
     public static final class FollowOwner extends Goal {
         private static final float START = 10.0F;
         private static final float STOP = 4.0F;
@@ -143,7 +137,6 @@ public final class CommandGoals {
         }
     }
 
-    /** Tries a few spots 2-4 blocks around {@code target} where the creature's whole hitbox fits. */
     public static boolean teleportNear(AncientCreatureEntity creature, BlockPos target) {
         int reach = 2 + (int) Math.ceil(creature.getBbWidth());
         for (int attempt = 0; attempt < 12; attempt++) {
@@ -172,7 +165,6 @@ public final class CommandGoals {
         return creature.level().noCollision(creature, creature.getBoundingBox().move(delta));
     }
 
-    /** {@link CreatureCommand#ROAM}: heads back when it has wandered out of its home range. */
     public static final class ReturnHome extends Goal {
         private final AncientCreatureEntity creature;
         private final double speed;
@@ -200,10 +192,6 @@ public final class CommandGoals {
         }
     }
 
-    /**
-     * Following creatures that can fight take on whatever hurts their owner, and whatever their owner
-     * attacks — but never another creature of the same owner.
-     */
     public static final class DefendOwner extends TargetGoal {
         private final AncientCreatureEntity creature;
         private @Nullable LivingEntity candidate;

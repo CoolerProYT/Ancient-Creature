@@ -101,7 +101,6 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         return new IncubatorMenu(containerId, inventory, player, this, data);
     }
 
-    /** Unprocessed incubation time for the egg inside, or 0 when there is none. */
     private int baseTicks(ServerLevel level) {
         Species species = ModDataComponents.speciesOf(inputContainer.getItem(0));
         if (species == null) {
@@ -161,7 +160,7 @@ public class IncubatorBlockEntity extends BlockEntity implements MenuProvider, I
         output.set(ModDataComponents.SPECIES.get(), species);
         CreatureGenome genome = stack.get(ModDataComponents.GENOME.get());
         if (genome != null) {
-            // each precision module gives a frail embryo a 35% chance to come out healthy
+
             if (genome.frail() && serverLevel.getRandom().nextFloat() < 0.35f * upgrades.precision()) {
                 genome = genome.withoutFrailty();
             }

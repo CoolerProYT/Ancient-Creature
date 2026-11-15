@@ -27,10 +27,6 @@ import java.util.Map;
 
 import static com.coolerpromc.ancientcreature.item.FossilPart.*;
 
-/**
- * Loot rolled with the archaeology parameters: brushing dig sites, brushing vanilla ruins (via
- * {@link FossilLootInjections}) and working a sifter.
- */
 public final class ModArchaeologyLootSubProvider implements LootTableSubProvider {
     private final HolderLookup.Provider registries;
     private SubContext context;
@@ -64,7 +60,6 @@ public final class ModArchaeologyLootSubProvider implements LootTableSubProvider
         this.addRuin(FossilLootInjections.ARCHAEOLOGY_OCEAN_RUIN, 0.06f, FossilLoot.fossil(parts, List.of(TOOTH, VERTEBRA, RIB, SKULL), FossilLoot.MARINE, 0.0f));
     }
 
-    /** Roughly one brushed block in six holds a fossil, with the mix of parts set by the biome. */
     private void addDigSite(HolderGetter<FossilPart> parts, DigSiteType type) {
         LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
         FossilLoot.addWeightedFossils(pool, parts, FossilLoot.digSiteParts(type), FossilLoot.digSiteSpecies(type), FossilLoot.digSiteBonus(type));
@@ -81,7 +76,6 @@ public final class ModArchaeologyLootSubProvider implements LootTableSubProvider
         this.context.accept(type.brushingLoot(), LootTable.lootTable().withPool(pool));
     }
 
-    /** Odds and ends that say where the site is. */
     private static Map<Item, Integer> flavour(DigSiteType type) {
         return switch (type) {
             case PLAINS -> FossilLoot.ordered(Items.FLINT, 4, Items.WHEAT_SEEDS, 4);
@@ -96,7 +90,6 @@ public final class ModArchaeologyLootSubProvider implements LootTableSubProvider
         };
     }
 
-    /** About one load in thirty gives up a fossil; the rest is rubble and the odd useful scrap. */
     private void addSifting(HolderGetter<FossilPart> parts, SifterBlock.Material material) {
         LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(FossilLoot.fossil(parts, List.of(CLAW, TOOTH, RIB, LIMB, VERTEBRA)).setWeight(3))
@@ -116,7 +109,6 @@ public final class ModArchaeologyLootSubProvider implements LootTableSubProvider
         this.context.accept(material.lootTable(), LootTable.lootTable().withPool(pool));
     }
 
-    /** Swapped in for a vanilla ruin's brushing loot when the chance comes up. */
     private void addRuin(ResourceKey<LootTable> key, float chance, LootPoolSingletonContainer.Builder<?> fossil) {
         this.context.accept(key, LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1))

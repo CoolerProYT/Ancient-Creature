@@ -29,12 +29,10 @@ import java.util.List;
 
 import static com.coolerpromc.ancientcreature.item.FossilPart.*;
 
-/** Loot tables that are rolled with fishing, mob-drop and equipment parameters. */
 public final class ModInjectLootSubProviders {
     private ModInjectLootSubProviders() {
     }
 
-    /** About one catch in a hundred is a fossil washed out of a riverbank or sea floor, or a lump of amber. */
     public static final class Fishing implements LootTableSubProvider {
         private final HolderLookup.Provider registries;
         private SubContext context;
@@ -59,7 +57,6 @@ public final class ModInjectLootSubProviders {
         }
     }
 
-    /** Husks and drowned sometimes carry a fossil they picked up in the sand or silt. */
     public static final class Entities implements LootTableSubProvider {
         private final HolderLookup.Provider registries;
         private SubContext context;
@@ -90,7 +87,6 @@ public final class ModInjectLootSubProviders {
         }
     }
 
-    /** The undead crew of an abandoned dig site: a field hat and a brush still in hand. */
     public static final class Equipment implements LootTableSubProvider {
         private final HolderLookup.Provider registries;
         private SubContext context;

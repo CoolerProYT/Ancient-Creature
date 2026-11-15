@@ -74,7 +74,6 @@ public final class ModChestLootSubProvider implements LootTableSubProvider {
             );
         }
 
-        // The overrun camps kept their best finds locked up: rarer parts, better preserved.
         LootPool.Builder finds = LootPool.lootPool().setRolls(UniformGenerator.between(2, 3));
         FossilLoot.addWeightedFossils(finds, parts, FossilLoot.weights(SKULL, 4, VERTEBRA, 3, TOOTH, 3, EGG, 2, AMBER, 1), List.of(), 0.1f);
         this.context.accept(ModLootTables.ABANDONED_DIG_SITE_CHEST, LootTable.lootTable()
@@ -95,7 +94,6 @@ public final class ModChestLootSubProvider implements LootTableSubProvider {
         );
     }
 
-    /** The expedition's notebook: which species were recorded in this region, and some excavation tips. */
     private static LootPool.Builder fieldNotes(int weight, int emptyWeight) {
         LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(LootItem.lootTableItem(Items.WRITTEN_BOOK).setWeight(weight).apply(FieldNotesFunction.fieldNotes()));
@@ -105,7 +103,6 @@ public final class ModChestLootSubProvider implements LootTableSubProvider {
         return pool;
     }
 
-    /** A map to another, still unexplored dig site. */
     private static LootPool.Builder digSiteMap(HolderGetter<Item> items, float chance) {
         return LootPool.lootPool().setRolls(ConstantValue.exactly(1))
             .add(LootItem.lootTableItem(Items.MAP).setWeight(Math.round(chance * 100))

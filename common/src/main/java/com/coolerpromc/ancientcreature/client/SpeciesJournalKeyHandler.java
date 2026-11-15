@@ -15,7 +15,6 @@ public final class SpeciesJournalKeyHandler {
         CATEGORY
     );
 
-    /** While riding one of your creatures: use its mount ability. */
     public static final KeyMapping MOUNT_ABILITY = new KeyMapping(
         "key.ancientcreature.mount_ability",
         InputConstants.Type.KEYSYM,

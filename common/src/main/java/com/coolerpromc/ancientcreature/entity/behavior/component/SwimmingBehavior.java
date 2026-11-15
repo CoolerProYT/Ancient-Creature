@@ -9,7 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 
-/** Open-water wandering for aquatic species. */
 public record SwimmingBehavior(double speedModifier, int interval) implements CreatureBehaviorConfig {
     public static final MapCodec<SwimmingBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.SPEED.optionalFieldOf("speed_modifier", 1.0).forGetter(SwimmingBehavior::speedModifier),

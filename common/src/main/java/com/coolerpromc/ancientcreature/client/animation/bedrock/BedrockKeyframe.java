@@ -12,12 +12,6 @@ import org.joml.Vector3f;
 
 import java.util.Locale;
 
-/**
- * One keyframe of a bone channel. Each axis is a Molang expression — usually a folded constant.
- *
- * <p>{@code pre} is the value arriving at the keyframe and {@code post} the value leaving it; they
- * differ only for keyframes Blockbench exports with a discontinuity (and for its step keyframes).
- */
 public record BedrockKeyframe(float time, MolangExpression[] pre, MolangExpression[] post, Interpolation interpolation) {
     public enum Interpolation {
         LINEAR, CATMULL_ROM, STEP;
@@ -52,7 +46,6 @@ public record BedrockKeyframe(float time, MolangExpression[] pre, MolangExpressi
         return true;
     }
 
-    /** A keyframe value: a number, a Molang string, a 1- or 3-element array, or {pre, post, lerp_mode}. */
     static BedrockKeyframe parse(float time, JsonElement element, boolean uniformDefault, String path) throws BedrockFormatException {
         if (element.isJsonObject()) {
             JsonObject json = element.getAsJsonObject();
@@ -73,10 +66,6 @@ public record BedrockKeyframe(float time, MolangExpression[] pre, MolangExpressi
         return new BedrockKeyframe(time, value, value, Interpolation.LINEAR);
     }
 
-    /**
-     * Three axis expressions. A lone value applies to all axes for scale (Bedrock's uniform scale) and
-     * also for rotation and position, which is what Bedrock does with a scalar.
-     */
     static MolangExpression[] vector(JsonElement element, boolean uniformDefault, String path) throws BedrockFormatException {
         if (element.isJsonArray()) {
             JsonArray array = element.getAsJsonArray();

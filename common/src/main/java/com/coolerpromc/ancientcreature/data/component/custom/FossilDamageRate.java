@@ -19,7 +19,6 @@ public record FossilDamageRate(float value) implements TooltipProvider {
     public static final Codec<FossilDamageRate> CODEC = ExtraCodecs.floatRange(0.0F, 1.0F).xmap(FossilDamageRate::new, FossilDamageRate::value);
     public static final StreamCodec<RegistryFriendlyByteBuf, FossilDamageRate> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.FLOAT, FossilDamageRate::value, FossilDamageRate::new);
 
-
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         float damageRate = components.getOrDefault(ModDataComponents.FOSSIL_DAMAGE_RATE.get(), new FossilDamageRate(0f)).value();

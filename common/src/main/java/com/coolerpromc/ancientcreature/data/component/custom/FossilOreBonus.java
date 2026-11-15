@@ -15,10 +15,6 @@ import net.minecraft.world.item.component.TooltipProvider;
 
 import java.util.function.Consumer;
 
-/**
- * Completeness a chisel adds to the fossils it digs from plain fossil ore and rock piles. These
- * shallow sources roll low, so a better chisel lifts the whole roll instead of shaving less off it.
- */
 public record FossilOreBonus(float value) implements TooltipProvider {
     public static final Codec<FossilOreBonus> CODEC = ExtraCodecs.floatRange(0.0F, 1.0F).xmap(FossilOreBonus::new, FossilOreBonus::value);
     public static final StreamCodec<RegistryFriendlyByteBuf, FossilOreBonus> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.FLOAT, FossilOreBonus::value, FossilOreBonus::new);

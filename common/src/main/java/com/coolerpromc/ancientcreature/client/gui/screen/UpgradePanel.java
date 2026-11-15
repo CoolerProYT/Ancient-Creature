@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
-/** The upgrade panel every lab machine screen shows to its right. */
 public final class UpgradePanel {
     public static final Identifier TEXTURE = Constants.id("textures/gui/upgrade_panel.png");
 

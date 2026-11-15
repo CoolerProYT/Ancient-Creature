@@ -136,9 +136,9 @@ public class ModRecipeProvider extends RecipeProvider {
             .pattern("IGI")
             .define('I', Ingredient.of(Items.IRON_INGOT))
             .define('M', Ingredient.of(Items.MAGMA_BLOCK))
-            .define('N', Ingredient.of(Items.NETHERITE_SCRAP))
+            .define('N', Ingredient.of(Items.BLAZE_ROD))
             .define('G', Ingredient.of(Items.GLASS))
-            .unlockedBy(getHasName(Items.NETHERITE_SCRAP), has(Items.NETHERITE_SCRAP))
+            .unlockedBy(getHasName(Items.BLAZE_ROD), has(Items.BLAZE_ROD))
             .unlockedBy(getHasName(Items.MAGMA_BLOCK), has(Items.MAGMA_BLOCK))
             .unlockedBy(getHasName(ModBlocks.EMBRYOGENESIS_CHAMBER.item()), has(ModBlocks.EMBRYOGENESIS_CHAMBER.item()))
             .save(output);
@@ -200,7 +200,6 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(output);
     }
 
-    /** Vanilla uses for creature materials; equipment recipes that need them are defined with that equipment. */
     private void creatureMaterials() {
         cook(SmeltingRecipe::new, 200, "smelting");
         cook(SmokingRecipe::new, 100, "smoking");
@@ -227,7 +226,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .define('S', Items.STRING)
             .unlockedBy(getHasName(ModItems.PREHISTORIC_HORN), has(ModItems.PREHISTORIC_HORN))
             .save(output);
-        // Lab upgrade modules: an iron frame around the effect's ingredient, wired with redstone.
+
         shaped(RecipeCategory.MISC, ModItems.SPEED_UPGRADE_MODULE)
             .pattern("IRI")
             .pattern("RGR")
@@ -257,7 +256,7 @@ public class ModRecipeProvider extends RecipeProvider {
             .define('E', Items.EMERALD)
             .unlockedBy(getHasName(Items.EMERALD), has(Items.EMERALD))
             .save(output);
-        // A bone horn for creatures that never drop one: horns are rare, so the whistle has a fallback.
+
         shaped(RecipeCategory.TOOLS, ModItems.HORN_WHISTLE)
             .pattern("  S")
             .pattern(" G ")
@@ -313,7 +312,6 @@ public class ModRecipeProvider extends RecipeProvider {
         boneMeal(ModItems.MAMMOTH_TUSK, 9);
     }
 
-    /** Barding: metal plates over osteoderms on a thick-hide backing. */
     private void barding(Item result, Item core, Item metal) {
         shaped(RecipeCategory.COMBAT, result)
             .pattern("MCM")
@@ -333,7 +331,6 @@ public class ModRecipeProvider extends RecipeProvider {
             .save(output, "ancientcreature:cooked_prehistoric_meat_from_" + source);
     }
 
-    /** Vanilla names this recipe {@code minecraft:<item>_smithing}, which datagen drops as outside the mod's namespace. */
     @Override
     protected void netheriteSmithing(Item base, RecipeCategory category, Item result) {
         SmithingTransformRecipeBuilder.smithing(

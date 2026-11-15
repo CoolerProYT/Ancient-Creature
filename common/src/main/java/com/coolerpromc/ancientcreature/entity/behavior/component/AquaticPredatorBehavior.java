@@ -15,12 +15,6 @@ import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * Hunts whatever is swimming nearby: players in the water, and other aquatic life.
- *
- * <p>Reproduces the {@code isValidPrey} check that used to live inside {@code Megalodon}, without any
- * species test in the AI. The owner and the hunter's own species are excluded.
- */
 public record AquaticPredatorBehavior(
     int randomInterval,
     boolean targetPlayers,
@@ -38,7 +32,6 @@ public record AquaticPredatorBehavior(
         Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(AquaticPredatorBehavior::adultsOnly),
         Codec.BOOL.optionalFieldOf("requires_hunger", true).forGetter(AquaticPredatorBehavior::requiresHunger)
     ).apply(i, AquaticPredatorBehavior::new));
-
 
     @Override
     public CreatureBehaviorType<?> type() {

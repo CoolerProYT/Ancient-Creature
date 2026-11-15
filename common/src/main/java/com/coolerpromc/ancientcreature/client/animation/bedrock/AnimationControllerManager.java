@@ -16,12 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Loads every animation controller under {@code assets/<ns>/ancientcreature/animation_controllers/}.
- *
- * <p>Bedrock-format controllers are found by name ({@code controller.animation.x.move}); an earlier
- * single-controller file is found by its file id ({@code ancientcreature:triceratops}).
- */
 public final class AnimationControllerManager extends SimplePreparableReloadListener<Map<String, AnimationController>> {
     public static final Identifier ID = Constants.id("animation_controllers");
     public static final String DIRECTORY = Constants.MODID + "/animation_controllers";

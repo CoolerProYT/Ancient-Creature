@@ -41,7 +41,7 @@ public class ItemEvents {
         if (genome != null){
             genome.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());
         }
-        // the genome readout already names the species
+
         Species species = genomeData == null ? ModDataComponents.speciesOf(stack) : null;
         if (species != null){
             species.addToTooltip(tooltipContext, components::add, tooltipFlag, stack.getComponents());

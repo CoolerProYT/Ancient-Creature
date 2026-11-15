@@ -33,17 +33,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Turns a fossil part item into a specific, dirty fossil.
- *
- * <p>The species is chosen from those living in the biome where the loot is generated. Loot can
- * also name its own species pool (e.g. marine species for coastal sites) and grant a completeness
- * bonus for well-preserved sources such as ice or deep rock.
- *
- * <p>Most sources lose a share of the roll to the chisel's damage rate. Shallow sources that roll low
- * (plain fossil ore, rock pile bones) set {@code chisel_ore_bonus} instead: the chisel adds its
- * {@link FossilOreBonus} on top of the roll and takes nothing off, so a better chisel lifts the floor.
- */
 public class SetFossilDataFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetFossilDataFunction> CODEC = RecordCodecBuilder.mapCodec(instance ->
         commonFields(instance)
@@ -109,11 +98,6 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
         return itemStack;
     }
 
-    /**
-     * Picks the species: the loot's own pool if it names one, otherwise the species of the biome at
-     * the loot's position, then of the surface biome above it (caves and the deep rock carry the
-     * fossils of the land above), and finally any fossil species at all.
-     */
     private @Nullable Species pickSpecies(LootContext context, RandomSource random) {
         List<Species> fossilSpecies = Species.fossilSpecies();
         if (fossilSpecies.isEmpty()) {
@@ -143,7 +127,6 @@ public class SetFossilDataFunction extends LootItemConditionalFunction {
         return fossilSpecies.get(random.nextInt(fossilSpecies.size()));
     }
 
-    /** Where the loot is generated; chests opened by hoppers or minecarts have no entity, only an origin. */
     private static @Nullable BlockPos position(LootContext context) {
         Vec3 origin = context.getOptionalParameter(LootContextParams.ORIGIN);
         if (origin != null) {

@@ -17,11 +17,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Pieces together two to four identified fossils of one species. The most complete piece is kept
- * and every other piece adds half of its own completeness to it, so a pile of scrappy fragments
- * can still become a usable specimen.
- */
 public class FossilReassemblyRecipe extends CustomRecipe {
     public static final FossilReassemblyRecipe INSTANCE = new FossilReassemblyRecipe();
     public static final MapCodec<FossilReassemblyRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
@@ -57,7 +52,6 @@ public class FossilReassemblyRecipe extends CustomRecipe {
         return result;
     }
 
-    /** The fossils in the grid if they can be reassembled, otherwise null. */
     private static @Nullable List<ItemStack> pieces(CraftingInput input) {
         List<ItemStack> pieces = new ArrayList<>();
         for (int slot = 0; slot < input.size(); slot++) {

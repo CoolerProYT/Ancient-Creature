@@ -5,14 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.SplittableRandom;
 
-/**
- * Everything an expression can read or write while it runs.
- *
- * <p>One context normally belongs to one entity: {@link #variables} is that entity's persistent
- * {@code variable.*} storage, exactly as in Bedrock. {@code temp.*} is cleared before every top-level
- * evaluation; {@code context.*} is set by whoever invokes the expression. A context is not thread-safe
- * and is meant to be used from the render thread only.
- */
 public final class MolangContext {
     private static final Set<String> WARNED_QUERIES = Collections.synchronizedSet(new HashSet<>());
 
@@ -24,10 +16,8 @@ public final class MolangContext {
     private MolangResources resources = MolangResources.NONE;
     private SplittableRandom random = new SplittableRandom();
 
-    /** The value of {@code this}: for a keyframe, the channel's value before this keyframe applied. */
     public double thisValue;
 
-    // control flow for complex expressions
     boolean returned;
     Object returnValue = 0.0;
     boolean breaking;

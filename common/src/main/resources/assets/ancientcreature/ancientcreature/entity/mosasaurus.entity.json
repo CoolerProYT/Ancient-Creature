@@ -27,6 +27,7 @@
         "hurt": "animation.mosasaurus.hurt",
         "death": "animation.mosasaurus.death",
         "roar": "animation.mosasaurus.roar",
+        "sit": "animation.mosasaurus.sit",
         "main": "controller.animation.mosasaurus.main"
       },
       "scripts": {

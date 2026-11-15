@@ -8,7 +8,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 
-/** Idle head movement. */
 public record RandomLookBehavior() implements CreatureBehaviorConfig {
     public static final RandomLookBehavior INSTANCE = new RandomLookBehavior();
     public static final MapCodec<RandomLookBehavior> CODEC = MapCodec.unit(INSTANCE);

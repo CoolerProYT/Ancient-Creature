@@ -8,7 +8,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.function.BiConsumer;
 
-/** The registries and output a loot sub provider writes to, bundled the way newer versions hand them over. */
 record SubContext(HolderLookup.Provider registries, BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
     <T> HolderGetter<T> lookup(ResourceKey<? extends Registry<? extends T>> registry) {
         return this.registries.lookupOrThrow(registry);

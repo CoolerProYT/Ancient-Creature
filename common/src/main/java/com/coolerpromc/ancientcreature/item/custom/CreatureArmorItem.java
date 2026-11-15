@@ -9,10 +9,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 
 import java.util.function.Consumer;
 
-/**
- * Barding for a revived creature. Fits any species; the owner puts it on by using it on the creature.
- * The tier decides the protection and which overlay the creature's render controller shows.
- */
 public class CreatureArmorItem extends Item {
     public enum Tier {
         IRON(1, 6.0, 0.0, 0.0),
@@ -20,7 +16,6 @@ public class CreatureArmorItem extends Item {
         DIAMOND(3, 12.0, 2.0, 0.0),
         NETHERITE(4, 15.0, 3.0, 0.2);
 
-        /** Synced to clients and exposed to animations as {@code query.armor_tier}; 0 means none. */
         public final int index;
         public final double armor;
         public final double toughness;

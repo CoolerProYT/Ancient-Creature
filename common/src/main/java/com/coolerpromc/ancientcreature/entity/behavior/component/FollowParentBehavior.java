@@ -9,7 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-/** Babies trail after an adult. */
 public record FollowParentBehavior(double speedModifier) implements CreatureBehaviorConfig {
     public static final MapCodec<FollowParentBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.SPEED.optionalFieldOf("speed_modifier", 1.1).forGetter(FollowParentBehavior::speedModifier)
