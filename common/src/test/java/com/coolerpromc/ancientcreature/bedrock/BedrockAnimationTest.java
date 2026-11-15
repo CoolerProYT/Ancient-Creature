@@ -18,7 +18,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Bedrock animation and controller semantics, matched to Blockbench's preview. */
 class BedrockAnimationTest {
     private static final float EPS = 1.0E-4F;
 

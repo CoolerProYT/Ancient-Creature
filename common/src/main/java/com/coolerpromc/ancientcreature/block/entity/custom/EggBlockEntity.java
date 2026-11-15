@@ -27,7 +27,7 @@ public class EggBlockEntity extends BlockEntity {
     private @Nullable Species species = null;
     private int hatchTime = 1000;
     private int progress = 0;
-    /** The parents' owner; the hatchling belongs to them. Null for eggs of unowned parents. */
+
     private java.util.@Nullable UUID owner;
     private @Nullable String variant;
     private com.coolerpromc.ancientcreature.data.component.custom.@Nullable CreatureGenome genome;
@@ -64,7 +64,6 @@ public class EggBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    /** The genome the hatchling inherited from its parents. */
     public void setGenome(com.coolerpromc.ancientcreature.data.component.custom.@Nullable CreatureGenome genome) {
         this.genome = genome;
         setChanged();
@@ -113,14 +112,14 @@ public class EggBlockEntity extends BlockEntity {
 
         if (progress >= hatchTime){
             if (!AncientCreatureEntity.hasRoomFor(serverLevel, net.minecraft.world.phys.Vec3.atCenterOf(pos))) {
-                // Wait for room; the egg stays ready and hatches as soon as the area thins out.
+
                 return;
             }
             final Species hatching = species;
             final String inherited = variant;
             final var inheritedGenome = genome;
             Entity spawned = species.getEntityType().create(serverLevel, entity -> {
-                // Applied before the entity is added so it is placed with its own bounding box.
+
                 if (entity instanceof AncientCreatureEntity creature) {
                     creature.setSpecies(hatching);
                     if (inherited != null) {

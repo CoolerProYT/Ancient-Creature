@@ -9,11 +9,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-/**
- * A distressed large creature tries to break out: it picks a direction and shoves straight along it,
- * ignoring the pathfinder (which would never lead it into a fence), and smashes weak barriers in its way.
- * Reinforced and electric fences are not in {@code #enclosure_breakable}, so a proper enclosure holds.
- */
 public class RampageGoal extends Goal {
     private static final int DURATION = 80;
 

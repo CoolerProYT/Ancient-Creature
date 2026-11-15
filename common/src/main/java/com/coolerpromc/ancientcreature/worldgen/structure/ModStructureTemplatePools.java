@@ -26,14 +26,13 @@ public class ModStructureTemplatePools {
     public static final ResourceKey<StructureTemplatePool> HIGHLAND_DIG_SITE = DigSiteType.HIGHLAND.startPool();
     public static final ResourceKey<StructureTemplatePool> COASTAL_DIG_SITE = DigSiteType.COASTAL.startPool();
 
-    /** The excavation pits that can open up beside a camp, with their relative weights. */
     private static final List<Pair<String, Integer>> PITS = List.of(
         Pair.of("trench", 3),
         Pair.of("quarry", 2),
         Pair.of("skeleton", 2),
         Pair.of("sinkhole", 1)
     );
-    /** Weight of "no pit here" for each of the camp's three connectors. */
+
     private static final int NO_PIT_WEIGHT = 3;
     private static final int CAMP_WEIGHT = 7;
     private static final int ABANDONED_CAMP_WEIGHT = 1;
@@ -46,7 +45,6 @@ public class ModStructureTemplatePools {
         for (DigSiteType type : DigSiteType.values()) {
             Holder<StructureProcessorList> archaeology = processorLists.getOrThrow(type.archaeologyProcessors());
 
-            // A working camp most of the time; now and then one that was overrun and left to rot.
             context.register(type.startPool(), new StructureTemplatePool(emptyPool, List.of(
                 Pair.of(StructurePoolElement.single(type.campTemplate(), archaeology).apply(StructureTemplatePool.Projection.RIGID), CAMP_WEIGHT),
                 Pair.of(StructurePoolElement.single(type.abandonedCampTemplate(), archaeology).apply(StructureTemplatePool.Projection.RIGID), ABANDONED_CAMP_WEIGHT)

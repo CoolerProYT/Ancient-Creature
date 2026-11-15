@@ -15,22 +15,16 @@ public final class CreatureBlockBreaker {
     private CreatureBlockBreaker() {
     }
 
-    /**
-     * Smashes {@code #creature_destroyable} blocks ahead of a charging creature, and also
-     * {@code #enclosure_breakable} ones when the creature is large ({@link #canBreakEnclosures}).
-     */
     public static void destroyChargeObstacles(ServerLevel level, Mob creature, double extraReach) {
         destroyAhead(level, creature, extraReach, canBreakEnclosures(creature));
     }
 
-    /** Large creatures (at least {@value #ENCLOSURE_BREAKER_WIDTH} blocks wide) can force weak barriers. */
     public static final float ENCLOSURE_BREAKER_WIDTH = 1.2F;
 
     public static boolean canBreakEnclosures(Mob creature) {
         return creature.getBbWidth() >= ENCLOSURE_BREAKER_WIDTH && !creature.isBaby();
     }
 
-    /** Breaks the blocks ahead of a creature: destroyable ones always, enclosure ones when asked. */
     public static void destroyAhead(ServerLevel level, Mob creature, double extraReach, boolean enclosures) {
         if (!level.getGameRules().get(GameRules.MOB_GRIEFING) || !ModCommonConfig.CONFIG.creaturesBreakBlocks.get()) {
             return;

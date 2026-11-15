@@ -16,7 +16,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Optional;
 
-/** Hands every generated drop list to {@link FossilLootInjections}, which knows which vanilla tables to touch. */
 public class FossilInjectionLootModifier extends LootModifier {
     public static final MapCodec<FossilInjectionLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance ->
         codecStart(instance).apply(instance, FossilInjectionLootModifier::new));

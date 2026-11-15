@@ -119,7 +119,7 @@ public interface IRegistryHelper {
     interface ClientboundPayloadRegistrar {
         <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     }
-    /** Registers a client-to-server payload whose {@code handle} runs on the server. */
+
     interface ServerboundPayloadRegistrar {
         <T extends HandledCustomPacketPayload> void register(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec);
     }

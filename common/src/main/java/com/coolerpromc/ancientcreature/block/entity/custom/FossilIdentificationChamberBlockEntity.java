@@ -152,7 +152,6 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         return identifyingAnimationState;
     }
 
-    /** Unprocessed time for what is in the chamber: quicker for species already identified. */
     private int baseTicks(ServerLevel level) {
         FossilData fossilData = inputContainer.getItem(0).get(ModDataComponents.FOSSIL_DATA.get());
         Species species = fossilData == null ? null : fossilData.getSpecies();
@@ -209,7 +208,7 @@ public class FossilIdentificationChamberBlockEntity extends BlockEntity implemen
         Holder<FossilPart> fossilPart = fossilData.fossilPart();
         Species species = fossilData.getSpecies();
         IdentifiedSpeciesData data = IdentifiedSpeciesData.getIdentifiedSpeciesData(level.getServer());
-        // each precision module halves the chance of a failed identification
+
         float failChance = fossilPart.value().identifyFailChance() * (float) Math.pow(0.5, upgrades.precision());
         float damageRate = fossilPart.value().fossilDamageRate();
 

@@ -16,9 +16,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.rule.blockent
 import java.util.List;
 
 public final class ModProcessorLists {
-    /** The bones of a buried fossil bed, a few already turned to fossil ore. */
+
     public static final ResourceKey<StructureProcessorList> FOSSIL_BED_BONES = create("fossil_bed_bones");
-    /** The mineral overlay of a buried fossil bed: fossil ore instead of vanilla's coal. */
+
     public static final ResourceKey<StructureProcessorList> FOSSIL_BED_ORE = create("fossil_bed_ore");
 
     private ModProcessorLists() {
@@ -37,8 +37,6 @@ public final class ModProcessorLists {
             new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE)
         )));
 
-        // Each dig site piece turns a handful of its loose gravel or sand into brushable blocks,
-        // so no two sites hide their finds in the same places.
         for (DigSiteType type : DigSiteType.values()) {
             context.register(type.archaeologyProcessors(), new StructureProcessorList(List.of(
                 new CappedProcessor(

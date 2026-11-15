@@ -11,22 +11,9 @@ import com.google.gson.JsonPrimitive;
 
 import java.util.*;
 
-/**
- * A Bedrock animation controller: a state machine whose states play animations.
- *
- * <p>Reads the real Bedrock format —
- * {@code {"format_version": "1.10.0", "animation_controllers": {"controller.animation.x": {...}}}} —
- * with {@code initial_state}, and per state {@code animations} (names or {@code {name: blend}}),
- * {@code transitions}, {@code blend_transition} (seconds or a weight curve),
- * {@code blend_via_shortest_path}, {@code on_entry}, {@code on_exit}, {@code sound_effects} and
- * {@code particle_effects}.
- *
- * <p>Also reads Ancient Creature's earlier format ({@code "format_version": 1} with top-level
- * {@code states}), so existing species packs keep working; such a file holds one controller.
- */
 public record AnimationController(String name, String initialState, Map<String, State> states) {
     public static final float DEFAULT_BLEND_SECONDS = 0.0F;
-    /** Blend used for legacy files, which always blended. */
+
     private static final float LEGACY_BLEND_SECONDS = 0.2F;
 
     public record State(List<StateAnimation> animations, List<Transition> transitions, BlendCurve blend, boolean blendViaShortestPath, List<MolangExpression> onEntry, List<MolangExpression> onExit, List<String> soundEffects, List<StateParticle> particleEffects) {
@@ -42,10 +29,6 @@ public record AnimationController(String name, String initialState, Map<String, 
     public record StateParticle(String effect, Optional<String> locator, Optional<MolangExpression> preEffectScript) {
     }
 
-    /**
-     * How long, and along which curve, the previous state fades out after a transition. A plain number
-     * is a linear fade over that many seconds; a curve maps seconds to the outgoing state's weight.
-     */
     public record BlendCurve(float[] times, float[] weights) {
         public static final BlendCurve NONE = linear(0.0F);
 
@@ -57,7 +40,6 @@ public record AnimationController(String name, String initialState, Map<String, 
             return this.times[this.times.length - 1];
         }
 
-        /** Weight of the outgoing state {@code seconds} after the transition. */
         public float outgoingWeight(float seconds) {
             if (seconds >= this.duration()) {
                 return 0.0F;
@@ -95,15 +77,11 @@ public record AnimationController(String name, String initialState, Map<String, 
         return problems;
     }
 
-    // ------------------------------------------------------------------ parsing
-
-    /** Whether {@code json} is the earlier single-controller Ancient Creature format. */
     public static boolean isLegacy(JsonObject json) {
         JsonElement version = json.get("format_version");
         return json.has("states") && !json.has("animation_controllers") && (version == null || (version.isJsonPrimitive() && version.getAsJsonPrimitive().isNumber()));
     }
 
-    /** Parses a Bedrock animation controller file. Legacy files yield one controller named {@code legacyName}. */
     public static Map<String, AnimationController> parseFile(JsonElement element, String legacyName) throws BedrockFormatException {
         JsonObject json = BedrockJson.object(element, "$");
         Map<String, AnimationController> out = new LinkedHashMap<>();
@@ -233,10 +211,6 @@ public record AnimationController(String name, String initialState, Map<String, 
             BedrockJson.bool(json, "blend_via_shortest_path", false), onEntry, onExit, List.copyOf(sounds), List.copyOf(particles));
     }
 
-    /**
-     * Transition conditions must compile: a typo would otherwise leave a state that can never be left,
-     * which is far harder to diagnose than a load error.
-     */
     private static MolangExpression compileStrict(Object source, String path) throws BedrockFormatException {
         if (source instanceof Number || source instanceof Boolean) {
             return Molang.of(source, path);
@@ -251,7 +225,6 @@ public record AnimationController(String name, String initialState, Map<String, 
     record Named(String name, MolangExpression expression) {
     }
 
-    /** {@code "name"} or {@code {"name": "molang"}} as used by animation lists. */
     static List<Named> namedExpressions(JsonElement entry, MolangExpression fallback, String path) throws BedrockFormatException {
         List<Named> out = new ArrayList<>();
         if (entry.isJsonPrimitive()) {

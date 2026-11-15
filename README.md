@@ -23,11 +23,11 @@ Ancient Creature is a Minecraft mod about paleontology, fossil processing, genet
 
 ## Creatures
 
-The bundled roster now contains 25 creatures: 23 reconstructed animals and two lab-made hybrids, the
+The bundled roster now contains 31 creatures: 29 reconstructed animals and two lab-made hybrids, the
 Stegoceratops and the Tyrannoraptor. In addition to the detailed creatures below,
 the data-driven expansion includes Stegosaurus, Parasaurolophus, Spinosaurus, Carnotaurus, Velociraptor,
 Dilophosaurus, Argentinosaurus, Quetzalcoatlus, Mosasaurus, Plesiosaurus, Dunkleosteus, Smilodon, Woolly
-Mammoth, Woolly Rhinoceros, Dire Wolf, and Arthropleura. Each has its own Bedrock Entity geometry, two
+Mammoth, Woolly Rhinoceros, Dire Wolf, Arthropleura, Allosaurus, Pachycephalosaurus, Gallimimus, Therizinosaurus, Compsognathus and Diplodocus. Each has its own Bedrock Entity geometry, two
 weighted 256×256 skin variants, seven animation clips, an action-aware controller, balanced physical and
 growth data, biome/incubation settings, diet, behavior profile or overrides, and pitched sound palette.
 
@@ -87,7 +87,7 @@ Creatures created with commands or through other non-capsule methods are unowned
 
 | Requirement | Version |
 | --- | --- |
-| Minecraft | 26.3 |
+| Minecraft | 26.1.2 |
 | Java | 25 |
 | Mod loaders | Fabric and NeoForge |
 
@@ -95,7 +95,7 @@ The mod is developed as a multi-loader project with shared gameplay code in `com
 
 ## Installation
 
-1. Install a compatible Fabric or NeoForge loader for Minecraft 26.3.
+1. Install a compatible Fabric or NeoForge loader for Minecraft 26.1.2.
 2. Download the Ancient Creature build made for that loader.
 3. Place the mod JAR in the Minecraft `mods` directory.
 4. Back up existing worlds before installing or updating early-beta builds.

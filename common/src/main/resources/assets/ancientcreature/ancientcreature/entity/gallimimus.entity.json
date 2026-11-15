@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:gallimimus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/gallimimus",
+        "mottled": "textures/entity/gallimimus_mottled",
+        "saddle": "textures/entity/gear/gallimimus_saddle",
+        "armor_iron": "textures/entity/gear/gallimimus_armor_iron",
+        "armor_golden": "textures/entity/gear/gallimimus_armor_golden",
+        "armor_diamond": "textures/entity/gear/gallimimus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/gallimimus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.gallimimus"
+      },
+      "animations": {
+        "idle": "animation.gallimimus.idle",
+        "walk": "animation.gallimimus.walk",
+        "run": "animation.gallimimus.run",
+        "attack": "animation.gallimimus.attack",
+        "special": "animation.gallimimus.special",
+        "hurt": "animation.gallimimus.hurt",
+        "death": "animation.gallimimus.death",
+        "roar": "animation.gallimimus.roar",
+        "sit": "animation.gallimimus.sit",
+        "main": "controller.animation.gallimimus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.gallimimus"
+      ]
+    }
+  }
+}

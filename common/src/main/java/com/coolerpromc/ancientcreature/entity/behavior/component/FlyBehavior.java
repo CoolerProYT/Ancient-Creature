@@ -18,19 +18,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
 
-/**
- * Free flight for a {@code flying} species, held inside an altitude band above the terrain.
- *
- * <p>Only applies to flying species — the goal needs the {@code FlyingPathNavigation} that
- * {@link AncientCreatureEntity} installs for that category, so it is skipped for anything else rather
- * than pathing into the ground.
- *
- * <p>This replaces vanilla's {@code WaterAvoidingRandomFlyingGoal}, which hard-codes its wander box to
- * 8 blocks horizontally and 7 vertically biased 3 up and 1 down. That box is why an untuned flyer looks
- * pinned to one height: it can never pick a waypoint far enough above where it already is to climb. The
- * band here is measured from the ground column under each candidate rather than from the creature, so a
- * species keeps its altitude over hills instead of drifting into them.
- */
 public record FlyBehavior(
     double speedModifier,
     int wanderRange,
@@ -40,8 +27,6 @@ public record FlyBehavior(
     int interval
 ) implements CreatureBehaviorConfig {
 
-    // Kept as its own field: chaining validate() straight onto mapCodec() leaves the record type
-    // unconstrained and inference fails on the whole group.
     private static final MapCodec<FlyBehavior> FIELDS = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.SPEED.optionalFieldOf("speed_modifier", 1.0).forGetter(FlyBehavior::speedModifier),
         BehaviorCodecs.BLOCK_RANGE.optionalFieldOf("wander_range", 16).forGetter(FlyBehavior::wanderRange),
@@ -53,7 +38,6 @@ public record FlyBehavior(
 
     public static final MapCodec<FlyBehavior> CODEC = FIELDS.validate(FlyBehavior::validate);
 
-    /** An inverted band would leave nowhere legal to fly, so say so at load rather than at spawn. */
     private static DataResult<FlyBehavior> validate(FlyBehavior fly) {
         if (fly.maxAltitude < fly.minAltitude) {
             return DataResult.error(() -> "max_altitude (" + fly.maxAltitude
@@ -62,12 +46,6 @@ public record FlyBehavior(
         return DataResult.success(fly);
     }
 
-    /**
-     * The profile default: wander at the given speed inside the standard band.
-     *
-     * <p>A static factory rather than an overloaded constructor, because a second constructor would make
-     * {@code FlyBehavior::new} ambiguous in the codec above.
-     */
     public static FlyBehavior wandering(double speedModifier) {
         return new FlyBehavior(speedModifier, 16, 12, 5, 32, 10);
     }
@@ -136,7 +114,6 @@ public record FlyBehavior(
                 int z = origin.getZ() + random.nextInt(2 * horizontal + 1) - horizontal;
                 int y = origin.getY() + random.nextInt(2 * vertical + 1) - vertical;
 
-                // Never force-load a chunk just to pick a waypoint.
                 if (!level.hasChunkAt(new BlockPos(x, y, z))) {
                     continue;
                 }

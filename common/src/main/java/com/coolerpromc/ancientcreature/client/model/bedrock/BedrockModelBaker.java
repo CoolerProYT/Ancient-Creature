@@ -11,29 +11,6 @@ import org.joml.Vector3fc;
 
 import java.util.*;
 
-/**
- * Turns a {@link BedrockGeometry} into a vanilla {@link ModelPart} tree that renders exactly as the
- * model does in Blockbench and in Bedrock.
- *
- * <h2>Coordinate conversion</h2>
- * Derived from Blockbench's own Bedrock importer and Java exporter, which together define how a
- * Bedrock file maps onto a Java {@code ModelPart}:
- * <ul>
- *   <li>bone offset: {@code (px - parent.px, -(py - parent.py), pz - parent.pz)}, plus 24 on Y for
- *       root bones (Java model space is Y-down with the feet at Y=24);</li>
- *   <li>bone and cube rotation: the file's {@code [x, y, z]} degrees, used as-is;</li>
- *   <li>cube box: {@code (ox - px, py - oy - height, oz - pz)} relative to the bone pivot.</li>
- * </ul>
- *
- * <h2>Faces</h2>
- * Every cube is built from per-face rectangles. Box UV is first expanded to those rectangles the way
- * Bedrock does it — with cube sizes floored to whole texels and {@code mirror} flipping each face and
- * swapping east and west — so box UV, per-face UV and {@code uv_rotation} all go through one path and
- * match Blockbench texel for texel. Bedrock's {@code east} face is the cube's negative-X side.
- *
- * <p>Rotated cubes are baked straight into their bone's vertices, so the part tree has exactly one
- * part per bone and animations address bones by their real names.
- */
 public final class BedrockModelBaker {
     private static final float JAVA_Y_ORIGIN = 24.0F;
     private static final Direction[] DIRECTIONS = Direction.values();
@@ -55,7 +32,7 @@ public final class BedrockModelBaker {
 
     private static ModelPart bakeBone(BedrockGeometry geometry, BedrockBone bone, BedrockBone parent, Map<String, List<BedrockBone>> children, Map<String, ModelPart> parts, Map<String, String> parents, Map<String, BakedBedrockModel.Locator> locators, Set<String> visiting) {
         if (!visiting.add(bone.key())) {
-            // A cycle; validation reports it. Stop here rather than recursing forever.
+
             return new ModelPart(List.of(), Map.of());
         }
 
@@ -95,9 +72,6 @@ public final class BedrockModelBaker {
         return part;
     }
 
-    // ------------------------------------------------------------------ cubes
-
-    /** A face's texture rectangle in the form Bedrock writes per-face UV: corner plus signed size. */
     record FaceRect(float u, float v, float w, float h, int rotation) {
     }
 
@@ -111,12 +85,11 @@ public final class BedrockModelBaker {
         Vector2fc offset = ((BedrockCube.BoxUv) cube.uv()).offset();
         float u = offset.x();
         float v = offset.y();
-        // Bedrock lays box UV out with whole-texel sizes.
+
         float w = (float) Math.floor(cube.size().x() + 1.0E-7);
         float h = (float) Math.floor(cube.size().y() + 1.0E-7);
         float d = (float) Math.floor(cube.size().z() + 1.0E-7);
 
-        // Blockbench's box layout, as {fromU, fromV, sizeU, sizeV} relative to the offset.
         Map<BedrockFace, float[]> layout = new EnumMap<>(BedrockFace.class);
         layout.put(BedrockFace.EAST, new float[]{0, d, d, h});
         layout.put(BedrockFace.WEST, new float[]{d + w, d, d, h});
@@ -142,7 +115,7 @@ public final class BedrockModelBaker {
             float fw = f[2];
             float fh = f[3];
             if (entry.getKey() == BedrockFace.UP || entry.getKey() == BedrockFace.DOWN) {
-                // How Blockbench writes up/down: from the opposite corner with the size negated.
+
                 fu += fw;
                 fv += fh;
                 fw = -fw;
@@ -191,7 +164,6 @@ public final class BedrockModelBaker {
         float texW = geometry.textureWidth();
         float texH = geometry.textureHeight();
 
-        // Corner order and normals follow vanilla ModelPart.Cube so lighting and culling behave the same.
         addFace(polygons, rects.get(BedrockFace.UP), new Vector3f[]{l1, l0, t0, t1}, new Vector3f(0, -1, 0), texW, texH, rotation, rotationPivot, bindPose);
         addFace(polygons, rects.get(BedrockFace.DOWN), new Vector3f[]{t2, t3, l3, l2}, new Vector3f(0, 1, 0), texW, texH, rotation, rotationPivot, bindPose);
         addFace(polygons, rects.get(BedrockFace.EAST), new Vector3f[]{t0, l0, l3, t3}, new Vector3f(-1, 0, 0), texW, texH, rotation, rotationPivot, bindPose);
@@ -201,14 +173,6 @@ public final class BedrockModelBaker {
         return polygons;
     }
 
-    /**
-     * One face. Vanilla's polygon puts (U1,V0) on corner 0, (U0,V0) on 1, (U0,V1) on 2 and (U1,V1) on 3,
-     * with (U0,V0,U1,V1) = (u, v, u + w, v + h) of the Bedrock rectangle for every face.
-     *
-     * <p>{@code uv_rotation} is applied the way Blockbench does: by cycling the four UV corners in its
-     * own slot order (top-left, top-right, bottom-left, bottom-right of its stored rectangle). Up and down
-     * faces store that rectangle corner-swapped, so their slots land on different vanilla corners.
-     */
     private static void addFace(List<ModelPart.Polygon> out, FaceRect rect, Vector3f[] corners, Vector3f normal, float texW, float texH, Matrix3f rotation, Vector3f rotationPivot, Matrix3f bindPose) {
         if (rect == null) {
             return;
@@ -218,12 +182,11 @@ public final class BedrockModelBaker {
         float u1 = rect.u() + rect.w();
         float v1 = rect.v() + rect.h();
 
-        // vanilla corner index -> (u, v)
         float[][] uv = {{u1, v0}, {u0, v0}, {u0, v1}, {u1, v1}};
 
         if (rect.rotation() != 0) {
             boolean upOrDown = normal.y() != 0.0F;
-            // Blockbench slot k sits on vanilla corner SLOT_TO_CORNER[k].
+
             int[] slotToCorner = upOrDown ? new int[]{3, 2, 0, 1} : new int[]{1, 0, 2, 3};
             float[][] slots = new float[4][];
             for (int k = 0; k < 4; k++) {
@@ -271,8 +234,6 @@ public final class BedrockModelBaker {
         return p;
     }
 
-    // ------------------------------------------------------------------ poly mesh
-
     private static List<ModelPart.Polygon> meshPolygons(BedrockGeometry geometry, BedrockBone bone, BedrockPolyMesh mesh) {
         List<ModelPart.Polygon> out = new ArrayList<>();
         Vector3fc pivot = bone.pivot();
@@ -283,7 +244,7 @@ public final class BedrockModelBaker {
             ModelPart.Vertex[] vertices = new ModelPart.Vertex[4];
             Vector3f normal = new Vector3f();
             for (int c = 0; c < 4; c++) {
-                // Triangles repeat their last corner so they draw as a degenerate quad.
+
                 int[] index = polygon[Math.min(c, corners - 1)];
                 Vector3fc pos = mesh.positions().get(index[0]);
                 float u = 0;
@@ -314,12 +275,6 @@ public final class BedrockModelBaker {
         return out;
     }
 
-    // ------------------------------------------------------------------ containers
-
-    /**
-     * Packs polygons into vanilla {@link ModelPart.Cube}s. A cube's polygon array has one slot per face
-     * it was constructed with, so build containers of exactly the right length and fill them.
-     */
     private static void addContainers(List<ModelPart.Cube> out, List<ModelPart.Polygon> polygons) {
         for (int start = 0; start < polygons.size(); start += DIRECTIONS.length) {
             int count = Math.min(DIRECTIONS.length, polygons.size() - start);
@@ -338,7 +293,7 @@ public final class BedrockModelBaker {
                     maxZ = Math.max(maxZ, vertex.z());
                 }
             }
-            ModelPart.Cube container = new ModelPart.Cube(0, 0, minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ, 0, 0, 0, false, 1, 1, faces);
+            ModelPart.Cube container = new BedrockModelCube(minX, minY, minZ, maxX - minX, maxY - minY, maxZ - minZ, faces);
             for (int i = 0; i < count; i++) {
                 container.polygons[i] = polygons.get(start + i);
             }

@@ -31,7 +31,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             ModItems.EXTRACTION_FLUID.get()
         );
 
-        // Wolves, cats and other meat eaters accept prehistoric meat like any other.
         tag(ItemTags.MEAT).add(ModItems.RAW_PREHISTORIC_MEAT.get(), ModItems.COOKED_PREHISTORIC_MEAT.get());
         tag(Tags.Items.FOODS_RAW_MEAT).add(ModItems.RAW_PREHISTORIC_MEAT.get());
         tag(Tags.Items.FOODS_COOKED_MEAT).add(ModItems.COOKED_PREHISTORIC_MEAT.get());

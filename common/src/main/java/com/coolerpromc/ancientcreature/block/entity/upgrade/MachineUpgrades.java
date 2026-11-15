@@ -11,12 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-/**
- * The two upgrade slots every lab machine has, and what the modules in them do.
- *
- * <p>Effects stack per module: two speed modules are stronger than one, a speed and a precision module
- * give one of each.
- */
 public final class MachineUpgrades {
     public static final int SLOTS = 2;
     private static final String TAG = "upgrades";
@@ -57,7 +51,6 @@ public final class MachineUpgrades {
         return count;
     }
 
-    /** Processing time with speed modules: each removes a third of what is left. */
     public int scaleTime(int baseTicks) {
         double factor = Math.pow(2.0 / 3.0, this.count(MachineUpgradeItem.Kind.SPEED));
         return Math.max(1, (int) Math.round(baseTicks * factor));
@@ -67,7 +60,6 @@ public final class MachineUpgrades {
         return this.count(MachineUpgradeItem.Kind.PRECISION);
     }
 
-    /** Whether efficiency modules save this use of a consumable (25% per module). */
     public boolean saves(RandomSource random) {
         int modules = this.count(MachineUpgradeItem.Kind.EFFICIENCY);
         return modules > 0 && random.nextFloat() < 0.25F * modules;

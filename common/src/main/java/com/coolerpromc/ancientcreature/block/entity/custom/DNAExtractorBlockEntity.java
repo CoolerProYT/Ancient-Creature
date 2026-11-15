@@ -47,7 +47,7 @@ import static com.coolerpromc.ancientcreature.sound.SoundUtils.stopSound;
 public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider, ICapabilityProvider {
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_MAX_PROGRESS = 1;
-    /** 1 while the fossil inside holds too little DNA to extract, so the machine refuses it. */
+
     public static final int DATA_TOO_DEGRADED = 2;
 
     private final AnimationState extractingAnimationState = new AnimationState();
@@ -240,7 +240,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private boolean hasEnoughOutputSlot() {
         ItemStack outputStack = calculateOutputStack();
-        // a fossil too degraded to yield a sample is left alone instead of being used up for nothing
+
         return !outputStack.isEmpty() && outputContainer.canAddItem(outputStack);
     }
 
@@ -251,7 +251,7 @@ public class DNAExtractorBlockEntity extends BlockEntity implements MenuProvider
         Species species = fossilData.getSpecies();
         float completeness = fossilData.completeness();
         ItemStack output = ModItems.DNA_SAMPLE.toStack();
-        // each precision module recovers a little more of what the fossil still holds
+
         float integrityScore = Math.max(0.01f, completeness + part.value().dnaExtractingBonus() + 0.05f * upgrades.precision());
         DNAIntegrityLevel integrityLevel = DNAIntegrityLevel.byScore(integrityScore);
         if (integrityLevel == null){

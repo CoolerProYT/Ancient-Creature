@@ -9,21 +9,6 @@ import net.minecraft.util.ExtraCodecs;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * The mod-specific half of a species' appearance: {@code assets/<ns>/ancientcreature/species/<name>.json}.
- *
- * <p><b>format_version 2</b> (current) points at a Bedrock client entity and adds the few things Bedrock
- * has no field for — shadow size, an overall render scale and how the species is framed in GUIs:
- * <pre>{@code
- * { "format_version": 2, "client_entity": "ancientcreature:triceratops",
- *   "shadow_radius": 0.9, "render_scale": 1.0, "gui": { "scale": 12.7, "rotation": [0, 215, 0] } }
- * }</pre>
- * {@code client_entity} defaults to the species id. The whole file is optional: a client entity whose
- * identifier is the species id is used with default shadow and GUI settings.
- *
- * <p><b>format_version 1</b> (earlier releases) names geometry, texture, animation file, controller and
- * texture variants directly; it is still read and converted to an equivalent client entity.
- */
 public record ClientSpeciesDefinition(
     int formatVersion,
     Optional<Identifier> clientEntity,

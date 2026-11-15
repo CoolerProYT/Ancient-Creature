@@ -58,7 +58,7 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
             return itemStack.is(ModItems.GENOME_CARTRIDGE_COMPLETED.get());
         }
     };
-    /** A second completed genome; with one here the chamber splices the two into their hybrid. */
+
     private final SimpleContainer donorContainer = new MachineContainer(1, this::setChanged){
         @Override
         public boolean canPlaceItem(int slot, ItemStack itemStack) {
@@ -223,7 +223,7 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         if (!upgrades.saves(serverLevel.getRandom())) {
             nutrientContainer.removeItem(0, 1);
         }
-        // The embryo's traits are decided here, from how faithful the genome is.
+
         float fidelity = fidelityOf(stack);
         if (!donor.isEmpty()) {
             fidelity = (fidelity + fidelityOf(donor)) * 0.5f * SpeciesHybridProperties.SPLICE_FIDELITY;
@@ -231,7 +231,7 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         CreatureGenome genome = CreatureGenome.roll(species, fidelity, upgrades.precision(), serverLevel.getRandom());
         if (!donor.isEmpty()) {
             genome = genome.sterile();
-            // a hybrid has no fossil to identify, so it enters the journal when it is first made
+
             var identified = com.coolerpromc.ancientcreature.saveddata.IdentifiedSpeciesData.getIdentifiedSpeciesData(serverLevel.getServer());
             if (!identified.getIdentifiedSpecies().contains(species)) {
                 identified.addIdentifiedSpecies(species, serverLevel);
@@ -248,7 +248,6 @@ public class EmbryogenesisChamberBlockEntity extends BlockEntity implements Menu
         return genomeData != null ? genomeData.fidelity() : GenomeData.LEGACY_FIDELITY;
     }
 
-    /** The species the chamber would make now: the cartridge's, or the hybrid of it and the donor. */
     private @Nullable Species resultSpecies() {
         Species species = ModDataComponents.speciesOf(genomeContainer.getItem(0));
         if (species == null) return null;

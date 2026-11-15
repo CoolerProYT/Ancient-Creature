@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:pachycephalosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/pachycephalosaurus",
+        "mottled": "textures/entity/pachycephalosaurus_mottled",
+        "saddle": "textures/entity/gear/pachycephalosaurus_saddle",
+        "armor_iron": "textures/entity/gear/pachycephalosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/pachycephalosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/pachycephalosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/pachycephalosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.pachycephalosaurus"
+      },
+      "animations": {
+        "idle": "animation.pachycephalosaurus.idle",
+        "walk": "animation.pachycephalosaurus.walk",
+        "run": "animation.pachycephalosaurus.run",
+        "attack": "animation.pachycephalosaurus.attack",
+        "special": "animation.pachycephalosaurus.special",
+        "hurt": "animation.pachycephalosaurus.hurt",
+        "death": "animation.pachycephalosaurus.death",
+        "roar": "animation.pachycephalosaurus.roar",
+        "sit": "animation.pachycephalosaurus.sit",
+        "main": "controller.animation.pachycephalosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.pachycephalosaurus"
+      ]
+    }
+  }
+}

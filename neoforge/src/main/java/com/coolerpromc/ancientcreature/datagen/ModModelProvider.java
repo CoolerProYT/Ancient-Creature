@@ -156,7 +156,6 @@ public class ModModelProvider extends ModelProvider {
                 .select(Direction.NORTH, BlockModelGenerators.Y_ROT_180).select(Direction.EAST, BlockModelGenerators.Y_ROT_270)));
         itemModels.itemModelOutput.accept(gate.asItem(), ItemModelUtils.plainModel(Constants.id("block/reinforced_fence_gate")));
 
-        // The electric fence uses hand-made models; its wires glow and change texture while charged.
         Block electric = ModBlocks.ELECTRIC_FENCE.getBlock();
         MultiVariant ePost = plain(Constants.id("block/electric_fence_post"));
         MultiVariant eSide = plain(Constants.id("block/electric_fence_side"));
@@ -172,7 +171,6 @@ public class ModModelProvider extends ModelProvider {
         itemModels.itemModelOutput.accept(electric.asItem(), ItemModelUtils.plainModel(Constants.id("block/electric_fence_inventory")));
     }
 
-    /** The sieve frame always shows; the load on its mesh shrinks with each sift. */
     private void generateSifter(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
         Block sifter = ModBlocks.SIFTER.getBlock();
         Identifier frame = Constants.id("block/sifter");

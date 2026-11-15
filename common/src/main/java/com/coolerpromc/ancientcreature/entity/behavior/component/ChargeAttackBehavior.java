@@ -13,13 +13,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
-/**
- * A sprinting charge at the current target.
- *
- * <p>This is the data-driven equivalent of the goal that used to be hard-coded inside
- * {@code Triceratops}: it sprints, plays the species' {@code alert} sound on start, and (optionally)
- * ploughs through blocks tagged {@code ancientcreature:creature_destroyable} while charging.
- */
 public record ChargeAttackBehavior(
     double speedModifier,
     boolean followWithoutSight,

@@ -22,10 +22,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-/**
- * Carries out a ridden creature's mount ability. Every ability spares the rider, the rider's other
- * creatures and anything the rider could not attack anyway (for example on a no-PvP server).
- */
 public final class MountAbilities {
     private MountAbilities() {
     }
@@ -129,7 +125,6 @@ public final class MountAbilities {
         }
     }
 
-    /** Lands a pounce or dive: hits everything the creature touches on the way down. */
     public static void strikeOnContact(ServerLevel level, AncientCreatureEntity creature, float damage) {
         Player rider = creature.getFirstPassenger() instanceof Player player ? player : null;
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, creature.getBoundingBox().inflate(0.75),

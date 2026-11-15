@@ -5,7 +5,7 @@
     "G": "minecraft:glass",
     "I": "minecraft:iron_ingot",
     "M": "minecraft:magma_block",
-    "N": "minecraft:netherite_scrap"
+    "N": "minecraft:blaze_rod"
   },
   "pattern": [
     "IMI",

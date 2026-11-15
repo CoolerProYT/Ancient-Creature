@@ -18,22 +18,19 @@ import java.util.Map;
 
 import static com.coolerpromc.ancientcreature.item.FossilPart.*;
 
-/** Shared building blocks for the loot tables that hand out fossils. */
 final class FossilLoot {
-    /** Sea creatures: what coastal sites, ocean ruins and the drowned turn up. */
+
     static final List<Species> MARINE = List.of(Species.of("plesiosaurus"), Species.of("mosasaurus"), Species.of("dunkleosteus"), Species.MEGALODON, Species.PTERANODON);
-    /** Ice-age animals: what frozen specimens preserve. */
+
     static final List<Species> ICE_AGE = List.of(Species.of("woolly_mammoth"), Species.of("woolly_rhinoceros"), Species.of("dire_wolf"), Species.of("smilodon"));
 
     private FossilLoot() {
     }
 
-    /** A fossil part of any of the given kinds, chosen evenly. */
     static LootPoolSingletonContainer.Builder<?> fossil(HolderGetter<FossilPart> parts, List<ResourceKey<FossilPart>> kinds, List<Species> species, float bonus) {
         return fossil(parts, kinds, species, bonus, false);
     }
 
-    /** With {@code chiselOreBonus}, the chisel adds its fossil ore bonus instead of taking off its damage rate. */
     static LootPoolSingletonContainer.Builder<?> fossil(HolderGetter<FossilPart> parts, List<ResourceKey<FossilPart>> kinds, List<Species> species, float bonus, boolean chiselOreBonus) {
         return LootItem.lootTableItem(ModItems.FOSSIL_PART).apply(SetFossilDataFunction.setData(holders(parts, kinds), species, bonus, chiselOreBonus));
     }
@@ -42,12 +39,10 @@ final class FossilLoot {
         return fossil(parts, kinds, List.of(), 0.0f);
     }
 
-    /** One weighted entry per part, so a table can favour skulls in one biome and claws in another. */
     static void addWeightedFossils(LootPool.Builder pool, HolderGetter<FossilPart> parts, Map<ResourceKey<FossilPart>, Integer> weights, List<Species> species, float bonus) {
         weights.forEach((part, weight) -> pool.add(fossil(parts, List.of(part), species, bonus).setWeight(weight)));
     }
 
-    /** Insertion-ordered map so generated JSON stays stable between datagen runs. */
     static <K> Map<K, Integer> ordered(Object... keysAndWeights) {
         Map<K, Integer> map = new LinkedHashMap<>();
         for (int i = 0; i < keysAndWeights.length; i += 2) {
@@ -72,7 +67,6 @@ final class FossilLoot {
         return map;
     }
 
-    /** Which parts each dig site favours; the shape of the local fauna shows in what gets dug up. */
     static Map<ResourceKey<FossilPart>, Integer> digSiteParts(DigSiteType type) {
         return switch (type) {
             case PLAINS -> weights(RIB, 4, VERTEBRA, 4, LIMB, 4, TOOTH, 3, CLAW, 2, SKULL, 1, EGG, 1);
@@ -91,7 +85,6 @@ final class FossilLoot {
         return type == DigSiteType.COASTAL ? MARINE : List.of();
     }
 
-    /** Cold sites keep their bones frozen and noticeably better preserved. */
     static float digSiteBonus(DigSiteType type) {
         return type == DigSiteType.COLD ? 0.1f : 0.0f;
     }

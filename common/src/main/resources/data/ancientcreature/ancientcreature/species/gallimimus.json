@@ -1,0 +1,68 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/gallimimus",
+  "entity_category": "land",
+  "physical": {
+    "width": 0.75,
+    "height": 2.4,
+    "eye_height": 2.3
+  },
+  "attributes": {
+    "max_health": 30,
+    "movement_speed": 0.36,
+    "attack_damage": 3,
+    "attack_knockback": 0.4,
+    "follow_range": 24.0,
+    "knockback_resistance": 0.15,
+    "armor": 1
+  },
+  "growth": {
+    "adult_age": 18000,
+    "baby_scale": 0.42,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:skittish_herbivore"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_gallimimus",
+    "incubation_time": 1000
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.gallimimus.ambient",
+    "hurt": "ancientcreature:entity.gallimimus.hurt",
+    "death": "ancientcreature:entity.gallimimus.death",
+    "step": "ancientcreature:entity.gallimimus.step",
+    "attack": "ancientcreature:entity.gallimimus.attack",
+    "alert": "ancientcreature:entity.gallimimus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:sweet_berries",
+      "minecraft:melon_slice",
+      "minecraft:wheat_seeds"
+    ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 4,
+    "group_max": 10
+  },
+  "riding": {
+    "ability": "charge",
+    "cooldown": 50,
+    "power": 0.5
+  }
+}

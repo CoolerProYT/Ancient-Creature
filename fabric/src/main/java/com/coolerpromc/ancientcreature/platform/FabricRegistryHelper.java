@@ -316,7 +316,6 @@ public class FabricRegistryHelper implements IRegistryHelper {
         }
     }
 
-    /** Keyed by id, so collecting the same registration twice cannot produce a duplicate listener. */
     @Override
     public void registerServerReloadListener(Identifier id, PreparableReloadListener listener) {
         this.serverReloadListeners.put(id, listener);

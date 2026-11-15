@@ -33,7 +33,6 @@ public final class FieldGuideScreen extends Screen {
     private static final int INK = GuideElement.INK;
     private static final int MUTED = GuideElement.MUTED;
 
-    // Remembered for the rest of the session, so reopening the guide returns to where you left off.
     private static String lastChapter;
     private static int lastScroll;
 
@@ -60,7 +59,6 @@ public final class FieldGuideScreen extends Screen {
         this.panelX = (this.width - this.panelWidth) / 2;
         this.panelY = (this.height - this.panelHeight) / 2;
 
-        // init() also runs on resize, where the page being read should stay put.
         String chapterId = this.chapters.isEmpty() ? lastChapter : this.chapter().id();
         int previousScroll = this.chapters.isEmpty() ? lastScroll : this.scroll;
         this.chapters = GuideBook.build(this::openChapter);
@@ -117,7 +115,7 @@ public final class FieldGuideScreen extends Screen {
     }
 
     private int contentWidth() {
-        // Leave room on the right for the scrollbar.
+
         return this.panelX + this.panelWidth - PADDING - 6 - this.contentX();
     }
 
@@ -155,7 +153,7 @@ public final class FieldGuideScreen extends Screen {
         graphics.fill(x0 + 1, y0 + 1, x0 + SIDEBAR_WIDTH, y1 - 1, SIDEBAR);
         graphics.fill(x0 + SIDEBAR_WIDTH, y0 + 1, x0 + SIDEBAR_WIDTH + 1, y1 - 1, FRAME_EDGE);
         graphics.fill(x0 + 1, y0 + HEADER_HEIGHT, x1 - 1, y0 + HEADER_HEIGHT + 1, FRAME_EDGE);
-        // Brass corner studs, echoing the Species Journal's frame.
+
         for (int[] corner : new int[][]{{x0 - 3, y0 - 3}, {x1 - 2, y0 - 3}, {x0 - 3, y1 - 2}, {x1 - 2, y1 - 2}}) {
             graphics.fill(corner[0], corner[1], corner[0] + 5, corner[1] + 5, GOLD);
             graphics.fill(corner[0] + 1, corner[1] + 1, corner[0] + 4, corner[1] + 4, 0xFFA8741F);
@@ -264,7 +262,7 @@ public final class FieldGuideScreen extends Screen {
             if (mouseX >= x && mouseX < x + width && mouseY >= top && mouseY < top + this.contentViewHeight()) {
                 GuideElement.Context context = new GuideElement.Context(null, this.font, this, (int) mouseX, (int) mouseY, true, this.tick);
                 int y = top - this.scroll;
-                // Copy the list: a link may switch chapters while we are iterating.
+
                 for (GuideElement element : List.copyOf(this.chapter().elements())) {
                     int height = element.height(this.font, width);
                     if (mouseY >= y && mouseY < y + height && element.mouseClicked(context, x, y, width, mouseX, mouseY)) {

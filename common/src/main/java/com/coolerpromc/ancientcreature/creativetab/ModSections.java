@@ -87,7 +87,7 @@ public class ModSections {
         );
 
         for (Species species : Species.values()) {
-            // hybrids have no fossils, so no DNA or genome of their own
+
             if (!species.isHybrid()) for (DNAIntegrityLevel value : DNAIntegrityLevel.values()) {
                 ItemStack dnaSample = ModItems.DNA_SAMPLE.toStack();
                 dnaSample.set(ModDataComponents.DNA_DATA.get(), new DNAData(value, species));

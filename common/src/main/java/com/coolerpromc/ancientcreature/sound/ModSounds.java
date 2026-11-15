@@ -57,7 +57,7 @@ public class ModSounds {
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_DEATH = register("entity.brachiosaurus.death");
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_ATTACK = register("entity.brachiosaurus.attack");
     public static final RegistryHandler<SoundEvent, SoundEvent> BRACHIOSAURUS_STEP = register("entity.brachiosaurus.step");
-    /** Species voiced through sounds.json alone (chained to a relative's or a vanilla animal's events). */
+
     public static final java.util.List<RegistryHandler<SoundEvent, SoundEvent>> SPECIES_VOICES = registerVoices(
         "argentinosaurus",
         "carnotaurus",
@@ -76,7 +76,13 @@ public class ModSounds {
         "woolly_mammoth",
         "woolly_rhinoceros",
         "stegoceratops",
-        "tyrannoraptor"
+        "tyrannoraptor",
+        "allosaurus",
+        "pachycephalosaurus",
+        "gallimimus",
+        "therizinosaurus",
+        "compsognathus",
+        "diplodocus"
     );
 
     public static RegistryHandler<SoundEvent, SoundEvent> register(String name){

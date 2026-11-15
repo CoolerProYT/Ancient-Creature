@@ -1,0 +1,214 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.pachycephalosaurus.main": {
+      "initial_state": "idle",
+      "states": {
+        "idle": {
+          "animations": [
+            "idle"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "roar": "query.action == 'roar'"
+            },
+            {
+              "special": "query.action == 'graze' || query.action == 'eat'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "sit": "query.is_sitting && !query.is_moving"
+            },
+            {
+              "run": "query.is_moving && query.is_running"
+            },
+            {
+              "walk": "query.is_moving"
+            }
+          ],
+          "blend_transition": 0.2
+        },
+        "walk": {
+          "animations": [
+            "idle",
+            "walk"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "roar": "query.action == 'roar'"
+            },
+            {
+              "special": "query.action == 'graze' || query.action == 'eat'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "run": "query.is_moving && query.is_running"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.18
+        },
+        "run": {
+          "animations": [
+            "run"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "roar": "query.action == 'roar'"
+            },
+            {
+              "special": "query.action == 'graze' || query.action == 'eat'"
+            },
+            {
+              "attack": "query.action == 'attack'"
+            },
+            {
+              "walk": "query.is_moving && !query.is_running"
+            },
+            {
+              "idle": "!query.is_moving"
+            }
+          ],
+          "blend_transition": 0.15
+        },
+        "attack": {
+          "animations": [
+            "attack"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "run": "query.action == 'none' && query.is_running"
+            },
+            {
+              "walk": "query.action == 'none' && query.is_moving"
+            },
+            {
+              "idle": "query.action == 'none'"
+            }
+          ],
+          "blend_transition": 0.06
+        },
+        "roar": {
+          "animations": [
+            "roar"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "run": "query.action == 'none' && query.is_moving && query.is_running"
+            },
+            {
+              "walk": "query.action == 'none' && query.is_moving"
+            },
+            {
+              "idle": "query.action == 'none'"
+            }
+          ],
+          "blend_transition": 0.12
+        },
+        "special": {
+          "animations": [
+            "special"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "run": "query.action == 'none' && query.is_moving && query.is_running"
+            },
+            {
+              "walk": "query.action == 'none' && query.is_moving"
+            },
+            {
+              "idle": "query.action == 'none'"
+            }
+          ],
+          "blend_transition": 0.2
+        },
+        "hurt": {
+          "animations": [
+            "hurt"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "run": "!query.is_hurt && query.is_running"
+            },
+            {
+              "walk": "!query.is_hurt && query.is_moving"
+            },
+            {
+              "idle": "!query.is_hurt"
+            }
+          ],
+          "blend_transition": 0.05
+        },
+        "sit": {
+          "animations": [
+            "sit"
+          ],
+          "transitions": [
+            {
+              "death": "query.is_dead"
+            },
+            {
+              "hurt": "query.is_hurt"
+            },
+            {
+              "walk": "query.is_moving"
+            },
+            {
+              "idle": "!query.is_sitting"
+            }
+          ],
+          "blend_transition": 0.5
+        },
+        "death": {
+          "animations": [
+            "death"
+          ],
+          "transitions": [],
+          "blend_transition": 0.1
+        }
+      }
+    }
+  }
+}

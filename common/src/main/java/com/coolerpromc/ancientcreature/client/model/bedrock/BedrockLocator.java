@@ -5,14 +5,6 @@ import com.google.gson.JsonObject;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-/**
- * A named point on a bone, in file coordinates. Either {@code [x, y, z]} or
- * {@code {"offset": [...], "rotation": [...]}}.
- *
- * <p>Ancient Creature uses locators for things Bedrock uses them for: where riders sit
- * ({@code rider}/{@code seat}), where sound and particle effects play, and lead attachment
- * ({@code lead}).
- */
 public record BedrockLocator(Vector3fc offset, Vector3fc rotation) {
     static BedrockLocator parse(JsonElement element, String path) throws BedrockFormatException {
         if (element.isJsonArray()) {

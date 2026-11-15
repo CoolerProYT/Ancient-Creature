@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ancientcreature:allosaurus",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/allosaurus",
+        "mottled": "textures/entity/allosaurus_mottled",
+        "saddle": "textures/entity/gear/allosaurus_saddle",
+        "armor_iron": "textures/entity/gear/allosaurus_armor_iron",
+        "armor_golden": "textures/entity/gear/allosaurus_armor_golden",
+        "armor_diamond": "textures/entity/gear/allosaurus_armor_diamond",
+        "armor_netherite": "textures/entity/gear/allosaurus_armor_netherite"
+      },
+      "geometry": {
+        "default": "geometry.allosaurus"
+      },
+      "animations": {
+        "idle": "animation.allosaurus.idle",
+        "walk": "animation.allosaurus.walk",
+        "run": "animation.allosaurus.run",
+        "attack": "animation.allosaurus.attack",
+        "special": "animation.allosaurus.special",
+        "hurt": "animation.allosaurus.hurt",
+        "death": "animation.allosaurus.death",
+        "roar": "animation.allosaurus.roar",
+        "sit": "animation.allosaurus.sit",
+        "main": "controller.animation.allosaurus.main"
+      },
+      "scripts": {
+        "animate": [
+          "main"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.ancientcreature.allosaurus"
+      ]
+    }
+  }
+}

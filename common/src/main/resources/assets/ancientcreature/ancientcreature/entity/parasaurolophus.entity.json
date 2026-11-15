@@ -27,6 +27,7 @@
         "hurt": "animation.parasaurolophus.hurt",
         "death": "animation.parasaurolophus.death",
         "roar": "animation.parasaurolophus.roar",
+        "sit": "animation.parasaurolophus.sit",
         "main": "controller.animation.parasaurolophus.main"
       },
       "scripts": {

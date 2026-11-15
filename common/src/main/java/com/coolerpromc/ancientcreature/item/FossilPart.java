@@ -35,10 +35,9 @@ public record FossilPart(float dnaExtractingBonus, float identifyFailChance, flo
     public static final ResourceKey<FossilPart> LIMB = key("limb");
     public static final ResourceKey<FossilPart> CLAW = key("claw");
     public static final ResourceKey<FossilPart> EGG = key("egg");
-    /** Resin that trapped a blood-fed insect: rich in DNA and hard to misidentify. */
+
     public static final ResourceKey<FossilPart> AMBER = key("amber");
 
-    /** The skeletal parts, everything except amber; what fossil ore and dig sites turn up. */
     public static final List<ResourceKey<FossilPart>> BONE_PARTS = List.of(RIB, TOOTH, SKULL, VERTEBRA, LIMB, CLAW, EGG);
 
     public static void bootstrap(BootstrapContext<FossilPart> context){

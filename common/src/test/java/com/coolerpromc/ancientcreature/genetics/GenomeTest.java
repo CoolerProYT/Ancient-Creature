@@ -35,7 +35,7 @@ class GenomeTest {
     void overflowingSampleOnlyCountsWhatFits() {
         GenomeData genome = new GenomeData(0.9F, Species.TRICERATOPS, 1.0F).withSample(0.5F, 0.0F);
         assertEquals(1.0F, genome.completeness(), 1e-5);
-        // only 0.1 of the poor sample went in
+
         assertEquals(0.9F, genome.fidelity(), 1e-5);
     }
 

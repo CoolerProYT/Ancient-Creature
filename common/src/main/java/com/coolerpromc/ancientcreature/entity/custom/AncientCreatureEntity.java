@@ -59,13 +59,13 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private static final EntityDataAccessor<String> DATA_VARIANT = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Byte> DATA_ACTION = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Float> DATA_HUNGER = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
-    /** Client-visible state bits: see the FLAG_ constants. */
+
     private static final EntityDataAccessor<Float> DATA_COMFORT = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Byte> DATA_COMFORT_REASON = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> DATA_ARMOR_TIER = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
-    /** The genome's size factor, synced because it decides the bounding box and the rendered size. */
+
     private static final EntityDataAccessor<Float> DATA_GENOME_SIZE = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.FLOAT);
-    /** Fidelity percent (bits 0-7), temperament (8-9), fertile (10), frail (11): what Jade shows. */
+
     private static final EntityDataAccessor<Integer> DATA_GENOME_INFO = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> DATA_FLAGS = SynchedEntityData.defineId(AncientCreatureEntity.class, EntityDataSerializers.BYTE);
 
@@ -84,28 +84,25 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private static final Identifier GENOME_VITALITY = Constants.id("genome_vitality");
     private static final Identifier GENOME_VIGOR = Constants.id("genome_vigor");
     private static final Identifier GENOME_STRENGTH = Constants.id("genome_strength");
-    /** Null for creatures made before genetics, and spawned by command: they read as {@link CreatureGenome#neutral}. */
+
     private @Nullable CreatureGenome genome;
 
     private static final Identifier ARMOR_MODIFIER = Constants.id("creature_armor");
 
-    /** Saddle in slot 0, barding in slot 1. */
     private ItemStack saddle = ItemStack.EMPTY;
     private ItemStack armor = ItemStack.EMPTY;
     private int abilityCooldown;
-    /** Damage a pounce or dive deals on contact, while it is in the air. */
+
     private float pounceStrike;
 
-    /** Comfort at or above which a creature breeds. */
     public static final float BREEDING_COMFORT = 50.0F;
-    /** Comfort at or above which a creature slowly heals. */
+
     public static final float CONTENT_COMFORT = 75.0F;
-    /** Comfort below which a creature is distressed. */
+
     public static final float DISTRESS_COMFORT = 30.0F;
 
     private final ComfortTracker comfortTracker = new ComfortTracker(this);
 
-    /** How far a creature told to roam may wander from where it was told. */
     public static final int ROAM_RADIUS = 24;
 
     private CreatureCommand command = CreatureCommand.ROAM;
@@ -122,27 +119,15 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private int actionTicks;
     private @Nullable SpeciesEntityCategory appliedCategory;
 
-    /** Counts down to the next single point of hunger lost, and to the next starvation tick. */
     private int hungerTicks;
     private int starveTicks;
 
-    /**
-     * Whether hunger came from saved data. A creature restored from NBT keeps the meter it had; one that
-     * has never been saved starts full, which needs the species max and so cannot be done in
-     * {@code defineSynchedData}.
-     */
     private boolean hungerRestored;
 
-    /**
-     * Debug-only: an action to re-trigger forever, set by the {@code /ancientcreature action ... loop}
-     * command. Deliberately transient — it is not saved and does not survive a reload, because it is a
-     * tool for looking at a clip, not creature state.
-     */
     private @Nullable AncientCreatureAction loopAction;
     private int loopPeriod = 60;
     private int loopGap;
 
-    /** Ticks spent back on {@code NONE} between loop replays, so the controller re-enters the state. */
     private static final int LOOP_GAP_TICKS = 3;
 
     public AncientCreatureEntity(EntityType<? extends AncientCreatureEntity> type, Level level) {
@@ -219,7 +204,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.appliedCategory = null;
         this.goalsBuilt = false;
         this.refreshSpecies();
-        // a stored genome of another species no longer applies; re-derive the traits
+
         this.setGenome(this.genome);
     }
 
@@ -231,8 +216,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.entityData.set(DATA_VARIANT, variant == null || variant.isBlank() ? DEFAULT_VARIANT : variant);
     }
 
-    // ------------------------------------------------------------------ gear
-
     public ItemStack getSaddle() {
         return this.saddle;
     }
@@ -241,7 +224,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.armor;
     }
 
-    /** {@code query.armor_tier}: 0 without barding, otherwise the tier's index. */
     public int getArmorTier() {
         return this.entityData.get(DATA_ARMOR_TIER);
     }
@@ -280,9 +262,12 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /** Whether the owner may mount: adult, and saddled unless the config says otherwise. */
+    public boolean isRideableSpecies() {
+        return this.speciesDefinition().riding().rideable();
+    }
+
     public boolean canBeRiddenBy(Player player) {
-        return this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle()
+        return this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle() && this.isRideableSpecies()
             && (this.isSaddled() || !ModCommonConfig.CONFIG.ridingRequiresSaddle.get());
     }
 
@@ -299,13 +284,10 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    // ------------------------------------------------------------------ mount ability
-
     public int getAbilityCooldown() {
         return this.abilityCooldown;
     }
 
-    /** Called from the rider's key press, already validated as coming from this creature's rider. */
     public void tryMountAbility(Player rider) {
         if (!(this.level() instanceof ServerLevel level) || this.getControllingPassenger() != rider || !this.isOwnedBy(rider)) {
             return;
@@ -357,7 +339,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return ModCommonConfig.CONFIG.comfortEnabled.get();
     }
 
-    /** Distressed adults may rampage through weak enclosures. */
     public boolean isDistressed() {
         return comfortEnabled() && !this.isBaby() && this.getComfort() < DISTRESS_COMFORT;
     }
@@ -367,7 +348,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             return;
         }
         ComfortTracker.Result result = this.comfortTracker.evaluate(level);
-        // calm animals settle more easily than fierce ones
+
         float temperament = switch (this.getTemperament()) {
             case CALM -> 5.0F;
             case STEADY -> 0.0F;
@@ -390,7 +371,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.entityData.set(DATA_FLAGS, (byte) (value ? flags | flag : flags & ~flag));
     }
 
-    /** Whether the creature has an owner, as far as the client knows. The owner's identity stays server-side. */
     public boolean hasOwnerClientSide() {
         return this.getFlag(FLAG_OWNED);
     }
@@ -414,10 +394,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.hasOwnerClientSide() || this.getOwnerReference() != null ? this.command : CreatureCommand.ROAM;
     }
 
-    /**
-     * Applies an owner's command. Roaming anchors the home range at the creature's current position;
-     * the other commands lift it.
-     */
     public void setCommand(CreatureCommand command) {
         this.command = command;
         if (command == CreatureCommand.ROAM) {
@@ -434,7 +410,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /** Whether the species has any way to attack, so it can be asked to defend its owner. */
     public boolean canFight() {
         for (CreatureBehaviorComponent component : this.speciesDefinition().resolvedBehaviors()) {
             var type = component.config().type();
@@ -448,11 +423,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return false;
     }
 
-    /**
-     * Gives the creature a skin from its species' weighted variant list, unless it already has one that
-     * the species knows. Called whenever a creature comes into being: hatching, capsule release,
-     * breeding and commands.
-     */
     public void rollVariantIfUnset() {
         if (this.level().isClientSide() || !this.hasResolvedSpecies()) {
             return;
@@ -494,7 +464,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesDefinition().hunger();
     }
 
-    /** How fed this creature is. High is full; zero is starving. */
     public float getHunger() {
         return this.entityData.get(DATA_HUNGER);
     }
@@ -506,16 +475,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /**
-     * Whether this creature is hungry enough to go looking for prey.
-     *
-     * <p>Only prey <em>selection</em> consults this. Retaliation, territorial defence and the attack goals
-     * themselves never do, so a well-fed creature still defends itself and still drives off armed players.
-     *
-     * <p>Once a hunt starts the creature stays interested until eating brings it up to
-     * {@code full_threshold}, rather than losing its target the instant it crosses {@code hunt_threshold}
-     * again. Without that gap a predator mid-chase would drop and reacquire its target every tick.
-     */
     public boolean wantsToHunt() {
         if (this.isForcedPassive()) {
             return false;
@@ -527,7 +486,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return hunger.isHungryAt(this.getHunger()) || this.getTarget() != null;
     }
 
-    /** Restores hunger and plays the eating action. Returns whether anything was actually eaten. */
     public boolean feed(float amount) {
         if (this.level().isClientSide() || amount <= 0.0F) {
             return false;
@@ -544,7 +502,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private void tickHunger() {
         SpeciesHungerProperties hunger = this.hungerProperties();
 
-        // Pinning the meter at max, rather than skipping the tick, keeps comfort and hunting reading a full creature.
         if (!ModCommonConfig.CONFIG.hungerEnabled.get()) {
             this.hungerTicks = 0;
             this.starveTicks = 0;
@@ -602,10 +559,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         this.refreshDimensionsForNewDefinition();
     }
 
-    /**
-     * A creature that was never saved starts fed; one restored from disk keeps what it had, clamped in
-     * case the datapack lowered {@code hunger.max} since.
-     */
     private void applyHunger(SpeciesDefinition definition) {
         SpeciesHungerProperties hunger = definition.hunger();
         if (!this.hungerRestored) {
@@ -681,7 +634,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesDefinition().respiration() != SpeciesRespiration.AIR;
     }
 
-    /** Ticks a gill-breather survives on land; vanilla fish use the same 300-tick air supply. */
     @Override
     public void baseTick() {
         int air = this.getAirSupply();
@@ -700,7 +652,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         }
     }
 
-    /** A stranded gill-breather thrashes towards water, the way vanilla fish flop. */
     private void tickStranded() {
         if (this.speciesDefinition().respiration() == SpeciesRespiration.WATER && !this.isInWater() && this.onGround() && !this.isVehicle()
             && this.random.nextInt(Math.max(4, (int) (8 * this.getBbWidth()))) == 0) {
@@ -735,7 +686,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     private void rebuildGoals(SpeciesDefinition definition) {
         this.clearGoals();
 
-        // Owner commands sit above the species' own behaviour; they idle for unowned creatures.
         double travel = definition.category().isAquatic() ? 1.0 : 1.15;
         this.goalSelector.addGoal(1, new CommandGoals.Stay(this));
         this.goalSelector.addGoal(4, new CommandGoals.FollowOwner(this, travel));
@@ -783,14 +733,11 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesDefinition().scaleFor(this.isBaby()) * this.entityData.get(DATA_GENOME_SIZE);
     }
 
-    // ------------------------------------------------------------------ genome
-
     public CreatureGenome getGenome() {
         CreatureGenome stored = this.genome;
         return stored != null && stored.species().equals(this.getSpecies()) ? stored : CreatureGenome.neutral(this.getSpecies());
     }
 
-    /** Sets the genome and applies its traits. Null gives the neutral genome of the creature's species. */
     public void setGenome(@Nullable CreatureGenome genome) {
         this.genome = genome;
         CreatureGenome applied = this.getGenome();
@@ -802,11 +749,11 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
     }
 
     private void applyGenomeModifiers(CreatureGenome genome) {
-        // keep the same share of health, so a hardy newborn starts at its full, raised maximum
+
         float healthFraction = this.getMaxHealth() > 0 ? this.getHealth() / this.getMaxHealth() : 1.0F;
         setMultiplier(Attributes.MAX_HEALTH, GENOME_VITALITY, genome.vitality() - 1.0F);
         setMultiplier(Attributes.MOVEMENT_SPEED, GENOME_VIGOR, genome.vigor() - 1.0F);
-        // bigger animals hit harder
+
         setMultiplier(Attributes.ATTACK_DAMAGE, GENOME_STRENGTH, (genome.size() - 1.0F) * 0.75F);
         if (this.getHealth() > 0.0F) {
             this.setHealth(healthFraction * this.getMaxHealth());
@@ -832,7 +779,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             | (genome.frail() ? 1 << 11 : 0);
     }
 
-    /** Client-safe genome readouts, from synced data. */
     public int getGenomeFidelityPercent() {
         return this.entityData.get(DATA_GENOME_INFO) & 0xFF;
     }
@@ -965,12 +911,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.speciesSounds().deathSound();
     }
 
-    /**
-     * All species share one entity type, so its registry loot table cannot identify the creature that
-     * died. Route the normal vanilla death-loot pipeline through the table selected by species data.
-     * The four-argument overload still builds the complete entity loot context, including the damage
-     * source, attacker and looting level.
-     */
     @Override
     protected void dropFromLootTable(ServerLevel level, DamageSource source, boolean causedByPlayer) {
         this.speciesDefinition().lootTable().ifPresent(id -> {
@@ -1011,10 +951,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.diet().test(stack);
     }
 
-    /**
-     * Eating a kill is what refills a predator, and is the other half of gating hunting on hunger — without
-     * it a hungry creature would hunt forever and never be satisfied.
-     */
     @Override
     public boolean killedEntity(ServerLevel level, LivingEntity killed, DamageSource source) {
         boolean result = super.killedEntity(level, killed, source);
@@ -1022,13 +958,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return result;
     }
 
-    /**
-     * Hand-feeding tops the creature up as well as breeding it.
-     *
-     * <p>Breeding is left to {@code Animal}, which consumes the item and sets the creature in love. Only
-     * when it declines — an adult on breeding cooldown, say — does this fall through to plain feeding, so
-     * a player can still keep a fed creature out of a hunting mood.
-     */
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
@@ -1050,7 +979,8 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
             }
         }
 
-        if (!wasFood && !player.isSecondaryUseActive() && this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle()) {
+        if (!wasFood && !player.isSecondaryUseActive() && this.isOwnedBy(player) && !this.isBaby() && !this.isVehicle()
+            && this.isRideableSpecies()) {
             if (this.canBeRiddenBy(player)) {
                 if (!this.level().isClientSide()) {
                     player.startRiding(this);
@@ -1074,11 +1004,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return InteractionResult.SUCCESS;
     }
 
-    /**
-     * Ownership is persisted on the server and is not part of the client's synced entity data. The
-     * client therefore trusts the server-approved first passenger so it can simulate and send rider
-     * input, while the server still verifies that passenger is the owner.
-     */
     @Override
     public @Nullable LivingEntity getControllingPassenger() {
         return this.getFirstPassenger() instanceof Player player && (this.level().isClientSide() || this.isOwnedBy(player))
@@ -1132,12 +1057,8 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
     }
 
-    /**
-     * Saddle and barding: using one on your adult creature puts it on; sneaking with an empty hand takes
-     * the barding off first, then the saddle. Returns null when the interaction is not about gear.
-     */
     private @Nullable InteractionResult interactGear(Player player, ItemStack held) {
-        if (held.getItem() instanceof CreatureSaddleItem && this.saddle.isEmpty()) {
+        if (held.getItem() instanceof CreatureSaddleItem && this.saddle.isEmpty() && this.isRideableSpecies()) {
             if (!this.level().isClientSide()) {
                 this.setSaddle(held);
                 held.consume(1, player);
@@ -1182,7 +1103,7 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         AncientCreatureEntity offspring = ModEntities.ANCIENT_CREATURE.get().create(level, EntitySpawnReason.BREEDING);
         if (offspring != null) {
             offspring.setSpecies(this.getSpecies());
-            // Offspring take a parent's skin, with a small chance of a fresh roll from the species list.
+
             AncientCreatureEntity other = partner instanceof AncientCreatureEntity creature ? creature : this;
             if (this.random.nextFloat() < 0.1F) {
                 offspring.setVariant(this.speciesDefinition().rollVariant(this.random));
@@ -1228,16 +1149,13 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         Species stored = input.read(SPECIES_TAG, Species.CODEC).orElse(this.species);
         this.setVariant(input.getStringOr(VARIANT_TAG, DEFAULT_VARIANT));
 
-        // Read before setSpecies, because applying the species is what decides whether an unsaved
-        // creature starts full — and a creature saved before hunger existed has no tag to restore.
         input.read(HUNGER_TAG, Codec.FLOAT).ifPresent(hunger -> {
             this.hungerRestored = true;
             this.entityData.set(DATA_HUNGER, hunger);
         });
 
         this.setSpecies(stored);
-        // Before super: the vitality modifier has to be in place when the saved health is restored,
-        // or a hardy creature's health would be clamped to the species' base maximum.
+
         this.setGenome(input.read(GENOME_TAG, CreatureGenome.CODEC).orElse(null));
 
         super.readAdditionalSaveData(input);
@@ -1269,10 +1187,8 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return super.canAttack(target);
     }
 
-    /** Ticks since this creature was last shocked by an electric fence; see {@link #onShocked()}. */
     private int lastShockTick = -100000;
 
-    /** Called by the electric fence. Feeds the comfort system, which makes fences a deterrent. */
     public void onShocked() {
         this.lastShockTick = this.tickCount;
         this.getNavigation().stop();
@@ -1282,7 +1198,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         return this.tickCount - this.lastShockTick < withinTicks;
     }
 
-    /** Listed in the {@code Creatures.passiveSpecies} config: may only fight back. */
     public boolean isForcedPassive() {
         return ModCommonConfig.isForcedPassive(this.getSpecies().id());
     }
@@ -1295,10 +1210,6 @@ public class AncientCreatureEntity extends OwnedAncientCreature {
         super.setTarget(target);
     }
 
-    /**
-     * Whether another revived creature may come into being near {@code pos} under the
-     * {@code Creatures.populationCap} config.
-     */
     public static boolean hasRoomFor(ServerLevel level, net.minecraft.world.phys.Vec3 pos) {
         int cap = ModCommonConfig.CONFIG.populationCap.get();
         if (cap <= 0) {

@@ -2,7 +2,6 @@ package com.coolerpromc.ancientcreature.molang;
 
 import java.util.Objects;
 
-/** Conversions between the two Molang value kinds, numbers and strings. */
 final class MolangValues {
     static double toNumber(Object value) {
         if (value instanceof Number n) {
@@ -35,10 +34,6 @@ final class MolangValues {
         return String.valueOf(value);
     }
 
-    /**
-     * Molang equality. Two numbers compare numerically; anything involving a string compares as text,
-     * case-insensitively, because Molang identifiers and enum-like strings are case-insensitive.
-     */
     static boolean equal(Object a, Object b) {
         if (a instanceof Number x && b instanceof Number y) {
             return x.doubleValue() == y.doubleValue();

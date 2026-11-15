@@ -27,6 +27,7 @@
         "hurt": "animation.woolly_rhinoceros.hurt",
         "death": "animation.woolly_rhinoceros.death",
         "roar": "animation.woolly_rhinoceros.roar",
+        "sit": "animation.woolly_rhinoceros.sit",
         "main": "controller.animation.woolly_rhinoceros.main"
       },
       "scripts": {

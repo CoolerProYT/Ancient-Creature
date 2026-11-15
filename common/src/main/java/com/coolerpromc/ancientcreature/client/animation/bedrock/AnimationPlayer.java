@@ -3,12 +3,8 @@ package com.coolerpromc.ancientcreature.client.animation.bedrock;
 import com.coolerpromc.ancientcreature.molang.MolangContext;
 import com.coolerpromc.ancientcreature.molang.MolangExpression;
 
-/**
- * Playback state of one animation on one entity: its own {@code anim_time}, start and loop delays,
- * and which timeline/sound/particle events have already fired.
- */
 public final class AnimationPlayer {
-    /** Receives the events an animation reaches while playing. */
+
     public interface EventSink {
         void sound(BedrockAnimation.TimedEffect effect);
 
@@ -33,17 +29,14 @@ public final class AnimationPlayer {
         return this.animTime;
     }
 
-    /** A {@code loop: false} animation that has run past its length: no longer posed. */
     public boolean isFinished() {
         return this.finished;
     }
 
-    /** Whether this animation should currently contribute to the pose. */
     public boolean isPosing() {
         return this.delay <= 0.0F && !(this.finished && this.animation.loop() == BedrockAnimation.LoopMode.ONCE);
     }
 
-    /** Restarts from the beginning, re-evaluating {@code start_delay}. */
     public void restart(MolangContext ctx) {
         this.animTime = 0.0F;
         this.finished = false;
@@ -51,10 +44,6 @@ public final class AnimationPlayer {
         this.delay = Math.max(0.0F, (float) this.animation.startDelay().evaluate(ctx));
     }
 
-    /**
-     * Advances by {@code delta} seconds. {@code clock} lets the caller expose {@code q.anim_time} and
-     * {@code q.delta_time} to {@code anim_time_update}.
-     */
     public void advance(float delta, MolangContext ctx, AnimClock clock, EventSink sink) {
         if (this.finished) {
             return;
@@ -111,7 +100,6 @@ public final class AnimationPlayer {
         this.animTime = Math.max(0.0F, next);
     }
 
-    /** Fires every event with {@code from < time <= to}. */
     private void fire(float from, float to, MolangContext ctx, EventSink sink) {
         if (to <= from) {
             return;
@@ -137,7 +125,6 @@ public final class AnimationPlayer {
         }
     }
 
-    /** Where {@code q.anim_time}/{@code q.delta_time} come from while {@code anim_time_update} runs. */
     public interface AnimClock {
         void set(float animTime, float deltaTime);
     }

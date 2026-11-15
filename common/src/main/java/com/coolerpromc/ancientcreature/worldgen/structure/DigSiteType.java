@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-/** The biome flavours of the dig site; each has its own buildings, loot and excavation pits. */
 public enum DigSiteType implements StringRepresentable {
     PLAINS("plains", false),
     ARID("arid", true),
@@ -35,7 +34,6 @@ public enum DigSiteType implements StringRepresentable {
         return this.name;
     }
 
-    /** Sites dug into sand brush suspicious sand; every other site brushes suspicious gravel. */
     public boolean sandy() {
         return this.sandy;
     }
@@ -68,7 +66,6 @@ public enum DigSiteType implements StringRepresentable {
         return ResourceKey.create(Registries.TEMPLATE_POOL, Constants.id("dig_site/" + this.name + "/pits"));
     }
 
-    /** Template ids: {@code <type>_dig_site} (the camp), {@code dig_site/<type>/abandoned_camp} and {@code dig_site/<type>/<pit>}. */
     public String campTemplate() {
         return Constants.id(this.name + "_dig_site").toString();
     }

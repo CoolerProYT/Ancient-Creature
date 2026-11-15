@@ -1,0 +1,95 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/diplodocus",
+  "entity_category": "land",
+  "physical": {
+    "width": 3.0,
+    "height": 2.6,
+    "eye_height": 2.05
+  },
+  "attributes": {
+    "max_health": 200,
+    "movement_speed": 0.13,
+    "attack_damage": 20,
+    "attack_knockback": 2.4,
+    "follow_range": 30.0,
+    "knockback_resistance": 0.95,
+    "armor": 8
+  },
+  "growth": {
+    "adult_age": 36000,
+    "baby_scale": 0.3,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:sauropod_browser",
+    "components": [
+      {
+        "type": "ancientcreature:graze",
+        "duration": 120,
+        "chance": 260,
+        "hunger_value": 10.0
+      },
+      {
+        "type": "ancientcreature:browse_leaves",
+        "duration": 100,
+        "chance": 500,
+        "horizontal_range": 9,
+        "min_height": 1,
+        "max_height": 4,
+        "speed_modifier": 0.6,
+        "reach_distance": 5.0,
+        "hunger_value": 10.0
+      }
+    ]
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_diplodocus",
+    "incubation_time": 2500
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.diplodocus.ambient",
+    "hurt": "ancientcreature:entity.diplodocus.hurt",
+    "death": "ancientcreature:entity.diplodocus.death",
+    "step": "ancientcreature:entity.diplodocus.step",
+    "attack": "ancientcreature:entity.diplodocus.attack",
+    "alert": "ancientcreature:entity.diplodocus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:wheat",
+      "minecraft:apple",
+      "minecraft:hay_block"
+    ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 2,
+    "group_max": 6,
+    "space": 1200
+  },
+  "riding": {
+    "ability": "tail_sweep",
+    "cooldown": 90,
+    "power": 1.6
+  },
+  "hunger": {
+    "max": 170.0,
+    "decay_interval": 260,
+    "hunt_threshold": 60.0,
+    "full_threshold": 140.0,
+    "food_value": 10.0
+  }
+}

@@ -69,7 +69,6 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         tag(ModBiomeTags.HAS_COASTAL_DIG_SITE)
             .add(Biomes.BEACH);
 
-        // Resin hardens where old forests grew thick and wet.
         tag(ModBiomeTags.HAS_AMBER_ORE)
             .addTag(BiomeTags.IS_JUNGLE)
             .add(Biomes.DARK_FOREST)
@@ -84,7 +83,6 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
             .add(Biomes.JAGGED_PEAKS)
             .add(Biomes.SNOWY_SLOPES);
 
-        // Bare rock faces: badland mesas, sea cliffs and windswept highlands.
         tag(ModBiomeTags.HAS_FOSSIL_SEAM)
             .addTag(BiomeTags.IS_BADLANDS)
             .add(Biomes.STONY_SHORE)
@@ -231,6 +229,44 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
             .add(Biomes.ICE_SPIKES)
             .add(Biomes.SNOWY_TAIGA)
             .add(Biomes.GROVE);
+
+        tag(ModBiomeTags.SPAWNS_ALLOSAURUS)
+            .add(Biomes.BIRCH_FOREST)
+            .add(Biomes.OLD_GROWTH_BIRCH_FOREST)
+            .add(Biomes.WINDSWEPT_HILLS)
+            .add(Biomes.WINDSWEPT_FOREST)
+            .add(Biomes.MEADOW);
+
+        tag(ModBiomeTags.SPAWNS_PACHYCEPHALOSAURUS)
+            .add(Biomes.MEADOW)
+            .add(Biomes.CHERRY_GROVE)
+            .add(Biomes.FLOWER_FOREST)
+            .add(Biomes.WINDSWEPT_GRAVELLY_HILLS);
+
+        tag(ModBiomeTags.SPAWNS_GALLIMIMUS)
+            .add(Biomes.DESERT)
+            .add(Biomes.SAVANNA)
+            .add(Biomes.SAVANNA_PLATEAU)
+            .add(Biomes.SUNFLOWER_PLAINS);
+
+        tag(ModBiomeTags.SPAWNS_THERIZINOSAURUS)
+            .add(Biomes.FOREST)
+            .add(Biomes.BIRCH_FOREST)
+            .add(Biomes.DARK_FOREST)
+            .add(Biomes.BAMBOO_JUNGLE);
+
+        tag(ModBiomeTags.SPAWNS_COMPSOGNATHUS)
+            .add(Biomes.JUNGLE)
+            .add(Biomes.BAMBOO_JUNGLE)
+            .add(Biomes.SPARSE_JUNGLE)
+            .add(Biomes.BEACH);
+
+        tag(ModBiomeTags.SPAWNS_DIPLODOCUS)
+            .add(Biomes.PLAINS)
+            .add(Biomes.SAVANNA)
+            .add(Biomes.SAVANNA_PLATEAU)
+            .add(Biomes.SUNFLOWER_PLAINS)
+            .add(Biomes.MEADOW);
 
         tag(ModBiomeTags.SPAWNS_WOOLLY_RHINOCEROS)
             .add(Biomes.SNOWY_PLAINS)

@@ -52,7 +52,6 @@ public class ModItems {
     public static final RegistryHandler.Items<Item> NUTRIENT_SOLUTION = registerItem("nutrient_solution", p -> new Item(p.stacksTo(16)));
     public static final RegistryHandler.Items<Item> FERTILIZED_ANCIENT_EGG = registerItem("fertilized_ancient_egg", p -> new Item(p.stacksTo(1).component(ModDataComponents.SPECIES.get(), Species.TRICERATOPS)));
 
-    // Materials from revived creatures (see the species loot tables).
     public static final RegistryHandler.Items<Item> RAW_PREHISTORIC_MEAT = registerItem("raw_prehistoric_meat", p -> new Item(p.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3F).build())));
     public static final RegistryHandler.Items<Item> COOKED_PREHISTORIC_MEAT = registerItem("cooked_prehistoric_meat", p -> new Item(p.food(new FoodProperties.Builder().nutrition(9).saturationModifier(0.8F).build())));
     public static final RegistryHandler.Items<Item> THICK_HIDE = registerItem("thick_hide", Item::new);

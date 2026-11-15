@@ -197,7 +197,6 @@ public class GenomeSequencerBlockEntity extends BlockEntity implements MenuProvi
         if (species == null || integrityLevel == null) return;
         dnaSampleContainer.removeItem(0, 1);
 
-        // Precision modules read more of each sample, and read it more cleanly.
         int precision = upgrades.precision();
         float completeness = integrityLevel.getGenomeCompleteness(serverLevel.getRandom()) * (1.0f + 0.15f * precision);
         float quality = Math.min(1.0f, dnaData.quality() + 0.05f * precision);

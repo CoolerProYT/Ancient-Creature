@@ -1,0 +1,67 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/allosaurus",
+  "entity_category": "land",
+  "physical": {
+    "width": 1.25,
+    "height": 2.1,
+    "eye_height": 1.85
+  },
+  "attributes": {
+    "max_health": 110,
+    "movement_speed": 0.28,
+    "attack_damage": 17,
+    "attack_knockback": 1.8,
+    "follow_range": 30.0,
+    "knockback_resistance": 0.7,
+    "armor": 5
+  },
+  "growth": {
+    "adult_age": 24000,
+    "baby_scale": 0.4,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:apex_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_allosaurus",
+    "incubation_time": 1700
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.allosaurus.ambient",
+    "hurt": "ancientcreature:entity.allosaurus.hurt",
+    "death": "ancientcreature:entity.allosaurus.death",
+    "step": "ancientcreature:entity.allosaurus.step",
+    "attack": "ancientcreature:entity.allosaurus.attack",
+    "alert": "ancientcreature:entity.allosaurus.alert",
+    "ambient_interval": 280
+  },
+  "diet": {
+    "items": [
+      "minecraft:beef",
+      "minecraft:mutton",
+      "minecraft:porkchop"
+    ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "temperate",
+    "social": "solitary",
+    "space": 400
+  },
+  "riding": {
+    "ability": "bite",
+    "cooldown": 70,
+    "power": 1.15
+  }
+}

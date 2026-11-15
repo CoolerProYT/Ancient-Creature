@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "shadow_radius": 0.655,
+  "render_scale": 0.7,
+  "gui": {
+    "scale": 4.8,
+    "translation": [
+      0,
+      -0.2,
+      0
+    ],
+    "rotation": [
+      0,
+      215,
+      0
+    ]
+  }
+}

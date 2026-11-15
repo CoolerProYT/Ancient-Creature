@@ -11,16 +11,6 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-/**
- * Shows how fed a creature is, and whether that is enough to make it hunt.
- *
- * <p>Hunger decides whether a predator will attack, and it is otherwise completely invisible — there is no
- * way for a player to tell a Tyrannosaurus Rex that is ignoring them from one that is about to charge. This
- * is the readout that makes the mechanic legible.
- *
- * <p>No server data provider is needed. Unlike the egg block's countdown, hunger is synchronised entity
- * data, so the client already has the current value and the species definition holding the thresholds.
- */
 public class CreatureHungerComponentProvider implements IEntityComponentProvider {
     public static final CreatureHungerComponentProvider INSTANCE = new CreatureHungerComponentProvider();
 
@@ -29,8 +19,7 @@ public class CreatureHungerComponentProvider implements IEntityComponentProvider
         if (!(accessor.getEntity() instanceof AncientCreatureEntity creature)) {
             return;
         }
-        // An unresolved species falls back to defaults, which would report a meter the creature is not
-        // actually running on. Say nothing until its datapack is loaded.
+
         if (!creature.hasResolvedSpecies()) {
             return;
         }
@@ -41,8 +30,6 @@ public class CreatureHungerComponentProvider implements IEntityComponentProvider
         tooltip.add(Component.translatable("jade.ancientcreature.hunger",
             format(current), format(hunger.max())));
 
-        // Derived from the value and thresholds rather than the creature's current target, because the
-        // target is server-only state that never reaches the client.
         if (hunger.isHungryAt(current)) {
             tooltip.add(Component.translatable("jade.ancientcreature.hungry")
                 .withStyle(ChatFormatting.RED));
@@ -79,7 +66,6 @@ public class CreatureHungerComponentProvider implements IEntityComponentProvider
         }
     }
 
-    /** Trims the trailing {@code .0} that hunger values almost always have, since decay is by whole points. */
     private static String format(float value) {
         return value == Math.rint(value)
             ? String.valueOf((int) value)

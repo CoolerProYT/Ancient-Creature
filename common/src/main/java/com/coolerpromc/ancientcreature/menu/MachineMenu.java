@@ -11,16 +11,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.NonNull;
 
-/**
- * Shared layout and shift-click handling for the lab machines.
- *
- * <p>Slot order is always: the 36 player slots, the machine's input slots, its output slots, then the
- * two upgrade slots shown on the panel to the right of the screen. Shift-clicking an upgrade module
- * from the inventory goes to the panel; anything else goes to the first input that accepts it; nothing
- * is ever shift-clicked into an output.
- */
 public abstract class MachineMenu extends AbstractContainerMenu {
-    /** Top-left of the upgrade panel, relative to the screen origin. */
+
     public static final int PANEL_X = 178;
     public static final int PANEL_Y = 20;
     public static final int PANEL_WIDTH = 26;
@@ -39,12 +31,10 @@ public abstract class MachineMenu extends AbstractContainerMenu {
         this.addInventoryExtendedSlots(inventory, 8, 84);
     }
 
-    /** Call after adding the inputs and before adding the outputs. */
     protected void beginOutputs() {
         this.outputStart = this.slots.size();
     }
 
-    /** Call last. */
     protected void addUpgradeSlots(MachineUpgrades upgrades) {
         if (this.outputStart < 0) {
             this.outputStart = this.slots.size();
@@ -73,7 +63,7 @@ public abstract class MachineMenu extends AbstractContainerMenu {
                 moved = this.moveItemStackTo(stack, PLAYER_SLOTS, inputEnd, false);
             }
             if (!moved) {
-                // shuffle between hotbar (0-8) and the main inventory (9-35)
+
                 moved = index < 9 ? this.moveItemStackTo(stack, 9, PLAYER_SLOTS, false) : this.moveItemStackTo(stack, 0, 9, false);
             }
             if (!moved) {
@@ -95,7 +85,6 @@ public abstract class MachineMenu extends AbstractContainerMenu {
         return original;
     }
 
-    /** Progress bar width for a {@code width}-pixel arrow, safe when nothing is processing. */
     protected static int progressWidth(int progress, int max, int width) {
         if (max <= 0 || progress <= 0) {
             return 0;

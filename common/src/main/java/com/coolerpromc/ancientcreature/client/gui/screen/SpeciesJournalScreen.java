@@ -153,7 +153,7 @@ public final class SpeciesJournalScreen extends Screen {
             return;
         }
         if (this.selected.getEntityType().create(this.minecraft.level, EntitySpawnReason.LOAD) instanceof AncientCreatureEntity creature) {
-            // never added to the level, but rendering reads the entity id; a negative one matches no real entity
+
             creature.setId(PREVIEW_ENTITY_ID);
             creature.setSpecies(this.selected);
             creature.setYRot(0.0F);

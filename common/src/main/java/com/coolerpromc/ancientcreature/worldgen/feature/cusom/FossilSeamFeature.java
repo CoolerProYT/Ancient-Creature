@@ -20,13 +20,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A fossil seam: a thin horizontal band of fossil-bearing rock showing on a cliff face.
- *
- * <p>Starting from the surface, it looks a few blocks down for rock that is open to the air on
- * one side, then lays a band along that face. Bands that would stay hidden inside the hill are
- * dropped, so the seams only ever appear where a player can spot them.
- */
 public class FossilSeamFeature extends Feature<FossilSeamFeature.Configuration> {
     public FossilSeamFeature() {
         super(Configuration.CODEC);
@@ -70,7 +63,7 @@ public class FossilSeamFeature extends Feature<FossilSeamFeature.Configuration> 
         int exposed = 0;
 
         for (int i = start; i < start + length; i++) {
-            // Real seams wander a little: step up or down now and then.
+
             int drift = random.nextInt(5) == 0 ? (random.nextBoolean() ? 1 : -1) : 0;
             BlockPos pos = anchor.relative(along, i).above(drift);
             for (int row = 0; row < (thick ? 2 : 1); row++) {

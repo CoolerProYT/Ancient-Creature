@@ -12,13 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * A baked Bedrock geometry: a vanilla {@link ModelPart} tree plus the lookups the animation runtime
- * needs. Bone and locator names are matched case-insensitively, as in Bedrock.
- *
- * <p>Instances are shared between every entity using the geometry. The part tree's pose is mutable,
- * so callers reset it ({@link #resetPose()}) before posing it for a new entity each frame.
- */
 public final class BakedBedrockModel {
     private final BedrockGeometry geometry;
     private final ModelPart root;
@@ -27,7 +20,6 @@ public final class BakedBedrockModel {
     private final Map<String, Locator> locators;
     private final List<ModelPart> allParts;
 
-    /** A locator: the bone it hangs from and its offset from that bone's pivot, in model units. */
     public record Locator(String bone, Vector3fc offset) {
     }
 
@@ -56,7 +48,6 @@ public final class BakedBedrockModel {
         return this.bones;
     }
 
-    /** Lower-case name of a bone's parent, or {@code null} for a root bone. */
     public @Nullable String parentOf(String bone) {
         return this.parents.get(bone.toLowerCase(Locale.ROOT));
     }
@@ -76,7 +67,6 @@ public final class BakedBedrockModel {
         }
     }
 
-    /** Chain of bones from the root down to {@code bone}, inclusive. */
     public List<ModelPart> chain(String bone) {
         List<ModelPart> chain = new ArrayList<>();
         String current = bone.toLowerCase(Locale.ROOT);
@@ -92,11 +82,6 @@ public final class BakedBedrockModel {
         return chain;
     }
 
-    /**
-     * Applies the current pose of every bone from the root to {@code locator}'s bone onto {@code pose},
-     * then translates to the locator. Afterwards the pose's origin is the locator in model space
-     * (y down, 1/16 block units already applied).
-     */
     public boolean transformToLocator(String locator, PoseStack pose) {
         Locator found = this.locator(locator);
         if (found == null) {

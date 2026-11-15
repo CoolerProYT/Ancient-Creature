@@ -37,14 +37,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A wire fence that shocks whatever touches it while it carries a charge.
- *
- * <p>Charge works like redstone dust: a fence segment that receives a redstone signal is at 15, and
- * every connected segment carries one less than its strongest neighbour, so one power source energises
- * up to 15 segments in each direction. A charged fence hurts and throws back anything that touches it,
- * players included. Creatures will not path through it, and it is never smashed by charging creatures.
- */
 public class ElectricFenceBlock extends CrossCollisionBlock {
     public static final IntegerProperty CHARGE = BlockStateProperties.POWER;
 
@@ -53,7 +45,7 @@ public class ElectricFenceBlock extends CrossCollisionBlock {
     public static final MapCodec<ElectricFenceBlock> CODEC = simpleCodec(ElectricFenceBlock::new);
 
     public ElectricFenceBlock(BlockBehaviour.Properties properties) {
-        // post 2 wide, wires 1 wide, 1.5 blocks of collision like any fence
+
         super(3.0F, 16.0F, 1.0F, 16.0F, 24.0F, properties);
         this.registerDefaultState(this.stateDefinition.any()
             .setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false)
@@ -100,7 +92,6 @@ public class ElectricFenceBlock extends CrossCollisionBlock {
         return super.updateShape(state, level, ticks, pos, direction, neighbourPos, neighbour, random);
     }
 
-    /** 15 with a redstone signal here; otherwise one less than the best adjacent fence. */
     private int computeCharge(Level level, BlockPos pos) {
         if (level.hasNeighborSignal(pos)) {
             return 15;
@@ -122,8 +113,7 @@ public class ElectricFenceBlock extends CrossCollisionBlock {
         }
         int charge = this.computeCharge(level, pos);
         if (charge != state.getValue(CHARGE)) {
-            // UPDATE_ALL notifies the neighbouring segments, which recompute in turn. Every step either
-            // raises a segment to its source distance or lowers it by one, so the network settles.
+
             level.setBlock(pos, state.setValue(CHARGE, charge), Block.UPDATE_ALL);
         }
     }
@@ -137,8 +127,7 @@ public class ElectricFenceBlock extends CrossCollisionBlock {
 
     @Override
     protected VoxelShape getEntityInsideCollisionShape(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
-        // A touch is enough: the shock reaches slightly past the collision box, which an entity pushing
-        // against the fence overlaps.
+
         VoxelShape reach = Shapes.empty();
         for (AABB box : this.getCollisionShape(state, level, pos, CollisionContext.empty()).toAabbs()) {
             reach = Shapes.or(reach, Shapes.create(box.inflate(0.08)));
@@ -182,7 +171,6 @@ public class ElectricFenceBlock extends CrossCollisionBlock {
         SHOCKS.put(entity, entity.tickCount);
     }
 
-    /** Last shock tick per entity, so a creature leaning on the fence is not shocked every tick. */
     private static final java.util.Map<LivingEntity, Integer> SHOCKS = java.util.Collections.synchronizedMap(new java.util.WeakHashMap<>());
 
     @Override

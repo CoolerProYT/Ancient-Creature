@@ -24,16 +24,6 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * Gives orders to the creatures you raised.
- *
- * <ul>
- *   <li>Use on one of your creatures: cycle it between Roam, Follow and Stay.</li>
- *   <li>Use in the air: every one of your creatures within {@value #CALL_RADIUS} blocks that is not
- *       staying comes to you and follows.</li>
- *   <li>Sneak and use in the air: every one of your creatures within {@value #CALL_RADIUS} blocks stays.</li>
- * </ul>
- */
 public class HornWhistleItem extends Item {
     public static final int CALL_RADIUS = 48;
     private static final int COOLDOWN = 30;

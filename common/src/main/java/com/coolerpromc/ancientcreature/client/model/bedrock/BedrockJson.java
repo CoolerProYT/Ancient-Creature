@@ -13,14 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Lenient readers for the Bedrock resource-pack JSON formats.
- *
- * <p>Bedrock's own loader is forgiving — numbers may be strings, vectors may be scalars, keys are
- * case-insensitive in places — and files exported by Blockbench or written by hand rely on that.
- * These helpers accept the same variations and throw {@link BedrockFormatException} with a JSON path
- * when something is genuinely unusable.
- */
 public final class BedrockJson {
     public static JsonObject object(JsonElement element, String path) throws BedrockFormatException {
         if (element == null || !element.isJsonObject()) {
@@ -77,7 +69,7 @@ public final class BedrockJson {
                 try {
                     return Float.parseFloat(primitive.getAsString().trim());
                 } catch (NumberFormatException ignored) {
-                    // fall through
+
                 }
             }
             if (primitive.isBoolean()) {
@@ -116,7 +108,6 @@ public final class BedrockJson {
         throw new BedrockFormatException(path + " must be a [u, v] pair");
     }
 
-    /** A Molang-or-number value as source text, for {@link com.coolerpromc.ancientcreature.molang.Molang#of}. */
     public static Object molangSource(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
@@ -131,7 +122,6 @@ public final class BedrockJson {
         return element.toString();
     }
 
-    /** A string or an array of strings, flattened. Bedrock script blocks accept both. */
     public static List<String> strings(@Nullable JsonElement element) {
         List<String> out = new ArrayList<>();
         if (element == null || element.isJsonNull()) {

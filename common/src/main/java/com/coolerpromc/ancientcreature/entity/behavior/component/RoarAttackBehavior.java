@@ -15,16 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
-/**
- * A melee attack that opens with a roar.
- *
- * <p>On engaging a target the creature stops, roars for {@code roar_duration} ticks while tracking the
- * target, then charges. The roar goes on cooldown so it does not fire on every re-engage. This is the
- * data-driven equivalent of the goal that used to be hard-coded inside {@code TyrannosaurusRex}.
- *
- * <p>The roar is published as {@link AncientCreatureAction#ROAR} so the client's animation controller
- * can pick the matching clip; the client never decides when it happens.
- */
 public record RoarAttackBehavior(
     double speedModifier,
     boolean followWithoutSight,
@@ -100,7 +90,7 @@ public record RoarAttackBehavior(
             }
 
             if (this.roarTicks > 0) {
-                // Rooted in place for the length of the roar, still tracking the target.
+
                 this.creature.getNavigation().stop();
                 LivingEntity target = this.creature.getTarget();
                 if (target != null) {

@@ -8,16 +8,6 @@ import org.joml.Vector3fc;
 
 import java.util.*;
 
-/**
- * A Bedrock bone.
- *
- * <p>{@code mirror} and {@code inflate} on a bone are the defaults for its cubes, exactly as Bedrock and
- * Blockbench treat them.
- *
- * <p>{@code bind_pose_rotation} (legacy 1.8 files) turns only this bone's own geometry about its pivot;
- * unlike {@code rotation} it is not inherited by child bones. Vanilla's cow relies on this: its body has
- * a 90-degree bind pose while its legs and head, which are children of the body, stay upright.
- */
 public record BedrockBone(
     String name,
     Optional<String> parent,
@@ -32,7 +22,7 @@ public record BedrockBone(
     boolean neverRender,
     boolean reset
 ) {
-    /** Lower-case name, the lookup key Bedrock uses. */
+
     public String key() {
         return this.name.toLowerCase(Locale.ROOT);
     }

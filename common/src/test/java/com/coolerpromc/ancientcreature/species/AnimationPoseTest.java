@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.server.Bootstrap;
+import org.joml.Vector3f;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,24 +24,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Locks down the direction each clip actually poses a creature in.
- *
- * <p>Minecraft's convention is that a <em>positive</em> {@code xRot} on a head-like part pitches its
- * front end downward — vanilla sets {@code head.xRot} straight from the entity's pitch, where positive
- * is looking down. A jaw hangs below its pivot and extends forward, so it must swing positive to open
- * and negative closes it into the skull.
- *
- * <p>Getting a sign convention backwards is invisible in a diff and silently inverts every clip: heads
- * pitch down where they should rise, and mouths clamp shut where they should gape. These assertions are
- * the guard.
- */
 class AnimationPoseTest {
     @BeforeAll
     static void bootstrapMinecraft() {
@@ -50,7 +40,7 @@ class AnimationPoseTest {
 
     @ParameterizedTest(name = "{0} {1} @{2}s raises the head and opens the jaw")
     @CsvSource({
-        // species, animation, time at which the pose is at its most open
+
         "tyrannosaurus_rex, roar,    0.62",
         "triceratops,       bellow,  1.10",
         "pteranodon,        screech, 0.50",
@@ -76,7 +66,7 @@ class AnimationPoseTest {
 
     @Test
     void bitingLungesTheHeadDownAndOpensTheJaw() throws IOException {
-        // 0.18s is the lunge; by 0.34s the clip has already snapped the head back up on the recoil.
+
         Pose lunge = poseAt("tyrannosaurus_rex", "bite", 0.18F);
         assertTrue(lunge.head > 0.0F,
             () -> "tyrannosaurus_rex bite: head xRot is " + degrees(lunge.head) + ", but the lunge drives it down.");
@@ -90,7 +80,7 @@ class AnimationPoseTest {
     void everyShippedClipResolvesAllOfItsBones() throws IOException {
         for (String species : new String[]{"tyrannosaurus_rex", "triceratops", "megalodon", "pteranodon", "ankylosaurus", "deinonychus", "brachiosaurus",
             "stegosaurus", "parasaurolophus", "spinosaurus", "carnotaurus", "velociraptor", "dilophosaurus", "argentinosaurus", "quetzalcoatlus",
-            "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura"}) {
+            "mosasaurus", "plesiosaurus", "dunkleosteus", "smilodon", "woolly_mammoth", "woolly_rhinoceros", "dire_wolf", "arthropleura","allosaurus", "pachycephalosaurus", "gallimimus", "therizinosaurus", "compsognathus", "diplodocus"}) {
             Map<String, BedrockAnimation> animations = loadAnimations(species);
             for (Map.Entry<String, BedrockAnimation> entry : animations.entrySet()) {
                 BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry(species));
@@ -98,18 +88,37 @@ class AnimationPoseTest {
                 entry.getValue().apply(root, 0.1F, 1.0F, new MolangContext(), missing, new java.util.ArrayList<>());
                 assertTrue(missing.isEmpty(),
                     () -> entry.getKey() + " targets bones the geometry does not have: " + missing);
+                BedrockAnimation clip = entry.getValue();
+                for (var bone : clip.bones().entrySet()) {
+                    for (var channel : List.of(bone.getValue().rotation(), bone.getValue().position(), bone.getValue().scale())) {
+                        assertTrue(channel.lastTime() <= clip.length() + 0.0001F,
+                            () -> entry.getKey() + "/" + bone.getKey() + " has keyframes beyond its duration");
+                        if (clip.loop() == BedrockAnimation.LoopMode.LOOP && entry.getKey().matches(".*\\.(walk|run|swim|fly)")) {
+                            Vector3f first = channel.sample(0, new MolangContext(), new Vector3f());
+                            Vector3f last = channel.sample(clip.length(), new MolangContext(), new Vector3f());
+                            assertTrue(first.equals(last, 0.01F),
+                                () -> entry.getKey() + "/" + bone.getKey() + " snaps at its loop boundary: " + first + " vs " + last);
+                        }
+                    }
+                }
             }
         }
     }
 
-    /**
-     * A flap has to drive the two wings in opposite directions.
-     *
-     * <p>The two wings extend along opposite local X axes, so the same {@code zRot} raises one wing and
-     * lowers the other, and every flight clip has to carry equal and opposite z between them. Getting that wrong renders as both wings swinging the same way, which
-     * reads as the model tearing itself in half — and it is invisible in a diff, because the numbers
-     * differ only in sign.
-     */
+    @ParameterizedTest
+    @ValueSource(strings = {"argentinosaurus", "arthropleura", "carnotaurus", "dilophosaurus", "dire_wolf",
+        "dunkleosteus", "mosasaurus", "parasaurolophus", "plesiosaurus", "quetzalcoatlus", "smilodon",
+        "spinosaurus", "stegosaurus", "velociraptor", "woolly_mammoth", "woolly_rhinoceros", "allosaurus",
+        "pachycephalosaurus", "gallimimus", "therizinosaurus", "compsognathus", "diplodocus"})
+    void revisedDeathClipsFinishBeforeVanillaRemovesTheEntity(String species) throws IOException {
+        BedrockAnimation death = loadAnimations(species).get("animation." + species + ".death");
+        assertTrue(death.length() <= 0.8F, "Leave four ticks for the final pose before vanilla removes the body at tick 20");
+        BakedBedrockModel model = BedrockModelBaker.bake(loadGeometry(species));
+        Set<String> missing = new HashSet<>();
+        death.apply(model, 0.8F, 1.0F, new MolangContext(), missing, new java.util.ArrayList<>());
+        assertTrue(missing.isEmpty(), () -> species + ": " + missing);
+    }
+
     @ParameterizedTest(name = "{0} mirrors the wings")
     @ValueSource(strings = {"fly", "glide", "dive", "screech", "death"})
     void flightClipsMirrorTheWings(String anim) throws IOException {
@@ -122,13 +131,6 @@ class AnimationPoseTest {
         }
     }
 
-    /**
-     * The flap itself has to go up then down, not just wobble.
-     *
-     * <p>The assertions are on the baked vanilla part rotations, which is exactly what is drawn, so they
-     * hold however the file chose to express them. The shipped files follow Bedrock/Blockbench axes, so
-     * Blockbench's preview shows the same stroke.
-     */
     @Test
     void theFlapRaisesThenLowersTheWings() throws IOException {
         Wings top = wingsAt("pteranodon", "fly", 0.0F);
@@ -146,14 +148,12 @@ class AnimationPoseTest {
                 + " across the stroke, which will not read as a flap.");
     }
 
-    /** A perched Pteranodon has to fold its wings in, not leave them spread as if still gliding. */
     @Test
     void perchedIdleFoldsTheWingsBack() throws IOException {
         BakedBedrockModel root = BedrockModelBaker.bake(loadGeometry("pteranodon"));
         String key = "animation.pteranodon.idle";
         loadAnimations("pteranodon").get(key).apply(root, 1.0F, 1.0F, new MolangContext(), new HashSet<>(), new java.util.ArrayList<>());
 
-        // Sweep is yaw; a folded left wing ends up with positive yRot.
         float left = find(root.root(), "wing_left").yRot;
         float right = find(root.root(), "wing_right").yRot;
         assertTrue(left > Math.toRadians(45.0),

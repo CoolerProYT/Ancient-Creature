@@ -43,7 +43,6 @@ public record Species(Identifier id) implements TooltipProvider, Comparable<Spec
         return manager.ids().stream().map(Species::new).sorted().toList();
     }
 
-    /** Species that can be dug up: every species except hybrids, which only exist by genome splicing. */
     public static List<Species> fossilSpecies() {
         return values().stream().filter(s -> !s.isHybrid()).toList();
     }
@@ -52,7 +51,6 @@ public record Species(Identifier id) implements TooltipProvider, Comparable<Spec
         return this.definitionOrFallback().isHybrid();
     }
 
-    /** The hybrid made from these two species' genomes, if a loaded species defines one. */
     public static Optional<Species> hybridOf(Species a, Species b) {
         SpeciesManager manager = SpeciesManager.SERVER.isEmpty() ? SpeciesManager.CLIENT : SpeciesManager.SERVER;
         return manager.all().entrySet().stream()

@@ -23,12 +23,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Loads the appearance side of species: {@code ancientcreature/species/*.json},
- * {@code ancientcreature/entity/*.json} (Bedrock client entities) and
- * {@code ancientcreature/render_controllers/*.json}, then resolves each species into a
- * {@link SpeciesAppearance} on first use.
- */
 public final class ClientSpeciesManager extends SimplePreparableReloadListener<ClientSpeciesManager.Loaded> {
     public static final Identifier ID = Constants.id("client_species");
     public static final String DIRECTORY = Constants.MODID + "/species";
@@ -58,7 +52,6 @@ public final class ClientSpeciesManager extends SimplePreparableReloadListener<C
         return this.loaded.definitions().get(speciesId);
     }
 
-    /** The species' settings, or defaults when it only has a client entity. */
     public ClientSpeciesDefinition settings(Identifier speciesId) {
         return this.loaded.definitions().getOrDefault(speciesId, ClientSpeciesDefinition.DEFAULT);
     }
@@ -85,7 +78,6 @@ public final class ClientSpeciesManager extends SimplePreparableReloadListener<C
         return this.generation;
     }
 
-    /** The resolved appearance, or {@code null} (logged once) when the resource pack does not dress this species. */
     public @Nullable SpeciesAppearance appearance(Identifier speciesId) {
         long stamp = ((long) this.generation << 48) ^ ((long) BedrockAnimationManager.INSTANCE.generation() << 32) ^ ((long) AnimationControllerManager.INSTANCE.generation() << 16) ^ BedrockGeometryManager.INSTANCE.generation();
         if (stamp != this.appearanceStamp) {
@@ -203,7 +195,6 @@ public final class ClientSpeciesManager extends SimplePreparableReloadListener<C
         return "AncientCreatureClientSpecies";
     }
 
-    /** Converts a format-1 species file into the client entity it describes. */
     static final class LegacyAppearance {
         static BedrockClientEntity toClientEntity(Identifier speciesId, ClientSpeciesDefinition legacy) {
             Map<String, Identifier> textures = new LinkedHashMap<>();
@@ -213,8 +204,7 @@ public final class ClientSpeciesManager extends SimplePreparableReloadListener<C
             }
 
             Map<String, String> animations = new LinkedHashMap<>();
-            // Geometry and animations from a format-1 pack were authored for the old axis handling and are
-            // converted on load so the species looks exactly as it did.
+
             legacy.animations().ifPresent(file -> BedrockAnimationManager.INSTANCE.getFile(file).keySet().forEach(full -> {
                 int dot = full.lastIndexOf('.');
                 String converted = BedrockAnimationManager.LEGACY_PREFIX + full;

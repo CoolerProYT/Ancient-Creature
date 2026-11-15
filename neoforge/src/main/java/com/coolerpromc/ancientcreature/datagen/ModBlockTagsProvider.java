@@ -52,14 +52,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             .add(ModBlocks.REINFORCED_FENCE.getBlock())
             .add(ModBlocks.REINFORCED_FENCE_GATE.getBlock());
 
-        // Fence tags make the pathfinder treat these as impassable, like any fence.
         tag(BlockTags.FENCES)
             .add(ModBlocks.REINFORCED_FENCE.getBlock())
             .add(ModBlocks.ELECTRIC_FENCE.getBlock());
         tag(BlockTags.FENCE_GATES)
             .add(ModBlocks.REINFORCED_FENCE_GATE.getBlock());
 
-        // Wooden fences and gates, walls and glass; the reinforced and electric fences are never in here.
         tag(ModBlockTags.ENCLOSURE_BREAKABLE)
             .addTag(BlockTags.WOODEN_FENCES)
             .addTag(BlockTags.WALLS)

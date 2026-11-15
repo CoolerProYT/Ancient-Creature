@@ -31,9 +31,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import java.util.List;
 import java.util.Optional;
 
-/**
- * A jigsaw structure that only generates on a dry, nearly level footprint.
- */
 public class FlatJigsawStructure extends Structure {
     private static final int FOUNDATION_HEIGHT = 6;
     private static final int MAX_DYNAMIC_SUPPORT_DEPTH = 16;

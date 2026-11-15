@@ -33,16 +33,11 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * Renders every species through its Bedrock client entity. Animation, render-controller choices and
- * events are computed in {@link #extractRenderState}; drawing only replays the stored pose.
- */
 public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, AncientCreatureRenderState, AncientCreatureModel> {
     private static final Identifier MISSING_TEXTURE = Identifier.withDefaultNamespace("textures/misc/unknown_pack.png");
     private static final AncientCreatureModel EMPTY = new AncientCreatureModel(AncientCreatureModel.emptyRoot());
     private static final Set<String> WARNED = Collections.synchronizedSet(new HashSet<>());
 
-    /** Bedrock's built-in particle names that have a direct Java counterpart. */
     private static final Map<String, String> BEDROCK_PARTICLES = Map.ofEntries(
         Map.entry("minecraft:basic_smoke_particle", "minecraft:smoke"),
         Map.entry("minecraft:large_explosion", "minecraft:explosion"),
@@ -57,7 +52,6 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
         Map.entry("minecraft:note_particle", "minecraft:note"),
         Map.entry("minecraft:evaporation_elephant_toothpaste_vapor_particle", "minecraft:cloud"));
 
-    /** One animator per entity; weak keys so removed entities are forgotten. */
     private final Map<AncientCreatureEntity, CreatureAnimator> animators = new WeakHashMap<>();
 
     public AncientCreatureRenderer(EntityRendererProvider.Context context) {
@@ -169,7 +163,6 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
         }
     }
 
-    /** World position of a locator on the current pose, or the entity's eye position. */
     private Vector3f effectPosition(AncientCreatureEntity entity, AncientCreatureRenderState state, BakedBedrockModel model, @Nullable String locator, float partialTicks) {
         double x = Mth.lerp(partialTicks, entity.xo, entity.getX());
         double y = Mth.lerp(partialTicks, entity.yo, entity.getY());
@@ -200,7 +193,7 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
                 return BuiltInRegistries.SOUND_EVENT.getValue(vanilla);
             }
         }
-        // Sounds defined only in a resource pack's sounds.json still play through a direct event.
+
         return id == null ? null : SoundEvent.createVariableRangeEvent(id);
     }
 
@@ -247,8 +240,7 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
 
     @Override
     protected void setupRotations(AncientCreatureRenderState state, PoseStack poseStack, float bodyRot, float entityScale) {
-        // A death clip already rolls the body onto its side; vanilla's roll on top would turn it upside down
-        // into the ground.
+
         float deathTime = state.deathTime;
         if (state.hasDeathAnimation) {
             state.deathTime = 0.0F;
@@ -268,7 +260,6 @@ public class AncientCreatureRenderer extends MobRenderer<AncientCreatureEntity, 
         return state.textures.isEmpty() ? MISSING_TEXTURE : state.textures.getFirst();
     }
 
-    /** Draws the second and later render-controller textures over the body, like Bedrock texture layering. */
     private static final class TextureLayers extends RenderLayer<AncientCreatureRenderState, AncientCreatureModel> {
         TextureLayers(RenderLayerParent<AncientCreatureRenderState, AncientCreatureModel> parent) {
             super(parent);

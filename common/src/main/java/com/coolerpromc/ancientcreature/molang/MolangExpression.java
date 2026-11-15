@@ -1,12 +1,5 @@
 package com.coolerpromc.ancientcreature.molang;
 
-/**
- * A compiled Molang expression.
- *
- * <p>Compile once with {@link Molang#compile}, evaluate as often as needed. Expressions whose value
- * cannot change — plain numbers, arithmetic on literals, pure math on literals — are folded to a
- * constant at compile time, so a numeric keyframe costs a field read.
- */
 public final class MolangExpression {
     public static final MolangExpression ZERO = constant(0.0);
     public static final MolangExpression ONE = constant(1.0);
@@ -37,7 +30,6 @@ public final class MolangExpression {
         return this.constant;
     }
 
-    /** The folded value; only meaningful when {@link #isConstant()}. */
     public double constantValue() {
         return this.constantValue;
     }
@@ -46,7 +38,6 @@ public final class MolangExpression {
         return this.source;
     }
 
-    /** Evaluates as a number. Non-finite results become 0 so a bad expression cannot corrupt a pose. */
     public double evaluate(MolangContext ctx) {
         if (this.constant) {
             return this.constantValue;
@@ -59,7 +50,6 @@ public final class MolangExpression {
         return sanitize(this.root.number(ctx));
     }
 
-    /** Evaluates keeping string and resource-reference results, for render controllers and comparisons. */
     public Object evaluateObject(MolangContext ctx) {
         if (this.constant) {
             return this.constantValue;
@@ -80,7 +70,6 @@ public final class MolangExpression {
         return MolangValues.truthy(this.evaluateObject(ctx));
     }
 
-    /** Runs the expression for its side effects (assignments), as in pre_animation or on_entry scripts. */
     public void execute(MolangContext ctx) {
         if (!this.constant) {
             ctx.beginEvaluation();
