@@ -1,3 +1,6 @@
+## 26.2.0.8
+- Fixed creature loot counts, cooking conditions and Looting bonuses using the correct 26.2 loot format.
+
 ## 26.2.0.7
 - Fixed corrupted creature textures and geometry with Sodium 0.9.2, including when using Iris shaders.
 - Added six new dinosaurs, each with its own model, two skins, saddle and armor overlays, animations, original sounds, loot and fossils:

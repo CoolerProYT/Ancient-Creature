@@ -87,7 +87,7 @@ Creatures created with commands or through other non-capsule methods are unowned
 
 | Requirement | Version |
 | --- | --- |
-| Minecraft | 26.3 |
+| Minecraft | 26.2 |
 | Java | 25 |
 | Mod loaders | Fabric and NeoForge |
 
@@ -95,7 +95,7 @@ The mod is developed as a multi-loader project with shared gameplay code in `com
 
 ## Installation
 
-1. Install a compatible Fabric or NeoForge loader for Minecraft 26.3.
+1. Install a compatible Fabric or NeoForge loader for Minecraft 26.2.
 2. Download the Ancient Creature build made for that loader.
 3. Place the mod JAR in the Minecraft `mods` directory.
 4. Back up existing worlds before installing or updating early-beta builds.
