@@ -14,13 +14,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-/**
- * Circles above the current target before diving at it.
- *
- * <p>Gives an airborne predator something to do that a ground melee goal cannot express: it holds
- * altitude and orbits until {@code dive_after} ticks have passed, then releases so a melee component
- * can take over.
- */
 public record CircleTargetBehavior(
     double speedModifier,
     double radius,
@@ -49,9 +42,9 @@ public record CircleTargetBehavior(
     }
 
     private static final class CircleGoal extends Goal {
-        /** Never orbit higher than this above the ground, whatever the target is doing. */
+
         private static final int MAX_ORBIT_ALTITUDE = 48;
-        /** Ticks after an orbit during which the melee component gets to dive before circling resumes. */
+
         private static final int DIVE_WINDOW = 80;
 
         private final AncientCreatureEntity creature;
@@ -87,7 +80,7 @@ public record CircleTargetBehavior(
         @Override
         public void stop() {
             if (this.ticks >= this.config.diveAfter()) {
-                // orbit finished: stand aside so the melee goal can dive, instead of restarting next tick
+
                 this.diveUntil = this.creature.tickCount + DIVE_WINDOW;
             }
             this.ticks = 0;
@@ -107,8 +100,6 @@ public record CircleTargetBehavior(
                 this.angle -= Mth.TWO_PI;
             }
 
-            // Only climb above prey that is on the ground or in water. Circling above a flying target makes
-            // two flyers that target each other spiral upward without end.
             double height = target.onGround() || target.isInWater() ? this.config.height() : 0.0;
             Vec3 orbit = target.position().add(
                 Mth.cos(this.angle) * this.config.radius(),

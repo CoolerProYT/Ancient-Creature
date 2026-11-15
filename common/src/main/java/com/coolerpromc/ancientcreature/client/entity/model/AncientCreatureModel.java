@@ -10,11 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-/**
- * Draws a baked Bedrock geometry. Posing is done by the animator at extract time and stored on the
- * render state; {@link #setupAnim} only loads that stored pose, so the shared part tree can be drawn
- * for many entities in any order.
- */
 public class AncientCreatureModel extends EntityModel<AncientCreatureRenderState> {
     public static final int POSE_STRIDE = 10;
 
@@ -27,7 +22,6 @@ public class AncientCreatureModel extends EntityModel<AncientCreatureRenderState
         this.baked = baked;
     }
 
-    /** An empty model, used as the renderer's initial model before any species is drawn. */
     public AncientCreatureModel(ModelPart root) {
         super(root, RenderTypes::entityCutout);
         this.baked = null;
@@ -45,7 +39,6 @@ public class AncientCreatureModel extends EntityModel<AncientCreatureRenderState
         return this.baked;
     }
 
-    /** Copies the current pose of {@code model}'s parts. */
     public static float[] snapshot(BakedBedrockModel model) {
         List<ModelPart> parts = of(model).allParts();
         float[] pose = new float[parts.size() * POSE_STRIDE];

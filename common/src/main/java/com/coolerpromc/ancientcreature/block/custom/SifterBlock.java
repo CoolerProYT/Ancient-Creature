@@ -37,10 +37,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-/**
- * A wooden sieve: load it with gravel, sand or mud, then work it by hand a few times to shake out
- * whatever was buried in it. A slow but renewable trickle of fossil fragments.
- */
 public class SifterBlock extends Block {
     public static final EnumProperty<Material> CONTENT = EnumProperty.create("content", Material.class);
     public static final int SIFTS = 4;
@@ -77,7 +73,7 @@ public class SifterBlock extends Block {
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (state.getValue(CONTENT) != Material.EMPTY) {
-            // Already loaded: any click works the sieve, whatever is in hand.
+
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 

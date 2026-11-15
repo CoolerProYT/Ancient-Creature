@@ -10,7 +10,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 
-/** Fights back against whatever hurt it. */
 public record DefensiveRetaliationBehavior(boolean alertOthers) implements CreatureBehaviorConfig {
     public static final MapCodec<DefensiveRetaliationBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Codec.BOOL.optionalFieldOf("alert_others", false).forGetter(DefensiveRetaliationBehavior::alertOthers)

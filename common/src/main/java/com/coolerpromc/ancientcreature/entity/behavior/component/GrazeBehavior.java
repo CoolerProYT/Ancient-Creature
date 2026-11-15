@@ -11,16 +11,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-/**
- * Periodically stops to graze.
- *
- * <p>The goal only sets the synchronised {@link AncientCreatureAction}; the client's animation
- * controller decides what to draw. Nothing here touches rendering, and the client cannot start or stop
- * it on its own.
- *
- * <p>Finishing a graze restores {@code hunger_value}. This is how a herbivore feeds itself, and it is why
- * a plant eater never needs the hunger gate that a predator does.
- */
 public record GrazeBehavior(int duration, int chance, float hungerValue) implements CreatureBehaviorConfig {
     public static final MapCodec<GrazeBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.TICKS.optionalFieldOf("duration", 80).forGetter(GrazeBehavior::duration),
@@ -74,7 +64,7 @@ public record GrazeBehavior(int duration, int chance, float hungerValue) impleme
         @Override
         public void tick() {
             if (--this.ticksLeft == 0) {
-                // Fed at the end of the mouthful, so a graze cut short by a threat is not a free meal.
+
                 this.creature.feed(this.config.hungerValue());
             }
         }

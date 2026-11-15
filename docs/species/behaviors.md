@@ -15,6 +15,7 @@ Most creatures need only a profile — a named bundle of components.
 | --- | --- | --- |
 | `ancientcreature:passive` | Wanders, panics when hurt, breeds, is tempted by food, follows a parent | — |
 | `ancientcreature:defensive_herbivore` | Wanders and grazes; passive until threatened, then bellows and charges. Attacks armed players who come close, and hostile mobs | Triceratops |
+| `ancientcreature:skittish_herbivore` | Fast herd grazer that keeps away from players and predators and panics when hurt. Never fights back. Sneak to approach | Gallimimus |
 | `ancientcreature:armored_herbivore` | Slow grazer that herds and stands its ground. Retaliates with melee, alerts its herd, and never charges | Ankylosaurus |
 | `ancientcreature:pack_predator` | Fast social predator that stays near its kind, calls before chasing and hunts only when hungry. Adults only | Deinonychus |
 | `ancientcreature:sauropod_browser` | Towering herd herbivore that seeks canopy leaves, browses without breaking them and retaliates with melee | Brachiosaurus |
@@ -87,6 +88,19 @@ Runs away after being hurt.
 | Option | Default |
 | --- | --- |
 | `speed_modifier` | `1.25` |
+
+### `ancientcreature:flee` <Badge type="info" text="priority 2" />
+Keeps away from threats: walks off when one comes within `range`, sprints once it is close. Players count
+unless they are the owner, sneaking, or in creative/spectator; other creatures count when they are a
+grown predator species (they hunt animals). Skipped while the creature is fighting, sitting or ridden.
+
+| Option | Default |
+| --- | --- |
+| `walk_speed` | `1.2` |
+| `sprint_speed` | `1.7` |
+| `range` | `12.0` |
+| `from_players` | `true` |
+| `from_predators` | `true` |
 
 ### `ancientcreature:wander` <Badge type="info" text="priority 6" />
 Idle strolling. Uses a swimming variant automatically for aquatic species.

@@ -27,6 +27,7 @@
         "hurt": "animation.stegosaurus.hurt",
         "death": "animation.stegosaurus.death",
         "roar": "animation.stegosaurus.roar",
+        "sit": "animation.stegosaurus.sit",
         "main": "controller.animation.stegosaurus.main"
       },
       "scripts": {

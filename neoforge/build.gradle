@@ -62,6 +62,10 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")
     implementation "maven.modrinth:jade:${jade_version}+neoforge"
 
+    // Dev-only rendering compatibility stack; keep these versions paired and never bundle them.
+    localRuntime("maven.modrinth:sodium:mc26.3-0.9.2-neoforge") { transitive = false }
+    localRuntime("maven.modrinth:iris:1.11.7+26.3-neoforge") { transitive = false }
+
     jarJar implementation("com.coolerpromc.coolerconfig:coolerconfig-neoforge-${minecraft_version}:${cooler_config_version}")
 
     // Dev-only MCTest harness: on the run classpath, never in the jar or POM.

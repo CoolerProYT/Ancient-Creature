@@ -230,6 +230,7 @@ export function profileName(profile: string): string {
 export const PROFILE_BLURBS: Record<string, string> = {
   passive: 'Harmless. Runs when hurt.',
   defensive_herbivore: 'Peaceful until threatened, then bellows and charges.',
+  skittish_herbivore: 'Flees from players and predators. Fights back only when cornered.',
   armored_herbivore: 'Grazes in herds and swings back when attacked.',
   sauropod_browser: 'Gentle giant that eats from treetops. Hits back if hurt.',
   pack_predator: 'Hunts in packs when hungry.',

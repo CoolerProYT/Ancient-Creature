@@ -14,11 +14,6 @@ import net.minecraft.world.item.component.TooltipProvider;
 
 import java.util.function.Consumer;
 
-/**
- * A DNA sample. {@code quality} (0-1) is the exact integrity score the sample was extracted with; the
- * integrity level is its band. Quality carries through sequencing into the genome's fidelity, which
- * decides how healthy the hatchling is. Samples made before quality existed read as their band's middle.
- */
 public record DNAData(DNAIntegrityLevel integrityLevel, Species species, float quality) implements TooltipProvider {
     public static final DNAData EMPTY = new DNAData(DNAIntegrityLevel.PRESERVED_EMBRYO, Species.TRICERATOPS);
 

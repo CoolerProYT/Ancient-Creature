@@ -9,10 +9,6 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 
-/**
- * Texture layers shared by the machine block-entity and item renderers: a translucent base (glass, fluids),
- * an always-lit glow layer (screens, LED strips) and an extra layer that only lights up while the machine runs.
- */
 public final class MachineLayers {
     private static final int FULL_BRIGHT = 0xF000F0;
 

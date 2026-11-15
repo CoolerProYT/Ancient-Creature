@@ -38,7 +38,6 @@ public class ModBlocks {
     public static final BlockItemRegistryHandler<IncubatorBlock> INCUBATOR = registerBlock("incubator", IncubatorBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion());
     public static final BlockItemRegistryHandler<EggBlock> EGG = registerBlock("egg", EggBlock::new, BlockBehaviour.Properties.of().strength(2.0F, 6.0F).noOcclusion().noLootTable());
 
-    // Containment: steel that charging or distressed creatures cannot smash.
     public static final WoodType REINFORCED = new WoodType("ancientcreature_reinforced", BlockSetType.IRON, SoundType.METAL, SoundType.METAL,
         SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN);
     public static final BlockItemRegistryHandler<FenceBlock> REINFORCED_FENCE = registerBlock("reinforced_fence", FenceBlock::new,

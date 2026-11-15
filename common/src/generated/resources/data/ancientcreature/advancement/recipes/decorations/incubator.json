@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_blaze_rod": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:blaze_rod"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_embryogenesis_chamber": {
       "conditions": {
         "items": [
@@ -21,16 +31,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_netherite_scrap": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:netherite_scrap"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipes": "ancientcreature:incubator"
@@ -41,7 +41,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_scrap",
+      "has_blaze_rod",
       "has_magma_block",
       "has_embryogenesis_chamber"
     ]

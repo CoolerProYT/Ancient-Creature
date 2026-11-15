@@ -4,17 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * The {@code math.*} library. Angles are in degrees, as in Bedrock.
- *
- * <p>Includes the standard Bedrock functions plus the {@code math.ease_*} easing family Blockbench
- * understands, all with the {@code (start, end, t)} signature.
- */
 final class MolangMath {
     interface Function {
         double apply(MolangContext ctx, MolangNode[] args);
 
-        /** Pure functions of constant arguments are folded at compile time. */
         default boolean pure() {
             return true;
         }
@@ -70,7 +63,7 @@ final class MolangMath {
     }
 
     private static final Map<String, Function> FUNCTIONS = new HashMap<>();
-    /** Names that may be written without parentheses. */
+
     static final Set<String> CONSTANTS = Set.of("pi");
 
     private static void fn(String name, int arity, Impl impl) {

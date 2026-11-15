@@ -41,6 +41,12 @@ public class ModBiomeTags {
     public static final TagKey<Biome> SPAWNS_TYRANNOSAURUS_REX = create("spawns_tyrannosaurus_rex");
     public static final TagKey<Biome> SPAWNS_VELOCIRAPTOR = create("spawns_velociraptor");
     public static final TagKey<Biome> SPAWNS_WOOLLY_MAMMOTH = create("spawns_woolly_mammoth");
+    public static final TagKey<Biome> SPAWNS_ALLOSAURUS = create("spawns_allosaurus");
+    public static final TagKey<Biome> SPAWNS_PACHYCEPHALOSAURUS = create("spawns_pachycephalosaurus");
+    public static final TagKey<Biome> SPAWNS_GALLIMIMUS = create("spawns_gallimimus");
+    public static final TagKey<Biome> SPAWNS_THERIZINOSAURUS = create("spawns_therizinosaurus");
+    public static final TagKey<Biome> SPAWNS_COMPSOGNATHUS = create("spawns_compsognathus");
+    public static final TagKey<Biome> SPAWNS_DIPLODOCUS = create("spawns_diplodocus");
     public static final TagKey<Biome> SPAWNS_WOOLLY_RHINOCEROS = create("spawns_woolly_rhinoceros");
 
     private static TagKey<Biome> create(String name){

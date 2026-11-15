@@ -10,17 +10,13 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-/**
- * A module that slots into any lab machine's upgrade panel. Two fit per machine, and two of the same
- * kind stack their effect.
- */
 public class MachineUpgradeItem extends Item {
     public enum Kind {
-        /** Each module cuts processing time by a third (two: to 44%). */
+
         SPEED,
-        /** Each module improves the result: see each machine's effect in the tooltip. */
+
         PRECISION,
-        /** Each module gives a 25% chance to keep a consumable instead of using it. */
+
         EFFICIENCY;
 
         public String key() {

@@ -76,9 +76,6 @@ public record SpeciesDefinition(
         SpeciesHybridProperties.CODEC.optionalFieldOf("hybrid").forGetter(SpeciesDefinition::hybrid)
     ).apply(i, SpeciesDefinition::new));
 
-    /**
-     * Synced as the same structure the datapack file has, so new fields only need adding to {@link #CODEC}.
-     */
     public static final StreamCodec<RegistryFriendlyByteBuf, SpeciesDefinition> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     public DataResult<SpeciesDefinition> validate() {
@@ -92,7 +89,6 @@ public record SpeciesDefinition(
         return DataResult.success(this);
     }
 
-    /** Hybrids have no fossils; they are only made by splicing their parents' genomes. */
     public boolean isHybrid() {
         return this.hybrid.isPresent();
     }
@@ -101,7 +97,6 @@ public record SpeciesDefinition(
         return this.respirationOverride.orElseGet(() -> SpeciesRespiration.defaultFor(this.category));
     }
 
-    /** Position of {@code variant} in {@link #variants()}, or -1. Exposed to animations as {@code query.variant}. */
     public int variantIndex(String variant) {
         for (int i = 0; i < this.variants.size(); i++) {
             if (this.variants.get(i).id().equals(variant)) {

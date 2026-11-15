@@ -3,9 +3,9 @@
   "loot_table": "ancientcreature:entities/dilophosaurus",
   "entity_category": "land",
   "physical": {
-    "width": 1.0,
-    "height": 1.72,
-    "eye_height": 1.43
+    "width": 0.82,
+    "height": 1.41,
+    "eye_height": 1.17
   },
   "attributes": {
     "max_health": 52,

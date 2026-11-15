@@ -32,7 +32,7 @@ class SpeciesSpawnBiomeTagsTest {
             String speciesName = definition.getFileName().toString().replaceFirst("\\.json$", "");
             JsonObject species = readObject(definition);
             if (species.has("hybrid")) {
-                // hybrids have no fossils, so nowhere to dig them up
+
                 continue;
             }
             String biomeTag = species.getAsJsonObject("spawn").get("biomes").getAsString();

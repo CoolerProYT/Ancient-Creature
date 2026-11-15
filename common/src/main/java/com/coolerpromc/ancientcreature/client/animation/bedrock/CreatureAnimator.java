@@ -19,15 +19,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * Runs one entity's Bedrock animation stack, frame by frame, the way the Bedrock client does:
- * {@code initialize} once, then each frame {@code pre_animation}, the {@code animate} list (plain
- * animations and controllers, each with a blend weight), and the render controllers that pick
- * geometry, texture layers, part visibility and tint.
- *
- * <p>One animator exists per rendered entity and owns that entity's {@code variable.*} storage. It is
- * used from the render thread only.
- */
 public final class CreatureAnimator {
     private static final Set<String> WARNINGS = Collections.synchronizedSet(new HashSet<>());
 
@@ -39,18 +30,15 @@ public final class CreatureAnimator {
     private boolean initialized;
     private float lastTime = Float.NaN;
 
-    /** Players for plain animations in the animate list, by short name. */
     private final Map<String, AnimationPlayer> direct = new HashMap<>();
     private final Set<String> directActive = new HashSet<>();
     private final Map<String, ControllerRun> controllers = new HashMap<>();
 
-    /** Queued during advance, emitted after posing so locators are known. */
     private final List<PendingEffect> pending = new ArrayList<>();
 
     public record PendingEffect(boolean sound, String effect, Optional<String> locator) {
     }
 
-    /** What the render controllers chose for this frame. */
     public record RenderChoice(@Nullable BakedBedrockModel model, List<Identifier> textures, String material, int tint, boolean ignoreLighting, boolean hurtOverlay, Set<String> hiddenBones) {
     }
 
@@ -84,11 +72,6 @@ public final class CreatureAnimator {
         this.pending.clear();
     }
 
-    /**
-     * Advances to {@code nowSeconds}, then picks geometry, poses it and decides how to draw it.
-     * The returned model has been reset and posed for this entity and must be snapshotted before any
-     * other entity uses it.
-     */
     public RenderChoice update(SpeciesAppearance appearance, float nowSeconds, String variant) {
         if (this.appearance != appearance) {
             this.reset(appearance);
@@ -110,11 +93,9 @@ public final class CreatureAnimator {
             script.execute(this.ctx);
         }
 
-        // 1. Render controllers decide the geometry before anything is posed.
         RenderSelection selection = this.selectRender(appearance, variant);
         BakedBedrockModel model = selection.model;
 
-        // 2. Advance the animate list and collect what poses the model.
         List<Weighted> posing = new ArrayList<>();
         Set<String> seen = new HashSet<>();
         for (BedrockClientEntity.AnimateEntry entry : entity.scripts().animate()) {
@@ -158,7 +139,6 @@ public final class CreatureAnimator {
         this.direct.keySet().retainAll(seen);
         this.controllers.keySet().retainAll(seen);
 
-        // 3. Pose.
         if (model != null) {
             model.resetPose();
             Set<String> missing = WARNINGS;
@@ -225,8 +205,6 @@ public final class CreatureAnimator {
         return false;
     }
 
-    // ------------------------------------------------------------------ controllers
-
     private final class ControllerRun {
         final AnimationController controller;
         String state;
@@ -251,7 +229,6 @@ public final class CreatureAnimator {
                 this.enter(entity);
             }
 
-            // One transition per frame, checked with q.anim_time = time in the current state.
             CreatureAnimator.this.host.animTime(this.stateTime);
             for (AnimationController.Transition transition : this.controller.state(this.state).transitions()) {
                 if (transition.condition().test(CreatureAnimator.this.ctx)) {
@@ -368,8 +345,6 @@ public final class CreatureAnimator {
         }
     }
 
-    // ------------------------------------------------------------------ render controllers
-
     private record RenderSelection(@Nullable BakedBedrockModel model, List<Identifier> textures, String material, int tint, boolean ignoreLighting, boolean hurtOverlay, Set<String> hiddenBones) {
     }
 
@@ -438,9 +413,7 @@ public final class CreatureAnimator {
         this.ctx.resources(MolangResources.NONE);
 
         if (!anyController) {
-            // No render controller: Bedrock would draw nothing; draw the default geometry with the
-            // texture named after the variant, falling back to "default", which is what species
-            // files from before render controllers expect.
+
             String reference = entity.geometry().get("default");
             model = reference == null ? null : BedrockGeometryManager.INSTANCE.getBaked(reference);
             textureKeys.add(entity.textures().containsKey(variant.toLowerCase(Locale.ROOT)) ? variant : "default");
@@ -461,13 +434,6 @@ public final class CreatureAnimator {
         return new RenderSelection(model, textures, material, tint, ignoreLighting, hurtOverlay, hidden);
     }
 
-    // ------------------------------------------------------------------ helpers
-
-    /**
-     * Applies rotations authored in entity space ({@code relative_to: {rotation: "entity"}}): the bone's
-     * final local rotation is the requested rotation with its parents' accumulated rotation removed,
-     * which is what Blockbench's preview does.
-     */
     private static void resolveEntityRelative(BakedBedrockModel model, List<BedrockAnimation.EntityRelativeRotation> relative) {
         for (BedrockAnimation.EntityRelativeRotation rotation : relative) {
             ModelPart part = model.bone(rotation.bone());

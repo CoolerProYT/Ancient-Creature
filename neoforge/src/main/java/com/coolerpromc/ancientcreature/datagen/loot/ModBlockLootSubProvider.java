@@ -35,12 +35,12 @@ public class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        // Shallow rock rolls low, so the chisel lifts the roll rather than chipping at it.
+
         this.add(ModBlocks.FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, FossilPart.BONE_PARTS, List.of(), 0.0f, true));
-        // Deep, undisturbed rock: the rarer parts, and better preserved.
+
         this.add(ModBlocks.DEEPSLATE_FOSSIL_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.EGG), List.of(), 0.15f));
         this.add(ModBlocks.AMBER_ORE.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.AMBER), List.of(), 0.0f));
-        // Ice keeps a carcass almost whole; the ice-age animals are the ones it caught.
+
         this.add(ModBlocks.FROZEN_FOSSIL.getBlock(), block -> this.createFossilDrop(block, List.of(FossilPart.SKULL, FossilPart.VERTEBRA, FossilPart.TOOTH, FossilPart.LIMB, FossilPart.RIB), FossilLoot.ICE_AGE, 0.25f));
         this.dropSelf(ModBlocks.SIFTER.getBlock());
         this.add(ModBlocks.ROCK_PILE.getBlock(), this::createRockPileDrop);

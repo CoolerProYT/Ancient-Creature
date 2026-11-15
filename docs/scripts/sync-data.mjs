@@ -176,7 +176,7 @@ const species = jsonFiles(speciesDir).map((file) => {
     diet: [json.diet?.items ?? []].flat(),
     biomes,
     care: { climate: 'any', social: 'solitary', group_min: 1, group_max: 1, space: 0, ...json.care },
-    riding: { ability: 'none', cooldown: 100, power: 1, ...json.riding },
+    riding: { ability: 'none', cooldown: 100, power: 1, rideable: true, ...json.riding },
     hybrid: json.hybrid?.parents ?? null,
     variants: (json.variants ?? []).map((variant) => variant.id),
   }

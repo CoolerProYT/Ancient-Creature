@@ -21,12 +21,14 @@
       "animations": {
         "idle": "animation.quetzalcoatlus.idle",
         "walk": "animation.quetzalcoatlus.walk",
-        "run": "animation.quetzalcoatlus.run",
+        "fly": "animation.quetzalcoatlus.fly",
+        "glide": "animation.quetzalcoatlus.glide",
         "attack": "animation.quetzalcoatlus.attack",
         "special": "animation.quetzalcoatlus.special",
         "hurt": "animation.quetzalcoatlus.hurt",
         "death": "animation.quetzalcoatlus.death",
         "roar": "animation.quetzalcoatlus.roar",
+        "sit": "animation.quetzalcoatlus.sit",
         "main": "controller.animation.quetzalcoatlus.main"
       },
       "scripts": {

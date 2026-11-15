@@ -7,17 +7,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-/**
- * Frozen copies of the hand-written {@code createBodyLayer()} methods that defined Triceratops,
- * Tyrannosaurus Rex and Megalodon before they became data-driven.
- *
- * <p>The production classes are gone; these remain as test fixtures so
- * {@code BedrockModelBakerTest} can keep proving that the shipped {@code .geo.json} files bake into
- * exactly the same geometry. Without them, a future change to the Bedrock coordinate conversion could
- * silently deform every creature with nothing to catch it.
- *
- * <p>Do not "fix" anything here. It is a reference, not live code.
- */
 public final class ReferenceModels {
     private ReferenceModels() {
     }

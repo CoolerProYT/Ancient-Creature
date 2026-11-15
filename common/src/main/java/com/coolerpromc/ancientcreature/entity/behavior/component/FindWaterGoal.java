@@ -6,7 +6,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
 
-/** Replacement for vanilla's removed generic TryFindWaterGoal: sends a beached mob back towards nearby water. */
 public class FindWaterGoal extends MoveToBlockGoal {
     public FindWaterGoal(PathfinderMob mob) {
         super(mob, 1.0, 20);

@@ -11,13 +11,6 @@ import org.joml.Vector3fc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A Bedrock {@code poly_mesh}: free-form triangles and quads in model space.
- *
- * <p>{@code polys} is either an explicit list of polygons, each a list of
- * {@code [position, normal, uv]} index triples, or the string {@code "tri_list"}/{@code "quad_list"},
- * meaning the three arrays are parallel and consumed three or four vertices at a time.
- */
 public record BedrockPolyMesh(boolean normalizedUvs, List<Vector3fc> positions, List<Vector3fc> normals, List<Vector2fc> uvs, List<int[][]> polygons) {
 
     static BedrockPolyMesh parse(JsonElement element, String path) throws BedrockFormatException {

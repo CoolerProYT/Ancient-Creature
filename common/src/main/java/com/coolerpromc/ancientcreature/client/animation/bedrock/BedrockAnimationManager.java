@@ -16,13 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Loads every Bedrock animation under {@code assets/<ns>/ancientcreature/animations/}.
- *
- * <p>Animations are global and found by full name ({@code animation.triceratops.idle}), as in
- * Bedrock. The per-file grouping is kept as well, because earlier species files name an animation file
- * and refer to its clips by short name.
- */
 public final class BedrockAnimationManager extends SimplePreparableReloadListener<BedrockAnimationManager.Loaded> {
     public static final Identifier ID = Constants.id("bedrock_animations");
     public static final String DIRECTORY = Constants.MODID + "/animations";
@@ -45,12 +38,10 @@ public final class BedrockAnimationManager extends SimplePreparableReloadListene
     private BedrockAnimationManager() {
     }
 
-    /** See {@link com.coolerpromc.ancientcreature.client.model.bedrock.BedrockGeometryManager#LEGACY_PREFIX}. */
     public static final String LEGACY_PREFIX = com.coolerpromc.ancientcreature.client.model.bedrock.BedrockGeometryManager.LEGACY_PREFIX;
 
     private final Map<String, BedrockAnimation> legacy = new java.util.concurrent.ConcurrentHashMap<>();
 
-    /** By full name, case-insensitive. A {@link #LEGACY_PREFIX}ed name gives the axis-converted animation. */
     public @Nullable BedrockAnimation get(String name) {
         if (name.startsWith(LEGACY_PREFIX)) {
             String key = name.substring(LEGACY_PREFIX.length()).toLowerCase(Locale.ROOT);
@@ -60,7 +51,6 @@ public final class BedrockAnimationManager extends SimplePreparableReloadListene
         return this.loaded.byName().get(name.toLowerCase(Locale.ROOT));
     }
 
-    /** The animations of one file, keyed by full name. */
     public Map<String, BedrockAnimation> getFile(Identifier file) {
         return this.loaded.byFile().getOrDefault(file, Map.of());
     }

@@ -13,7 +13,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-/** Keeps members of the same species loosely together. */
 public record HerdingBehavior(double speedModifier, double searchRange, double joinDistance, double stopDistance)
     implements CreatureBehaviorConfig {
 

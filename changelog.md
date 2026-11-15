@@ -1,5 +1,24 @@
-## 26.3.0.4
-- Chisels now add completeness to fossils from plain Fossil Ore and the bones in rock piles, instead of chipping it away, so a better chisel always gives better fossils
-  - Golden +0%, Stone +6%, Copper +9%, Iron +16%, Diamond +25%, Netherite +31%
-  - Deepslate Fossil Ore, Amber Ore, Frozen Fossils and egg fossils from rock piles still lose the chisel's damage rate as before
-  - Chisel tooltips, the Field Guide and JEI now show both values
+## 26.3.0.5
+- Fixed corrupted creature textures and geometry with Sodium 0.9.2, including when using Iris shaders.
+- Added six new dinosaurs, each with its own model, two skins, saddle and armor overlays, animations, original sounds, loot and fossils:
+  - Allosaurus: Jurassic apex predator with lacrimal horns and strong three-clawed arms (birch forests, windswept hills, meadows)
+  - Pachycephalosaurus: dome-headed herbivore that charges and headbutts threats (meadows, cherry groves, flower forests)
+  - Gallimimus: fast, skittish ostrich-like herd animal that flees players and predators; sneak to get close (deserts, savannas)
+  - Therizinosaurus: towering feathered herbivore with huge scythe claws that browses tree canopies (forests, bamboo jungles)
+  - Compsognathus: chicken-sized pack hunter of chickens and rabbits, too small to ride (jungles, beaches)
+  - Diplodocus: long, low sauropod with a whip tail that grazes and browses in herds (plains, savannas, meadows)
+- New `ancientcreature:flee` behavior component and `ancientcreature:skittish_herbivore` profile
+- Fleeing creatures use their run animation at close range and stop fleeing when the threat sneaks, becomes their owner, or is no longer alive.
+- New `"rideable": false` option in a species' `riding` block
+- Rebuilt the walk, run, swim and flight cycles of 16 creatures: real stance/swing gaits with knee and ankle flex, tail waves, head stabilisation, gallops for mammals, and cycles that keep pace with the creature's ground speed
+- Added resting poses when ordered to sit and fallen death poses to the 22 new or reanimated creatures
+- Revised death animations finish before Minecraft removes the body, so the final fallen pose is visible.
+- Quetzalcoatlus spreads its wings to fly and walks on all fours on the ground instead of flapping folded wings
+- Fixed the run animation of 16 creatures snapping mid-stride (its keyframes ran past the end of the clip)
+- Fixed 25 creature and machine sounds being stereo, which Minecraft plays at full volume regardless of distance
+- Tyrannosaurus Rex is now drawn 40% larger (it was no bigger than Carnotaurus) and is stronger: 160 health, 22 attack, 8 armor
+- Triceratops: 95 health, 14 attack, 6 armor, 1500-tick incubation (it was the weakest large herbivore)
+- Tyrannoraptor: 135 health, 19 attack, so the hybrid is no longer weaker than the T-rex it is made from
+- Dilophosaurus is drawn at a more accurate, smaller size
+- The Incubator now needs a Blaze Rod instead of Netherite Scrap, so reviving a first creature no longer requires Ancient Debris
+- Docs: Netherite Chisel recipe and supported Minecraft version were out of date

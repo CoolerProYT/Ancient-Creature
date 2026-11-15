@@ -111,7 +111,7 @@ All chisels share one recipe shape, a stick and two of the material:
 <RecipeCard id="diamond_chisel" />
 </div>
 
-The <ItemSlot id="ancientcreature:netherite_chisel" size="sm" /> Netherite Chisel has the biggest ore bonus and is the only one that does no damage. It has no crafting recipe yet.
+The <ItemSlot id="ancientcreature:netherite_chisel" size="sm" /> Netherite Chisel has the biggest ore bonus and is the only one that does no damage. Upgrade a Diamond Chisel with a Netherite Ingot at a smithing table to make one.
 
 Chisels can be repaired in an anvil with their material, like vanilla tools. A chisel with **Fortune** adds 10% completeness per level, on top of any ore bonus and before the chisel's damage is taken off, but chisels can't be enchanted in survival yet.
 

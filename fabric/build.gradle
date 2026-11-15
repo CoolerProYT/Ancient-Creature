@@ -15,6 +15,10 @@ dependencies {
     compileOnly "maven.modrinth:jade:${jade_version}+fabric"
     localRuntime("maven.modrinth:jade:${jade_version}+fabric") { exclude group: "net.fabricmc.fabric-api"; exclude group: "net.fabricmc" }
 
+    // Dev-only rendering compatibility stack; keep these versions paired and never bundle them.
+    localRuntime("maven.modrinth:sodium:mc26.3-0.9.2-fabric") { transitive = false }
+    localRuntime("maven.modrinth:iris:1.11.7+26.3-fabric") { transitive = false }
+
     implementation include("com.coolerpromc.coolerconfig:coolerconfig-fabric-${minecraft_version}:${cooler_config_version}")
 
     // Dev-only MCTest harness: on the run classpath, never in the jar or POM.

@@ -37,7 +37,6 @@ public abstract class OwnedAncientCreature extends Animal implements OwnableAnci
         return this.ownerReference;
     }
 
-    /** Sets the owner by id, for when the owner may be offline (a hatching egg). */
     public void setOwnerUuid(java.util.@Nullable UUID owner) {
         this.ownerReference = owner == null ? null : EntityReference.of(owner);
         this.onOwnerChanged();

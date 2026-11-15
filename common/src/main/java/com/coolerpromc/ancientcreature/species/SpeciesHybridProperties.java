@@ -7,16 +7,8 @@ import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
-/**
- * Marks a species as a hybrid and names the two species whose genomes make it. Read from {@code hybrid}:
- * <pre>{@code "hybrid": { "parents": ["ancientcreature:stegosaurus", "ancientcreature:triceratops"] }}</pre>
- *
- * <p>A hybrid has no fossils. It is made in the Embryogenesis Chamber from a completed genome of one
- * parent with a completed genome of the other in the donor slot; the order does not matter. Splicing
- * loses some fidelity, and hybrids are always sterile.
- */
 public record SpeciesHybridProperties(Identifier first, Identifier second) {
-    /** The share of the parents' average fidelity a spliced genome keeps. */
+
     public static final float SPLICE_FIDELITY = 0.85F;
 
     public static final Codec<SpeciesHybridProperties> CODEC = RecordCodecBuilder.create(i -> i.group(

@@ -44,10 +44,8 @@ public final class AncientCreatureCommand {
     private static final SuggestionProvider<CommandSourceStack> ACTION_SUGGESTIONS = (context, builder) ->
         SharedSuggestionProvider.suggest(Arrays.stream(AncientCreatureAction.values()).map(AncientCreatureAction::queryName), builder);
 
-    /** {@code ticks} value meaning "leave the action set until something clears it". */
     private static final int HOLD = 0;
 
-    /** Replay period for {@code loop} when none is given; comfortably longer than any shipped clip. */
     private static final int DEFAULT_LOOP_PERIOD = 60;
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
@@ -132,15 +130,6 @@ public final class AncientCreatureCommand {
         return 1;
     }
 
-    /**
-     * Forces the synchronised action of the selected creatures, which is what the client's animation
-     * controller keys off. Purely a debugging aid: it drives the same state the server's behaviours
-     * drive, so a clip can be watched on demand instead of waiting for the AI to trigger it.
-     *
-     * <p>With {@code ticks} omitted the action is held until it is set back to {@code none} or a
-     * behaviour overwrites it. Note that a non-looping clip plays once and then leaves the model in its
-     * rest pose for as long as the action stays set — that is the animation's own loop mode, not a bug.
-     */
     private static int setAction(CommandContext<CommandSourceStack> context, int ticks) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         String name = StringArgumentType.getString(context, "action");
@@ -159,7 +148,7 @@ public final class AncientCreatureCommand {
         }
 
         for (AncientCreatureEntity creature : creatures) {
-            // A plain set always cancels any running loop, so `... none` is a reliable stop.
+
             creature.setLoopAction(null, DEFAULT_LOOP_PERIOD);
             if (ticks <= HOLD) {
                 creature.setAction(action);
@@ -177,12 +166,6 @@ public final class AncientCreatureCommand {
         return count;
     }
 
-    /**
-     * Reports how fed the selected creatures are and whether that is enough to make them hunt.
-     *
-     * <p>Hunger is otherwise invisible, and it moves on the order of minutes, so without this there is no
-     * way to tell a predator that is ignoring prey because it is full from one that is failing to target.
-     */
     private static int queryHunger(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         List<AncientCreatureEntity> creatures = creatures(context);
@@ -203,7 +186,6 @@ public final class AncientCreatureCommand {
         return creatures.size();
     }
 
-    /** Sets hunger directly, so the hunting threshold can be crossed without waiting out the decay. */
     private static int setHunger(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         float value = FloatArgumentType.getFloat(context, "value");
@@ -224,10 +206,6 @@ public final class AncientCreatureCommand {
         return count;
     }
 
-    /**
-     * Replays an action forever so a one-shot clip can actually be looked at from any angle. Stop it
-     * with {@code action <targets> none}.
-     */
     private static int loopAction(CommandContext<CommandSourceStack> context, int period) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         String name = StringArgumentType.getString(context, "action");

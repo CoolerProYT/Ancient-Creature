@@ -8,21 +8,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 
-/**
- * How a species gets hungry, and how hungry it has to be before it hunts.
- *
- * <p>Hunger is a <em>fullness</em> meter, exactly like the player's food bar: it starts at {@link #max()}
- * and falls over time, so a <em>low</em> value means a hungry creature. A predator picks prey only once
- * it drops to {@link #huntThreshold()} and gives up once eating brings it back to
- * {@link #fullThreshold()}.
- *
- * <p>The two thresholds are deliberately separate. A single one would sit exactly on the boundary after
- * the first bite and make the creature flicker between hunting and idling every tick; the gap between
- * them is what makes a predator commit to a hunt and then genuinely stop.
- *
- * <p>Hunger never stops a creature defending itself. It gates prey <em>selection</em> only, so a well-fed
- * creature still fights back when attacked and still drives off armed players.
- */
 public record SpeciesHungerProperties(
     float max,
     int decayInterval,
@@ -33,14 +18,10 @@ public record SpeciesHungerProperties(
     float starveDamage,
     int starveInterval
 ) {
-    /**
-     * Twenty points to match the player's food bar, losing one a minute, hunting below half and
-     * satisfied at ninety percent.
-     */
+
     public static final SpeciesHungerProperties DEFAULT =
         new SpeciesHungerProperties(20.0F, 1200, 10.0F, 18.0F, 6.0F, 8.0F, 0.0F, 200);
 
-    /** Generous, but keeps a datapack from producing a meter that takes real days to move. */
     public static final float MAX_HUNGER = 1024.0F;
 
     private static final Codec<SpeciesHungerProperties> FIELDS = RecordCodecBuilder.create(i -> i.group(
@@ -81,12 +62,10 @@ public record SpeciesHungerProperties(
         return DataResult.success(hunger);
     }
 
-    /** True once the meter has fallen far enough for a predator to start looking for prey. */
     public boolean isHungryAt(float hunger) {
         return hunger <= this.huntThreshold;
     }
 
-    /** True once eating has brought the meter back up far enough to lose interest in prey. */
     public boolean isSatedAt(float hunger) {
         return hunger >= this.fullThreshold;
     }

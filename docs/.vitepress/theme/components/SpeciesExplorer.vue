@@ -78,7 +78,7 @@ const ability = (value: string) => (value === 'none' ? 'None' : prettify(value))
         <dl class="facts">
           <div><dt>Social</dt><dd>{{ social(s.care) }}</dd></div>
           <div><dt>Climate</dt><dd>{{ climate(s.care.climate) }}</dd></div>
-          <div><dt>Mount ability</dt><dd>{{ ability(s.riding.ability) }}</dd></div>
+          <div><dt>Mount ability</dt><dd>{{ s.riding.rideable ? ability(s.riding.ability) : "Can't be ridden" }}</dd></div>
         </dl>
 
         <div class="row">

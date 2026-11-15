@@ -10,10 +10,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-/**
- * What hoppers and pipes see of one machine container: they may insert whatever the slot accepts, but
- * only take out what the machine allows (finished products), so automation cannot drain input slots.
- */
 public final class MachineSideContainer implements WorldlyContainer {
     private final Container delegate;
     private final Predicate<ItemStack> extractable;

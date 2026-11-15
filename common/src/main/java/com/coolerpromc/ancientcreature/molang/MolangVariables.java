@@ -4,12 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * A bag of Molang variables ({@code variable.*}, {@code temp.*} or {@code context.*}).
- *
- * <p>Values are numbers or strings. Reading an unset name yields zero, as in Bedrock; {@link #has}
- * distinguishes unset from zero for the {@code ??} operator.
- */
 public final class MolangVariables {
     private final Map<String, Object> values = new HashMap<>();
 

@@ -12,19 +12,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 
-/**
- * Preys on ordinary animals.
- *
- * <p>Members of the hunter's own species are excluded by {@code AncientCreatureEntity#canAttack}, so a
- * pack of the same creature never turns on itself.
- */
 public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly, boolean requiresHunger) implements CreatureBehaviorConfig {
     public static final MapCodec<HuntAnimalsBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.CHANCE.optionalFieldOf("random_interval", 10).forGetter(HuntAnimalsBehavior::randomInterval),
         Codec.BOOL.optionalFieldOf("adults_only", true).forGetter(HuntAnimalsBehavior::adultsOnly),
         Codec.BOOL.optionalFieldOf("requires_hunger", true).forGetter(HuntAnimalsBehavior::requiresHunger)
     ).apply(i, HuntAnimalsBehavior::new));
-
 
     @Override
     public CreatureBehaviorType<?> type() {
@@ -45,10 +38,6 @@ public record HuntAnimalsBehavior(int randomInterval, boolean adultsOnly, boolea
                 && isFairPrey(entity, target));
     }
 
-    /**
-     * Another revived creature is only prey if it is no stronger than the hunter, and a flyer is not prey
-     * while it is in the air: two flyers hunting each other would chase upward without end.
-     */
     private static boolean isFairPrey(AncientCreatureEntity hunter, LivingEntity target) {
         if (!(target instanceof AncientCreatureEntity prey)) {
             return true;

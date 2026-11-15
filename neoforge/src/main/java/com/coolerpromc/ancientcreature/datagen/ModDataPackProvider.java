@@ -20,7 +20,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import java.util.List;
 
 public final class ModDataPackProvider {
-    // World-layer registries: worldgen content resolved once at world creation.
+
     public static final RegistrySetBuilder WORLD_BUILDER = new RegistrySetBuilder()
         .add(Registries.PROCESSOR_LIST, ModProcessorLists::bootstrap)
         .add(Registries.FEATURE, ModConfiguredFeatures::bootstrap)
@@ -33,7 +33,6 @@ public final class ModDataPackProvider {
         .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
         .add(Registries.VILLAGER_TRADE, ModVillagerTrades::bootstrap);
 
-    // Reloadable-layer registries: refreshed on datapack reload, built on top of the world layer.
     public static final RegistrySetBuilder RELOADABLE_BUILDER = new RegistrySetBuilder()
         .add(Registries.LOOT_TABLE, new ModLootTableProvider())
         .add(Registries.ADVANCEMENT, new AdvancementProvider(List.of(ModProgressAdvancement::new)))

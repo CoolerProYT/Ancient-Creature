@@ -261,7 +261,7 @@ public final class AncientCreatureJeiRecipes {
             output.set(ModDataComponents.SPECIES.get(), species);
             var hybrid = species.definitionOrFallback().hybrid();
             if (hybrid.isPresent()) {
-                // a hybrid splices a completed genome of each parent: one in the genome slot, one in the donor slot
+
                 Species first = new Species(hybrid.get().first());
                 Species second = new Species(hybrid.get().second());
                 recipes.add(recipe("embryogenesis/" + species.getSerializedName(),

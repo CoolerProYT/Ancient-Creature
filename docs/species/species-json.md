@@ -388,6 +388,7 @@ What happens when the rider presses the mount ability key (<kbd>R</kbd> by defau
 | `ability` | see below | `"none"` | |
 | `cooldown` | int 10–12000 | `100` | Ticks between uses |
 | `power` | float 0.1–10 | `1.0` | Scales damage, reach and launch speed |
+| `rideable` | boolean | `true` | `false` stops the creature from being saddled or mounted, for species too small to carry a rider |
 
 | `ability` | Effect |
 | --- | --- |

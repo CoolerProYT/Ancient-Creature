@@ -8,7 +8,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-/** Keeps a land creature's head above water. Skipped for aquatic species. */
 public record FloatBehavior() implements CreatureBehaviorConfig {
     public static final FloatBehavior INSTANCE = new FloatBehavior();
     public static final MapCodec<FloatBehavior> CODEC = MapCodec.unit(INSTANCE);

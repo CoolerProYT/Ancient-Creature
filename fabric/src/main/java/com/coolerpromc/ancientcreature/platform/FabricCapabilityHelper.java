@@ -39,7 +39,7 @@ public class FabricCapabilityHelper implements ICapabilityHelper {
     }
 
     private static @Nullable Storage<ItemVariant> sided(@Nullable Container container, Direction direction) {
-        // a WorldlyContainer is wrapped with its side rules
+
         return container == null ? null : ContainerStorage.of(container, direction);
     }
 

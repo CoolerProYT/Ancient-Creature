@@ -9,7 +9,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 
 import java.util.function.Consumer;
 
-/** A saddle sized for revived creatures. The owner puts it on an adult creature to ride it. */
 public class CreatureSaddleItem extends Item {
     public CreatureSaddleItem(Properties properties) {
         super(properties);

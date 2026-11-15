@@ -10,15 +10,6 @@ import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
-/**
- * A Bedrock client entity definition ({@code "minecraft:client_entity"}): which geometry, textures,
- * materials, animations, scripts and render controllers an entity uses.
- *
- * <p>Read from {@code assets/<ns>/ancientcreature/entity/*.json}. The {@code description.identifier} is
- * the species id it dresses, e.g. {@code ancientcreature:triceratops}. Texture paths are written the
- * Bedrock way — {@code "textures/entity/triceratops"}, relative to the pack root and without the
- * extension — and resolve inside the file's own namespace unless they name one explicitly.
- */
 public record BedrockClientEntity(
     Identifier identifier,
     Map<String, String> materials,
@@ -34,7 +25,6 @@ public record BedrockClientEntity(
         public static final Scripts EMPTY = new Scripts(List.of(), List.of(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     }
 
-    /** One entry of {@code scripts.animate}: a short animation or controller name and its blend weight. */
     public record AnimateEntry(String name, MolangExpression weight) {
     }
 
@@ -106,7 +96,7 @@ public record BedrockClientEntity(
         JsonElement soundJson = BedrockJson.get(description, "sound_effects");
         if (soundJson != null && soundJson.isJsonObject()) {
             for (Map.Entry<String, JsonElement> entry : soundJson.getAsJsonObject().entrySet()) {
-                // Bedrock allows "name" or {"sound": "name"}.
+
                 String sound = entry.getValue().isJsonObject() ? BedrockJson.string(entry.getValue().getAsJsonObject(), "sound", "") : entry.getValue().getAsString();
                 if (!sound.isEmpty()) {
                     sounds.put(entry.getKey().toLowerCase(Locale.ROOT), sound);
@@ -132,7 +122,6 @@ public record BedrockClientEntity(
         return out;
     }
 
-    /** {@code textures/entity/foo} → {@code ns:textures/entity/foo.png}; explicit namespaces are respected. */
     public static Identifier texturePath(String raw, String namespace, String path) throws BedrockFormatException {
         String value = raw.trim();
         String ns = namespace;

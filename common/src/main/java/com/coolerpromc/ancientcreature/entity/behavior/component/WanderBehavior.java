@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 
-/** Idle strolling. Automatically picks a swimming variant for aquatic species. */
 public record WanderBehavior(double speedModifier, boolean avoidWater, int interval) implements CreatureBehaviorConfig {
     public static final MapCodec<WanderBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BehaviorCodecs.SPEED.optionalFieldOf("speed_modifier", 0.9).forGetter(WanderBehavior::speedModifier),

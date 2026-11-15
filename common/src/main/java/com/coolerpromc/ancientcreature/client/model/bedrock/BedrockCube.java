@@ -11,10 +11,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * A Bedrock cube. {@code inflate} and {@code mirror} are optional because a missing value inherits the
- * bone's.
- */
 public record BedrockCube(
     Vector3fc origin,
     Vector3fc size,
@@ -36,7 +32,6 @@ public record BedrockCube(
         return Float.isFinite(v.x()) && Float.isFinite(v.y()) && Float.isFinite(v.z());
     }
 
-    /** Either a box-UV offset or a set of per-face rectangles. */
     public sealed interface Uv permits BoxUv, FaceUvs {
     }
 
@@ -46,10 +41,6 @@ public record BedrockCube(
     public record FaceUvs(Map<BedrockFace, FaceUv> faces) implements Uv {
     }
 
-    /**
-     * A per-face rectangle as written in the file: the face spans {@code uv} to {@code uv + size}, and a
-     * negative size flips it. {@code rotation} is {@code uv_rotation} in degrees (0, 90, 180 or 270).
-     */
     public record FaceUv(Vector2fc uv, Vector2fc size, int rotation, Optional<String> materialInstance) {
     }
 
@@ -106,9 +97,6 @@ public record BedrockCube(
             rotation == null ? new Vector3f() : rotation);
     }
 
-    /**
-     * Bedrock lets {@code uv_size} be omitted; the face's own dimensions are used.
-     */
     private static Vector2f defaultFaceSize(BedrockFace face, Vector3fc size) {
         return switch (face) {
             case NORTH, SOUTH -> new Vector2f(size.x(), size.y());

@@ -13,7 +13,7 @@ import java.util.List;
 public class AncientCreatureRenderState extends LivingEntityRenderState {
     public Species species = Species.TRICERATOPS;
     public String variant = "default";
-    /** Position of {@link #variant} in the species' variant list; {@code query.variant}. */
+
     public int variantIndex;
     public AncientCreatureAction action = AncientCreatureAction.NONE;
 
@@ -29,20 +29,15 @@ public class AncientCreatureRenderState extends LivingEntityRenderState {
     public boolean isSaddled;
     public int armorTier;
     public boolean isSitting;
-    /** The species falls over in its own death clip, so the vanilla death roll must be skipped. */
+
     public boolean hasDeathAnimation;
 
     public @Nullable SpeciesAppearance appearance;
-    /** The geometry chosen this frame, already posed into {@link #bonePose}. */
+
     public @Nullable BakedBedrockModel bakedModel;
-    /**
-     * This entity's pose, one record per part in {@link BakedBedrockModel#root()}'s
-     * {@code getAllParts()} order: x, y, z, xRot, yRot, zRot, xScale, yScale, zScale, visible.
-     * Geometry is shared between entities, so the pose is copied out at extract time and loaded
-     * back when the model is drawn.
-     */
+
     public float @Nullable [] bonePose;
-    /** Texture layers, bottom first. The first is the body; the rest are drawn over it. */
+
     public List<Identifier> textures = List.of();
     public String material = "entity_alphatest";
     public int tint = -1;

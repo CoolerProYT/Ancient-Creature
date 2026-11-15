@@ -63,8 +63,7 @@ public class BabyCreatureCapsule extends Item {
             return InteractionResult.FAIL;
         } else {
             Entity spawned = type.create(level, entity -> {
-                // The species has to be applied before the entity is added: it decides the entity's
-                // dimensions, so setting it later would place it using the wrong bounding box.
+
                 if (entity instanceof AncientCreatureEntity creature) {
                     creature.setSpecies(species);
                     creature.setGenome(itemStack.get(ModDataComponents.GENOME.get()));
@@ -78,7 +77,7 @@ public class BabyCreatureCapsule extends Item {
                     creature.setOwner(user);
                 }
                 if (spawned instanceof AncientCreatureEntity creature && user != null) {
-                    // a newly released creature roams around where it was let out
+
                     creature.setCommand(CreatureCommand.ROAM);
                 }
                 level.addFreshEntity(spawned);

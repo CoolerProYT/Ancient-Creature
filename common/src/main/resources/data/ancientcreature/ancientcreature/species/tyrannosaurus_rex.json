@@ -3,18 +3,18 @@
   "loot_table": "ancientcreature:entities/tyrannosaurus_rex",
   "entity_category": "land",
   "physical": {
-    "width": 1.2,
-    "height": 2.0,
-    "eye_height": 1.7
+    "width": 1.68,
+    "height": 2.8,
+    "eye_height": 2.38
   },
   "attributes": {
-    "max_health": 100.0,
+    "max_health": 160.0,
     "movement_speed": 0.25,
-    "attack_damage": 16.0,
+    "attack_damage": 22.0,
     "attack_knockback": 2.0,
     "follow_range": 32.0,
-    "knockback_resistance": 0.75,
-    "armor": 6.0
+    "knockback_resistance": 0.85,
+    "armor": 8.0
   },
   "growth": {
     "adult_age": 24000,

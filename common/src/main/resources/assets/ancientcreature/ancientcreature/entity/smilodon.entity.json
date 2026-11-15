@@ -27,6 +27,7 @@
         "hurt": "animation.smilodon.hurt",
         "death": "animation.smilodon.death",
         "roar": "animation.smilodon.roar",
+        "sit": "animation.smilodon.sit",
         "main": "controller.animation.smilodon.main"
       },
       "scripts": {

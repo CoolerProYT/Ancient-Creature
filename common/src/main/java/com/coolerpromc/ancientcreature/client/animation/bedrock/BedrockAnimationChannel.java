@@ -11,18 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The keyframes of one bone channel (rotation, position or scale), sampled the way Blockbench's
- * animator does so playback in game matches its preview:
- * <ul>
- *   <li>exactly on a keyframe, or before the first one, the keyframe's {@code pre} value;</li>
- *   <li>after the last keyframe, its {@code post} value;</li>
- *   <li>after a {@code step} keyframe, that keyframe's value held until the next;</li>
- *   <li>between two linear keyframes, linear interpolation from {@code post} to the next {@code pre};</li>
- *   <li>if either neighbour is {@code catmullrom}, a uniform Catmull-Rom spline through the neighbours,
- *       skipping the outer neighbour when the inner keyframe has a split pre/post value.</li>
- * </ul>
- */
 public record BedrockAnimationChannel(List<BedrockKeyframe> keyframes) {
     public static final BedrockAnimationChannel EMPTY = new BedrockAnimationChannel(List.of());
     private static final float EPSILON = 1.0F / 1200.0F;
@@ -61,7 +49,6 @@ public record BedrockAnimationChannel(List<BedrockKeyframe> keyframes) {
         return object.has("pre") || object.has("post") || object.has("lerp_mode");
     }
 
-    /** Samples the channel at {@code time} seconds into the animation. */
     public Vector3f sample(float time, MolangContext ctx, Vector3f out) {
         int count = this.keyframes.size();
         if (count == 0) {
@@ -77,7 +64,6 @@ public record BedrockAnimationChannel(List<BedrockKeyframe> keyframes) {
             return out;
         }
 
-        // before: last keyframe strictly earlier than time; after: first at or later than time
         int afterIndex = this.firstAtOrAfter(time);
         int beforeIndex = afterIndex - 1;
 

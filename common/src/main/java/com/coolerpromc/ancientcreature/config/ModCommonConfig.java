@@ -57,7 +57,6 @@ public final class ModCommonConfig {
         CONFIG_SPEC = builder.build();
     }
 
-    /** Whether the species is listed in {@code Creatures.passiveSpecies}. */
     public static boolean isForcedPassive(net.minecraft.resources.Identifier species) {
         List<String> listed = CONFIG.passiveSpecies.get();
         if (listed.isEmpty()) {

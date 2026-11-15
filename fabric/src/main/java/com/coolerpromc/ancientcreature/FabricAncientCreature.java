@@ -43,8 +43,6 @@ public class FabricAncientCreature implements ModInitializer {
         ServerPlayerEvents.JOIN.register(PlayerEvents::onPlayerJoin);
         Services.CAPABILITIES.applyRegistrations(null);
 
-        // Fabric API dropped FabricPotionBrewingBuilder for 26.3 (brewing is now data-driven recipe JSON);
-        // no custom brewing recipes are registered yet on either loader, so there is nothing to port here.
         Services.REGISTRY.applyDatapackRegistryRegistrations(DynamicRegistries::registerSynced);
 
         Services.REGISTRY.applyClientboundPayloadRegistrations(PayloadTypeRegistry.clientboundPlay()::register);

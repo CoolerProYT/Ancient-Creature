@@ -38,13 +38,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-/**
- * The field guide's chapters. Built each time the guide opens, because fossil parts and species come
- * from datapacks and item stacks need the current world's registries.
- *
- * <p>The crafting grids mirror the datagen recipes in {@code ModRecipeProvider}; clients don't receive
- * the server's recipes, so they can't be looked up here.
- */
 public final class GuideBook {
     private GuideBook() {
     }
@@ -72,7 +65,6 @@ public final class GuideBook {
         chapters.add(upgrades(stacks));
         chapters.add(automation(stacks));
 
-        // Each chapter ends with a link onward, so the guide can be read front to back.
         List<Chapter> linked = new ArrayList<>();
         for (int i = 0; i < chapters.size(); i++) {
             Chapter chapter = chapters.get(i);
@@ -193,8 +185,6 @@ public final class GuideBook {
             rows.add(new Table.Row(Slot.of(chisel), chisel.getHoverName(), Component.translatable("guide.ancientcreature.chisels.damage", percent(bonus), percent(damage))));
         }
 
-        // One grid cycling through every material; the material and result lists line up so they
-        // change together.
         Slot material = new Slot(List.of(stack(Items.COBBLESTONE), stack(Items.COPPER_INGOT), stack(Items.IRON_INGOT), stack(Items.GOLD_INGOT), stack(Items.DIAMOND)));
         Slot result = new Slot(chiselStacks.subList(0, 5));
         Slot stick = Slot.of(stack(Items.STICK));
@@ -372,7 +362,7 @@ public final class GuideBook {
         return new Chapter("incubation", ModBlocks.INCUBATOR.toStack(), List.of(
             p("incubation.1"),
             s.shaped(ModBlocks.INCUBATOR.toStack(), new String[]{"IMI", "MNM", "IGI"},
-                'I', slot(Items.IRON_INGOT), 'M', slot(Items.MAGMA_BLOCK), 'N', slot(Items.NETHERITE_SCRAP), 'G', slot(Items.GLASS)),
+                'I', slot(Items.IRON_INGOT), 'M', slot(Items.MAGMA_BLOCK), 'N', slot(Items.BLAZE_ROD), 'G', slot(Items.GLASS)),
             new MachineStep(
                 List.of(Slot.of(s.withSpecies(ModItems.FERTILIZED_ANCIENT_EGG.toStack()))),
                 Slot.of(ModBlocks.INCUBATOR.toStack()),
@@ -464,7 +454,6 @@ public final class GuideBook {
         return (rounded > 0 ? "+" : "") + rounded + "%";
     }
 
-    /** Builds example stacks against the current world, so data-driven fossil parts resolve. */
     private static final class Stacks {
         private final Optional<Registry<FossilPart>> fossilParts;
         private final Species species;
@@ -519,7 +508,6 @@ public final class GuideBook {
             return Slot.of(PotionContents.createItemStack(Items.POTION, Potions.WATER));
         }
 
-        /** A shaped recipe from the same pattern/key form the datagen uses. */
         Crafting shaped(ItemStack result, String[] pattern, Object... keys) {
             Map<Character, Slot> key = new HashMap<>();
             for (int i = 0; i < keys.length; i += 2) {

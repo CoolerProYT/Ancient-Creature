@@ -348,6 +348,12 @@ public class ModLanguageProvider extends LanguageProvider {
         add("species.ancientcreature.velociraptor", "Velociraptor");
         add("species.ancientcreature.woolly_mammoth", "Woolly Mammoth");
         add("species.ancientcreature.woolly_rhinoceros", "Woolly Rhinoceros");
+        add("species.ancientcreature.allosaurus", "Allosaurus");
+        add("species.ancientcreature.pachycephalosaurus", "Pachycephalosaurus");
+        add("species.ancientcreature.gallimimus", "Gallimimus");
+        add("species.ancientcreature.therizinosaurus", "Therizinosaurus");
+        add("species.ancientcreature.compsognathus", "Compsognathus");
+        add("species.ancientcreature.diplodocus", "Diplodocus");
         add("species.ancientcreature.unidentified", "???");
 
         add("dna.ancientcreature.degraded", "Degraded");
@@ -499,6 +505,42 @@ public class ModLanguageProvider extends LanguageProvider {
         add("subtitles.ancientcreature.entity.velociraptor.death", "Velociraptor dies");
         add("subtitles.ancientcreature.entity.velociraptor.attack", "Velociraptor slashes");
         add("subtitles.ancientcreature.entity.velociraptor.step", "Velociraptor steps");
+        add("subtitles.ancientcreature.entity.allosaurus.ambient", "Allosaurus growls");
+        add("subtitles.ancientcreature.entity.allosaurus.alert", "Allosaurus roars");
+        add("subtitles.ancientcreature.entity.allosaurus.hurt", "Allosaurus snarls");
+        add("subtitles.ancientcreature.entity.allosaurus.death", "Allosaurus dies");
+        add("subtitles.ancientcreature.entity.allosaurus.attack", "Allosaurus bites");
+        add("subtitles.ancientcreature.entity.allosaurus.step", "Allosaurus steps");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.ambient", "Pachycephalosaurus honks");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.alert", "Pachycephalosaurus bellows");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.hurt", "Pachycephalosaurus squeals");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.death", "Pachycephalosaurus dies");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.attack", "Pachycephalosaurus headbutts");
+        add("subtitles.ancientcreature.entity.pachycephalosaurus.step", "Pachycephalosaurus steps");
+        add("subtitles.ancientcreature.entity.gallimimus.ambient", "Gallimimus hoots");
+        add("subtitles.ancientcreature.entity.gallimimus.alert", "Gallimimus squawks in alarm");
+        add("subtitles.ancientcreature.entity.gallimimus.hurt", "Gallimimus squawks");
+        add("subtitles.ancientcreature.entity.gallimimus.death", "Gallimimus dies");
+        add("subtitles.ancientcreature.entity.gallimimus.attack", "Gallimimus pecks");
+        add("subtitles.ancientcreature.entity.gallimimus.step", "Gallimimus steps");
+        add("subtitles.ancientcreature.entity.therizinosaurus.ambient", "Therizinosaurus booms");
+        add("subtitles.ancientcreature.entity.therizinosaurus.alert", "Therizinosaurus hisses");
+        add("subtitles.ancientcreature.entity.therizinosaurus.hurt", "Therizinosaurus groans");
+        add("subtitles.ancientcreature.entity.therizinosaurus.death", "Therizinosaurus dies");
+        add("subtitles.ancientcreature.entity.therizinosaurus.attack", "Therizinosaurus slashes");
+        add("subtitles.ancientcreature.entity.therizinosaurus.step", "Therizinosaurus steps");
+        add("subtitles.ancientcreature.entity.compsognathus.ambient", "Compsognathus chirps");
+        add("subtitles.ancientcreature.entity.compsognathus.alert", "Compsognathus chitters");
+        add("subtitles.ancientcreature.entity.compsognathus.hurt", "Compsognathus squeaks");
+        add("subtitles.ancientcreature.entity.compsognathus.death", "Compsognathus dies");
+        add("subtitles.ancientcreature.entity.compsognathus.attack", "Compsognathus nips");
+        add("subtitles.ancientcreature.entity.compsognathus.step", "Compsognathus patters");
+        add("subtitles.ancientcreature.entity.diplodocus.ambient", "Diplodocus rumbles");
+        add("subtitles.ancientcreature.entity.diplodocus.alert", "Diplodocus bellows");
+        add("subtitles.ancientcreature.entity.diplodocus.hurt", "Diplodocus groans");
+        add("subtitles.ancientcreature.entity.diplodocus.death", "Diplodocus dies");
+        add("subtitles.ancientcreature.entity.diplodocus.attack", "Diplodocus lashes its tail");
+        add("subtitles.ancientcreature.entity.diplodocus.step", "Diplodocus thunders");
         add("subtitles.ancientcreature.entity.woolly_mammoth.ambient", "Woolly mammoth rumbles");
         add("subtitles.ancientcreature.entity.woolly_mammoth.alert", "Woolly mammoth trumpets");
         add("subtitles.ancientcreature.entity.woolly_mammoth.hurt", "Woolly mammoth hurts");
@@ -539,8 +581,6 @@ public class ModLanguageProvider extends LanguageProvider {
         add("advancements.ancientcreature.progression.revive_creature.title", "Life Finds a Way");
         add("advancements.ancientcreature.progression.revive_creature.description", "Incubate a baby ancient creature and bring it back from extinction");
 
-        // The generic entity's name is only seen in /summon output and death messages; a data-driven
-        // creature is normally named after its species.
         add(ModEntities.ANCIENT_CREATURE.get(), "Ancient Creature");
 
         add(ModItems.FIELD_GUIDE.get(), "Paleontologist's Field Guide");

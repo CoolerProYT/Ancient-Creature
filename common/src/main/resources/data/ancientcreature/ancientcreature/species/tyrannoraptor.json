@@ -8,13 +8,13 @@
     "eye_height": 1.75
   },
   "attributes": {
-    "max_health": 85.0,
+    "max_health": 135.0,
     "movement_speed": 0.29,
-    "attack_damage": 14.0,
+    "attack_damage": 19.0,
     "attack_knockback": 1.4,
     "follow_range": 36.0,
     "knockback_resistance": 0.6,
-    "armor": 4.0
+    "armor": 6.0
   },
   "growth": {
     "adult_age": 24000,

@@ -7,7 +7,6 @@ import com.coolerpromc.ancientcreature.entity.custom.AncientCreatureEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-/** Sends a beached aquatic creature back towards water. */
 public record FindWaterBehavior() implements CreatureBehaviorConfig {
     public static final FindWaterBehavior INSTANCE = new FindWaterBehavior();
     public static final MapCodec<FindWaterBehavior> CODEC = MapCodec.unit(INSTANCE);

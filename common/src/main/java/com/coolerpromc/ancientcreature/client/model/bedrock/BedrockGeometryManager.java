@@ -16,14 +16,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Loads every Bedrock geometry under {@code assets/<ns>/ancientcreature/geo/}.
- *
- * <p>Any {@code .json} file is accepted, so Blockbench's default {@code name.geo.json} works as-is.
- * Geometries are found by their Bedrock identifier ({@code geometry.triceratops}), as a client entity
- * refers to them, and also by file id ({@code ancientcreature:triceratops}) for the first geometry in a
- * file, which is how earlier species files refer to them.
- */
 public final class BedrockGeometryManager extends SimplePreparableReloadListener<BedrockGeometryManager.Loaded> {
     public static final Identifier ID = Constants.id("bedrock_geometry");
     public static final String DIRECTORY = Constants.MODID + "/geo";
@@ -35,10 +27,6 @@ public final class BedrockGeometryManager extends SimplePreparableReloadListener
     record Loaded(Map<String, BedrockGeometry> byIdentifier, Map<Identifier, String> byFile) {
     }
 
-    /**
-     * Prefix marking a reference to a geometry written for the axes Ancient Creature used before it
-     * followed Bedrock's; such a geometry is converted on bake. Used for format-1 species files.
-     */
     public static final String LEGACY_PREFIX = "ancientcreature_legacy_axes|";
 
     private volatile Loaded loaded = new Loaded(Map.of(), Map.of());
@@ -52,7 +40,6 @@ public final class BedrockGeometryManager extends SimplePreparableReloadListener
         return this.generation;
     }
 
-    /** By Bedrock identifier ({@code geometry.x}, case-insensitive) or by file id ({@code ns:path}). */
     public @Nullable BedrockGeometry getGeometry(String reference) {
         String key = this.resolveKey(reference);
         return key == null ? null : this.loaded.byIdentifier().get(key);
@@ -90,7 +77,6 @@ public final class BedrockGeometryManager extends SimplePreparableReloadListener
         return file == null ? null : this.loaded.byFile().get(file);
     }
 
-    /** The baked model, baked on first use and cached until the next reload. */
     public @Nullable BakedBedrockModel getBaked(String reference) {
         String key = this.resolveKey(reference);
         if (key == null) {
@@ -148,7 +134,6 @@ public final class BedrockGeometryManager extends SimplePreparableReloadListener
         return new Loaded(Map.copyOf(byIdentifier), Map.copyOf(byFile));
     }
 
-    /** {@code triceratops.geo} → {@code triceratops}, so both naming styles give the same file id. */
     static Identifier stripGeoSuffix(Identifier id) {
         String path = id.getPath();
         return path.endsWith(".geo") ? Identifier.fromNamespaceAndPath(id.getNamespace(), path.substring(0, path.length() - 4)) : id;

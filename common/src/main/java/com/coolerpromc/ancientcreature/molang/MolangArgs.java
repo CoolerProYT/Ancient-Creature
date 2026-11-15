@@ -1,11 +1,5 @@
 package com.coolerpromc.ancientcreature.molang;
 
-/**
- * The arguments of a {@code query.name(a, b, ...)} call, evaluated on demand.
- *
- * <p>Queries only evaluate the arguments they actually read, so an argument with side effects (an
- * assignment, say) behaves exactly as it would in Bedrock, where arguments are also evaluated lazily.
- */
 public final class MolangArgs {
     static final MolangArgs NONE = new MolangArgs(new MolangNode[0], null);
 

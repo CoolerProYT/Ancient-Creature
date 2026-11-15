@@ -12,27 +12,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * The closed set of behavior components a species definition may use.
- *
- * <p>This is deliberately <em>not</em> a Minecraft registry: it never needs to be synced or frozen, it
- * must be readable while parsing datapack JSON, and keeping it local makes it obvious that datapacks can
- * only select from these entries. Nothing in JSON can reach Java code that is not listed here.
- */
 public final class CreatureBehaviorRegistry {
     private static final Map<Identifier, CreatureBehaviorType<?>> TYPES = new LinkedHashMap<>();
 
-    /**
-     * Set the first time a species definition is parsed. Registering after that would mean species
-     * files loaded earlier had already been rejected for using an "unknown" type, so it is refused
-     * with an explanation rather than half-working.
-     */
     private static volatile boolean frozen;
 
     public static final CreatureBehaviorType<FloatBehavior> FLOAT =
         register("float", FloatBehavior.CODEC, 0);
     public static final CreatureBehaviorType<PanicBehavior> PANIC =
         register("panic", PanicBehavior.CODEC, 1);
+    public static final CreatureBehaviorType<FleeBehavior> FLEE =
+        register("flee", FleeBehavior.CODEC, 2);
     public static final CreatureBehaviorType<ChargeAttackBehavior> CHARGE_ATTACK =
         register("charge_attack", ChargeAttackBehavior.CODEC, 1);
     public static final CreatureBehaviorType<RoarAttackBehavior> ROAR_ATTACK =
@@ -77,7 +67,6 @@ public final class CreatureBehaviorRegistry {
     public static final CreatureBehaviorType<AquaticPredatorBehavior> AQUATIC_PREDATOR =
         register("aquatic_predator", AquaticPredatorBehavior.CODEC, 2);
 
-    /** Resolves the {@code "type"} field, reporting every valid alternative when it does not match. */
     public static final Codec<CreatureBehaviorType<?>> TYPE_CODEC = Identifier.CODEC.comapFlatMap(
         id -> {
             frozen = true;
@@ -89,14 +78,6 @@ public final class CreatureBehaviorRegistry {
         CreatureBehaviorType::id
     );
 
-    /**
-     * Adds a behavior component type that species JSON can then use.
-     *
-     * <p>Call this during mod initialization, before any datapack loads. See
-     * {@link com.coolerpromc.ancientcreature.api.AncientCreatureApi#registerBehavior}.
-     *
-     * @throws IllegalStateException if the id is taken, or if species data has already been parsed
-     */
     public static <C extends CreatureBehaviorConfig> CreatureBehaviorType<C> register(
         Identifier id, MapCodec<C> codec, int defaultPriority) {
         if (frozen) {

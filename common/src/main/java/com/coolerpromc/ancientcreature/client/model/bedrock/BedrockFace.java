@@ -4,13 +4,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
 
-/**
- * Cube face names as Bedrock files use them.
- *
- * <p>Note that Bedrock's {@code east} is the face on the <em>negative</em> X side of the cube in file
- * coordinates and {@code west} the positive side; this is how Blockbench reads and writes them, and
- * the baker maps them accordingly.
- */
 public enum BedrockFace {
     NORTH, SOUTH, EAST, WEST, UP, DOWN;
 

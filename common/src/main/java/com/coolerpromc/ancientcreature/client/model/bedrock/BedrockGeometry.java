@@ -8,17 +8,6 @@ import org.joml.Vector3fc;
 
 import java.util.*;
 
-/**
- * One {@code geometry.*} definition from a Bedrock {@code .geo.json} file.
- *
- * <p>Both file layouts Bedrock accepts are read:
- * <ul>
- *   <li>1.12.0 and later: {@code "minecraft:geometry": [ { "description": {...}, "bones": [...] } ]}</li>
- *   <li>1.8.0 / 1.10.0 legacy: {@code "geometry.name": {...}} or
- *       {@code "geometry.name:geometry.parent": {...}}, including parent inheritance within the file</li>
- * </ul>
- * Coordinates are kept exactly as written in the file; {@link BedrockModelBaker} converts them.
- */
 public record BedrockGeometry(String identifier, int textureWidth, int textureHeight, float visibleBoundsWidth, float visibleBoundsHeight, Vector3fc visibleBoundsOffset, List<BedrockBone> bones) {
 
     public static List<BedrockGeometry> parseFile(JsonElement json) throws BedrockFormatException {
@@ -50,7 +39,6 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
             return out;
         }
 
-        // Legacy layout: every "geometry.*" key is a model, optionally inheriting from another.
         Map<String, JsonObject> bodies = new LinkedHashMap<>();
         Map<String, String> parents = new HashMap<>();
         for (Map.Entry<String, JsonElement> entry : root.entrySet()) {
@@ -98,7 +86,7 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
 
         List<BedrockBone> bones = parseBones(BedrockJson.get(body, "bones"), path + ".bones");
         if (parent != null) {
-            // Child bones replace same-named parent bones; the rest of the parent is inherited.
+
             Map<String, BedrockBone> merged = new LinkedHashMap<>();
             for (BedrockBone bone : parent.bones()) {
                 merged.put(bone.name().toLowerCase(Locale.ROOT), bone);
@@ -139,14 +127,6 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
         return v == null ? new Vector3f() : v;
     }
 
-    /**
-     * This geometry as a file written for Ancient Creature before it followed Bedrock's axes would have
-     * to be written today, so that a species pack from that era renders exactly as it used to.
-     *
-     * <p>Earlier releases read X un-mirrored, with X and Y rotations inverted, and laid box UV out with
-     * fractional sizes. The conversion mirrors X, inverts those rotations and writes fractional box-UV
-     * cubes as the equivalent per-face UV.
-     */
     public BedrockGeometry fromLegacyAxes() {
         List<BedrockBone> converted = new ArrayList<>();
         for (BedrockBone bone : this.bones) {
@@ -180,7 +160,7 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
             if (whole) {
                 uv = new BedrockCube.BoxUv(new org.joml.Vector2f(u, v));
             } else {
-                // The old layout used the fractional sizes; keep exactly that texture mapping.
+
                 float w = size.x();
                 float h = size.y();
                 float d = size.z();
@@ -193,7 +173,7 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
                 faces.put(BedrockFace.UP, face(u + d, v, w, d));
                 faces.put(BedrockFace.DOWN, face(u + d + w, v + d, w, -d));
                 if (mirror) {
-                    // Old mirrored cubes: each face flipped horizontally, east and west swapped.
+
                     Map<BedrockFace, BedrockCube.FaceUv> flipped = new EnumMap<>(BedrockFace.class);
                     faces.forEach((key, f) -> flipped.put(key, face(f.uv().x() + f.size().x(), f.uv().y(), -f.size().x(), f.size().y())));
                     BedrockCube.FaceUv east = flipped.get(BedrockFace.EAST);
@@ -217,7 +197,6 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
         return Math.abs(value - Math.round(value)) < 1.0E-6F;
     }
 
-    /** Problems that make the model unrenderable or ambiguous. An empty list means it is fine to bake. */
     public List<String> validate() {
         List<String> problems = new ArrayList<>();
         if (!this.identifier.toLowerCase(Locale.ROOT).startsWith("geometry.")) {
@@ -273,7 +252,6 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
         return problems;
     }
 
-    /** Bones by lower-case name. Bedrock bone names are case-insensitive. */
     public Map<String, BedrockBone> boneMap() {
         Map<String, BedrockBone> map = new LinkedHashMap<>();
         for (BedrockBone bone : this.bones) {
@@ -282,7 +260,6 @@ public record BedrockGeometry(String identifier, int textureWidth, int textureHe
         return map;
     }
 
-    /** Children keyed by lower-case parent name; roots are under {@code ""}. Bones with a dangling parent are roots. */
     public Map<String, List<BedrockBone>> childrenByParent() {
         Map<String, BedrockBone> known = this.boneMap();
         Map<String, List<BedrockBone>> map = new LinkedHashMap<>();

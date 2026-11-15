@@ -27,6 +27,7 @@
         "hurt": "animation.woolly_mammoth.hurt",
         "death": "animation.woolly_mammoth.death",
         "roar": "animation.woolly_mammoth.roar",
+        "sit": "animation.woolly_mammoth.sit",
         "main": "controller.animation.woolly_mammoth.main"
       },
       "scripts": {

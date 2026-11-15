@@ -1532,5 +1532,221 @@
         "volume": 1.1
       }
     ]
+  },
+  "entity.allosaurus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.ambient",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/ambient"
+    ]
+  },
+  "entity.allosaurus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.alert",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/alert"
+    ]
+  },
+  "entity.allosaurus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.hurt",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/hurt"
+    ]
+  },
+  "entity.allosaurus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.death",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/death"
+    ]
+  },
+  "entity.allosaurus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.attack",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/attack"
+    ]
+  },
+  "entity.allosaurus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.allosaurus.step",
+    "sounds": [
+      "ancientcreature:entity/allosaurus/step"
+    ]
+  },
+  "entity.pachycephalosaurus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.ambient",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/ambient"
+    ]
+  },
+  "entity.pachycephalosaurus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.alert",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/alert"
+    ]
+  },
+  "entity.pachycephalosaurus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.hurt",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/hurt"
+    ]
+  },
+  "entity.pachycephalosaurus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.death",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/death"
+    ]
+  },
+  "entity.pachycephalosaurus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.attack",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/attack"
+    ]
+  },
+  "entity.pachycephalosaurus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.pachycephalosaurus.step",
+    "sounds": [
+      "ancientcreature:entity/pachycephalosaurus/step"
+    ]
+  },
+  "entity.gallimimus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.ambient",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/ambient"
+    ]
+  },
+  "entity.gallimimus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.alert",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/alert"
+    ]
+  },
+  "entity.gallimimus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.hurt",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/hurt"
+    ]
+  },
+  "entity.gallimimus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.death",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/death"
+    ]
+  },
+  "entity.gallimimus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.attack",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/attack"
+    ]
+  },
+  "entity.gallimimus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.gallimimus.step",
+    "sounds": [
+      "ancientcreature:entity/gallimimus/step"
+    ]
+  },
+  "entity.therizinosaurus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.ambient",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/ambient"
+    ]
+  },
+  "entity.therizinosaurus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.alert",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/alert"
+    ]
+  },
+  "entity.therizinosaurus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.hurt",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/hurt"
+    ]
+  },
+  "entity.therizinosaurus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.death",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/death"
+    ]
+  },
+  "entity.therizinosaurus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.attack",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/attack"
+    ]
+  },
+  "entity.therizinosaurus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.therizinosaurus.step",
+    "sounds": [
+      "ancientcreature:entity/therizinosaurus/step"
+    ]
+  },
+  "entity.compsognathus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.ambient",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/ambient"
+    ]
+  },
+  "entity.compsognathus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.alert",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/alert"
+    ]
+  },
+  "entity.compsognathus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.hurt",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/hurt"
+    ]
+  },
+  "entity.compsognathus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.death",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/death"
+    ]
+  },
+  "entity.compsognathus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.attack",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/attack"
+    ]
+  },
+  "entity.compsognathus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.compsognathus.step",
+    "sounds": [
+      "ancientcreature:entity/compsognathus/step"
+    ]
+  },
+  "entity.diplodocus.ambient": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.ambient",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/ambient"
+    ]
+  },
+  "entity.diplodocus.alert": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.alert",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/alert"
+    ]
+  },
+  "entity.diplodocus.hurt": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.hurt",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/hurt"
+    ]
+  },
+  "entity.diplodocus.death": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.death",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/death"
+    ]
+  },
+  "entity.diplodocus.attack": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.attack",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/attack"
+    ]
+  },
+  "entity.diplodocus.step": {
+    "subtitle": "subtitles.ancientcreature.entity.diplodocus.step",
+    "sounds": [
+      "ancientcreature:entity/diplodocus/step"
+    ]
   }
 }

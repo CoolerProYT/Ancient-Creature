@@ -1,6 +1,6 @@
 # Riding creatures
 
-The player who owns a creature can saddle it, armor it and ride it once it is an adult. This works for every species, including species added by datapacks.
+The player who owns a creature can saddle it, armor it and ride it once it is an adult. This works for every species, including species added by datapacks, except the few too small to carry a rider (such as Compsognathus).
 
 The owner is the player who released the creature from a capsule, or the nearest player when its egg hatched. Other players can't mount it, equip it or control it.
 

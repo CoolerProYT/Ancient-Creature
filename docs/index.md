@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Ancient Creature
   text: Dig it up. Decode it. Bring it back.
-  tagline: Chisel fossils out of the ground, extract their DNA and hatch prehistoric creatures you can ride. For Minecraft 26.1+ on Fabric and NeoForge.
+  tagline: Chisel fossils out of the ground, extract their DNA and hatch prehistoric creatures you can ride. For Minecraft 26.3 on Fabric and NeoForge.
   image:
     src: https://storage.googleapis.com/coolerpromc/textures/ancientcreature/fossil_part_skull.png
     alt: Skull Fossil Fragment

@@ -53,7 +53,7 @@ public final class ModConfiguredFeatures {
 
         RuleTest stoneReplaceable = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         List<BlockReplacement> fossilOres = List.of(BlockReplacement.replace(stoneReplaceable, ModBlocks.FOSSIL_ORE.defaultBlockState()));
-        // Ore veins below size 4 almost never place a block, so every fossil vein uses at least 4.
+
         context.register(FOSSIL_ORE, new OreFeature(fossilOres, 4));
 
         RuleTest deepslateReplaceable = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
@@ -67,7 +67,6 @@ public final class ModConfiguredFeatures {
             .build();
         context.register(FOSSIL_SEAM, new FossilSeamFeature(Holder.direct(new WeightedStateProvider(seam)), ModBlockTags.FOSSIL_SEAM_REPLACEABLES, UniformInt.of(4, 9), 24, 3));
 
-        // Vanilla's own fossil skeletons, buried with fossil ore where vanilla puts coal.
         HolderGetter<StructureProcessorList> processorLists = context.lookup(Registries.PROCESSOR_LIST);
         List<Identifier> bones = new ArrayList<>();
         List<Identifier> overlays = new ArrayList<>();

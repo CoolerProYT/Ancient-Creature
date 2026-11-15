@@ -9,7 +9,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.Level;
 
-/** Damage types this mod defines in its datapack ({@code data/ancientcreature/damage_type/}). */
 public final class ModDamageTypes {
     public static final ResourceKey<DamageType> ELECTRIC_FENCE = ResourceKey.create(Registries.DAMAGE_TYPE, Constants.id("electric_fence"));
 

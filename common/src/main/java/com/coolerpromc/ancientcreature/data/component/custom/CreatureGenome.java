@@ -18,15 +18,6 @@ import net.minecraft.world.item.component.TooltipProvider;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-/**
- * The genome a creature hatches from, carried by a completed cartridge, the fertilized egg and the
- * capsule, and finally by the creature itself.
- *
- * <p>{@code fidelity} (0-1) is how faithfully the genome was reconstructed. When the embryo is made, it
- * decides the creature's traits: a high-fidelity genome gives a healthy, fertile animal close to its
- * species' norm; a poor one gives more extreme sizes, weaker constitutions, sterility and defects.
- * Bred offspring inherit the average of their parents with a little variation.
- */
 public record CreatureGenome(Species species, float fidelity, float size, float vitality, float vigor, Temperament temperament, boolean fertile, boolean frail) implements TooltipProvider {
     public enum Temperament implements StringRepresentable {
         CALM, STEADY, FIERCE;
@@ -52,15 +43,10 @@ public record CreatureGenome(Species species, float fidelity, float size, float 
 
     public static final StreamCodec<RegistryFriendlyByteBuf, CreatureGenome> STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
-    /** What a creature from before genetics existed is treated as: an unremarkable, fertile animal. */
     public static CreatureGenome neutral(Species species) {
         return new CreatureGenome(species, GenomeData.LEGACY_FIDELITY, 1.0F, 1.0F, 1.0F, Temperament.STEADY, true, false);
     }
 
-    /**
-     * Rolls traits for an embryo. {@code precision} is the number of precision modules in the chamber;
-     * each narrows the spread and cuts the chance of sterility and defects.
-     */
     public static CreatureGenome roll(Species species, float fidelity, int precision, RandomSource random) {
         float f = Math.max(0.0F, Math.min(1.0F, fidelity + 0.08F * precision));
         float spread = 0.12F * (1.0F - f) + 0.03F;
@@ -74,7 +60,6 @@ public record CreatureGenome(Species species, float fidelity, float size, float 
         return new CreatureGenome(species, f, size, frail ? vitality * 0.7F : vitality, vigor, temperament, fertile, frail);
     }
 
-    /** Offspring of two parents: the average, with a little variation, and the parents' fidelity. */
     public static CreatureGenome inherit(CreatureGenome a, CreatureGenome b, RandomSource random) {
         float f = (a.fidelity + b.fidelity) * 0.5F;
         float jitter = 0.04F;
@@ -88,12 +73,10 @@ public record CreatureGenome(Species species, float fidelity, float size, float 
             temperament, fertile, frail);
     }
 
-    /** The same genome, unable to breed: what every spliced hybrid is. */
     public CreatureGenome sterile() {
         return new CreatureGenome(this.species, this.fidelity, this.size, this.vitality, this.vigor, this.temperament, false, this.frail);
     }
 
-    /** The same genome with its frailty, and the constitution it cost, removed. */
     public CreatureGenome withoutFrailty() {
         if (!this.frail) {
             return this;

@@ -24,9 +24,8 @@ import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 
 import java.util.List;
 
-/** Trades that put fossils within reach of players who would rather pay than dig. */
 public final class ModVillagerTrades {
-    /** A travelling trader's find: an uncleaned fossil from wherever the trader happens to be. */
+
     public static final ResourceKey<VillagerTrade> WANDERING_TRADER_FOSSIL = key("wandering_trader/emerald_fossil_part");
     public static final ResourceKey<VillagerTrade> WANDERING_TRADER_AMBER = key("wandering_trader/emerald_amber");
     public static final ResourceKey<VillagerTrade> CARTOGRAPHER_DIG_SITE_MAP = key("cartographer/3/emerald_and_compass_dig_site_map");

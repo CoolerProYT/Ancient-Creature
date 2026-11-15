@@ -23,11 +23,11 @@ Ancient Creature is a Minecraft mod about paleontology, fossil processing, genet
 
 ## Creatures
 
-The bundled roster now contains 25 creatures: 23 reconstructed animals and two lab-made hybrids, the
+The bundled roster now contains 31 creatures: 29 reconstructed animals and two lab-made hybrids, the
 Stegoceratops and the Tyrannoraptor. In addition to the detailed creatures below,
 the data-driven expansion includes Stegosaurus, Parasaurolophus, Spinosaurus, Carnotaurus, Velociraptor,
 Dilophosaurus, Argentinosaurus, Quetzalcoatlus, Mosasaurus, Plesiosaurus, Dunkleosteus, Smilodon, Woolly
-Mammoth, Woolly Rhinoceros, Dire Wolf, and Arthropleura. Each has its own Bedrock Entity geometry, two
+Mammoth, Woolly Rhinoceros, Dire Wolf, Arthropleura, Allosaurus, Pachycephalosaurus, Gallimimus, Therizinosaurus, Compsognathus and Diplodocus. Each has its own Bedrock Entity geometry, two
 weighted 256×256 skin variants, seven animation clips, an action-aware controller, balanced physical and
 growth data, biome/incubation settings, diet, behavior profile or overrides, and pitched sound palette.
 

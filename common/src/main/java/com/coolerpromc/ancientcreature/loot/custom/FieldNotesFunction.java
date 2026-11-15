@@ -27,10 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Writes a dig site's field notes into a book: the region surveyed, the species whose remains have
- * been recorded there, and a couple of excavation tips.
- */
 public class FieldNotesFunction extends LootItemConditionalFunction {
     public static final MapCodec<FieldNotesFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance).apply(instance, FieldNotesFunction::new));
 

@@ -11,10 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * One block of content on a field guide page. Elements are laid out top to bottom and are told the
- * width they may use; they report their height so the screen can scroll the page.
- */
 public interface GuideElement {
     int INK = 0xFFE8E3D4;
     int MUTED = 0xFF9EA69E;
@@ -31,17 +27,12 @@ public interface GuideElement {
         return false;
     }
 
-    /**
-     * @param mouseInView whether the mouse is over the visible part of the page, so hover effects and
-     *                    tooltips are not triggered by content scrolled out of view.
-     */
     record Context(GuiGraphicsExtractor graphics, Font font, Screen screen, int mouseX, int mouseY, boolean mouseInView, int tick) {
         public boolean hovered(int x, int y, int width, int height) {
             return this.mouseInView && this.mouseX >= x && this.mouseX < x + width && this.mouseY >= y && this.mouseY < y + height;
         }
     }
 
-    /** A slot that cycles through its alternatives once a second, like JEI does for tags. */
     record Slot(List<ItemStack> stacks) {
         public static final Slot EMPTY = new Slot(List.of());
 
@@ -100,7 +91,6 @@ public interface GuideElement {
         }
     }
 
-    /** A paragraph with a gold bar down its left edge, for tips and warnings. */
     record Tip(Component text) implements GuideElement {
         @Override
         public int height(Font font, int width) {
@@ -120,7 +110,6 @@ public interface GuideElement {
         }
     }
 
-    /** A row of item slots, wrapping onto more rows when the page is narrow. */
     record Showcase(List<Slot> slots) implements GuideElement {
         private int perRow(int width) {
             return Math.max(1, (width + 2) / (SLOT_SIZE + 2));
@@ -141,7 +130,6 @@ public interface GuideElement {
         }
     }
 
-    /** A 3x3 crafting grid and its result. Slots are listed row by row; missing slots are empty. */
     record Crafting(List<Slot> grid, Slot result, boolean shapeless) implements GuideElement {
         @Override
         public int height(Font font, int width) {
@@ -167,7 +155,6 @@ public interface GuideElement {
         }
     }
 
-    /** A machine step: inputs, the machine that runs it, and what comes out. */
     record MachineStep(List<Slot> inputs, Slot machine, List<Slot> outputs) implements GuideElement {
         @Override
         public int height(Font font, int width) {
@@ -186,7 +173,7 @@ public interface GuideElement {
             }
             drawArrow(context, cursor + 3, middle, arrow);
             cursor += arrow + 6;
-            // The machine is drawn without a slot frame, so it reads as "done in" rather than "put in".
+
             ItemStack machine = this.machine.current(context.tick());
             context.graphics().item(machine, cursor + 1, y + 1);
             if (context.hovered(cursor, y, SLOT_SIZE, SLOT_SIZE)) {
@@ -202,7 +189,6 @@ public interface GuideElement {
         }
     }
 
-    /** Rows of an icon, a name and a description that wraps beside it. */
     record Table(List<Row> rows) implements GuideElement {
         public record Row(Slot icon, Component name, Component value) {
         }
@@ -239,7 +225,6 @@ public interface GuideElement {
         }
     }
 
-    /** Clickable text, used to jump between chapters or open the Species Journal. */
     record Link(Component text, Supplier<Runnable> action) implements GuideElement {
         @Override
         public int height(Font font, int width) {

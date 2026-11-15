@@ -4,7 +4,7 @@ Ancient Creature is a path from a buried bone to a living creature. You dig up a
 
 ## Install
 
-1. Install [Fabric](https://fabricmc.net/) with Fabric API, or [NeoForge](https://neoforged.net/), for Minecraft **26.1** or newer.
+1. Install [Fabric](https://fabricmc.net/) with Fabric API, or [NeoForge](https://neoforged.net/), for Minecraft **26.3**.
 2. Put the Ancient Creature jar in your `mods` folder.
 3. Optional: add [JEI](https://modrinth.com/mod/jei) to see every machine step in game, and [Jade](https://modrinth.com/mod/jade) to check eggs and creatures by looking at them.
 

@@ -13,12 +13,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-/**
- * Lets tall herbivores seek out and browse leaf canopies without destroying the tree.
- *
- * <p>The goal searches infrequently, walks beneath a reachable leaf block, raises the species' browse
- * animation through the existing grazing action, and restores hunger only after the mouthful finishes.
- */
 public record BrowseLeavesBehavior(
     int duration,
     int chance,

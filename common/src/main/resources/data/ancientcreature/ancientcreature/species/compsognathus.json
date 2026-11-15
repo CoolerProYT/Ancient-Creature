@@ -1,0 +1,69 @@
+{
+  "format_version": 1,
+  "loot_table": "ancientcreature:entities/compsognathus",
+  "entity_category": "land",
+  "physical": {
+    "width": 0.4,
+    "height": 0.5,
+    "eye_height": 0.42
+  },
+  "attributes": {
+    "max_health": 8,
+    "movement_speed": 0.34,
+    "attack_damage": 2,
+    "attack_knockback": 0.1,
+    "follow_range": 18.0,
+    "knockback_resistance": 0.0,
+    "armor": 0
+  },
+  "growth": {
+    "adult_age": 12000,
+    "baby_scale": 0.55,
+    "adult_scale": 1.0
+  },
+  "behavior": {
+    "profile": "ancientcreature:pack_predator"
+  },
+  "spawn": {
+    "biomes": "#ancientcreature:spawns_compsognathus",
+    "incubation_time": 600
+  },
+  "sounds": {
+    "ambient": "ancientcreature:entity.compsognathus.ambient",
+    "hurt": "ancientcreature:entity.compsognathus.hurt",
+    "death": "ancientcreature:entity.compsognathus.death",
+    "step": "ancientcreature:entity.compsognathus.step",
+    "attack": "ancientcreature:entity.compsognathus.attack",
+    "alert": "ancientcreature:entity.compsognathus.alert",
+    "ambient_interval": 200
+  },
+  "diet": {
+    "items": [
+      "minecraft:chicken",
+      "minecraft:rabbit",
+      "minecraft:cod"
+    ]
+  },
+  "variants": [
+    {
+      "id": "default",
+      "weight": 82
+    },
+    {
+      "id": "mottled",
+      "weight": 18
+    }
+  ],
+  "care": {
+    "climate": "warm",
+    "social": "herd",
+    "group_min": 4,
+    "group_max": 10
+  },
+  "riding": {
+    "ability": "none",
+    "cooldown": 100,
+    "power": 1.0,
+    "rideable": false
+  }
+}

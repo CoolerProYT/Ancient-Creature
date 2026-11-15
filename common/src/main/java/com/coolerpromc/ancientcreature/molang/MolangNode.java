@@ -4,13 +4,6 @@ import com.coolerpromc.ancientcreature.molang.MolangResources.ResourceRef;
 
 import java.util.function.DoubleBinaryOperator;
 
-/**
- * A compiled Molang syntax tree node.
- *
- * <p>Evaluation is numeric by default; {@link #object} is only used where a string may legitimately
- * appear (equality, assignment, query arguments, render-controller resource lookups), so the common
- * keyframe path never boxes a value.
- */
 abstract class MolangNode {
     abstract double number(MolangContext ctx);
 
@@ -22,12 +15,9 @@ abstract class MolangNode {
         return false;
     }
 
-    /** Statically known to possibly produce a non-number. */
     boolean mayBeText() {
         return false;
     }
-
-    // ------------------------------------------------------------------ literals
 
     static final class Constant extends MolangNode {
         final double value;
@@ -104,8 +94,6 @@ abstract class MolangNode {
             return ctx.thisValue;
         }
     }
-
-    // ------------------------------------------------------------------ data access
 
     static final class Query extends MolangNode {
         final String name;
@@ -221,7 +209,7 @@ abstract class MolangNode {
             if (members == null || members.length == 0) {
                 return 0.0;
             }
-            // Bedrock floors the index and wraps it into range, so q.variant beyond the list cycles.
+
             int i = (int) Math.floor(this.index.number(ctx));
             i = Math.floorMod(i, members.length);
             return members[i];
@@ -232,8 +220,6 @@ abstract class MolangNode {
             return true;
         }
     }
-
-    // ------------------------------------------------------------------ operators
 
     static final class Negate extends MolangNode {
         final MolangNode operand;
@@ -361,7 +347,6 @@ abstract class MolangNode {
         }
     }
 
-    /** {@code a ? b : c}, or the binary form {@code a ? b}, which yields 0 when a is false. */
     static final class Ternary extends MolangNode {
         final MolangNode condition;
         final MolangNode whenTrue;
@@ -394,7 +379,6 @@ abstract class MolangNode {
         }
     }
 
-    /** {@code a ?? b}: b when a is an unset variable, otherwise a. */
     static final class Coalesce extends MolangNode {
         final MolangNode left;
         final MolangNode right;
@@ -452,15 +436,12 @@ abstract class MolangNode {
         }
     }
 
-    /** {@code a->b}: entity references are not available outside Bedrock, so this is always 0. */
     static final class Unsupported extends MolangNode {
         @Override
         double number(MolangContext ctx) {
             return 0.0;
         }
     }
-
-    // ------------------------------------------------------------------ statements
 
     static final class Block extends MolangNode {
         final MolangNode[] statements;
@@ -513,7 +494,6 @@ abstract class MolangNode {
         }
     }
 
-    /** {@code loop(count, {...})}, capped at 1024 iterations like Bedrock. */
     static final class Loop extends MolangNode {
         static final int MAX_ITERATIONS = 1024;
         final MolangNode count;
@@ -542,7 +522,6 @@ abstract class MolangNode {
         }
     }
 
-    /** {@code for_each(t.x, array.name, {...})} over a render-controller array. */
     static final class ForEach extends MolangNode {
         final Store store;
         final String name;
@@ -578,8 +557,6 @@ abstract class MolangNode {
             return 0.0;
         }
     }
-
-    // ------------------------------------------------------------------ helpers
 
     static boolean truthy(MolangNode node, MolangContext ctx) {
         if (node.mayBeText()) {
